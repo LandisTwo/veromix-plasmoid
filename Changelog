@@ -1,0 +1,47 @@
+0.8.2 - 22.10.2010
+- Panel icon: mute default sink with mouse middle button
+- Panel icon: increase/decrease volume of default sink with mouse wheel
+0.8.1 
+- packaging fixes
+0.8 - 2.10.2010
+- control input devices (recording) - sources are only shown if at least one application is recording
+- set default output device
+- kill streams
+- information dialog with hardware information
+- don't show scrollbars when poping up from the panel
+- implemented a workaround for kde 4.4 compatibility
+- cleanup plasmoid-package
+Release Notes:
+- clicking on the meter-indicator expands the channel and offers advanced settings (kill, set as default): I' am looking for a better solution
+0.7.6 - 21.08.2010
+- bugfix: remove output device correctly
+0.7.5 - 18.08.2010
+- create directory ~/.local/share/dbus-1/services/ if it does not exist
+- mute-button shows application icon when muted
+0.7.4 - 03.08.2010
+- changed ServiceTypes=Plasma/Applet;Plasma/PopupApplet 
+- use less space
+0.7.3 - 03.08.2010
+- support multiple plasmoid instances
+- resize sliders after a remove
+0.7.2 - 27.07.2010
+- dbus-initialization improved (somtimes crashed plasma-desktop). Working on support for multiple plasmoids..
+0.7.1 - 27.07.2010
+- make the dbus-service executable
+0.7 - 27.07.2010
+- fixed crash (a dbus-service is started to gather info from pulseaudio)
+- improved icon-lookup
+- store size of popup
+0.6 - 05.06.2010
+- Ordering of sources and targets: Sources are always above their correct target/ouput
+- Switch audio-target on the fly: Drag a source to the new target
+- Mute is now an IconWidget (was a PushButton) - looks differently
+0.5 - 30.3.2010
+- themed label-color (dark themes)
+- better utf8 handling
+0.4 - 23.3.2010
+- place it in your systemtray
+0.3 - 23.03.2010
+- PopupApplet -> place it in your panel
+0.2 - 7.12.2009
+- Initial Release
