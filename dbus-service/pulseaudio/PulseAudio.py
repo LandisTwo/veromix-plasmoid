@@ -426,7 +426,7 @@ class PulseAudio(QObject):
         return
 
     def pulse_set_sink_volume(self, index, vol):
-        operation = pa_context_set_sink_volume_by_index(self._context,index,vol.toCtypes(), self._null_cb,None)
+        operation = pa_context_set_sink_volume_by_index(self._context,index,vol.toCtypes2(1), self._null_cb,None)
         pa_operation_unref(operation)
         return
 
@@ -442,7 +442,7 @@ class PulseAudio(QObject):
         return
 
     def pulse_set_sink_input_volume(self, index, vol):
-        operation = pa_context_set_sink_input_volume(self._context,index,vol.toCtypes(),self._null_cb,None)
+        operation = pa_context_set_sink_input_volume(self._context,index,vol.toCtypes2(1),self._null_cb,None)
         pa_operation_unref(operation)
         return
 
