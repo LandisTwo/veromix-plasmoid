@@ -132,11 +132,9 @@ class PulseSinkInfo(PulseSink):
 
   def asDict(self):
     obj = todict(self)
-    del obj["sample_spec"]
-    del obj["channel_map"]
-    del obj["proplist"]
-    #obj["volume"] = self.volume.getVolume()
-    
+    for key in ["sample_spec", "channel_map" ,"proplist"]:
+      if key in obj.keys():
+        del obj[key]
     return assertEncoding(obj)
     #return obj
 
@@ -243,9 +241,9 @@ class PulseSinkInputInfo(PulseSink):
            #"proplist" : str(self.proplist_string)
             }
     adict.update(self.proplist_dict)
-    del adict["sample_spec"]
-    del adict["channel_map"]
-    del adict["application.process.session_id"]
+    for key in ["sample_spec", "channel_map" ,"application.process.session_id"]:
+      if key in obj.keys():
+        del obj[key]
     #print adict
     return assertEncoding(adict)
     #return adict
