@@ -5,7 +5,7 @@ NAME=`date +'%Y-%m-%d'`
 NAME="${NAME}_${VERSION}_veromix.plasmoid"
 find ./ -name '*~' | xargs rm
 find ./ -name '*.pyc' | xargs rm
-zip -r ../$NAME *
+zip -r  ../$NAME * -x */*.svn/*
 #plasmapkg -r veromix-plasmoid
 plasmapkg -u ../$NAME
 echo $NAME
