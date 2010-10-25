@@ -1,5 +1,4 @@
 #!/bin/bash
-# rm *.
 VERSION=`cat metadata.desktop | grep X-KDE-PluginInfo-Version | awk 'BEGIN {FS= "="} ; { print $2 }'`
 NAME=`date +'%Y-%m-%d'`
 NAME="${NAME}_${VERSION}_veromix.plasmoid"
