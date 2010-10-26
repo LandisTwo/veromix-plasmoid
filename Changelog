@@ -1,4 +1,6 @@
 0.8.3 - 25.10.2010
+- fix regression (SinkInputs not appearing)
+0.8.3 - 25.10.2010
 - fix SinkInputs without session-id (mpd)
 - fix set volume of Sinks/SinkInputs with more than 2 channels
 0.8.2 - 22.10.2010
