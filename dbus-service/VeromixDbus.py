@@ -38,7 +38,7 @@ class VeromixDbus(dbus.service.Object):
         self.pulse = pulseaudio
         self.send_volume_updates = False
         self.timer = None
-        self.VERSION = 2
+        self.VERSION = 3
         
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='')
     def veromix_startup(self):
