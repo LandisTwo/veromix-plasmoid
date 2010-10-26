@@ -126,7 +126,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if self.engine == None:
             self.engine = self.dataEngine("apps")
         for source in self.engine.sources():
-            key = str(source).replace(".desktop", "")
+            key = unicode(source).replace(".desktop", "")
             if  ( 0<=  key.find(needle) ) or  (0 <= needle.find(key) )  :    
                 #print "found: ",key,  needle , source
                 result = self.engine.query(source)

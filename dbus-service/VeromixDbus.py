@@ -16,6 +16,7 @@
 # USA
 
 import signal
+import sys
 import dbus
 import dbus.service
 import dbus.mainloop.qt
@@ -37,7 +38,7 @@ class VeromixDbus(dbus.service.Object):
         self.pulse = pulseaudio
         self.send_volume_updates = False
         self.timer = None
-        self.VERSION = 1
+        self.VERSION = 3
         
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='')
     def veromix_startup(self):
@@ -146,6 +147,11 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.method("org.veromix.pulseaudio", in_signature='', out_signature='i')
     def  veromix_service_version(self):
        return self.VERSION
+       
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='', out_signature='')
+    def  veromix_service_quit(self):
+       sys.exit(0)
+       
 ## ----------------------------- private -----------------------------------------    
     def start_volume_updates(self):
         self.send_volume_updates = True
