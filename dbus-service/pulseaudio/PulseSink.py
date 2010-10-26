@@ -242,8 +242,8 @@ class PulseSinkInputInfo(PulseSink):
             }
     adict.update(self.proplist_dict)
     for key in ["sample_spec", "channel_map" ,"application.process.session_id"]:
-      if key in obj.keys():
-        del obj[key]
+      if key in adict.keys():
+        del adict[key]
     #print adict
     return assertEncoding(adict)
     #return adict
