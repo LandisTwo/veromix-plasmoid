@@ -34,6 +34,7 @@ from PulseAudioProxy import *
 from SortedLayout import *
 from SourceUI import *
 from SourceOutputUI import *
+from NowPlaying import * 
 
 class VeroMix(QGraphicsWidget):
     sinkOutputChanged = pyqtSignal()
@@ -94,7 +95,8 @@ class VeroMix(QGraphicsWidget):
     
         #QTimer.singleShot(4000, self.start_pa)
         #self.restore = False
-        self.start_pa()           
+        self.start_pa()   
+        self.startNowPlaying()
 
     def setSourcesPanelVisible(self, aBoolean):
         #if self.applet.isPopupShowing():
@@ -127,7 +129,19 @@ class VeroMix(QGraphicsWidget):
         self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
         self.pa.requestInfo()
-    
+ 
+    def startNowPlaying(self):
+        print "start now p"
+        self.applet.nowplaying_player_added.connect(self.on_nowplaying_added)
+        self.applet.nowplaying_player_removed.connect(self.on_nowplaying_removed)
+        
+    def on_nowplaying_added(self, name, controller):
+        print "on_nowplaying_added", name
+        self.layout.addItem(NowPlaying(self, controller ))
+
+    def on_nowplaying_removed(self, name):
+        print "on_nowplaying_added", name
+
     def getPulseAudio(self):
         return self.pa       
    
