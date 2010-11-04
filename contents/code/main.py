@@ -65,8 +65,13 @@ from LabelSlider import *
 
 
 class VeroMixPlasmoid(plasmascript.Applet):
+    nowplaying_player_added = pyqtSignal(QString, QObject)
+    nowplaying_player_removed = pyqtSignal(QString )
+    
+    
     volume_high = KIcon("audio-volume-high")
     volume_muted = KIcon("audio-volume-muted")    
+    Stopped, Playing, Paused, NA = range(4)  
     
     def __init__(self,parent,args=None):
         plasmascript.Applet.__init__(self,parent)
@@ -88,6 +93,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         
         self.widget = VeroMix(self)            
         self.widget.init()       
+        self.initNowPlaying()
         
         defaultSize =  QVariant(QSize (0,0))
         size = self.config().readEntry("size", defaultSize ).toSize()
@@ -191,6 +197,123 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if event.button() == Qt.MidButton:
             self.widget.on_toggle_mute()        
 
+### now playing
+             
+    def initNowPlaying(self):
+        self.player = u''
+        self.artist = u''
+        self.album = u''
+        self.title = u''
+        self.volume = 1000
+        self.position = 0
+        self.length = 0
+        self.state = VeroMixPlasmoid.NA
+        self.rocking = None
+        
+        self.now_playing_engine = self.dataEngine('nowplaying')
+        self.connect(self.now_playing_engine, SIGNAL('sourceAdded(QString)'), self.playerAdded)
+        self.connect(self.now_playing_engine, SIGNAL('sourceRemoved(QString)'), self.playerRemoved)
+        self.connectToNowPlayingEngine()
+            
+    def connectToNowPlayingEngine(self):
+        # get sources and connect
+        for source in self.now_playing_engine.sources():
+            self.playerAdded(U(source))
+        
+        
+    def old(self):    
+        self.connected = False
+        self.now_playing_engine.disconnectSource(self.player, self)
+        print "current player: ", self.player
+        
+        ## check if already there
+        
+        ## 
+        
+        if not self.now_playing_engine.sources().contains(self.player) and self.now_playing_engine.sources().count() > 0:
+            self.player = U(self.now_playing_engine.sources().first())
+
+        # not connected ? - connect
+        if self.now_playing_engine.sources().contains(self.player):
+            self.now_playing_engine.connectSource(self.player, self, 500)
+            try:
+                # ok add channell
+                self.controller = self.now_playing_engine.serviceForSource(self.player)
+                print "got a controller " ,  self.controller, " for player:", self.player 
+            except:
+                self.controller = None
+                print "exception:", self.controller
+                return
+            if self.controller:
+                #self.nowplaying = NowPlaying(self.widget, self.controller)
+                                
+                #self.controller.startOperationCall(self.controller.operationDescription('next'))
+                #self.rocking.controller = self.controller
+                #name  = U(self.player)            
+                #self.rocking.name = name[name.rfind('.') + 1:].title()
+                #self.widget.sinks[-1] = self.rocking
+                #self.widget.add_sink_to_layout(self.rocking)
+                #self.widget.layout.addItem(self.rocking)
+                #self.associateWidgets()
+                self.connected = True
+        else:
+            #print ">>>1>>", self.controller
+            self.controller = None
+            self.dataUpdated('', {})
+  
+    def playerAdded(self, player):
+        print "playerAdded:", player
+        # connect to the player
+        self.now_playing_engine.disconnectSource(player, self)
+        controller = self.now_playing_engine.connectSource(player, self, 1000)        
+        self.nowplaying_player_added.emit(player, controller )
+        ## signal we got a new player for name
+        #if self.now_playing_engine.sources().count() == 1:
+            
+            #self.connectToNowPlayingEngine()
+
+    def playerRemoved(self, player):
+        ## signal  player removed
+        print "playerRemoved:", player
+        self.now_playing_engine.disconnectSource(player, self)
+        self.nowplaying_player_removed.emit(player)
+        #if player == self.player:
+            #if self.rocking :
+                #self.widget.remove_sink_from_layout(self.rocking)
+                #del self.widget.sinks[-1]
+                #self.rocking.deleteLater()
+                #self.rocking = None                
+            #self.connectToNowPlayingEngine()
+            
+    @pyqtSignature('dataUpdated(const QString&, const Plasma::DataEngine::Data&)')
+    def dataUpdated(self, sourceName, data):
+        #if self.rocking:
+            #self.rocking.update_with_info(data)
+        #print "data updated"
+        pass
+    
+def U(s):
+    # For some reason in Arch Linux & Gentoo data map is QString => QString
+    # and in kubuntu (and C++ plasma) QString => QVariant
+    if isinstance(s, QVariant):
+        return unicode(s.toString())
+    elif isinstance(s, QString):
+        return unicode(s)
+    elif isinstance(s, QFont):
+        return unicode(s.toString())
+    elif isinstance(s, QColor):
+        return unicode(s.name())
+    elif isinstance(s, QLineEdit) or isinstance(s, KLineEdit) or \
+         isinstance(s, QStandardItem) or isinstance(s, QListWidgetItem) or \
+         isinstance(s, KUrlComboRequester):
+        return unicode(s.text())
+    elif isinstance(s, KColorCombo):
+        return unicode(s.color().name())
+    elif s == None:
+        return u''
+    else:
+        return unicode(s)    
+    
 def CreateApplet(parent):    
     # Veromix is dedicated my girlfriend Vero. 
     return VeroMixPlasmoid(parent)
