@@ -31,13 +31,40 @@ class SortedLayout(QGraphicsLinearLayout):
     def __init__(self, orient, reverse):
         QGraphicsLinearLayout.__init__(self, orient)
         self.reverse= reverse
+        self.channels = {}
 
-    def check_ItemOrdering(self, sinks):
-        while(self.needs_ordering(sinks)):
-            self.order_items(sinks)  
+    def getChannels(self):
+        return self.channels
 
-    def order_items(self, sinks):
-       sorting = self.sort(sinks.values(), 'sortOrderIndex')
+    def getSinkOutputs(self):
+        toreturn = []
+        for index in self.channels.keys() :
+            if self.channels[index].isSinkOutput():
+                toreturn.append(self.channels[index])
+        return toreturn
+
+    def getChannel(self, key):
+        if key in self.channels.keys():
+            return self.channels[key]
+        return None
+
+    def addChannel(self, key, widget):
+        if(key not in self.channels.keys()):
+            self.channels[key]  = widget
+            self.addItem(widget)
+        
+    def removeChannel(self, key):
+        if(key  in self.channels.keys()):
+            self.removeItem(self.channels[key])
+            self.channels[key].deleteLater()            
+            del self.channels[key]    
+
+    def check_ItemOrdering(self):
+        while(self.needs_ordering()):
+            self.order_items()  
+
+    def order_items(self):
+       sorting = self.sort(self.channels.values(), 'sortOrderIndex')
        for i in range(0,len(sorting)):
             if self.itemAt(i).graphicsItem ()  != sorting[i]:      
                 item = self.itemAt(i).graphicsItem()
@@ -45,8 +72,8 @@ class SortedLayout(QGraphicsLinearLayout):
                 self.insertItem(index , item )
                 return
                 
-    def needs_ordering(self, sinks):
-        sorting = self.sort(sinks.values(), 'sortOrderIndex')
+    def needs_ordering(self):
+        sorting = self.sort(self.channels.values(), 'sortOrderIndex')
         for i in range(0,len(sorting)):
             if self.itemAt(i).graphicsItem ()  != sorting[i]:      
                 return True

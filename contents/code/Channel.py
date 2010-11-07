@@ -177,3 +177,8 @@ class Channel( Plasma.Frame):
         # if a slider is not visible, plasmoidviewer crashes if the slider is not removed.. (dont ask me)
         self.middle_layout.removeItem(self.slider) 
         self.slider = None
+        
+    def isSinkOutput(self):
+        return False
+        
+        

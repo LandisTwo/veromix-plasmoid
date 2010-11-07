@@ -42,7 +42,7 @@ class VeroMix(QGraphicsWidget):
     def __init__(self,parent):
         QGraphicsWidget.__init__(self)
         self.applet = parent        
-        self.sinks = {} 
+        #self.sinks = {} 
         self.sources = {} 
         self.outputs = {}
         self.mouse_is_over = False
@@ -134,13 +134,19 @@ class VeroMix(QGraphicsWidget):
         print "start now p"
         self.applet.nowplaying_player_added.connect(self.on_nowplaying_added)
         self.applet.nowplaying_player_removed.connect(self.on_nowplaying_removed)
+        self.applet.nowplaying_player_dataUpdated.connect(self.on_nowplaying_dataUpdated)
         
     def on_nowplaying_added(self, name, controller):
-        print "on_nowplaying_added", name
-        self.layout.addItem(NowPlaying(self, controller ))
+        print "on_nowplaying_added", controller
+        self.add_channel(name, NowPlaying(self, controller), None)
 
     def on_nowplaying_removed(self, name):
-        print "on_nowplaying_added", name
+        self.remove_channel(name)
+
+    def on_nowplaying_dataUpdated(self, name, values):
+        channel = self.sink_panel_layout.getChannel(name)
+        if channel:
+            channel.update_with_info(values)
 
     def getPulseAudio(self):
         return self.pa       
@@ -166,27 +172,35 @@ class VeroMix(QGraphicsWidget):
         #self.updateGeometry()
        
     def check_ItemOrdering(self):
-        self.sink_panel_layout.check_ItemOrdering(self.sinks) 
-        self.source_panel_layout.check_ItemOrdering(self.sources)   
+        #self.sink_panel_layout.check_ItemOrdering() 
+        #self.sink_panel_layout.check_ItemOrdering(self.sources)   
+        pass
     
     def on_sink_input_info(self,  sink):
-        ## SinkInputs and Sinks/outputs can have the same index .. 
-        if  (sink.index+1000) in self.sinks :
-            self.sinks[sink.index+1000].update_with_info(sink)
-            self.check_ItemOrdering()        
-            return 
-        widget = InputSinkUI(  self)
-        widget.update_with_info(sink)
-        self.add_sink_to_layout(widget)
-        self.sinks[sink.index + 1000 ] = widget
-        self.check_geometries()
-
+        key = "sinkinput" + str(sink.index)
+        if not self.update_channel(key ,sink ):
+            self.add_channel(key,  InputSinkUI(  self), sink )
+        
     def on_remove_sink_input(self, index):
-        ## SinkInputs and Sinks/outputs can have the same index .. 
-        if (index +1000 ) in self.sinks :
-            self.remove_sink_from_layout(self.sinks[index+1000])
-            self.sinks[index+1000].deleteLater()
-            del self.sinks[index+1000]
+        self.remove_channel("sinkinput" + str(index))     
+ 
+    def update_channel(self, key, sink):
+        if self.sink_panel_layout.getChannel(key) :
+            self.sink_panel_layout.getChannel(key).update_with_info(sink)
+            self.check_ItemOrdering()        
+            return True
+        else:
+            return False
+            
+    def add_channel(self, key, widget, sink):
+        if sink:
+            widget.update_with_info(sink)
+        self.sink_panel_layout.addChannel(key, widget)
+        self.check_geometries()
+        return widget
+ 
+    def remove_channel(self, key):
+        self.sink_panel_layout.removeChannel(key)
         self.check_geometries()
         
     def on_source_output_info(self,  sink):
@@ -234,25 +248,15 @@ class VeroMix(QGraphicsWidget):
             self.check_geometries()      
 
     def on_sink_info(self,sink):
-        if  sink.index in self.sinks :
-            self.sinks[sink.index].update_with_info(sink)
-            self.check_ItemOrdering()
-            return 
-        widget = SinkUI(self)
-        widget.update_with_info(sink)
-        widget.muteInfo.connect(self.updateIcon)
-        self.add_sink_to_layout(widget)
-        self.sinks[sink.index] = widget
-        self.check_geometries()
-        self.sinkOutputChanged.emit()
+        key = "sinkinput" + str(sink.index)
+        if not self.update_channel(key ,sink ):
+            widget =  SinkUI(  self)
+            self.add_channel(key, widget , sink )
+            widget.muteInfo.connect(self.updateIcon)
+            self.sinkOutputChanged.emit()
 
     def on_remove_sink(self, index):
-        for i in self.sinks.keys() :
-            if i == index:
-                self.remove_sink_from_layout(self.sinks[index])
-                self.sinks[index].deleteLater()
-                del self.sinks[index]
-        self.check_geometries()
+        self.remove_channel("sink" + str(index) )
         self.sinkOutputChanged.emit()
 
     def add_sink_to_layout(self, widget):    
@@ -270,8 +274,8 @@ class VeroMix(QGraphicsWidget):
     def on_volume_meter_sink_input(self, index, level):
         if not self.mouse_is_over:
           return 
-        for sink in self.sinks:
-            self.sinks[sink].on_update_meter(index,int(level), len(self.sinks))
+        for sink in self.sink_panel_layout.getChannels().values():
+            sink.on_update_meter(index,int(level), len(self.sink_panel_layout.getChannels()))
   
     def on_volume_meter_source(self, index, level):
         if not self.mouse_is_over:
@@ -280,12 +284,7 @@ class VeroMix(QGraphicsWidget):
             self.sources[sink].on_update_meter(index,int(level), len(self.sources))
      
     def getSinkOutputs(self):
-        toreturn = []
-        for index in self.sinks.keys() :
-            if self.sinks[index].isSinkOutput():
-                toreturn.append(self.sinks[index])
-        return toreturn
-                
+       return self.sink_panel_layout.getSinkOutputs()                
      
     def hoverMoveEvent(self,event):
         self.mouse_is_over = True
@@ -315,10 +314,10 @@ class VeroMix(QGraphicsWidget):
         self.applet.showMessage(icon, message, Plasma.ButtonOk)
 
     def getDefaultSink(self):
-        for sink in self.sinks.values():
+        for sink in self.sink_panel_layout.getChannels().values():
             if sink.isDefaultSink():
                 return sink
-        for sink in self.sinks():
+        for sink in self.sink_panel_layout.getChannels().values():
             if sink.isSinkOutput():
                 return sink
         return None
@@ -334,7 +333,7 @@ class VeroMix(QGraphicsWidget):
             sink.on_step_volume(up)
 
     def doExit(self):
-        for i in self.sinks.values():
+        for i in self.sink_panel_layout.getChannels().values():
             # if a slider is not visible, plasmoidviewer crashes if the slider is not removed before exit... (dont ask me)
             i.removeSlider()
         for i in self.sources.values():

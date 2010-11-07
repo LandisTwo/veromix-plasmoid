@@ -67,6 +67,7 @@ from LabelSlider import *
 class VeroMixPlasmoid(plasmascript.Applet):
     nowplaying_player_added = pyqtSignal(QString, QObject)
     nowplaying_player_removed = pyqtSignal(QString )
+    nowplaying_player_dataUpdated = pyqtSignal(QString, dict)
     
     
     volume_high = KIcon("audio-volume-high")
@@ -262,35 +263,20 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.dataUpdated('', {})
   
     def playerAdded(self, player):
-        print "playerAdded:", player
-        # connect to the player
         self.now_playing_engine.disconnectSource(player, self)
-        controller = self.now_playing_engine.connectSource(player, self, 1000)        
+        
+        self.now_playing_engine.connectSource(player, self, 1000)   
+        controller = self.now_playing_engine.serviceForSource(player)
+        print "player added", controller, player
         self.nowplaying_player_added.emit(player, controller )
-        ## signal we got a new player for name
-        #if self.now_playing_engine.sources().count() == 1:
-            
-            #self.connectToNowPlayingEngine()
 
     def playerRemoved(self, player):
-        ## signal  player removed
-        print "playerRemoved:", player
         self.now_playing_engine.disconnectSource(player, self)
         self.nowplaying_player_removed.emit(player)
-        #if player == self.player:
-            #if self.rocking :
-                #self.widget.remove_sink_from_layout(self.rocking)
-                #del self.widget.sinks[-1]
-                #self.rocking.deleteLater()
-                #self.rocking = None                
-            #self.connectToNowPlayingEngine()
             
     @pyqtSignature('dataUpdated(const QString&, const Plasma::DataEngine::Data&)')
     def dataUpdated(self, sourceName, data):
-        #if self.rocking:
-            #self.rocking.update_with_info(data)
-        #print "data updated"
-        pass
+        self.nowplaying_player_dataUpdated.emit(sourceName, data)
     
 def U(s):
     # For some reason in Arch Linux & Gentoo data map is QString => QString

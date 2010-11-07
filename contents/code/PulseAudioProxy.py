@@ -115,7 +115,12 @@ class PulseAudio(QObject):
     def getMixer(self):
         pa_obj  = self.bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
         return dbus.Interface(pa_obj, 'org.veromix.pulseaudio') 
-        
+
+    def getNowPlaying(self):
+        pa_obj  = self.bus.get_object("org.mpris.amarok","/Player")
+        return dbus.Interface(pa_obj, 'org.freedesktop.MediaPlayer') 
+
+
     def on_sink_input_info(self,   index,   name,  muted  , volume ,  props):
         sink =SinkInfo(self, index,   name,  muted  , volume ,  props)
         self.emit(SIGNAL("on_sink_input_info(PyQt_PyObject)"), sink )
@@ -195,7 +200,10 @@ class PulseAudio(QObject):
         
     def move_source_output(self, sink, output):
         self.getMixer().move_source_output(sink, output)        
-        
+
+    def nextTrack(self):
+        self.getNowPlaying().Next()
+
     def requestInfo(self):
         try:
             self.getMixer().requestInfo()

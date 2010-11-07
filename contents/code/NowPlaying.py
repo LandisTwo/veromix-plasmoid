@@ -36,9 +36,7 @@ class NowPlaying( Channel ):
     
     def __init__(self,veromix, controller):
         self.controller = controller
-        print "CONTROLLER nowplaying", self.controller
         Channel.__init__(self, veromix)  
-        print "------------------------------"
         self.index = -1
         self.state = NowPlaying.NA
         self.artist = ""
@@ -53,7 +51,7 @@ class NowPlaying( Channel ):
         #self.createExtender()
         self.createPanel()
         #self.meter = Image()        
-        print "CONTROLLER nowplaying2", self.controller
+        #print "CONTROLLER nowplaying2", self.controller
         #self.mute = NowRocking(self.veromix, self.controller)
         #self.BIGSIZE = 56
         #self.meter.setPreferredSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
@@ -88,6 +86,11 @@ class NowPlaying( Channel ):
 
     def update_with_info(self, data):
         #self.mute.dataUpdated("amarok",data)
+        if QString('Artwork') in data:
+                self.mute.setIcon(QIcon(QPixmap(data[QString('Artwork')])))
+        else:
+            img = None
+            #self.mute.setImage(QPixmap(data[QString('Artwork')]))
         pass
     
     def gugus(self):
@@ -145,7 +148,7 @@ class NowPlaying( Channel ):
 
         if QString('Artwork') in data:
             if changed:
-                self.cover.setImage(QPixmap(data[QString('Artwork')]))
+                self.cover.setIcon(KIcon(QPixmap(data[QString('Artwork')])))
         else:
             img = None
             #self.meter.setImage(QPixmap(data[QString('Artwork')]))
@@ -198,13 +201,46 @@ class NowPlaying( Channel ):
 
     def createMute(self):
         #self.mute = NowRocking(self.veromix)
-        self.mute = MuteButton(self.veromix)
+        self.mute = Plasma.PushButton()
         #self.BIGSIZE = 56
         #self.mute.setPreferredSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
         #self.mute.setMaximumSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
         #self.mute.setMinimumSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
         #self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum,True) )
-        #self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
+        self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
+
+    def on_mute_cb(self):
+        print "clicked"
+        self.veromix.pa.nextTrack()
+    
+    def next(self):
+        print ">next"
+        self.controller.startOperationCall(self.controller.operationDescription('next'))
+
 
     def on_slider_cb(self, value):
         pass
+
+## TODO helper class
+
+def U(s):
+    # For some reason in Arch Linux & Gentoo data map is QString => QString
+    # and in kubuntu (and C++ plasma) QString => QVariant
+    if isinstance(s, QVariant):
+        return unicode(s.toString())
+    elif isinstance(s, QString):
+        return unicode(s)
+    elif isinstance(s, QFont):
+        return unicode(s.toString())
+    elif isinstance(s, QColor):
+        return unicode(s.name())
+    elif isinstance(s, QLineEdit) or isinstance(s, KLineEdit) or \
+         isinstance(s, QStandardItem) or isinstance(s, QListWidgetItem) or \
+         isinstance(s, KUrlComboRequester):
+        return unicode(s.text())
+    elif isinstance(s, KColorCombo):
+        return unicode(s.color().name())
+    elif s == None:
+        return u''
+    else:
+        return unicode(s)    
