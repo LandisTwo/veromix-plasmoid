@@ -30,13 +30,13 @@ from Channel import *
 
 class SinkUI(Channel):
     muteInfo = pyqtSignal(bool)
-    
+
     def __init__(self , parent):
-        self.meter_levels = {} 
+        self.meter_levels = {}
         self.number_of_input_sinks = 0
         Channel.__init__(self, parent)
-               
-    def updateIcon(self):           
+
+    def updateIcon(self):
         if self.isMuted():
             self.updateMutedInfo(True)
             self.mute.setMuted(True)
@@ -53,7 +53,7 @@ class SinkUI(Channel):
             self.number_of_input_sinks = number_of_sinks
             self.meter_levels[index] = {}
         self.meter_levels[index] = value
-        
+
         level = 0
         for i in self.meter_levels:
             if self.meter_levels[i] > level:
@@ -64,8 +64,8 @@ class SinkUI(Channel):
         self.meter.setValue(level)
 
     def isMuted(self):
-        return self.pa_sink.mute == 1       
-    
+        return self.pa_sink.mute == 1
+
     def on_mute_cb(self ):
         if self.isMuted():
             self.pa.set_sink_mute(self.index, False)
@@ -106,7 +106,7 @@ class SinkUI(Channel):
         self.adjustSize()
         self.veromix.check_geometries()
 
-    def setVolume(self, value):        
+    def setVolume(self, value):
         self.pa.set_sink_volume(self.index, value)
 
     def sink_input_kill(self):
@@ -129,22 +129,22 @@ class SinkUI(Channel):
             if uri.scheme() == "veromix":
                 self.pa.move_sink_input(uri.port(), self.index)
 
-    def startDrag(self,event):          
-         pass
-    
-                
+    def startDrag(self,event):
+        pass
+
+
     def paint2(self, painter,  option, widget = 0):
         QGraphicsWidget.paint(self, painter, option, widget)
         margin = 10
         width = 6
         height = 6
         size = self.contentsRect()
-        
-        m_left = margin 
-        m_right =  size.width() - ( margin) - width  
-        m_top = margin 
+
+        m_left = margin
+        m_right =  size.width() - ( margin) - width
+        m_top = margin
         m_bottom = size.height()  -  ( margin) - height
-        
+
         print m_left, m_top, m_right, m_bottom
         painter.setRenderHint(QPainter.Antialiasing)
         #p = Plasma.PaintUtils.roundedRectangle(
@@ -154,7 +154,6 @@ class SinkUI(Channel):
         c = Plasma.Theme.defaultTheme().color(Plasma.Theme.TextColor)
         c.setAlphaF(0.3)
         painter.fillPath(p, c)
-                
+
     def isSinkOutput(self):
         return True
-

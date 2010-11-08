@@ -34,10 +34,10 @@ class InputSinkUI(SinkUI):
         self.mouse_pressed = False
         SinkUI.__init__(self, parent)
 
-    def init(self):   
-        SinkUI.init(self)            
-        self.setAcceptDrops(False) 
-        
+    def init(self):
+        SinkUI.init(self)
+        self.setAcceptDrops(False)
+
     def createMute(self):
         self.mute = InputMuteButton(self)
         #self.updateIcon()
@@ -47,7 +47,7 @@ class InputSinkUI(SinkUI):
     def createExtender(self):
         self.extended_panel = SinkInputInfoWidget(self.veromix, self)
 
-    def setVolume(self, value):        
+    def setVolume(self, value):
         self.pa.set_sink_input_volume(self.index, value)
 
     def on_mute_cb(self ):
@@ -70,14 +70,14 @@ class InputSinkUI(SinkUI):
         self.layout.addItem(self.panel)
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
-        self.panel_layout.addItem(self.meter)        
+        self.panel_layout.addItem(self.meter)
 
     def updateMutedInfo(self, aBoolean):
         pass
-    
+
     def update_label(self):
         #text = "<b>" + self.pa_sink.app + "</b><span>" + self.pa_sink.name + "</span>"
-        text =  self.pa_sink.name 
+        text =  self.pa_sink.name
         bold = self.pa_sink.props["app"]
         ## don't want the absolute path of the executable..
         #if (len(bold) > 0 and bold.rfind("/") > 0 ):
@@ -91,11 +91,11 @@ class InputSinkUI(SinkUI):
         if iconname == None and  self.pa_sink.props["app"] != "None":
             iconname = self.veromix.query_application(self.pa_sink.props["app"])
         if iconname is None and bold == "plugin-container":
-            iconname = 'flash'        
+            iconname = 'flash'
         if iconname :
             #self.icon = KIcon(iconname)
             self.mute.setBigIconName(iconname)
-            self.updateIcon()            
+            self.updateIcon()
 
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:

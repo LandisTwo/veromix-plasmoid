@@ -17,11 +17,11 @@
 # USA
 ###
 
-### 
+###
 # Veromix  - A Pulseaudio volume control
 #
 # Veromix has two components:
-# - a service that sends notifications over dbus and offers an interface 
+# - a service that sends notifications over dbus and offers an interface
 #   to perform actions (set volume, mute ...)
 # - the plasmoid that connects to the service
 #
@@ -41,7 +41,7 @@
 # https://launchpad.net/earcandy
 # https://fedorahosted.org/pulsecaster/
 # Thank you guys!
-###### December 2009 & July 2010 
+###### December 2009 & July 2010
 
 
 import sys, os, commands, time
@@ -54,7 +54,7 @@ from PyKDE4 import plasmascript
 from PyKDE4.kdeui import *
 from PyKDE4.kdecore import *
 from PyKDE4.kdecore import *
-from PyKDE4.plasma import * 
+from PyKDE4.plasma import *
 
 import signal, os, datetime
 
@@ -65,60 +65,60 @@ from LabelSlider import *
 
 
 class VeroMixPlasmoid(plasmascript.Applet):
-    
+
     volume_high = KIcon("audio-volume-high")
-    volume_muted = KIcon("audio-volume-muted")    
-    
+    volume_muted = KIcon("audio-volume-muted")
+
     def __init__(self,parent,args=None):
         plasmascript.Applet.__init__(self,parent)
         self.engine = None
 
-    def init(self):       
+    def init(self):
         out = commands.getstatusoutput("xdg-icon-resource install --size 128 " + unicode(self.package().path()) + "contents/icons/veromix-plasmoid-128.png veromix-plasmoid")
         if out[0] == 0:
             print "veromix icon installed"
             #gc.writeEntry("gmail-plasmoid-128.png", vers["gmail-plasmoid-128.png"])
         else:
             print "Error installing veromix icon:", out
-        
+
         self.createDbusServiceDescription()
-        
+
         self.setHasConfigurationInterface(False)
         self.setAspectRatioMode(Plasma.IgnoreAspectRatio)
         self.theme = Plasma.Svg(self)
-        
-        self.widget = VeroMix(self)            
-        self.widget.init()       
-        
+
+        self.widget = VeroMix(self)
+        self.widget.init()
+
         defaultSize =  QVariant(QSize (0,0))
         size = self.config().readEntry("size", defaultSize ).toSize()
         if (size != defaultSize) :
             self.widget.setPreferredSize(size.width(), size.height())
         else:
             self.widget.setPreferredSize(400 ,145)
-        
+
         self.connect(self.widget, SIGNAL("resized()"), self.dialogResized)
         try:
             self.setGraphicsWidget(self.widget)
-            self.applet.setPassivePopup(True)   
+            self.applet.setPassivePopup(True)
             self.setPopupIcon(self.volume_high)
-            # dont know why but adding it a second time helps (otherwise it 
+            # dont know why but adding it a second time helps (otherwise it
             # wont popup when you add it directly to the panel)
             self.setGraphicsWidget(self.widget)
             self.connect(self.applet, SIGNAL("appletDestroyed(Plasma::Applet*)"), self.doExit)
-            self.setBackgroundHints(Plasma.Applet.NoBackground)    
+            self.setBackgroundHints(Plasma.Applet.NoBackground)
         except AttributeError:
             self.updateMetadataDesktop()
-                                                                                                                                                                              
+
     def doExit(self):
         # prevent crash in plasmoidviewer
         self.widget.doExit()
         self.widget.deleteLater()
-     
+
     def dialogResized(self):
         if self.isPopupShowing():
-             self.config().writeEntry("size", QVariant(self.widget.size()))       
-        
+            self.config().writeEntry("size", QVariant(self.widget.size()))
+
     def query_application(self, query):
         #print "query: ", query
         if not query :
@@ -128,7 +128,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.engine = self.dataEngine("apps")
         for source in self.engine.sources():
             key = unicode(source).replace(".desktop", "")
-            if  ( 0<=  key.find(needle) ) or  (0 <= needle.find(key) )  :    
+            if  ( 0<=  key.find(needle) ) or  (0 <= needle.find(key) )  :
                 #print "found: ",key,  needle , source
                 result = self.engine.query(source)
                 if QString("iconName") in result:
@@ -183,17 +183,17 @@ class VeroMixPlasmoid(plasmascript.Applet):
                 Because of a known bug in KDE 4.4 initialization of Veromix failed.<br/><br/>\
                 A workaround is now installed.<br/><br/>\
                 Please <b>remove</b> this applet and <b>add</b> Veromix again to your desktop/panel (alternatively you can restart plasma-desktop).<br/><br/> \
-                Sorry for the inconvenience.", Plasma.ButtonOk) 
+                Sorry for the inconvenience.", Plasma.ButtonOk)
 
     def wheelEvent(self, event):
         self.widget.on_step_volume( (event.delta() > 0) )
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MidButton:
-            self.widget.on_toggle_mute()        
+            self.widget.on_toggle_mute()
 
- 
-    
-def CreateApplet(parent):    
-    # Veromix is dedicated my girlfriend Vero. 
+
+
+def CreateApplet(parent):
+    # Veromix is dedicated my girlfriend Vero.
     return VeroMixPlasmoid(parent)

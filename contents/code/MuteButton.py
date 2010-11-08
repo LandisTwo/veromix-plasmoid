@@ -32,16 +32,16 @@ class MuteButton(Plasma.IconWidget):
         self.setParent(parent)
         self.play_Icon = KIcon( "audio-volume-high")
         self.muted_Icon = KIcon( "audio-volume-muted")
-        
+
     def mouseMoveEvent(self,event):
-        self.parent().startDrag(event)       
+        self.parent().startDrag(event)
 
     def setMuted(self, boolean):
         if boolean :
             self.setIcon(self.muted_Icon)
         else:
             self.setIcon(self.play_Icon)
-    
+
 
 class InputMuteButton(MuteButton):
 
@@ -50,45 +50,45 @@ class InputMuteButton(MuteButton):
         self.setParent(parent)
         self.big_name =  "mixer-pcm"
         self.status_icon = self.play_Icon
-        
+
     def setMuted(self, boolean):
         if boolean :
-            self.status_icon = self.muted_Icon            
+            self.status_icon = self.muted_Icon
         else:
-            self.status_icon = self.play_Icon  
+            self.status_icon = self.play_Icon
         self.setIcon(self._draw_icon())
-     
+
     def setBigIconName(self, name):
         if self.big_name != name:
             self.big_name = name
             self.setIcon(self._draw_icon())
-        
+
     def _draw_icon(self ):
-        if self.status_icon == self.muted_Icon:           
+        if self.status_icon == self.muted_Icon:
             size =  self.BIGSIZE
             size2= 18
             orig =  KIcon(self.big_name).pixmap(22, 22)
             over = self.status_icon.pixmap(size2,size2)
-            
+
             #over =  KIcon(self.big_name).pixmap(size2,size2)
             #orig = self.status_icon.pixmap(28,28)
-            
+
             pixmap = QPixmap(size, size)
             pixmap.fill(Qt.transparent)
-            
+
             p = QPainter(pixmap)
             #p.fillRect(QRect(0,0,size,size),QColor(0,100,1,250))
             p.drawPixmap(0,0,orig)
             p.end()
-           
+
             copy = QPixmap(pixmap)
             paint_copy = QPainter(copy)
             paint_copy.fillRect(pixmap.rect(), QColor(1,1,1,10))
-            paint_copy.end()            
+            paint_copy.end()
             pixmap.setAlphaChannel(copy)
 
             paint = QPainter(pixmap)
-            #over = KIconLoader.loadIcon(loader, "audio-volume-muted", KIconLoader.NoGroup, size2, KIconLoader.DefaultState, "", "", True)        
+            #over = KIconLoader.loadIcon(loader, "audio-volume-muted", KIconLoader.NoGroup, size2, KIconLoader.DefaultState, "", "", True)
             paint.drawPixmap( 12  , 12, over)
             paint.end()
             return QIcon(pixmap)

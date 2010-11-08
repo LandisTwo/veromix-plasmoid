@@ -51,11 +51,11 @@ class PulseAudioDBus(QObject):
     def sink_input_info(self,   index,   name,  muted  , volume , client_index,client_name, props):
         print "sink input signal: " ,  index,   name,  muted  , volume , client_index,client_name, props
         print ""
-        
+
     def sink_info(self,  index,   name,  muted  , volume , client_index,client_name, props):
         print "sink signal: " ,  index,   name,  muted  , volume , client_index,client_name, props
         print ""
-    
+
     def sink_input_remove(self, index):
         print "sink input remove signal: " ,  index
 
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     app=QCoreApplication(sys.argv)
     mainloop=dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    
+
     bus = dbus.SessionBus()
     obj = PulseAudioDBus()
     app.exec_()

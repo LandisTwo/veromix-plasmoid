@@ -24,22 +24,22 @@ from PyQt4.QtCore import *
 
 
 class SinkInfo(QObject):
-    
-    def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props):    
+
+    def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props):
         QObject.__init__(self)
         self.pa = pulseaudio
-        self.index =  index 
+        self.index =  index
         self.name =   name
         self.mute  =   muted
         self. volume  =   volume
-        #self.client_index = client_index  
+        #self.client_index = client_index
         #self.client_name = client_name
         self.props = props
 
     def getVolume(self):
-        return self.volume["left"]     
-    
-        
+        return self.volume["left"]
+
+
 class PulseAudio(QObject):
 
     def __init__(self, parent ):
@@ -50,20 +50,20 @@ class PulseAudio(QObject):
         else:
             mainloop=dbus.mainloop.qt.DBusQtMainLoop(set_as_default=False)
         self.bus = dbus.SessionBus()
-        
+
         if  self.getMixer().veromix_service_version() != REQUIRED_SERVICE_VERSION:
-          try:
-            self.getMixer().veromix_service_quit()
-            if  self.getMixer().veromix_service_version() != REQUIRED_SERVICE_VERSION:
-              raise NameError("Wrong server versions") 
-          except:  
-            raise NameError("Wrong server versions") 
-        
+            try:
+                self.getMixer().veromix_service_quit()
+                if  self.getMixer().veromix_service_version() != REQUIRED_SERVICE_VERSION:
+                    raise NameError("Wrong server versions")
+            except:
+                raise NameError("Wrong server versions")
+
         # no exception on startup:
         self.bus.add_signal_receiver(self.on_sink_input_info,
                 dbus_interface="org.veromix.notification",
                 signal_name="sink_input_info")
-                
+
         self.bus.add_signal_receiver(self.on_sink_info,
                 dbus_interface="org.veromix.notification",
                 signal_name="sink_info")
@@ -71,19 +71,19 @@ class PulseAudio(QObject):
         self.bus.add_signal_receiver(self.on_source_output_info,
                 dbus_interface="org.veromix.notification",
                 signal_name="source_output_info")
-                
+
         self.bus.add_signal_receiver(self.on_source_info,
                 dbus_interface="org.veromix.notification",
                 signal_name="source_info")
-                
+
         self.bus.add_signal_receiver(self.on_sink_input_remove,
                 dbus_interface="org.veromix.notification",
                 signal_name="sink_input_remove")
-                
+
         self.bus.add_signal_receiver(self.on_sink_remove,
                 dbus_interface="org.veromix.notification",
                 signal_name="sink_remove")
-         
+
         self.bus.add_signal_receiver(self.on_source_remove,
                 dbus_interface="org.veromix.notification",
                 signal_name="source_remove")
@@ -107,38 +107,38 @@ class PulseAudio(QObject):
         #interface.connect_to_signal("sink_info", self.on_sink_info)
         #interface.connect_to_signal("sink_input_remove", self.on_sink_input_remove)
         #interface.connect_to_signal("sink_remove", self.on_sink_remove)
-        
+
         ##rbplayerobj = bus.get_object("org.veromix.pulseaudio", '/org/veromix/pulseaudio')
         #pa_obj  = bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
-        #self.mixer = dbus.Interface(pa_obj, 'org.veromix.pulseaudio') 
+        #self.mixer = dbus.Interface(pa_obj, 'org.veromix.pulseaudio')
 
     def getMixer(self):
         pa_obj  = self.bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
-        return dbus.Interface(pa_obj, 'org.veromix.pulseaudio') 
+        return dbus.Interface(pa_obj, 'org.veromix.pulseaudio')
 
     def getNowPlaying(self):
         pa_obj  = self.bus.get_object("org.mpris.amarok","/Player")
-        return dbus.Interface(pa_obj, 'org.freedesktop.MediaPlayer') 
+        return dbus.Interface(pa_obj, 'org.freedesktop.MediaPlayer')
 
 
     def on_sink_input_info(self,   index,   name,  muted  , volume ,  props):
         sink =SinkInfo(self, index,   name,  muted  , volume ,  props)
         self.emit(SIGNAL("on_sink_input_info(PyQt_PyObject)"), sink )
-        
+
     def on_sink_info(self,  index,   name,  muted  , volume ,  props):
         sink = SinkInfo( self,  index,   name,  muted  , volume,  props)
-        self.emit(SIGNAL("on_sink_info(PyQt_PyObject)"), sink )        
-        
+        self.emit(SIGNAL("on_sink_info(PyQt_PyObject)"), sink )
+
     def on_source_output_info(self,  index,   name, props):
         #print "source_output_info"
         sink = SinkInfo( self,  index,   name, True, {"left":0, "right":0},  props)
         self.emit(SIGNAL("on_source_output_info(PyQt_PyObject)"), sink )
-        
+
     def on_source_info(self,  index,   name,  muted  , volume ,  props):
         #print "on_source_info"
         sink = SinkInfo( self,  index,   name,  muted  , volume , props)
         self.emit(SIGNAL("on_source_info(PyQt_PyObject)"), sink )
-    
+
     def on_sink_input_remove(self, index):
         self.emit(SIGNAL("on_sink_input_remove(int)"), index )
 
@@ -148,17 +148,17 @@ class PulseAudio(QObject):
     def on_source_remove(self, index):
         #print "on_source_remove"
         self.emit(SIGNAL("on_source_remove(int)"), index )
-        
+
     def on_source_output_remove(self, index):
         #print "on_source_output_remove"
         self.emit(SIGNAL("on_source_output_remove(int)"), index )
 
     def on_volume_meter_sink_input(self, index, value):
         self.emit(SIGNAL("on_volume_meter_sink_input(int,float)"), index ,value)
-        
+
     def on_volume_meter_source(self, index, value):
         self.emit(SIGNAL("on_volume_meter_source(int,float)"), index ,value)
-        
+
 
     # calls
 
@@ -170,8 +170,8 @@ class PulseAudio(QObject):
 
     def set_sink_input_mute(self, index, mute):
         self.getMixer().sink_input_mute(index,mute)
-        
-    def sink_input_kill(self, index):        
+
+    def sink_input_kill(self, index):
         self.getMixer().sink_input_kill(index)
 
     def set_sink_volume(self, index, vol):
@@ -185,21 +185,21 @@ class PulseAudio(QObject):
 
     def set_source_volume(self, index, vol):
         self.getMixer().source_volume(index,vol)
-        
+
     def set_source_mute(self, index, mute):
         self.getMixer().source_mute(index,mute)
-    
+
     def set_default_source(self, index):
         self.getMixer().set_default_source(index)
 
     def trigger_volume_updates(self):
         self.getMixer().trigger_volume_updates()
-        
+
     def move_sink_input(self, sink, output):
         self.getMixer().move_sink_input(sink, output)
-        
+
     def move_source_output(self, sink, output):
-        self.getMixer().move_source_output(sink, output)        
+        self.getMixer().move_source_output(sink, output)
 
     def nextTrack(self):
         self.getNowPlaying().Next()

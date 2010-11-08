@@ -23,7 +23,7 @@ from PyKDE4 import plasmascript
 from PyKDE4.kdeui import *
 from PyKDE4.kdecore import *
 from PyKDE4.kdecore import *
-from PyKDE4.plasma import * 
+from PyKDE4.plasma import *
 import sys
 
 class SortedLayout(QGraphicsLinearLayout):
@@ -52,36 +52,34 @@ class SortedLayout(QGraphicsLinearLayout):
         if(key not in self.channels.keys()):
             self.channels[key]  = widget
             self.addItem(widget)
-        
+
     def removeChannel(self, key):
         if(key  in self.channels.keys()):
             self.removeItem(self.channels[key])
-            self.channels[key].deleteLater()            
-            del self.channels[key]    
+            self.channels[key].deleteLater()
+            del self.channels[key]
 
     def check_ItemOrdering(self):
         while(self.needs_ordering()):
-            self.order_items()  
+            self.order_items()
 
     def order_items(self):
-       sorting = self.sort(self.channels.values(), 'sortOrderIndex')
-       for i in range(0,len(sorting)):
-            if self.itemAt(i).graphicsItem ()  != sorting[i]:      
+        sorting = self.sort(self.channels.values(), 'sortOrderIndex')
+        for i in range(0,len(sorting)):
+            if self.itemAt(i).graphicsItem ()  != sorting[i]:
                 item = self.itemAt(i).graphicsItem()
                 index = sorting.index(item)
                 self.insertItem(index , item )
                 return
-                
+
     def needs_ordering(self):
         sorting = self.sort(self.channels.values(), 'sortOrderIndex')
         for i in range(0,len(sorting)):
-            if self.itemAt(i).graphicsItem ()  != sorting[i]:      
+            if self.itemAt(i).graphicsItem ()  != sorting[i]:
                 return True
-        return False       
-        
+        return False
+
     def sort(self, objects,sortAttrib):
         nlist = map(lambda object, sortAttrib=sortAttrib: (getattr(object, sortAttrib),object), objects)
         nlist.sort(reverse=self.reverse)
-        return map(lambda (key, object): object, nlist)        
-        
-        
+        return map(lambda (key, object): object, nlist)

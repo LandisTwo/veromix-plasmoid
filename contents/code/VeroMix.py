@@ -24,7 +24,7 @@ from PyKDE4 import plasmascript
 from PyKDE4.kdeui import *
 from PyKDE4.kdecore import *
 from PyKDE4.kdecore import *
-from PyKDE4.plasma import * 
+from PyKDE4.plasma import *
 
 import signal, os, datetime
 from SinkUI import *
@@ -37,27 +37,27 @@ from SourceOutputUI import *
 
 class VeroMix(QGraphicsWidget):
     sinkOutputChanged = pyqtSignal()
-    
+
     def __init__(self,parent):
         QGraphicsWidget.__init__(self)
-        self.applet = parent        
-        #self.sinks = {} 
-        self.sources = {} 
+        self.applet = parent
+        #self.sinks = {}
+        self.sources = {}
         self.mouse_is_over = False
         self.pa = None
 
-    def init(self):  
+    def init(self):
         self.setAcceptsHoverEvents (True)
         self.layout = QGraphicsLinearLayout(Qt.Vertical, self)
-        self.layout.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)) 
-        
+        self.layout.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum))
+
         self.scroller = Plasma.ScrollWidget(self)
         self.scroller.setMinimumSize(120,90)
         self.layout.addItem(self.scroller)
-        
+
         self.source_panel = QGraphicsWidget()
         self.sink_panel = QGraphicsWidget()
-        
+
         useTabs = False
         if useTabs:
             self.scrolled_panel = Plasma.TabBar()
@@ -67,29 +67,29 @@ class VeroMix(QGraphicsWidget):
             self.scrolled_panel = QGraphicsWidget()
             self.scrolled_panel_layout = QGraphicsLinearLayout(Qt.Vertical)
             self.scrolled_panel.setLayout(self.scrolled_panel_layout)
-            self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)) 
+            self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
             self.scrolled_panel_layout.addItem(self.source_panel)
-            self.scrolled_panel_layout.addItem(self.sink_panel)            
+            self.scrolled_panel_layout.addItem(self.sink_panel)
             self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
-        self.scroller.setWidget(self.scrolled_panel)        
-        
+        self.scroller.setWidget(self.scrolled_panel)
+
         self.source_panel_layout = SortedLayout(Qt.Vertical, True)
         self.source_panel.setLayout(self.source_panel_layout)
-        self.source_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)) 
-        
+        self.source_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+
         self.sink_panel_layout = SortedLayout(Qt.Vertical, False)
         self.sink_panel.setLayout(self.sink_panel_layout)
-        self.sink_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)) 
-        
-        self.layout.setContentsMargins(0,0,0,0)        
+        self.sink_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+
+        self.layout.setContentsMargins(0,0,0,0)
         self.source_panel_layout.setContentsMargins(0,0,0,12)
         self.sink_panel_layout.setContentsMargins(0,0,0,0)
-    
+
         #QTimer.singleShot(4000, self.start_pa)
         #self.restore = False
-        self.start_pa()              
-            
-    # connect to pulseaudio(dbus) callbacks        
+        self.start_pa()
+
+    # connect to pulseaudio(dbus) callbacks
     def start_pa(self):
         try:
             self.pa = PulseAudio(self)
@@ -98,22 +98,22 @@ class VeroMix(QGraphicsWidget):
                                                         <ul> \
                                                         <li>If you just upgraded try killing the process named: VeromixServiceMain.py and relaunch this plasmoid</li> \
                                                         <li>If you don't know how to do that consider rebooting</li></ul>")
-            return 
+            return
         self.connect(self.pa, SIGNAL("on_sink_input_info(PyQt_PyObject)"), self.on_sink_input_info)
         self.connect(self.pa, SIGNAL("on_sink_info(PyQt_PyObject)"), self.on_sink_info)
         self.connect(self.pa, SIGNAL("on_source_output_info(PyQt_PyObject)"), self.on_source_output_info)
         self.connect(self.pa, SIGNAL("on_source_info(PyQt_PyObject)"), self.on_source_info)
-        
+
         self.connect(self.pa, SIGNAL("on_sink_remove(int)"), self.on_remove_sink)
         self.connect(self.pa, SIGNAL("on_sink_input_remove(int)"), self.on_remove_sink_input)
         self.connect(self.pa, SIGNAL("on_source_remove(int)"), self.on_remove_source)
         self.connect(self.pa, SIGNAL("on_source_output_remove(int)"), self.on_remove_source_output)
-        
+
         self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
-        self.pa.requestInfo()    
-   
-## helpers UI 
+        self.pa.requestInfo()
+
+## helpers UI
 
     def check_geometries(self):
         self.check_ItemOrdering()
@@ -129,17 +129,17 @@ class VeroMix(QGraphicsWidget):
             pass
         else:
             #pass
-            #print "formfactor" = 
+            #print "formfactor" =
             #self.setSizePolicy(QSizePolicy.Preferred)
             self.setMinimumHeight(self.scrolled_panel.preferredSize().height())
             self.setMaximumHeight(self.scrolled_panel.preferredSize().height())
         #self.updateGeometry()
-       
+
     def check_ItemOrdering(self):
-        self.sink_panel_layout.check_ItemOrdering() 
-        self.sink_panel_layout.check_ItemOrdering()   
+        self.sink_panel_layout.check_ItemOrdering()
+        self.sink_panel_layout.check_ItemOrdering()
         pass
- 
+
     def setSourcesPanelVisible(self, aBoolean):
         #if self.applet.isPopupShowing():
         if aBoolean :
@@ -148,9 +148,9 @@ class VeroMix(QGraphicsWidget):
         else:
             self.source_panel.hide()
             self.scrolled_panel_layout.removeItem(self.source_panel)
- 
+
  ## callbacks source output
- 
+
     def on_source_output_info(self,  sink):
         key = "sourceoutput" + str(sink.index)
         if not self.update_channel(key ,sink, self.source_panel_layout ):
@@ -158,11 +158,11 @@ class VeroMix(QGraphicsWidget):
            # FIXME sliders want to be visible when added, else we get a crash
             self.setSourcesPanelVisible(True)
             self.add_channel(key, widget , sink, self.source_panel_layout )
-   
+
     def on_remove_source_output(self, index):
         # FIXME sliders want to be visible when added, else we get a crash
-        self.setSourcesPanelVisible(True) 
-        self.remove_channel("sourceoutput" + str(index), self.source_panel_layout )   
+        self.setSourcesPanelVisible(True)
+        self.remove_channel("sourceoutput" + str(index), self.source_panel_layout )
 
  ## callbacks source
 
@@ -173,11 +173,11 @@ class VeroMix(QGraphicsWidget):
            # FIXME sliders want to be visible when added, else we get a crash
             self.setSourcesPanelVisible(True)
             self.add_channel(key, widget , sink, self.source_panel_layout )
-            
-    def on_remove_source(self, index):     
+
+    def on_remove_source(self, index):
         # FIXME sliders want to be visible when added, else we get a crash
-        self.setSourcesPanelVisible(True) 
-        self.remove_channel("source" + str(index), self.source_panel_layout )   
+        self.setSourcesPanelVisible(True)
+        self.remove_channel("source" + str(index), self.source_panel_layout )
 
  ## callbacks sink
 
@@ -192,31 +192,31 @@ class VeroMix(QGraphicsWidget):
     def on_remove_sink(self, index):
         self.remove_channel("sink" + str(index), self.sink_panel_layout )
         self.sinkOutputChanged.emit()
-       
- ## callbacks sink input       
-       
+
+ ## callbacks sink input
+
     def on_sink_input_info(self,  sink):
         key = "sinkinput" + str(sink.index)
         if not self.update_channel(key ,sink, self.sink_panel_layout ):
             self.add_channel(key,  InputSinkUI(  self), sink , self.sink_panel_layout)
-        
+
     def on_remove_sink_input(self, index):
-        self.remove_channel("sinkinput" + str(index), self.sink_panel_layout)            
-       
+        self.remove_channel("sinkinput" + str(index), self.sink_panel_layout)
+
 ## Callbacks volume menters
 
     def on_volume_meter_sink_input(self, index, level):
         if not self.mouse_is_over:
-          return 
+            return
         for sink in self.sink_panel_layout.getChannels().values():
             sink.on_update_meter(index,int(level), len(self.sink_panel_layout.getChannels()))
-  
+
     def on_volume_meter_source(self, index, level):
         if not self.mouse_is_over:
-          return 
+            return
         for sink in self.sources:
             self.sources[sink].on_update_meter(index,int(level), len(self.sources))
-     
+
 ## Callbacks mouse -> start volume-meter callbacks (they will automatically stop after 5 seconds )
 
     def hoverMoveEvent(self,event):
@@ -225,12 +225,12 @@ class VeroMix(QGraphicsWidget):
 
     def hoverLeaveEvent(self,event):
         self.mouse_is_over = False
-    
+
     def trigger_volume_updates(self):
         if self.mouse_is_over :
             self.pa.trigger_volume_updates()
-            QTimer.singleShot(2000, self.trigger_volume_updates)            
-        
+            QTimer.singleShot(2000, self.trigger_volume_updates)
+
     def resizeEvent(self, e):
         self.emit(SIGNAL("resized()"))
 
@@ -245,7 +245,7 @@ class VeroMix(QGraphicsWidget):
         sink = self.getDefaultSink()
         if sink != None:
             sink.on_step_volume(up)
-            
+
 ### panel icons
 
     def updateIcon(self, muted):
@@ -267,7 +267,7 @@ class VeroMix(QGraphicsWidget):
         if target_layout.getChannel(key) :
             print key
             target_layout.getChannel(key).update_with_info(sink)
-            self.check_ItemOrdering()        
+            self.check_ItemOrdering()
             return True
         else:
             return False
@@ -277,7 +277,7 @@ class VeroMix(QGraphicsWidget):
         self.check_geometries()
 
     def getSinkOutputs(self):
-       return self.sink_panel_layout.getSinkOutputs()         
+        return self.sink_panel_layout.getSinkOutputs()
 
     def getDefaultSink(self):
         for sink in self.sink_panel_layout.getChannels().values():
@@ -291,11 +291,11 @@ class VeroMix(QGraphicsWidget):
 ## helpers
 
     def getPulseAudio(self):
-        return self.pa   
+        return self.pa
 
     def query_application(self, needle):
         return self.applet.query_application(needle)
-        
+
     def showMessage(self, icon, message):
         self.applet.showMessage(icon, message, Plasma.ButtonOk)
 
@@ -306,4 +306,3 @@ class VeroMix(QGraphicsWidget):
         for i in self.sources.values():
             # if a slider is not visible, plasmoidviewer crashes if the slider is not removed before exit... (dont ask me)
             i.removeSlider()
-        

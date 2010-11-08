@@ -31,15 +31,15 @@ from ClickableMeter import *
 class SourceOutputUI( Channel ):
     def __init__(self , parent):
         self.mouse_pressed = False
-        Channel.__init__(self, parent)         
-        
+        Channel.__init__(self, parent)
+
     def createMute(self):
         self.mute = InputMuteButton(self)
         self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum,True) )
-        self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )      
+        self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
         self.mute.setBigIconName("audio-input-microphone.png")
-    
-    def createSlider(self): 
+
+    def createSlider(self):
         Channel.createSlider(self)
         self.slider.hideSlider()
 
@@ -50,18 +50,18 @@ class SourceOutputUI( Channel ):
         #if (now - self.plasma_timestamp).seconds > 1 :
             #self.update_pulse_timestamp()
             #self.slider.setValue(info.getVolume())
-        self._set_values(info)   
+        self._set_values(info)
         if self.extended_panel:
             self.extended_panel.update_with_info(info)
-            
+
     def update_label(self):
         text =  ""
-        bold = self.pa_sink.name 
+        bold = self.pa_sink.name
         if "description" in self.pa_sink.props.keys():
             bold = self.pa_sink.props["description"]
             text = self.pa_sink.name
 
-        if self.name.find("ALSA") == 0 and "application.process.binary" in self.pa_sink.props.keys(): 
+        if self.name.find("ALSA") == 0 and "application.process.binary" in self.pa_sink.props.keys():
             bold = self.pa_sink.props[ "application.process.binary"]
             text =  self.pa_sink.props[ "application.name"]
 
@@ -73,20 +73,20 @@ class SourceOutputUI( Channel ):
             iconname = self.pa_sink.props["application.icon_name"]
         if iconname == None and  "app" in self.pa_sink.props.keys():
             iconname = self.veromix.query_application(self.pa_sink.props["app"])
-            
+
         if iconname is None and bold == "plugin-container":
             iconname = 'flash'
-        
+
         if iconname :
             self.mute.setBigIconName(iconname)
-            self.updateIcon()            
-                
+            self.updateIcon()
+
     def getOutputIndex(self):
         try:
-            return int(str(self.pa_sink.props["source"]))           
+            return int(str(self.pa_sink.props["source"]))
         except:
-            return 0 
-  
+            return 0
+
     def updateSortOrderIndex(self):
         if self.pa_sink:
             self.sortOrderIndex =  self.sinkIndexFor(int(self.getOutputIndex())) +  self.index
@@ -121,7 +121,7 @@ class SourceOutputUI( Channel ):
         dropAction = drag.start(Qt.MoveAction)
 
     def isSinkOutput(self):
-        return False    
-        
+        return False
+
     def isSourceOutput(self):
         return True

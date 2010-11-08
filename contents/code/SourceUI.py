@@ -30,60 +30,60 @@ from ClickableMeter import *
 
 class SourceUI( Channel ):
     def __init__(self , parent):
-        Channel.__init__(self, parent)         
+        Channel.__init__(self, parent)
 
     def composeArrangement(self):
         self.layout.addItem(self.panel)
-        self.panel_layout.addItem(self.mute) 
-        self.panel_layout.addItem(self.middle)  
-        self.panel_layout.addItem(self.meter)     
-        
+        self.panel_layout.addItem(self.mute)
+        self.panel_layout.addItem(self.middle)
+        self.panel_layout.addItem(self.meter)
+
     def createMute(self):
         self.mute = InputMuteButton(self)
         self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum,True) )
-        self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )      
-        self.mute.setBigIconName("audio-input-microphone.png")   
-        
+        self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
+        self.mute.setBigIconName("audio-input-microphone.png")
+
     def update_label(self):
         #text = "<b>" + self.pa_sink.app + "</b><span>" + self.pa_sink.name + "</span>"
         text =  ""
-        bold = self.pa_sink.name 
+        bold = self.pa_sink.name
         if "description" in self.pa_sink.props.keys():
             bold = self.pa_sink.props["description"]
-            text = self.pa_sink.name 
+            text = self.pa_sink.name
         if self.slider:
             self.slider.setText(text )
-            #self.slider.setBoldText(bold+" "+str(self.index) + "  "+ str(self.sortOrderIndex) )                
-            self.slider.setBoldText(bold )                
-            
+            #self.slider.setBoldText(bold+" "+str(self.index) + "  "+ str(self.sortOrderIndex) )
+            self.slider.setBoldText(bold )
+
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:
             self.meter.setValue(value)
 
     def updateSortOrderIndex(self):
-        self.sortOrderIndex =  self.sinkIndexFor(self.index)  
-        
-    def setVolume(self, value):        
+        self.sortOrderIndex =  self.sinkIndexFor(self.index)
+
+    def setVolume(self, value):
         self.pa.set_source_volume(self.index, value)
-        
+
     def on_mute_cb(self ):
         if self.isMuted():
             self.pa.set_source_mute(self.index, False)
         else:
             self.pa.set_source_mute(self.index, True)
-            
+
     def isMuted(self):
-        return self.pa_sink.mute == 1           
-        
-    def updateIcon(self):           
+        return self.pa_sink.mute == 1
+
+    def updateIcon(self):
         if self.isMuted():
             self.mute.setMuted(True)
         else:
-            self.mute.setMuted(False)        
+            self.mute.setMuted(False)
 ## Drag and Drop Support
 
     def dropEvent(self, dropEvent):
         uris = dropEvent.mimeData().urls()
         for uri in uris:
             if uri.scheme() == "veromix":
-                self.pa.move_source_output(uri.port(), self.index)        
+                self.pa.move_source_output(uri.port(), self.index)

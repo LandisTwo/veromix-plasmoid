@@ -22,25 +22,25 @@ from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 
 class ClickableMeter(Plasma.Meter):
-    
+
     def __init__(self):
         Plasma.Meter.__init__(self)
         #self.acceptedMouseButtons()
         #self.acceptHoverEvents()
         #self.setAcceptedMouseButtons(Qt.LeftButton)
-        
+
     def mousePressEvent (self, event):
         self.emit(SIGNAL("clicked()"))
- 
+
     #def hoverEnterEvent (self, e):
         #print "move.."
-    
+
     #def shape(self):
         #rect = self.boundingRect()
         #path = QPainterPath()
         ##pridnt rect
         #path.addRect(rect)
         #return path
-        
+
     #def boundingRect(self):
         #return QRectF(0,0, 32,32)

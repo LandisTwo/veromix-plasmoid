@@ -23,7 +23,7 @@ from PyKDE4 import plasmascript
 from PyKDE4.kdeui import *
 from PyKDE4.kdecore import *
 from PyKDE4.kdecore import *
-from PyKDE4.plasma import * 
+from PyKDE4.plasma import *
 import sys
 
 class Label(Plasma.Label):
@@ -31,30 +31,30 @@ class Label(Plasma.Label):
         self.text = ""
         self.bold_text = ""
         Plasma.Label.__init__(self)
-        
+
     def setText(self, text):
         if text:
             self.text = text
         Plasma.Label.setText(self, "<b>"+self.bold_text + "</b> " + self.text)
-    
+
     def setBoldText(self,text):
-        if text:    
+        if text:
             self.bold_text = text
         self.setText(self.text)
-    
+
 
 class LabelSlider(Plasma.Slider):
 
-    def __init__(self):        
+    def __init__(self):
         self.text = ""
         self.bold_text = ""
         self.draw_slider = True
         Plasma.Slider.__init__(self)
-        
+
     def setText(self, text):
         if text:
             self.text = text
-    
+
     def setBoldText(self,text):
         if text:
             self.bold_text = text
@@ -70,7 +70,7 @@ class LabelSlider(Plasma.Slider):
             font.setPixelSize(size)
             font.setBold(True)
             painter.setPen(Plasma.Theme.defaultTheme().color(Plasma.Theme.TextColor))
-            
+
             # Check if the font is too big
             fm = QFontMetrics(font)
             font.setPointSize(size)
@@ -95,11 +95,9 @@ class LabelSlider(Plasma.Slider):
                     font.setBold(False)
                     painter.setFont(font)
                     painter.setPen(Plasma.Theme.defaultTheme().color(Plasma.Theme.TextColor))
-                    text_target.moveTo( bold_text_width ,-5)            
+                    text_target.moveTo( bold_text_width ,-5)
                     painter.drawText(text_target, Qt.AlignTop | Qt.AlignLeft, msg)
             else:
                 painter.drawText(text_target, Qt.AlignTop | Qt.AlignLeft, message)
             if self.draw_slider:
                 Plasma.Slider.paint(self, painter, option, widget)
-            
-            
