@@ -43,7 +43,6 @@ class VeroMix(QGraphicsWidget):
         self.applet = parent        
         #self.sinks = {} 
         self.sources = {} 
-        self.outputs = {}
         self.mouse_is_over = False
         self.pa = None
 
@@ -74,12 +73,7 @@ class VeroMix(QGraphicsWidget):
             self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
         self.scroller.setWidget(self.scrolled_panel)        
         
-        #button = Plasma.PushButton()
-        #button.setIcon(KIcon("veromix-plasmoid-128"))
-        #self.scrolled_panel_layout.addItem(button)
-        
-        
-        self.source_panel_layout = SortedLayout(Qt.Vertical, False)
+        self.source_panel_layout = SortedLayout(Qt.Vertical, True)
         self.source_panel.setLayout(self.source_panel_layout)
         self.source_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)) 
         
@@ -87,24 +81,15 @@ class VeroMix(QGraphicsWidget):
         self.sink_panel.setLayout(self.sink_panel_layout)
         self.sink_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)) 
         
-        self.layout.setContentsMargins(0,0,0,0)
-        
+        self.layout.setContentsMargins(0,0,0,0)        
         self.source_panel_layout.setContentsMargins(0,0,0,12)
         self.sink_panel_layout.setContentsMargins(0,0,0,0)
     
         #QTimer.singleShot(4000, self.start_pa)
         #self.restore = False
-        self.start_pa()   
-
-    def setSourcesPanelVisible(self, aBoolean):
-        #if self.applet.isPopupShowing():
-        if aBoolean :
-            self.source_panel.show()
-            self.scrolled_panel_layout.insertItem(0, self.source_panel)
-        else:
-            self.source_panel.hide()
-            self.scrolled_panel_layout.removeItem(self.source_panel)
+        self.start_pa()              
             
+    # connect to pulseaudio(dbus) callbacks        
     def start_pa(self):
         try:
             self.pa = PulseAudio(self)
@@ -126,15 +111,14 @@ class VeroMix(QGraphicsWidget):
         
         self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
-        self.pa.requestInfo()
-
-    def getPulseAudio(self):
-        return self.pa       
+        self.pa.requestInfo()    
    
+## helpers UI 
+
     def check_geometries(self):
         self.check_ItemOrdering()
         count = 0
-        for source in self.sources.values():
+        for source in self.source_panel_layout.getChannels().values():
             if source.isSourceOutput():
                 count += 1
         self.setSourcesPanelVisible( count > 0 )
@@ -153,104 +137,74 @@ class VeroMix(QGraphicsWidget):
        
     def check_ItemOrdering(self):
         self.sink_panel_layout.check_ItemOrdering() 
-        #self.sink_panel_layout.check_ItemOrdering(self.sources)   
+        self.sink_panel_layout.check_ItemOrdering()   
         pass
-    
-    def on_sink_input_info(self,  sink):
-        key = "sinkinput" + str(sink.index)
-        if not self.update_channel(key ,sink ):
-            self.add_channel(key,  InputSinkUI(  self), sink )
-        
-    def on_remove_sink_input(self, index):
-        self.remove_channel("sinkinput" + str(index))     
  
-    def update_channel(self, key, sink):
-        if self.sink_panel_layout.getChannel(key) :
-            self.sink_panel_layout.getChannel(key).update_with_info(sink)
-            self.check_ItemOrdering()        
-            return True
+    def setSourcesPanelVisible(self, aBoolean):
+        #if self.applet.isPopupShowing():
+        if aBoolean :
+            self.source_panel.show()
+            self.scrolled_panel_layout.insertItem(0, self.source_panel)
         else:
-            return False
-            
-    def add_channel(self, key, widget, sink):
-        if sink:
-            widget.update_with_info(sink)
-        self.sink_panel_layout.addChannel(key, widget)
-        self.check_geometries()
-        return widget
+            self.source_panel.hide()
+            self.scrolled_panel_layout.removeItem(self.source_panel)
  
-    def remove_channel(self, key):
-        self.sink_panel_layout.removeChannel(key)
-        self.check_geometries()
-        
+ ## callbacks source output
+ 
     def on_source_output_info(self,  sink):
-        if  (sink.index-1000) in self.sources :
-            self.sources[sink.index-1000].update_with_info(sink)
-            self.check_ItemOrdering()        
-            return 
-        # FIXME sliders want to be visible when added, else we get a crash
-        self.setSourcesPanelVisible(True)
-        widget = SourceOutputUI( self)
-        widget.update_with_info(sink)
-        self.add_source_to_layout(widget)
-        self.sources[sink.index - 1000 ] = widget
-        self.check_geometries()
+        key = "sourceoutput" + str(sink.index)
+        if not self.update_channel(key ,sink, self.source_panel_layout ):
+            widget =  SourceOutputUI(  self)
+           # FIXME sliders want to be visible when added, else we get a crash
+            self.setSourcesPanelVisible(True)
+            self.add_channel(key, widget , sink, self.source_panel_layout )
    
     def on_remove_source_output(self, index):
-        if (index -1000 ) in self.sources :
-            # FIXME sliders want to be visible when added, else we get a crash
-            self.setSourcesPanelVisible(True)
-            self.remove_source_from_layout(self.sources[index-1000])
-            self.sources[index-1000].deleteLater()
-            del self.sources[index-1000]
-            self.check_geometries()
+        # FIXME sliders want to be visible when added, else we get a crash
+        self.setSourcesPanelVisible(True) 
+        self.remove_channel("sourceoutput" + str(index), self.source_panel_layout )   
+
+ ## callbacks source
 
     def on_source_info(self,  sink):
-        if  sink.index in self.sources :
-            self.sources[sink.index].update_with_info(sink)
-            self.check_ItemOrdering()        
-            return 
+        key = "source" + str(sink.index)
+        if not self.update_channel(key ,sink, self.source_panel_layout ):
+            widget =  SourceUI(  self)
+           # FIXME sliders want to be visible when added, else we get a crash
+            self.setSourcesPanelVisible(True)
+            self.add_channel(key, widget , sink, self.source_panel_layout )
+            
+    def on_remove_source(self, index):     
         # FIXME sliders want to be visible when added, else we get a crash
-        self.setSourcesPanelVisible(True)
-        widget = SourceUI( self)
-        widget.update_with_info(sink)
-        self.add_source_to_layout(widget)
-        self.sources[sink.index  ] = widget
-        self.check_geometries()
+        self.setSourcesPanelVisible(True) 
+        self.remove_channel("source" + str(index), self.source_panel_layout )   
 
-    def on_remove_source(self, index):        
-        if index  in self.sources :
-            # FIXME sliders want to be visible when added, else we get a crash
-            self.setSourcesPanelVisible(True)   
-            self.remove_source_from_layout(self.sources[index])
-            self.sources[index].deleteLater()
-            del self.sources[index]
-            self.check_geometries()      
+ ## callbacks sink
 
     def on_sink_info(self,sink):
         key = "sinkinput" + str(sink.index)
-        if not self.update_channel(key ,sink ):
+        if not self.update_channel(key ,sink, self.sink_panel_layout ):
             widget =  SinkUI(  self)
-            self.add_channel(key, widget , sink )
+            self.add_channel(key, widget , sink, self.sink_panel_layout )
             widget.muteInfo.connect(self.updateIcon)
             self.sinkOutputChanged.emit()
 
     def on_remove_sink(self, index):
-        self.remove_channel("sink" + str(index) )
+        self.remove_channel("sink" + str(index), self.sink_panel_layout )
         self.sinkOutputChanged.emit()
+       
+ ## callbacks sink input       
+       
+    def on_sink_input_info(self,  sink):
+        key = "sinkinput" + str(sink.index)
+        if not self.update_channel(key ,sink, self.sink_panel_layout ):
+            self.add_channel(key,  InputSinkUI(  self), sink , self.sink_panel_layout)
+        
+    def on_remove_sink_input(self, index):
+        self.remove_channel("sinkinput" + str(index), self.sink_panel_layout)            
+       
+## Callbacks volume menters
 
-    def add_sink_to_layout(self, widget):    
-        self.sink_panel_layout.addItem(widget)
-    
-    def add_source_to_layout(self, widget):    
-        self.source_panel_layout.addItem(widget)
-         
-    def remove_sink_from_layout(self, widget):
-        self.sink_panel_layout.removeItem(widget)
-    
-    def remove_source_from_layout(self, widget):
-        self.source_panel_layout.removeItem(widget)
-    
     def on_volume_meter_sink_input(self, index, level):
         if not self.mouse_is_over:
           return 
@@ -263,9 +217,8 @@ class VeroMix(QGraphicsWidget):
         for sink in self.sources:
             self.sources[sink].on_update_meter(index,int(level), len(self.sources))
      
-    def getSinkOutputs(self):
-       return self.sink_panel_layout.getSinkOutputs()                
-     
+## Callbacks mouse -> start volume-meter callbacks (they will automatically stop after 5 seconds )
+
     def hoverMoveEvent(self,event):
         self.mouse_is_over = True
         self.trigger_volume_updates()
@@ -277,30 +230,11 @@ class VeroMix(QGraphicsWidget):
         if self.mouse_is_over :
             self.pa.trigger_volume_updates()
             QTimer.singleShot(2000, self.trigger_volume_updates)            
-            
-    def updateIcon(self, muted):
-        if muted:
-            self.applet.setPopupIcon(self.applet.volume_muted)
-        else:
-            self.applet.setPopupIcon(self.applet.volume_high)
         
     def resizeEvent(self, e):
         self.emit(SIGNAL("resized()"))
-        
-    def query_application(self, needle):
-        return self.applet.query_application(needle)
-        
-    def showMessage(self, icon, message):
-        self.applet.showMessage(icon, message, Plasma.ButtonOk)
 
-    def getDefaultSink(self):
-        for sink in self.sink_panel_layout.getChannels().values():
-            if sink.isDefaultSink():
-                return sink
-        for sink in self.sink_panel_layout.getChannels().values():
-            if sink.isSinkOutput():
-                return sink
-        return None
+### panel-icon callbacks
 
     def on_toggle_mute(self):
         sink = self.getDefaultSink()
@@ -311,6 +245,59 @@ class VeroMix(QGraphicsWidget):
         sink = self.getDefaultSink()
         if sink != None:
             sink.on_step_volume(up)
+            
+### panel icons
+
+    def updateIcon(self, muted):
+        if muted:
+            self.applet.setPopupIcon(self.applet.volume_muted)
+        else:
+            self.applet.setPopupIcon(self.applet.volume_high)
+
+### helpers accessing channels
+
+    def add_channel(self, key, widget, sink, target_layout):
+        if sink:
+            widget.update_with_info(sink)
+        target_layout.addChannel(key, widget)
+        self.check_geometries()
+        return widget
+
+    def update_channel(self, key, sink, target_layout):
+        if target_layout.getChannel(key) :
+            print key
+            target_layout.getChannel(key).update_with_info(sink)
+            self.check_ItemOrdering()        
+            return True
+        else:
+            return False
+
+    def remove_channel(self, key, target_layout):
+        target_layout.removeChannel(key)
+        self.check_geometries()
+
+    def getSinkOutputs(self):
+       return self.sink_panel_layout.getSinkOutputs()         
+
+    def getDefaultSink(self):
+        for sink in self.sink_panel_layout.getChannels().values():
+            if sink.isDefaultSink():
+                return sink
+        for sink in self.sink_panel_layout.getChannels().values():
+            if sink.isSinkOutput():
+                return sink
+        return None
+
+## helpers
+
+    def getPulseAudio(self):
+        return self.pa   
+
+    def query_application(self, needle):
+        return self.applet.query_application(needle)
+        
+    def showMessage(self, icon, message):
+        self.applet.showMessage(icon, message, Plasma.ButtonOk)
 
     def doExit(self):
         for i in self.sink_panel_layout.getChannels().values():

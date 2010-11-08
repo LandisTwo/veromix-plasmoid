@@ -28,9 +28,9 @@ import sys
 
 class Label(Plasma.Label):
     def __init__(self):
-        Plasma.Label.__init__(self)
         self.text = ""
         self.bold_text = ""
+        Plasma.Label.__init__(self)
         
     def setText(self, text):
         if text:
@@ -45,11 +45,11 @@ class Label(Plasma.Label):
 
 class LabelSlider(Plasma.Slider):
 
-    def __init__(self):
-        Plasma.Slider.__init__(self)
-        self.text=""
+    def __init__(self):        
+        self.text = ""
         self.bold_text = ""
         self.draw_slider = True
+        Plasma.Slider.__init__(self)
         
     def setText(self, text):
         if text:
