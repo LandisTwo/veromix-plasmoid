@@ -35,13 +35,13 @@ class Pa2dBus(QObject):
         self.pulse = pulseaudio
         self.connect(self.pulse, SIGNAL("sink_info(PyQt_PyObject)"), self.on_sink_info)
         self.connect(self.pulse, SIGNAL("sink_remove(int)"), self.on_remove_sink)
-        
+
         self.connect(self.pulse, SIGNAL("sink_input_info(PyQt_PyObject)"), self.on_sink_input_info)
         self.connect(self.pulse, SIGNAL("sink_input_remove(int)"), self.on_remove_sink_input)
 
         self.connect(self.pulse, SIGNAL("source_info(PyQt_PyObject)"), self.on_source_info)
         self.connect(self.pulse, SIGNAL("source_remove(int)"), self.on_remove_source)
-        
+
         self.connect(self.pulse, SIGNAL("source_output_info(PyQt_PyObject)"), self.on_source_output_info)
         self.connect(self.pulse, SIGNAL("source_output_remove(int)"), self.on_remove_source_output)
 
@@ -56,11 +56,11 @@ class Pa2dBus(QObject):
         volume = {"left": sink.volume.getVolume() , "right": sink.volume.getVolume() }
         self.dbus.source_info(  index,   name,  muted  , volume ,  sink.propDict() )
 
-    
+
     def on_source_output_info(self, sink):
         #sink.printDebug()
         index =  int(sink.index)
-        name = in_unicode(sink.name) 
+        name = in_unicode(sink.name)
         if sink.resample_method != "peaks":
             #and sink.resample_method :
             #and  sink.resample_method != "copy":
@@ -69,7 +69,7 @@ class Pa2dBus(QObject):
         #else:
             #print "ignore 2 " , sink.name, sink.resample_method
 
-    
+
     def on_sink_input_info(self, sink):
         index =   int(sink.index)
         name = in_unicode(sink.name)

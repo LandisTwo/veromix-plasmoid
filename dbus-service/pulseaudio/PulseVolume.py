@@ -27,98 +27,97 @@ import math
 
 # This contains all basic volume features
 class PulseVolume:
-  def __init__(self, vol = 0, channels = 2):
-    self.channels = channels
+    def __init__(self, vol = 0, channels = 2):
+        self.channels = channels
 
-    if vol > 100 or vol < 0:
-      print "WARNING: Volume is invalid!"
-      vol = 0
+        if vol > 100 or vol < 0:
+            print "WARNING: Volume is invalid!"
+            vol = 0
 
-    self.values   = [vol] * self.channels
+        self.values   = [vol] * self.channels
 
-    return
+        return
 
-  ##############################
-  #
-  # Type conversions
-  #
-  #def fromCtypes(self, pa_cvolume):
-  #  self.channels = pa_cvolume.channels
-  #  self.values   = map(lambda x: (math.ceil(float(x) * 100 / PA_VOLUME_NORM)),
-  #                      pa_cvolume.values[0:self.channels])
-  #  return self
+    ##############################
+    #
+    # Type conversions
+    #
+    #def fromCtypes(self, pa_cvolume):
+    #  self.channels = pa_cvolume.channels
+    #  self.values   = map(lambda x: (math.ceil(float(x) * 100 / PA_VOLUME_NORM)),
+    #                      pa_cvolume.values[0:self.channels])
+    #  return self
 
-  def toCtypes(self):
-    ct = struct_pa_cvolume()
-    ct.channels = self.channels
+    def toCtypes(self):
+        ct = struct_pa_cvolume()
+        ct.channels = self.channels
 
-    for x in range(0, self.channels):
-      ct.values[x] = (self.values[x] * PA_VOLUME_NORM) / 100
-    
-    return ct
+        for x in range(0, self.channels):
+            ct.values[x] = (self.values[x] * PA_VOLUME_NORM) / 100
 
-  def toCtypes2(self, num):
-    ct = struct_pa_cvolume()
-    ct.channels = num
+        return ct
 
-    for x in range(0, num):
-      ct.values[x] = (self.values[x] * PA_VOLUME_NORM) / 100
-    
-    return ct
+    def toCtypes2(self, num):
+        ct = struct_pa_cvolume()
+        ct.channels = num
 
-  ###
+        for x in range(0, num):
+            ct.values[x] = (self.values[x] * PA_VOLUME_NORM) / 100
 
-  def printDebug(self):
-    print "PulseVolume"
-    print "self.channels:", self.channels
-    print "self.values:", self.values
-    #print "self.proplist:", self.proplist
+        return ct
 
-  ###
+    ###
 
-  def incVolume(self, vol):
-    "Increment volume level (mono only)"
-    vol += sum(self.values) / len(self.values)
+    def printDebug(self):
+        print "PulseVolume"
+        print "self.channels:", self.channels
+        print "self.values:", self.values
+        #print "self.proplist:", self.proplist
 
-    vol = int(vol)
+    ###
 
-    if vol > 100:
-      vol = 100
-    elif vol < 0:
-      vol = 0
+    def incVolume(self, vol):
+        "Increment volume level (mono only)"
+        vol += sum(self.values) / len(self.values)
 
-    self.setVolume(vol)
+        vol = int(vol)
 
-    return
+        if vol > 100:
+            vol = 100
+        elif vol < 0:
+            vol = 0
 
-  ###
+        self.setVolume(vol)
 
-  def setVolume(self, vol, balance = None):
-    if not balance:
-      self.values = [vol] * self.channels
-    else:
-      self.values[balance] = vol
+        return
 
-    return
+    ###
 
-  ###
+    def setVolume(self, vol, balance = None):
+        if not balance:
+            self.values = [vol] * self.channels
+        else:
+            self.values[balance] = vol
 
-  def getVolume(self):
-    "Return mono volume"
-    return int(sum(self.values) / len(self.values))
+        return
 
-  ###
+    ###
 
-  def __str__(self):
-    return "Channels: " + str(self.channels) + \
-           ", values: \"" + str(map(lambda x: str(x) + "%", self.values)) + "\""
+    def getVolume(self):
+        "Return mono volume"
+        return int(sum(self.values) / len(self.values))
+
+    ###
+
+    def __str__(self):
+        return "Channels: " + str(self.channels) + \
+               ", values: \"" + str(map(lambda x: str(x) + "%", self.values)) + "\""
 
 ################################################################################
 
 class PulseVolumeCtypes(PulseVolume):
-  def __init__(self, pa_cvolume):
-    self.channels = pa_cvolume.channels
-    self.values   = map(lambda x: (math.ceil(float(x) * 100 / PA_VOLUME_NORM)),
-                        pa_cvolume.values[0:self.channels])
-    return
-
+    def __init__(self, pa_cvolume):
+        self.channels = pa_cvolume.channels
+        self.values   = map(lambda x: (math.ceil(float(x) * 100 / PA_VOLUME_NORM)),
+                            pa_cvolume.values[0:self.channels])
+        return

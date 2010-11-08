@@ -1,25 +1,25 @@
 # -*- coding: utf-8 -*-
 # Ear Candy - Pulseaduio sound managment tool
 # Copyright (C) 2008 Jason Taylor
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import ctypes
 from ctypes import *
 
 import lib
-   
+
 _lib = lib.LibraryLoader().load_library('pulse')
 
 _int_types = (c_int16, c_int32)
@@ -54,14 +54,14 @@ struct_pa_mainloop_api._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_mainloop_api = struct_pa_mainloop_api 	# /usr/include/pulse/mainloop-api.h:51
+pa_mainloop_api = struct_pa_mainloop_api        # /usr/include/pulse/mainloop-api.h:51
 enum_pa_io_event_flags = c_int
 PA_IO_EVENT_NULL = 0
 PA_IO_EVENT_INPUT = 1
 PA_IO_EVENT_OUTPUT = 2
 PA_IO_EVENT_HANGUP = 4
 PA_IO_EVENT_ERROR = 8
-pa_io_event_flags_t = enum_pa_io_event_flags 	# /usr/include/pulse/mainloop-api.h:60
+pa_io_event_flags_t = enum_pa_io_event_flags    # /usr/include/pulse/mainloop-api.h:60
 class struct_pa_io_event(Structure):
     __slots__ = [
     ]
@@ -76,9 +76,9 @@ struct_pa_io_event._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_io_event = struct_pa_io_event 	# /usr/include/pulse/mainloop-api.h:63
-pa_io_event_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_io_event), c_int, pa_io_event_flags_t, POINTER(None)) 	# /usr/include/pulse/mainloop-api.h:65
-pa_io_event_destroy_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_io_event), POINTER(None)) 	# /usr/include/pulse/mainloop-api.h:67
+pa_io_event = struct_pa_io_event        # /usr/include/pulse/mainloop-api.h:63
+pa_io_event_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_io_event), c_int, pa_io_event_flags_t, POINTER(None))   # /usr/include/pulse/mainloop-api.h:65
+pa_io_event_destroy_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_io_event), POINTER(None))       # /usr/include/pulse/mainloop-api.h:67
 class struct_pa_time_event(Structure):
     __slots__ = [
     ]
@@ -93,7 +93,7 @@ struct_pa_time_event._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_time_event = struct_pa_time_event 	# /usr/include/pulse/mainloop-api.h:70
+pa_time_event = struct_pa_time_event    # /usr/include/pulse/mainloop-api.h:70
 class struct_timeval(Structure):
     __slots__ = [
     ]
@@ -108,8 +108,8 @@ struct_timeval._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_time_event_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_time_event), POINTER(struct_timeval), POINTER(None)) 	# /usr/include/pulse/mainloop-api.h:72
-pa_time_event_destroy_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_time_event), POINTER(None)) 	# /usr/include/pulse/mainloop-api.h:74
+pa_time_event_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_time_event), POINTER(struct_timeval), POINTER(None))  # /usr/include/pulse/mainloop-api.h:72
+pa_time_event_destroy_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_time_event), POINTER(None))   # /usr/include/pulse/mainloop-api.h:74
 class struct_pa_defer_event(Structure):
     __slots__ = [
     ]
@@ -124,16 +124,16 @@ struct_pa_defer_event._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_defer_event = struct_pa_defer_event 	# /usr/include/pulse/mainloop-api.h:77
-pa_defer_event_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_defer_event), POINTER(None)) 	# /usr/include/pulse/mainloop-api.h:79
-pa_defer_event_destroy_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_defer_event), POINTER(None)) 	# /usr/include/pulse/mainloop-api.h:81
+pa_defer_event = struct_pa_defer_event  # /usr/include/pulse/mainloop-api.h:77
+pa_defer_event_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_defer_event), POINTER(None))         # /usr/include/pulse/mainloop-api.h:79
+pa_defer_event_destroy_cb_t = CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(pa_defer_event), POINTER(None))         # /usr/include/pulse/mainloop-api.h:81
 # /usr/include/pulse/mainloop-api.h:120
 pa_mainloop_api_once = _lib.pa_mainloop_api_once
 pa_mainloop_api_once.restype = None
 pa_mainloop_api_once.argtypes = [POINTER(pa_mainloop_api), CFUNCTYPE(None, POINTER(pa_mainloop_api), POINTER(None)), POINTER(None)]
 
-PA_CHANNELS_MAX = 32 	# /usr/include/pulse/sample.h:117
-PA_RATE_MAX = 192000 	# /usr/include/pulse/sample.h:120
+PA_CHANNELS_MAX = 32    # /usr/include/pulse/sample.h:117
+PA_RATE_MAX = 192000    # /usr/include/pulse/sample.h:120
 enum_pa_sample_format = c_int
 PA_SAMPLE_U8 = 0
 PA_SAMPLE_ALAW = 1
@@ -146,7 +146,7 @@ PA_SAMPLE_S32LE = 7
 PA_SAMPLE_S32BE = 8
 PA_SAMPLE_MAX = 9
 PA_SAMPLE_INVALID = -1
-pa_sample_format_t = enum_pa_sample_format 	# /usr/include/pulse/sample.h:135
+pa_sample_format_t = enum_pa_sample_format      # /usr/include/pulse/sample.h:135
 class struct_pa_sample_spec(Structure):
     __slots__ = [
         'format',
@@ -159,8 +159,8 @@ struct_pa_sample_spec._fields_ = [
     ('channels', c_uint8),
 ]
 
-pa_sample_spec = struct_pa_sample_spec 	# /usr/include/pulse/sample.h:173
-pa_usec_t = c_uint64 	# /usr/include/pulse/sample.h:176
+pa_sample_spec = struct_pa_sample_spec  # /usr/include/pulse/sample.h:173
+pa_usec_t = c_uint64    # /usr/include/pulse/sample.h:176
 # /usr/include/pulse/sample.h:179
 pa_bytes_per_second = _lib.pa_bytes_per_second
 pa_bytes_per_second.restype = c_size_t
@@ -206,7 +206,7 @@ pa_parse_sample_format = _lib.pa_parse_sample_format
 pa_parse_sample_format.restype = pa_sample_format_t
 pa_parse_sample_format.argtypes = [c_char_p]
 
-PA_SAMPLE_SPEC_SNPRINT_MAX = 32 	# /usr/include/pulse/sample.h:206
+PA_SAMPLE_SPEC_SNPRINT_MAX = 32         # /usr/include/pulse/sample.h:206
 # /usr/include/pulse/sample.h:209
 pa_sample_spec_snprint = _lib.pa_sample_spec_snprint
 pa_sample_spec_snprint.restype = c_char_p
@@ -225,28 +225,28 @@ PA_CONTEXT_SETTING_NAME = 3
 PA_CONTEXT_READY = 4
 PA_CONTEXT_FAILED = 5
 PA_CONTEXT_TERMINATED = 6
-pa_context_state_t = enum_pa_context_state 	# /usr/include/pulse/def.h:49
+pa_context_state_t = enum_pa_context_state      # /usr/include/pulse/def.h:49
 enum_pa_stream_state = c_int
 PA_STREAM_UNCONNECTED = 0
 PA_STREAM_CREATING = 1
 PA_STREAM_READY = 2
 PA_STREAM_FAILED = 3
 PA_STREAM_TERMINATED = 4
-pa_stream_state_t = enum_pa_stream_state 	# /usr/include/pulse/def.h:58
+pa_stream_state_t = enum_pa_stream_state        # /usr/include/pulse/def.h:58
 enum_pa_operation_state = c_int
 PA_OPERATION_RUNNING = 0
 PA_OPERATION_DONE = 1
 PA_OPERATION_CANCELED = 2
-pa_operation_state_t = enum_pa_operation_state 	# /usr/include/pulse/def.h:65
+pa_operation_state_t = enum_pa_operation_state  # /usr/include/pulse/def.h:65
 enum_pa_context_flags = c_int
 PA_CONTEXT_NOAUTOSPAWN = 1
-pa_context_flags_t = enum_pa_context_flags 	# /usr/include/pulse/def.h:73
+pa_context_flags_t = enum_pa_context_flags      # /usr/include/pulse/def.h:73
 enum_pa_stream_direction = c_int
 PA_STREAM_NODIRECTION = 0
 PA_STREAM_PLAYBACK = 1
 PA_STREAM_RECORD = 2
 PA_STREAM_UPLOAD = 3
-pa_stream_direction_t = enum_pa_stream_direction 	# /usr/include/pulse/def.h:81
+pa_stream_direction_t = enum_pa_stream_direction        # /usr/include/pulse/def.h:81
 enum_pa_stream_flags = c_int
 PA_STREAM_START_CORKED = 1
 PA_STREAM_INTERPOLATE_TIMING = 2
@@ -259,7 +259,7 @@ PA_STREAM_FIX_RATE = 128
 PA_STREAM_FIX_CHANNELS = 256
 PA_STREAM_DONT_MOVE = 512
 PA_STREAM_VARIABLE_RATE = 1024
-pa_stream_flags_t = enum_pa_stream_flags 	# /usr/include/pulse/def.h:212
+pa_stream_flags_t = enum_pa_stream_flags        # /usr/include/pulse/def.h:212
 class struct_pa_buffer_attr(Structure):
     __slots__ = [
         'maxlength',
@@ -276,7 +276,7 @@ struct_pa_buffer_attr._fields_ = [
     ('fragsize', c_uint32),
 ]
 
-pa_buffer_attr = struct_pa_buffer_attr 	# /usr/include/pulse/def.h:221
+pa_buffer_attr = struct_pa_buffer_attr  # /usr/include/pulse/def.h:221
 enum_pa_subscription_mask = c_int
 PA_SUBSCRIPTION_MASK_NULL = 0
 PA_SUBSCRIPTION_MASK_SINK = 1
@@ -289,7 +289,7 @@ PA_SUBSCRIPTION_MASK_SAMPLE_CACHE = 64
 PA_SUBSCRIPTION_MASK_SERVER = 128
 PA_SUBSCRIPTION_MASK_AUTOLOAD = 256
 PA_SUBSCRIPTION_MASK_ALL = 511
-pa_subscription_mask_t = enum_pa_subscription_mask 	# /usr/include/pulse/def.h:261
+pa_subscription_mask_t = enum_pa_subscription_mask      # /usr/include/pulse/def.h:261
 enum_pa_subscription_event_type = c_int
 PA_SUBSCRIPTION_EVENT_SINK = 0
 PA_SUBSCRIPTION_EVENT_SOURCE = 1
@@ -305,7 +305,7 @@ PA_SUBSCRIPTION_EVENT_NEW = 0
 PA_SUBSCRIPTION_EVENT_CHANGE = 16
 PA_SUBSCRIPTION_EVENT_REMOVE = 32
 PA_SUBSCRIPTION_EVENT_TYPE_MASK = 48
-pa_subscription_event_type_t = enum_pa_subscription_event_type 	# /usr/include/pulse/def.h:280
+pa_subscription_event_type_t = enum_pa_subscription_event_type  # /usr/include/pulse/def.h:280
 class struct_pa_timing_info(Structure):
     __slots__ = [
         'timestamp',
@@ -339,7 +339,7 @@ struct_pa_timing_info._fields_ = [
     ('read_index', c_int64),
 ]
 
-pa_timing_info = struct_pa_timing_info 	# /usr/include/pulse/def.h:347
+pa_timing_info = struct_pa_timing_info  # /usr/include/pulse/def.h:347
 class struct_pa_spawn_api(Structure):
     __slots__ = [
         'prefork',
@@ -352,26 +352,26 @@ struct_pa_spawn_api._fields_ = [
     ('atfork', POINTER(CFUNCTYPE(None))),
 ]
 
-pa_spawn_api = struct_pa_spawn_api 	# /usr/include/pulse/def.h:366
+pa_spawn_api = struct_pa_spawn_api      # /usr/include/pulse/def.h:366
 enum_pa_seek_mode = c_int
 PA_SEEK_RELATIVE = 0
 PA_SEEK_ABSOLUTE = 1
 PA_SEEK_RELATIVE_ON_READ = 2
 PA_SEEK_RELATIVE_END = 3
-pa_seek_mode_t = enum_pa_seek_mode 	# /usr/include/pulse/def.h:374
+pa_seek_mode_t = enum_pa_seek_mode      # /usr/include/pulse/def.h:374
 enum_pa_sink_flags = c_int
 PA_SINK_HW_VOLUME_CTRL = 1
 PA_SINK_LATENCY = 2
 PA_SINK_HARDWARE = 4
 PA_SINK_NETWORK = 8
-pa_sink_flags_t = enum_pa_sink_flags 	# /usr/include/pulse/def.h:382
+pa_sink_flags_t = enum_pa_sink_flags    # /usr/include/pulse/def.h:382
 enum_pa_source_flags = c_int
 PA_SOURCE_HW_VOLUME_CTRL = 1
 PA_SOURCE_LATENCY = 2
 PA_SOURCE_HARDWARE = 4
 PA_SOURCE_NETWORK = 8
-pa_source_flags_t = enum_pa_source_flags 	# /usr/include/pulse/def.h:390
-pa_free_cb_t = CFUNCTYPE(None, POINTER(None)) 	# /usr/include/pulse/def.h:393
+pa_source_flags_t = enum_pa_source_flags        # /usr/include/pulse/def.h:390
+pa_free_cb_t = CFUNCTYPE(None, POINTER(None))   # /usr/include/pulse/def.h:393
 class struct_pa_operation(Structure):
     __slots__ = [
     ]
@@ -386,7 +386,7 @@ struct_pa_operation._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_operation = struct_pa_operation 	# /usr/include/pulse/operation.h:36
+pa_operation = struct_pa_operation      # /usr/include/pulse/operation.h:36
 # /usr/include/pulse/operation.h:39
 pa_operation_ref = _lib.pa_operation_ref
 pa_operation_ref.restype = POINTER(pa_operation)
@@ -421,9 +421,9 @@ struct_pa_context._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_context = struct_pa_context 	# /usr/include/pulse/context.h:160
-pa_context_notify_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(None)) 	# /usr/include/pulse/context.h:163
-pa_context_success_cb_t = CFUNCTYPE(None, POINTER(pa_context), c_int, POINTER(None)) 	# /usr/include/pulse/context.h:166
+pa_context = struct_pa_context  # /usr/include/pulse/context.h:160
+pa_context_notify_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(None))    # /usr/include/pulse/context.h:163
+pa_context_success_cb_t = CFUNCTYPE(None, POINTER(pa_context), c_int, POINTER(None))    # /usr/include/pulse/context.h:166
 # /usr/include/pulse/context.h:170
 pa_context_new = _lib.pa_context_new
 pa_context_new.restype = POINTER(pa_context)
@@ -572,7 +572,7 @@ PA_CHANNEL_POSITION_TOP_REAR_LEFT = 41
 PA_CHANNEL_POSITION_TOP_REAR_RIGHT = 42
 PA_CHANNEL_POSITION_TOP_REAR_CENTER = 43
 PA_CHANNEL_POSITION_MAX = 44
-pa_channel_position_t = enum_pa_channel_position 	# /usr/include/pulse/channelmap.h:140
+pa_channel_position_t = enum_pa_channel_position        # /usr/include/pulse/channelmap.h:140
 enum_pa_channel_map_def = c_int
 PA_CHANNEL_MAP_AIFF = 0
 PA_CHANNEL_MAP_ALSA = 1
@@ -580,7 +580,7 @@ PA_CHANNEL_MAP_AUX = 2
 PA_CHANNEL_MAP_WAVEEX = 3
 PA_CHANNEL_MAP_OSS = 4
 PA_CHANNEL_MAP_DEFAULT = 0
-pa_channel_map_def_t = enum_pa_channel_map_def 	# /usr/include/pulse/channelmap.h:151
+pa_channel_map_def_t = enum_pa_channel_map_def  # /usr/include/pulse/channelmap.h:151
 class struct_pa_channel_map(Structure):
     __slots__ = [
         'channels',
@@ -591,7 +591,7 @@ struct_pa_channel_map._fields_ = [
     ('map', pa_channel_position_t * 32),
 ]
 
-pa_channel_map = struct_pa_channel_map 	# /usr/include/pulse/channelmap.h:159
+pa_channel_map = struct_pa_channel_map  # /usr/include/pulse/channelmap.h:159
 # /usr/include/pulse/channelmap.h:162
 pa_channel_map_init = _lib.pa_channel_map_init
 pa_channel_map_init.restype = POINTER(pa_channel_map)
@@ -622,7 +622,7 @@ pa_channel_position_to_pretty_string = _lib.pa_channel_position_to_pretty_string
 pa_channel_position_to_pretty_string.restype = c_char_p
 pa_channel_position_to_pretty_string.argtypes = [pa_channel_position_t]
 
-PA_CHANNEL_MAP_SNPRINT_MAX = 336 	# /usr/include/pulse/channelmap.h:181
+PA_CHANNEL_MAP_SNPRINT_MAX = 336        # /usr/include/pulse/channelmap.h:181
 # /usr/include/pulse/channelmap.h:184
 pa_channel_map_snprint = _lib.pa_channel_map_snprint
 pa_channel_map_snprint.restype = c_char_p
@@ -643,9 +643,9 @@ pa_channel_map_valid = _lib.pa_channel_map_valid
 pa_channel_map_valid.restype = c_int
 pa_channel_map_valid.argtypes = [POINTER(pa_channel_map)]
 
-pa_volume_t = c_uint32 	# /usr/include/pulse/volume.h:101
-PA_VOLUME_NORM = 65536 	# /usr/include/pulse/volume.h:104
-PA_VOLUME_MUTED = 0 	# /usr/include/pulse/volume.h:107
+pa_volume_t = c_uint32  # /usr/include/pulse/volume.h:101
+PA_VOLUME_NORM = 65536  # /usr/include/pulse/volume.h:104
+PA_VOLUME_MUTED = 0     # /usr/include/pulse/volume.h:107
 class struct_pa_cvolume(Structure):
     __slots__ = [
         'channels',
@@ -656,7 +656,7 @@ struct_pa_cvolume._fields_ = [
     ('values', pa_volume_t * 32),
 ]
 
-pa_cvolume = struct_pa_cvolume 	# /usr/include/pulse/volume.h:113
+pa_cvolume = struct_pa_cvolume  # /usr/include/pulse/volume.h:113
 # /usr/include/pulse/volume.h:116
 pa_cvolume_equal = _lib.pa_cvolume_equal
 pa_cvolume_equal.restype = c_int
@@ -667,7 +667,7 @@ pa_cvolume_set = _lib.pa_cvolume_set
 pa_cvolume_set.restype = POINTER(pa_cvolume)
 pa_cvolume_set.argtypes = [POINTER(pa_cvolume), c_uint, pa_volume_t]
 
-PA_CVOLUME_SNPRINT_MAX = 64 	# /usr/include/pulse/volume.h:128
+PA_CVOLUME_SNPRINT_MAX = 64     # /usr/include/pulse/volume.h:128
 # /usr/include/pulse/volume.h:131
 pa_cvolume_snprint = _lib.pa_cvolume_snprint
 pa_cvolume_snprint.restype = c_char_p
@@ -718,7 +718,7 @@ pa_sw_volume_to_linear = _lib.pa_sw_volume_to_linear
 pa_sw_volume_to_linear.restype = c_double
 pa_sw_volume_to_linear.argtypes = [pa_volume_t]
 
-PA_DECIBEL_MININFTY = -200 	# /usr/include/pulse/volume.h:170
+PA_DECIBEL_MININFTY = -200      # /usr/include/pulse/volume.h:170
 class struct_pa_stream(Structure):
     __slots__ = [
     ]
@@ -733,10 +733,10 @@ struct_pa_stream._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_stream = struct_pa_stream 	# /usr/include/pulse/stream.h:268
-pa_stream_success_cb_t = CFUNCTYPE(None, POINTER(pa_stream), c_int, POINTER(None)) 	# /usr/include/pulse/stream.h:271
-pa_stream_request_cb_t = CFUNCTYPE(None, POINTER(pa_stream), c_size_t, POINTER(None)) 	# /usr/include/pulse/stream.h:274
-pa_stream_notify_cb_t = CFUNCTYPE(None, POINTER(pa_stream), POINTER(None)) 	# /usr/include/pulse/stream.h:277
+pa_stream = struct_pa_stream    # /usr/include/pulse/stream.h:268
+pa_stream_success_cb_t = CFUNCTYPE(None, POINTER(pa_stream), c_int, POINTER(None))      # /usr/include/pulse/stream.h:271
+pa_stream_request_cb_t = CFUNCTYPE(None, POINTER(pa_stream), c_size_t, POINTER(None))   # /usr/include/pulse/stream.h:274
+pa_stream_notify_cb_t = CFUNCTYPE(None, POINTER(pa_stream), POINTER(None))      # /usr/include/pulse/stream.h:277
 # /usr/include/pulse/stream.h:280
 pa_stream_new = _lib.pa_stream_new
 pa_stream_new.restype = POINTER(pa_stream)
@@ -973,8 +973,8 @@ struct_pa_sink_info._fields_ = [
 
 ]
 
-pa_sink_info = struct_pa_sink_info 	# /usr/include/pulse/introspect.h:224
-pa_sink_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_sink_info), c_int, POINTER(None)) 	# /usr/include/pulse/introspect.h:227
+pa_sink_info = struct_pa_sink_info      # /usr/include/pulse/introspect.h:224
+pa_sink_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_sink_info), c_int, POINTER(None))   # /usr/include/pulse/introspect.h:227
 # /usr/include/pulse/introspect.h:230
 pa_context_get_sink_info_by_name = _lib.pa_context_get_sink_info_by_name
 pa_context_get_sink_info_by_name.restype = POINTER(pa_operation)
@@ -1024,8 +1024,8 @@ struct_pa_source_info._fields_ = [
      ("proplist",        POINTER(c_int)),
 ]
 
-pa_source_info = struct_pa_source_info 	# /usr/include/pulse/introspect.h:253
-pa_source_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_source_info), c_int, POINTER(None)) 	# /usr/include/pulse/introspect.h:256
+pa_source_info = struct_pa_source_info  # /usr/include/pulse/introspect.h:253
+pa_source_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_source_info), c_int, POINTER(None))       # /usr/include/pulse/introspect.h:256
 # /usr/include/pulse/introspect.h:259
 pa_context_get_source_info_by_name = _lib.pa_context_get_source_info_by_name
 pa_context_get_source_info_by_name.restype = POINTER(pa_operation)
@@ -1063,8 +1063,8 @@ struct_pa_server_info._fields_ = [
     ('cookie', c_uint32),
 ]
 
-pa_server_info = struct_pa_server_info 	# /usr/include/pulse/introspect.h:277
-pa_server_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_server_info), POINTER(None)) 	# /usr/include/pulse/introspect.h:280
+pa_server_info = struct_pa_server_info  # /usr/include/pulse/introspect.h:277
+pa_server_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_server_info), POINTER(None))      # /usr/include/pulse/introspect.h:280
 # /usr/include/pulse/introspect.h:283
 pa_context_get_server_info = _lib.pa_context_get_server_info
 pa_context_get_server_info.restype = POINTER(pa_operation)
@@ -1086,8 +1086,8 @@ struct_pa_module_info._fields_ = [
     ('auto_unload', c_int),
 ]
 
-pa_module_info = struct_pa_module_info 	# /usr/include/pulse/introspect.h:292
-pa_module_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_module_info), c_int, POINTER(None)) 	# /usr/include/pulse/introspect.h:295
+pa_module_info = struct_pa_module_info  # /usr/include/pulse/introspect.h:292
+pa_module_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_module_info), c_int, POINTER(None))       # /usr/include/pulse/introspect.h:295
 # /usr/include/pulse/introspect.h:298
 pa_context_get_module_info = _lib.pa_context_get_module_info
 pa_context_get_module_info.restype = POINTER(pa_operation)
@@ -1115,8 +1115,8 @@ struct_pa_client_info._fields_ = [
 
 ]
 
-pa_client_info = struct_pa_client_info 	# /usr/include/pulse/introspect.h:309
-pa_client_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_client_info), c_int, POINTER(None)) 	# /usr/include/pulse/introspect.h:312
+pa_client_info = struct_pa_client_info  # /usr/include/pulse/introspect.h:309
+pa_client_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_client_info), c_int, POINTER(None))       # /usr/include/pulse/introspect.h:312
 # /usr/include/pulse/introspect.h:315
 pa_context_get_client_info = _lib.pa_context_get_client_info
 pa_context_get_client_info.restype = POINTER(pa_operation)
@@ -1164,8 +1164,8 @@ struct_pa_sink_input_info._fields_ = [
 
 ]
 
-pa_sink_input_info = struct_pa_sink_input_info 	# /usr/include/pulse/introspect.h:335
-pa_sink_input_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_sink_input_info), c_int, POINTER(None)) 	# /usr/include/pulse/introspect.h:338
+pa_sink_input_info = struct_pa_sink_input_info  # /usr/include/pulse/introspect.h:335
+pa_sink_input_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_sink_input_info), c_int, POINTER(None))       # /usr/include/pulse/introspect.h:338
 # /usr/include/pulse/introspect.h:341
 pa_context_get_sink_input_info = _lib.pa_context_get_sink_input_info
 pa_context_get_sink_input_info.restype = POINTER(pa_operation)
@@ -1188,8 +1188,8 @@ class struct_pa_source_output_info(Structure):
         'buffer_usec',
         'source_usec',
         'resample_method',
-        'driver',   
-        "proplist",  
+        'driver',
+        "proplist",
     ]
 struct_pa_source_output_info._fields_ = [
     ('index', c_uint32),
@@ -1206,8 +1206,8 @@ struct_pa_source_output_info._fields_ = [
      ("proplist",        POINTER(c_int)),
 ]
 
-pa_source_output_info = struct_pa_source_output_info 	# /usr/include/pulse/introspect.h:359
-pa_source_output_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_source_output_info), c_int, POINTER(None)) 	# /usr/include/pulse/introspect.h:362
+pa_source_output_info = struct_pa_source_output_info    # /usr/include/pulse/introspect.h:359
+pa_source_output_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_source_output_info), c_int, POINTER(None))         # /usr/include/pulse/introspect.h:362
 # /usr/include/pulse/introspect.h:365
 pa_context_get_source_output_info = _lib.pa_context_get_source_output_info
 pa_context_get_source_output_info.restype = POINTER(pa_operation)
@@ -1284,8 +1284,8 @@ struct_pa_stat_info._fields_ = [
     ('scache_size', c_uint32),
 ]
 
-pa_stat_info = struct_pa_stat_info 	# /usr/include/pulse/introspect.h:407
-pa_stat_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_stat_info), POINTER(None)) 	# /usr/include/pulse/introspect.h:410
+pa_stat_info = struct_pa_stat_info      # /usr/include/pulse/introspect.h:407
+pa_stat_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_stat_info), POINTER(None))  # /usr/include/pulse/introspect.h:410
 # /usr/include/pulse/introspect.h:413
 pa_context_stat = _lib.pa_context_stat
 pa_context_stat.restype = POINTER(pa_operation)
@@ -1315,8 +1315,8 @@ struct_pa_sample_info._fields_ = [
     ('filename', c_char_p),
 ]
 
-pa_sample_info = struct_pa_sample_info 	# /usr/include/pulse/introspect.h:426
-pa_sample_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_sample_info), c_int, POINTER(None)) 	# /usr/include/pulse/introspect.h:429
+pa_sample_info = struct_pa_sample_info  # /usr/include/pulse/introspect.h:426
+pa_sample_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_sample_info), c_int, POINTER(None))       # /usr/include/pulse/introspect.h:429
 # /usr/include/pulse/introspect.h:432
 pa_context_get_sample_info_by_name = _lib.pa_context_get_sample_info_by_name
 pa_context_get_sample_info_by_name.restype = POINTER(pa_operation)
@@ -1347,7 +1347,7 @@ pa_context_kill_source_output = _lib.pa_context_kill_source_output
 pa_context_kill_source_output.restype = POINTER(pa_operation)
 pa_context_kill_source_output.argtypes = [POINTER(pa_context), c_uint32, pa_context_success_cb_t, POINTER(None)]
 
-pa_context_index_cb_t = CFUNCTYPE(None, POINTER(pa_context), c_uint32, POINTER(None)) 	# /usr/include/pulse/introspect.h:450
+pa_context_index_cb_t = CFUNCTYPE(None, POINTER(pa_context), c_uint32, POINTER(None))   # /usr/include/pulse/introspect.h:450
 # /usr/include/pulse/introspect.h:453
 pa_context_load_module = _lib.pa_context_load_module
 pa_context_load_module.restype = POINTER(pa_operation)
@@ -1361,7 +1361,7 @@ pa_context_unload_module.argtypes = [POINTER(pa_context), c_uint32, pa_context_s
 enum_pa_autoload_type = c_int
 PA_AUTOLOAD_SINK = 0
 PA_AUTOLOAD_SOURCE = 1
-pa_autoload_type_t = enum_pa_autoload_type 	# /usr/include/pulse/introspect.h:462
+pa_autoload_type_t = enum_pa_autoload_type      # /usr/include/pulse/introspect.h:462
 class struct_pa_autoload_info(Structure):
     __slots__ = [
         'index',
@@ -1378,8 +1378,8 @@ struct_pa_autoload_info._fields_ = [
     ('argument', c_char_p),
 ]
 
-pa_autoload_info = struct_pa_autoload_info 	# /usr/include/pulse/introspect.h:471
-pa_autoload_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_autoload_info), c_int, POINTER(None)) 	# /usr/include/pulse/introspect.h:474
+pa_autoload_info = struct_pa_autoload_info      # /usr/include/pulse/introspect.h:471
+pa_autoload_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_autoload_info), c_int, POINTER(None))   # /usr/include/pulse/introspect.h:474
 # /usr/include/pulse/introspect.h:477
 pa_context_get_autoload_info_by_name = _lib.pa_context_get_autoload_info_by_name
 pa_context_get_autoload_info_by_name.restype = POINTER(pa_operation)
@@ -1450,7 +1450,7 @@ pa_context_suspend_source_by_index = _lib.pa_context_suspend_source_by_index
 pa_context_suspend_source_by_index.restype = POINTER(pa_operation)
 pa_context_suspend_source_by_index.argtypes = [POINTER(pa_context), c_uint32, c_int, pa_context_success_cb_t, POINTER(None)]
 
-pa_context_subscribe_cb_t = CFUNCTYPE(None, POINTER(pa_context), pa_subscription_event_type_t, c_uint32, POINTER(None)) 	# /usr/include/pulse/subscribe.h:54
+pa_context_subscribe_cb_t = CFUNCTYPE(None, POINTER(pa_context), pa_subscription_event_type_t, c_uint32, POINTER(None))         # /usr/include/pulse/subscribe.h:54
 # /usr/include/pulse/subscribe.h:57
 pa_context_subscribe = _lib.pa_context_subscribe
 pa_context_subscribe.restype = POINTER(pa_operation)
@@ -1486,8 +1486,8 @@ pa_get_library_version = _lib.pa_get_library_version
 pa_get_library_version.restype = c_char_p
 pa_get_library_version.argtypes = []
 
-PA_API_VERSION = 11 	# /usr/include/pulse/version.h:48
-PA_PROTOCOL_VERSION = 12 	# /usr/include/pulse/version.h:52
+PA_API_VERSION = 11     # /usr/include/pulse/version.h:48
+PA_PROTOCOL_VERSION = 12        # /usr/include/pulse/version.h:52
 # /usr/include/pulse/error.h:37
 pa_strerror = _lib.pa_strerror
 pa_strerror.restype = c_char_p
@@ -1562,7 +1562,7 @@ struct_pa_threaded_mainloop._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_threaded_mainloop = struct_pa_threaded_mainloop 	# /usr/include/pulse/thread-mainloop.h:242
+pa_threaded_mainloop = struct_pa_threaded_mainloop      # /usr/include/pulse/thread-mainloop.h:242
 # /usr/include/pulse/thread-mainloop.h:247
 pa_threaded_mainloop_new = _lib.pa_threaded_mainloop_new
 pa_threaded_mainloop_new.restype = POINTER(pa_threaded_mainloop)
@@ -1637,7 +1637,7 @@ struct_pa_mainloop._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_mainloop = struct_pa_mainloop 	# /usr/include/pulse/mainloop.h:79
+pa_mainloop = struct_pa_mainloop        # /usr/include/pulse/mainloop.h:79
 # /usr/include/pulse/mainloop.h:82
 pa_mainloop_new = _lib.pa_mainloop_new
 pa_mainloop_new.restype = POINTER(pa_mainloop)
@@ -1707,7 +1707,7 @@ struct_pollfd._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_poll_func = CFUNCTYPE(c_int, POINTER(struct_pollfd), c_ulong, c_int, POINTER(None)) 	# /usr/include/pulse/mainloop.h:123
+pa_poll_func = CFUNCTYPE(c_int, POINTER(struct_pollfd), c_ulong, c_int, POINTER(None))  # /usr/include/pulse/mainloop.h:123
 # /usr/include/pulse/mainloop.h:126
 pa_mainloop_set_poll_func = _lib.pa_mainloop_set_poll_func
 pa_mainloop_set_poll_func.restype = None
@@ -1737,7 +1737,7 @@ struct_pa_signal_event._fields_ = [
     ('_opaque_struct', c_int)
 ]
 
-pa_signal_event = struct_pa_signal_event 	# /usr/include/pulse/mainloop-signal.h:49
+pa_signal_event = struct_pa_signal_event        # /usr/include/pulse/mainloop-signal.h:49
 # /usr/include/pulse/mainloop-signal.h:52
 pa_signal_new = _lib.pa_signal_new
 pa_signal_new.restype = POINTER(pa_signal_event)
@@ -1788,10 +1788,10 @@ pa_msleep = _lib.pa_msleep
 pa_msleep.restype = c_int
 pa_msleep.argtypes = [c_ulong]
 
-PA_MSEC_PER_SEC = 1000 	# /usr/include/pulse/timeval.h:36
-PA_USEC_PER_SEC = 1000000 	# /usr/include/pulse/timeval.h:37
-PA_NSEC_PER_SEC = 1000000000 	# /usr/include/pulse/timeval.h:38
-PA_USEC_PER_MSEC = 1000 	# /usr/include/pulse/timeval.h:39
+PA_MSEC_PER_SEC = 1000  # /usr/include/pulse/timeval.h:36
+PA_USEC_PER_SEC = 1000000       # /usr/include/pulse/timeval.h:37
+PA_NSEC_PER_SEC = 1000000000    # /usr/include/pulse/timeval.h:38
+PA_USEC_PER_MSEC = 1000         # /usr/include/pulse/timeval.h:39
 class struct_timeval(Structure):
     __slots__ = [
     ]
@@ -1935,6 +1935,3 @@ pa_proplist_to_string.argtypes = [
 pa_ext_stream_restore_delete = _lib.pa_ext_stream_restore_delete
 pa_ext_stream_restore_delete.restype = pa_operation
 pa_ext_stream_restore_delete.argtypes = [POINTER(pa_context), c_char_p, pa_context_success_cb_t, POINTER(None)]
-
-
-

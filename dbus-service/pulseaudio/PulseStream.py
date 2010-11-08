@@ -40,14 +40,14 @@ class PulseStream:
 
     def connect_record(self, source):
 
-                 #pa_stream_connect_record(pa_stream, str(monitor_index), attr, 10752) 
+                 #pa_stream_connect_record(pa_stream, str(monitor_index), attr, 10752)
         retval = pa_stream_connect_record(self,
                                           source.name,
                                           None, # buffer_attr
                                           0) # flags
         if retval != 0:
             raise Exception, "Couldn't do connect_record()"
-        
+
 
     def peek(self, pulseInterface):
         pa_stream_peek(self, data, size)

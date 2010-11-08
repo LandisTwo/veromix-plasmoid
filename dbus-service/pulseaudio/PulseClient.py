@@ -25,42 +25,41 @@ from lib_pulseaudio import *
 
 # This class contains all basic client features
 class PulseClient:
-  def __init__(self, name, index = 0):
-    self.index = index
-    self.name  = name
-    return
+    def __init__(self, name, index = 0):
+        self.index = index
+        self.name  = name
+        return
 
-  ###
+    ###
 
-  def printDebug(self):
-    print "self.index:", self.index
-    print "self.name:", self.name
-    return
+    def printDebug(self):
+        print "self.index:", self.index
+        print "self.name:", self.name
+        return
 
-  ###
+    ###
 
-  def __str__(self):
-    return "Client-ID: " + str(self.index) + ", Name: \"" + self.name + "\""
+    def __str__(self):
+        return "Client-ID: " + str(self.index) + ", Name: \"" + self.name + "\""
 
 ################################################################################
 
 # This class is used with Ctypes
 class PulseClientCtypes(PulseClient):
-  def __init__(self, pa_client):
-    PulseClient.__init__(self, pa_client.name, pa_client.index)
+    def __init__(self, pa_client):
+        PulseClient.__init__(self, pa_client.name, pa_client.index)
 
-    self.owner_module = pa_client.owner_module
-    self.driver       = pa_client.driver
-    #self.proplist     = pa_sink_input_info.proplist
-    return
+        self.owner_module = pa_client.owner_module
+        self.driver       = pa_client.driver
+        #self.proplist     = pa_sink_input_info.proplist
+        return
 
-  ###
+    ###
 
-  def printDebug(self):
-    print "PulseClientCtypes"
-    PulseClient.printDebug(self)
-    print "self.owner_module:", self.owner_module
-    print "self.driver:", self.driver
-    #print "self.proplist:", self.proplist
-    return
-
+    def printDebug(self):
+        print "PulseClientCtypes"
+        PulseClient.printDebug(self)
+        print "self.owner_module:", self.owner_module
+        print "self.driver:", self.driver
+        #print "self.proplist:", self.proplist
+        return

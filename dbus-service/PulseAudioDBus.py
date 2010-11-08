@@ -26,7 +26,7 @@ import signal
 
 class PulseAudioDBus(QObject):
 
-    
+
     def start_pulsing(self):
         mainloop = dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
         bus = dbus.SessionBus()
@@ -47,7 +47,7 @@ class PulseAudioDBus(QObject):
     def sink_info(self, index,  stream_name, app_name, app_icon):
         self.emit(SIGNAL("sink_info(PyQt_PyObject)"), sink )
         #print "sink signal: " ,  index,  stream_name, app_name, app_icon
-    
+
     def sink_input_remove(self, index):
         self.emit(SIGNAL("sink_input_remove(int)"), index )
         #print "sink input remove signal: " ,  index
@@ -55,8 +55,8 @@ class PulseAudioDBus(QObject):
     def sink_remove(self, index):
         self.emit(SIGNAL("sink_remove(int)"), index )
         #print "sink remove signal: " ,  index
-        
-        
+
+
     def pulse_set_sink_input_volume(self, index, vol):
         pass
 
