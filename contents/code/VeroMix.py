@@ -248,11 +248,16 @@ class VeroMix(QGraphicsWidget):
 
 ### panel icons
 
-    def updateIcon(self, muted):
+    def updateIcon(self, muted):        
         if muted:
-            self.applet.setPopupIcon(self.applet.volume_muted)
+            self.applet.setPopupIcon("audio-volume-muted")
         else:
-            self.applet.setPopupIcon(self.applet.volume_high)
+            vol = self.getDefaultSink().getVolume()
+            if vol < 30: 
+                return self.applet.setPopupIcon("audio-volume-low")
+            if vol < 70:   
+                return self.applet.setPopupIcon("audio-volume-medium")           
+            return self.applet.setPopupIcon("audio-volume-high")
 
 ### helpers accessing channels
 
@@ -265,7 +270,6 @@ class VeroMix(QGraphicsWidget):
 
     def update_channel(self, key, sink, target_layout):
         if target_layout.getChannel(key) :
-            print key
             target_layout.getChannel(key).update_with_info(sink)
             self.check_ItemOrdering()
             return True

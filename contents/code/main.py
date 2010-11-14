@@ -66,10 +66,8 @@ from LabelSlider import *
 
 class VeroMixPlasmoid(plasmascript.Applet):
 
-    volume_high = KIcon("audio-volume-high")
-    volume_muted = KIcon("audio-volume-muted")
 
-    def __init__(self,parent,args=None):
+    def __init__(self,parent,args=None):        
         plasmascript.Applet.__init__(self,parent)
         self.engine = None
 
@@ -101,7 +99,10 @@ class VeroMixPlasmoid(plasmascript.Applet):
         try:
             self.setGraphicsWidget(self.widget)
             self.applet.setPassivePopup(True)
-            self.setPopupIcon(self.volume_high)
+            ## FIXME: Look like a bug in plasma: Only when sending a
+            # KIcon instance PopUpApplet acts like a Poppupapplet...
+            self.setPopupIcon(KIcon("audio-volume-high"))
+            #self.setPopupIcon("audio-volume-muted")
             # dont know why but adding it a second time helps (otherwise it
             # wont popup when you add it directly to the panel)
             self.setGraphicsWidget(self.widget)
@@ -109,7 +110,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.setBackgroundHints(Plasma.Applet.NoBackground)
         except AttributeError:
             self.updateMetadataDesktop()
-
+        
+        
     def doExit(self):
         # prevent crash in plasmoidviewer
         self.widget.doExit()

@@ -41,7 +41,7 @@ class SinkUI(Channel):
             self.updateMutedInfo(True)
             self.mute.setMuted(True)
         else:
-            self.updateMutedInfo(self.pa_sink.getVolume() <= 1 )
+            self.updateMutedInfo(False)
             self.mute.setMuted(False)
 
     def updateMutedInfo(self, aBoolean):
@@ -59,9 +59,12 @@ class SinkUI(Channel):
             if self.meter_levels[i] > level:
                 level = self.meter_levels[i]
 
-        vol = self.pa_sink.getVolume()
+        vol = self.getVolume()
         level =   level * (vol / 100.0)
         self.meter.setValue(level)
+
+    def getVolume(self):
+        return self.pa_sink.getVolume()
 
     def isMuted(self):
         return self.pa_sink.mute == 1
