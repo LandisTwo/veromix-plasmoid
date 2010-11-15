@@ -64,16 +64,20 @@ class InputMuteButton(MuteButton):
             self.big_name = name
             self.setIcon(self._draw_icon())
 
+    def _pixmapFromSVG(self, name):
+            svg = Plasma.Svg()
+            svg.setImagePath("icons/audio")
+            svg.setContainsMultipleImages(False)
+            return svg.pixmap(name)
+
     def _draw_icon(self ):
         if self.status_icon == self.muted_Icon:
             size =  self.BIGSIZE
             size2= 18
             orig =  KIcon(self.big_name).pixmap(22, 22)
             #over = KIcon(self.status_icon).pixmap(size2,size2)
-            svg = Plasma.Svg()
-            svg.setImagePath("icons/audio")
-            svg.setContainsMultipleImages(False)
-            over = svg.pixmap(self.status_icon)
+            over = self._pixmapFromSVG(self.status_icon)
+            
             #over =  KIcon(self.big_name).pixmap(size2,size2)
             #orig = self.status_icon.pixmap(28,28)
 
