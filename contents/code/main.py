@@ -99,8 +99,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         try:
             self.setGraphicsWidget(self.widget)
             self.applet.setPassivePopup(True)
-            ## FIXME: Look like a bug in plasma: Only when sending a
-            # KIcon instance PopUpApplet acts like a Poppupapplet...
+            ## FIXME: see fixPopupcion
             self.setPopupIcon(KIcon("audio-volume-high"))
             #self.setPopupIcon("audio-volume-muted")
             # dont know why but adding it a second time helps (otherwise it
@@ -108,10 +107,16 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.setGraphicsWidget(self.widget)
             self.connect(self.applet, SIGNAL("appletDestroyed(Plasma::Applet*)"), self.doExit)
             self.setBackgroundHints(Plasma.Applet.NoBackground)
-        except AttributeError:
-            self.updateMetadataDesktop()
-        
-        
+        except AttributeError , e:
+            print e
+            self.updateMetadataDesktop()      
+        QTimer.singleShot(1000, self.fixPopupIcon)
+    
+    ## FIXME Looks like a bug in plasma: Only when sending a
+    # KIcon instance PopUpApplet acts like a Poppupapplet...
+    def fixPopupIcon(self):
+        self.widget.getDefaultSink().updateIcon() 
+
     def doExit(self):
         # prevent crash in plasmoidviewer
         self.widget.doExit()

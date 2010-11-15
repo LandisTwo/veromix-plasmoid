@@ -248,16 +248,21 @@ class VeroMix(QGraphicsWidget):
 
 ### panel icons
 
-    def updateIcon(self, muted):        
-        if muted:
-            self.applet.setPopupIcon("audio-volume-muted")
+    def updateIcon(self, muted):
+        icon_state = "audio-volume-muted"
+        if self.getDefaultSink().isMuted() :
+            icon_state= "audio-volume-muted"
         else:
             vol = self.getDefaultSink().getVolume()
-            if vol < 30: 
-                return self.applet.setPopupIcon("audio-volume-low")
-            if vol < 70:   
-                return self.applet.setPopupIcon("audio-volume-medium")           
-            return self.applet.setPopupIcon("audio-volume-high")
+            if  vol == 0:
+                icon_state = "audio-volume-muted"
+            elif vol < 30: 
+                icon_state= "audio-volume-low"
+            elif vol < 70:   
+                icon_state= "audio-volume-medium"
+            else:
+                icon_state= "audio-volume-high"
+        self.applet.setPopupIcon(icon_state)
 
 ### helpers accessing channels
 
@@ -287,11 +292,6 @@ class VeroMix(QGraphicsWidget):
         for sink in self.sink_panel_layout.getChannels().values():
             if sink.isDefaultSink():
                 return sink
-        for sink in self.sink_panel_layout.getChannels().values():
-            if sink.isSinkOutput():
-                return sink
-        return None
-
 ## helpers
 
     def getPulseAudio(self):
