@@ -69,8 +69,11 @@ class InputMuteButton(MuteButton):
             size =  self.BIGSIZE
             size2= 18
             orig =  KIcon(self.big_name).pixmap(22, 22)
-            over = KIcon(self.status_icon).pixmap(size2,size2)
-
+            #over = KIcon(self.status_icon).pixmap(size2,size2)
+            svg = Plasma.Svg()
+            svg.setImagePath("icons/audio")
+            svg.setContainsMultipleImages(False)
+            over = svg.pixmap(self.status_icon)
             #over =  KIcon(self.big_name).pixmap(size2,size2)
             #orig = self.status_icon.pixmap(28,28)
 
