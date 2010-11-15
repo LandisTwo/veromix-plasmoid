@@ -110,8 +110,46 @@ class VeroMixPlasmoid(plasmascript.Applet):
         except AttributeError , e:
             print e
             self.updateMetadataDesktop()      
-        QTimer.singleShot(1000, self.fixPopupIcon)
-    
+            
+        self.initTooltip()
+        QTimer.singleShot(1000, self.fixPopupIcon)            
+
+    def initTooltip(self):
+        if (self.formFactor() != Plasma.Planar):   
+            self.tooltip = Plasma.ToolTipContent() 
+            self.tooltip.setImage(self._pixmapFromSVG("audio-volume-high"))
+            self.tooltip.setMainText( "Main Volume")
+            #self.tooltip.setSubText( "" )    
+            Plasma.ToolTipManager.self().setContent(self.applet, self.tooltip)
+            Plasma.ToolTipManager.self().registerWidget(self.applet)
+
+    def updateIcon(self):
+        icon_state = "audio-volume-muted"
+        if self.widget.getDefaultSink().isMuted() :
+            icon_state= "audio-volume-muted"
+        else:
+            vol = self.widget.getDefaultSink().getVolume()
+            if  vol == 0:
+                icon_state = "audio-volume-muted"
+            elif vol < 30: 
+                icon_state= "audio-volume-low"
+            elif vol < 70:   
+                icon_state= "audio-volume-medium"
+            else:
+                icon_state= "audio-volume-high"
+        self.setPopupIcon(icon_state)
+        if (self.formFactor() != Plasma.Planar):                  
+            self.tooltip.setImage(self._pixmapFromSVG(icon_state))
+            ## FIXME this should better go to toolTipAboutToShow but is not working:
+            # https://bugs.kde.org/show_bug.cgi?id=254764                   
+            self.tooltip.setMainText( self.widget.getDefaultSink().app)
+            self.tooltip.setSubText( str(vol) + "%")
+            Plasma.ToolTipManager.self().setContent(self.applet, self.tooltip)
+        
+    @pyqtSlot(name="toolTipAboutToShow")
+    def toolTipAboutToShow(self):
+        pass 
+        
     ## FIXME Looks like a bug in plasma: Only when sending a
     # KIcon instance PopUpApplet acts like a Poppupapplet...
     def fixPopupIcon(self):
@@ -199,7 +237,12 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if event.button() == Qt.MidButton:
             self.widget.on_toggle_mute()
 
-
+## FIXME add utils class
+    def _pixmapFromSVG(self, name):
+            svg = Plasma.Svg()
+            svg.setImagePath("icons/audio")
+            svg.setContainsMultipleImages(False)
+            return svg.pixmap(name)
 
 def CreateApplet(parent):
     # Veromix is dedicated my girlfriend Vero.

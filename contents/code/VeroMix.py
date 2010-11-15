@@ -250,20 +250,7 @@ class VeroMix(QGraphicsWidget):
 ### panel icons
 
     def updateIcon(self, muted):
-        icon_state = "audio-volume-muted"
-        if self.getDefaultSink().isMuted() :
-            icon_state= "audio-volume-muted"
-        else:
-            vol = self.getDefaultSink().getVolume()
-            if  vol == 0:
-                icon_state = "audio-volume-muted"
-            elif vol < 30: 
-                icon_state= "audio-volume-low"
-            elif vol < 70:   
-                icon_state= "audio-volume-medium"
-            else:
-                icon_state= "audio-volume-high"
-        self.applet.setPopupIcon(icon_state)
+        self.applet.updateIcon()
 
 ### helpers accessing channels
 
