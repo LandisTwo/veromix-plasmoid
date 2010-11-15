@@ -30,17 +30,17 @@ class MuteButton(Plasma.IconWidget):
         self.setPreferredSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
         self.setMaximumSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
         self.setParent(parent)
-        self.play_Icon = KIcon( "audio-volume-high")
-        self.muted_Icon = KIcon( "audio-volume-muted")
+        self.play_Icon =  "audio-volume-high"
+        self.muted_Icon =  "audio-volume-muted"
 
     def mouseMoveEvent(self,event):
         self.parent().startDrag(event)
 
     def setMuted(self, boolean):
         if boolean :
-            self.setIcon(self.muted_Icon)
+            self.setSvg("icons/audio", self.muted_Icon)
         else:
-            self.setIcon(self.play_Icon)
+            self.setSvg("icons/audio", self.play_Icon)
 
 
 class InputMuteButton(MuteButton):
@@ -49,13 +49,14 @@ class InputMuteButton(MuteButton):
         MuteButton.__init__(self,parent)
         self.setParent(parent)
         self.big_name =  "mixer-pcm"
-        self.status_icon = self.play_Icon
+        self.status_icon = KIcon(self.play_Icon)
+        #self.status_icon.setSvg("icons/audio", self.play_Icon)
 
     def setMuted(self, boolean):
         if boolean :
             self.status_icon = self.muted_Icon
         else:
-            self.status_icon = self.play_Icon
+            self.status_icon =  self.play_Icon
         self.setIcon(self._draw_icon())
 
     def setBigIconName(self, name):
@@ -68,7 +69,7 @@ class InputMuteButton(MuteButton):
             size =  self.BIGSIZE
             size2= 18
             orig =  KIcon(self.big_name).pixmap(22, 22)
-            over = self.status_icon.pixmap(size2,size2)
+            over = KIcon(self.status_icon).pixmap(size2,size2)
 
             #over =  KIcon(self.big_name).pixmap(size2,size2)
             #orig = self.status_icon.pixmap(28,28)
