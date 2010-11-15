@@ -34,6 +34,7 @@ from PulseAudioProxy import *
 from SortedLayout import *
 from SourceUI import *
 from SourceOutputUI import *
+from LockableScrollWidget import *
 
 class VeroMix(QGraphicsWidget):
     sinkOutputChanged = pyqtSignal()
@@ -51,7 +52,7 @@ class VeroMix(QGraphicsWidget):
         self.layout = QGraphicsLinearLayout(Qt.Vertical, self)
         self.layout.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum))
 
-        self.scroller = Plasma.ScrollWidget(self)
+        self.scroller = LockableScrollWidget(self)
         self.scroller.setMinimumSize(120,90)
         self.layout.addItem(self.scroller)
 
