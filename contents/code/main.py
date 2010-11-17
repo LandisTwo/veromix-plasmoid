@@ -66,7 +66,7 @@ from LabelSlider import *
 
 
 class VeroMixPlasmoid(plasmascript.Applet):
-
+    VERSION="8.4"
 
     def __init__(self,parent,args=None):        
         plasmascript.Applet.__init__(self,parent)
@@ -239,31 +239,43 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if event.button() == Qt.MidButton:
             self.widget.on_toggle_mute()
 
-
-    def createConfigurationInterface(self, parent):
-        
+    def createConfigurationInterface(self, parent):        
+        print parent 
         self.config_widget = QWidget(parent)
         self.connect(self.config_widget, SIGNAL('destroyed(QObject*)'), self.configWidgetDestroyed)
         
         self.config_ui = uic.loadUi(str(self.package().filePath('ui', 'appearance.ui')), self.config_widget)        
-        self.config_ui.showBackground.setChecked( self.config().readEntry("background",False).toBool() )
+        self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background",False).toInt() [0] ) 
+        self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
         parent.addPage(self.config_widget, "General", "veromix-plasmoid-128" )
         
         self.about_widget = QWidget(parent)
         self.about_ui = uic.loadUi(str(self.package().filePath('ui', 'about.ui')), self.about_widget)
-        parent.addPage(self.about_widget, "About", "info" )
+        self.about_ui.version.setText(VeroMixPlasmoid.VERSION)
+        parent.addPage(self.about_widget, "About", "help-about" )
         return self.config_widget
 
-
     def configChanged(self):
-        self.config().writeEntry("background",self.config_ui.showBackground.isChecked() )
+        self.config().writeEntry("background",str(self.config_ui.showBackground.currentIndex()))
+        self.config().writeEntry("popupMode", str(self.config_ui.popupMode.currentIndex()))
         self.applyConfig()
         
     def applyConfig(self):
-        if  self.config().readEntry("background",False).toBool():
-            self.setBackgroundHints(Plasma.Applet.DefaultBackground)
-        else:
+        bg = self.config().readEntry("background",False).toBool()
+        if  bg == 0:
             self.setBackgroundHints(Plasma.Applet.NoBackground)
+        elif bg == 1:
+            self.setBackgroundHints(Plasma.Applet.TranslucentBackground)
+        else:
+            self.setBackgroundHints(Plasma.Applet.StandardBackground)
+            
+        mode =  self.config().readEntry("popupMode",False).toInt()[0]
+        if  mode== 0:
+            self.setPassivePopup(False)
+        elif mode == 1:
+            self.setPassivePopup(True)
+        else:
+            self.setPassivePopup(True)
         self.update()           
 
     def configWidgetDestroyed(self):
