@@ -49,6 +49,7 @@ from xdg import BaseDirectory
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+from PyQt4 import uic
 from PyKDE4.plasma import Plasma
 from PyKDE4 import plasmascript
 from PyKDE4.kdeui import *
@@ -81,7 +82,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
         self.createDbusServiceDescription()
 
-        self.setHasConfigurationInterface(False)
+        self.setHasConfigurationInterface(True)
         self.setAspectRatioMode(Plasma.IgnoreAspectRatio)
         self.theme = Plasma.Svg(self)
 
@@ -112,6 +113,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.updateMetadataDesktop()      
             
         self.initTooltip()
+        self.applyConfig()
         QTimer.singleShot(1000, self.fixPopupIcon)            
 
     def initTooltip(self):
@@ -236,6 +238,37 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def mousePressEvent(self, event):
         if event.button() == Qt.MidButton:
             self.widget.on_toggle_mute()
+
+
+    def createConfigurationInterface(self, parent):
+        
+        self.config_widget = QWidget(parent)
+        self.connect(self.config_widget, SIGNAL('destroyed(QObject*)'), self.configWidgetDestroyed)
+        
+        self.config_ui = uic.loadUi(str(self.package().filePath('ui', 'appearance.ui')), self.config_widget)        
+        self.config_ui.showBackground.setChecked( self.config().readEntry("background",False).toBool() )
+        parent.addPage(self.config_widget, "General", "veromix-plasmoid-128" )
+        
+        self.about_widget = QWidget(parent)
+        self.about_ui = uic.loadUi(str(self.package().filePath('ui', 'about.ui')), self.about_widget)
+        parent.addPage(self.about_widget, "About", "info" )
+        return self.config_widget
+
+
+    def configChanged(self):
+        self.config().writeEntry("background",self.config_ui.showBackground.isChecked() )
+        self.applyConfig()
+        
+    def applyConfig(self):
+        if  self.config().readEntry("background",False).toBool():
+            self.setBackgroundHints(Plasma.Applet.DefaultBackground)
+        else:
+            self.setBackgroundHints(Plasma.Applet.NoBackground)
+        self.update()           
+
+    def configWidgetDestroyed(self):
+        self.config_widget = None
+        self.config_ui = None
 
 ## FIXME add utils class
     def _pixmapFromSVG(self, name):
