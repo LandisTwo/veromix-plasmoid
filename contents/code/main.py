@@ -44,26 +44,17 @@
 ###### December 2009 & July 2010
 
 
-import sys, os, commands, time
-from xdg import BaseDirectory
+import commands
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyQt4 import uic
-from PyKDE4.plasma import Plasma
 from PyKDE4 import plasmascript
-from PyKDE4.kdeui import *
-from PyKDE4.kdecore import *
-from PyKDE4.kdecore import *
-from PyKDE4.plasma import *
+from PyKDE4.plasma import Plasma
+from PyKDE4.kdeui import KIcon
 
-import signal, os, datetime
-
-from VeroMix import *
-from SinkUI import *
-from SinkInputUI import *
-from LabelSlider import *
-
+from VeroMix import VeroMix
+from Utils import *
 
 class VeroMixPlasmoid(plasmascript.Applet):
     VERSION="8.4"
@@ -80,7 +71,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         else:
             print "Error installing veromix icon:", out
 
-        self.createDbusServiceDescription()
+        createDbusServiceDescription(self)
 
         self.setHasConfigurationInterface(True)
         self.setAspectRatioMode(Plasma.IgnoreAspectRatio)
@@ -108,18 +99,18 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.setGraphicsWidget(self.widget)
             self.connect(self.applet, SIGNAL("appletDestroyed(Plasma::Applet*)"), self.doExit)
             self.setBackgroundHints(Plasma.Applet.NoBackground)
+            self.applyConfig()
         except AttributeError , e:
             print e
-            self.updateMetadataDesktop()      
+            updateMetadataDesktop(self)      
             
         self.initTooltip()
-        self.applyConfig()
         QTimer.singleShot(1000, self.fixPopupIcon)            
 
     def initTooltip(self):
         if (self.formFactor() != Plasma.Planar):   
             self.tooltip = Plasma.ToolTipContent() 
-            self.tooltip.setImage(self._pixmapFromSVG("audio-volume-high"))
+            self.tooltip.setImage(pixmapFromSVG("audio-volume-high"))
             self.tooltip.setMainText( "Main Volume")
             #self.tooltip.setSubText( "" )    
             Plasma.ToolTipManager.self().setContent(self.applet, self.tooltip)
@@ -127,10 +118,10 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def updateIcon(self):
         icon_state = "audio-volume-muted"
+        vol = self.widget.getDefaultSink().getVolume()
         if self.widget.getDefaultSink().isMuted() :
             icon_state= "audio-volume-muted"
         else:
-            vol = self.widget.getDefaultSink().getVolume()
             if  vol == 0:
                 icon_state = "audio-volume-muted"
             elif vol < 30: 
@@ -141,7 +132,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
                 icon_state= "audio-volume-high"
         self.setPopupIcon(icon_state)
         if (self.formFactor() != Plasma.Planar):                  
-            self.tooltip.setImage(self._pixmapFromSVG(icon_state))
+            self.tooltip.setImage(pixmapFromSVG(icon_state))
             ## FIXME this should better go to toolTipAboutToShow but is not working:
             # https://bugs.kde.org/show_bug.cgi?id=254764                   
             self.tooltip.setMainText( self.widget.getDefaultSink().app)
@@ -183,55 +174,6 @@ class VeroMixPlasmoid(plasmascript.Applet):
                     return iconname
         return None
 
-
-    def createDbusServiceDescription(self):
-        print "Outputting dbus-servie file"
-        service_dir = os.path.join(BaseDirectory.xdg_data_home,"dbus-1/services/")
-        self.createDirectory(service_dir)
-        # File to create
-        fn = service_dir+"org.veromix.pulseaudio.service"
-
-        exec_dir = unicode(self.package().path()) + "dbus-service/VeromixServiceMain.py"
-
-        # File contents
-        c = []
-        c.append("[D-BUS Service]\n")
-        c.append("Name=org.veromix.pulseaudioservice\n")
-        c.append("Exec="+exec_dir+"\n")
-
-        # Write file
-        try:
-            f = open(fn,"w")
-            f.writelines(c)
-            f.close()
-        except:
-            print "Problem writing to file: "+fn
-            print "Unexpected error:", sys.exc_info()[0]
-        commands.getstatusoutput("chmod u+x "+exec_dir)
-
-    def createDirectory(self, d):
-        if not os.path.isdir(d):
-            try:
-                os.makedirs(d)
-            except:
-                print "Problem creating directory: "+d
-                print "Unexpected error:", sys.exc_info()[0]
-
-    def updateMetadataDesktop(self):
-        self.layout = QGraphicsLinearLayout(Qt.Vertical)
-        self.setLayout(self.layout)
-        icon = Plasma.IconWidget("Please remove and re-add myself")
-        icon.setIcon(KIcon("info"))
-        self.layout.addItem(icon)
-        commands.getstatusoutput("cp " + unicode(self.package().path()) + "metadata.desktop.kde4.4 $(kde4-config  --localprefix )share/apps/plasma/plasmoids/veromix-plasmoid/metadata.desktop" )
-        commands.getstatusoutput("cp " + unicode(self.package().path()) + "metadata.desktop.kde4.4 $(kde4-config  --localprefix )share/kde4/services/plasma-applet-veromix-plasmoid.desktop" )
-        commands.getstatusoutput("kbuildsycoca4" )
-        self.showMessage(KIcon("info"),"<b>Configuration updated</b><br/> \
-                Because of a known bug in KDE 4.4 initialization of Veromix failed.<br/><br/>\
-                A workaround is now installed.<br/><br/>\
-                Please <b>remove</b> this applet and <b>add</b> Veromix again to your desktop/panel (alternatively you can restart plasma-desktop).<br/><br/> \
-                Sorry for the inconvenience.", Plasma.ButtonOk)
-
     def wheelEvent(self, event):
         self.widget.on_step_volume( (event.delta() > 0) )
 
@@ -240,7 +182,6 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.widget.on_toggle_mute()
 
     def createConfigurationInterface(self, parent):        
-        print parent 
         self.config_widget = QWidget(parent)
         self.connect(self.config_widget, SIGNAL('destroyed(QObject*)'), self.configWidgetDestroyed)
         
@@ -282,13 +223,6 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_widget = None
         self.config_ui = None
 
-## FIXME add utils class
-    def _pixmapFromSVG(self, name):
-            svg = Plasma.Svg()
-            svg.setImagePath("icons/audio")
-            svg.setContainsMultipleImages(False)
-            return svg.pixmap(name)
-
 def CreateApplet(parent):
-    # Veromix is dedicated my girlfriend Vero.
+    # Veromix is dedicated to my girlfriend Vero.
     return VeroMixPlasmoid(parent)

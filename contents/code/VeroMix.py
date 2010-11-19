@@ -16,25 +16,17 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-import sys, os, commands, time
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.plasma import Plasma
-from PyKDE4 import plasmascript
-from PyKDE4.kdeui import *
-from PyKDE4.kdecore import *
-from PyKDE4.kdecore import *
-from PyKDE4.plasma import *
 
-import signal, os, datetime
-from SinkUI import *
-from SinkInputUI import *
-from LabelSlider import *
-from PulseAudioProxy import *
-from SortedLayout import *
-from SourceUI import *
-from SourceOutputUI import *
-from LockableScrollWidget import *
+from PulseAudioProxy import PulseAudio
+from SortedLayout import SortedLayout
+from LockableScrollWidget import LockableScrollWidget
+from SinkUI import SinkUI
+from SinkInputUI import InputSinkUI
+from SourceUI import SourceUI
+from SourceOutputUI import SourceOutputUI
 
 class VeroMix(QGraphicsWidget):
     sinkOutputChanged = pyqtSignal()

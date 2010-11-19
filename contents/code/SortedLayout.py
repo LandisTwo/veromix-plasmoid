@@ -16,15 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from PyKDE4.plasma import Plasma
-from PyKDE4 import plasmascript
-from PyKDE4.kdeui import *
-from PyKDE4.kdecore import *
-from PyKDE4.kdecore import *
-from PyKDE4.plasma import *
-import sys
 
 class SortedLayout(QGraphicsLinearLayout):
 

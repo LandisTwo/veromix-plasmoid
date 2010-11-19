@@ -26,7 +26,7 @@ import signal, os, datetime
 from LabelSlider import *
 from InfoWidget import *
 from SinkUI import *
-
+from MuteButton  import InputMuteButton
 
 class InputSinkUI(SinkUI):
 

@@ -16,16 +16,16 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
+import   datetime
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 from PyKDE4.plasma import Plasma
 
-import signal, os, datetime
-from LabelSlider import *
-from InfoWidget import *
-from MuteButton  import *
-from ClickableMeter import *
+from LabelSlider import LabelSlider
+from InfoWidget import SinkInfoWidget
+from MuteButton  import MuteButton
+from ClickableMeter import ClickableMeter
 
 class Channel( Plasma.Frame):
     def __init__(self , parent):
