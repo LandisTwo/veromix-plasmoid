@@ -1,4 +1,11 @@
-0.8.3 - 25.10.2010
+0.8.5 - 19.11.2010
+- monochrome icons (kde 4.5)
+- configuration interface (more to come there)
+- autohide
+- panel icon shows 4 states: mute low medium high
+- tooltip over panel icon
+- better scrolling behaviour
+0.8.4 - 25.10.2010
 - fix regression (SinkInputs not appearing)
 0.8.3 - 25.10.2010
 - fix SinkInputs without session-id (mpd)
