@@ -52,6 +52,8 @@ from PyQt4 import uic
 from PyKDE4 import plasmascript
 from PyKDE4.plasma import Plasma
 from PyKDE4.kdeui import KIcon
+from PyKDE4.kdeui import KActionCollection
+from PyKDE4.kdeui import KShortcut
 
 from VeroMix import VeroMix
 from Utils import *
@@ -105,7 +107,30 @@ class VeroMixPlasmoid(plasmascript.Applet):
             updateMetadataDesktop(self)      
             
         self.initTooltip()
+        self.initShortcuts()
         QTimer.singleShot(1000, self.fixPopupIcon)            
+
+    def initShortcuts(self):
+        self.actionCollection = KActionCollection(self)
+        
+        louder = self.actionCollection.addAction("VeromixVolumeUp")
+        louder.setText("Veromix volume up")
+        #louder.setGlobalShortcut(KShortcut(Qt.CTRL + Qt.ALT+ Qt.Key_U))
+        louder.setGlobalShortcut(KShortcut())        
+        louder.triggered.connect(self.widget.on_step_volume_up)
+        
+        lower = self.actionCollection.addAction("VeromixVolumeDown")
+        lower.setText("Veromix volume down")
+        #lower.setGlobalShortcut(KShortcut(Qt.CTRL + Qt.ALT+ Qt.Key_D))
+        lower.setGlobalShortcut(KShortcut())        
+        lower.triggered.connect(self.widget.on_step_volume_down)
+        
+        mute = self.actionCollection.addAction("VeromixVolumeMute")
+        mute.setText("Veromix toggle  mute")
+        #lower.setGlobalShortcut(KShortcut(Qt.CTRL + Qt.ALT+ Qt.Key_M))
+        mute.setGlobalShortcut(KShortcut())        
+        mute.triggered.connect(self.widget.on_toggle_mute)        
+
 
     def initTooltip(self):
         if (self.formFactor() != Plasma.Planar):   

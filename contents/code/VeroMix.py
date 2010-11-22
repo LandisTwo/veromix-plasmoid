@@ -234,6 +234,12 @@ class VeroMix(QGraphicsWidget):
         if sink != None:
             sink.on_mute_cb()
 
+    def on_step_volume_up(self):
+        self.on_step_volume(True)
+    
+    def on_step_volume_down(self):
+        self.on_step_volume(False)
+        
     def on_step_volume(self, up):
         sink = self.getDefaultSink()
         if sink != None:
