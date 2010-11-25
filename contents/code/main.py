@@ -59,7 +59,7 @@ from VeroMix import VeroMix
 from Utils import *
 
 class VeroMixPlasmoid(plasmascript.Applet):
-    VERSION="8.6"
+    VERSION="0.8.7"
 
     def __init__(self,parent,args=None):        
         plasmascript.Applet.__init__(self,parent)
