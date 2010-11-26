@@ -1,6 +1,10 @@
+0.8.7
+- bugfix
+- merged configuration dialogs 
+- improved error-messages with link to the wiki
+
 0.8.6 - 
 - global keyboard shortcuts
-
 
 0.8.5 - 19.11.2010
 - monochrome icons (kde 4.5)

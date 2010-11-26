@@ -59,7 +59,7 @@ from VeroMix import VeroMix
 from Utils import *
 
 class VeroMixPlasmoid(plasmascript.Applet):
-    VERSION="8.6"
+    VERSION="0.8.7"
 
     def __init__(self,parent,args=None):        
         plasmascript.Applet.__init__(self,parent)
@@ -108,7 +108,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             
         self.initTooltip()
         self.initShortcuts()
-        QTimer.singleShot(1000, self.fixPopupIcon)            
+        QTimer.singleShot(1000, self.fixPopupIcon)
 
     def initShortcuts(self):
         self.actionCollection = KActionCollection(self)
@@ -213,12 +213,13 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_ui = uic.loadUi(str(self.package().filePath('ui', 'appearance.ui')), self.config_widget)        
         self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background",False).toInt() [0] ) 
         self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
-        parent.addPage(self.config_widget, "General", "veromix-plasmoid-128" )
+        self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
+        parent.addPage(self.config_widget, "Veromix", "veromix-plasmoid-128" )
         
-        self.about_widget = QWidget(parent)
-        self.about_ui = uic.loadUi(str(self.package().filePath('ui', 'about.ui')), self.about_widget)
-        self.about_ui.version.setText(VeroMixPlasmoid.VERSION)
-        parent.addPage(self.about_widget, "About", "help-about" )
+        #self.about_widget = QWidget(parent)
+        #self.about_ui = uic.loadUi(str(self.package().filePath('ui', 'about.ui')), self.about_widget)
+        #self.about_ui.version.setText(VeroMixPlasmoid.VERSION)
+        #parent.addPage(self.about_widget, "About", "help-about" )
         return self.config_widget
 
     def configChanged(self):
