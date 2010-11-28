@@ -60,6 +60,10 @@ from Utils import *
 
 class VeroMixPlasmoid(plasmascript.Applet):
     VERSION="0.8.7"
+    
+    nowplaying_player_added = pyqtSignal(QString, QObject)
+    nowplaying_player_removed = pyqtSignal(QString )
+    nowplaying_player_dataUpdated = pyqtSignal(QString, dict)
 
     def __init__(self,parent,args=None):        
         plasmascript.Applet.__init__(self,parent)
@@ -81,6 +85,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
         self.widget = VeroMix(self)
         self.widget.init()
+        self.initNowPlaying()
 
         defaultSize =  QVariant(QSize (0,0))
         size = self.config().readEntry("size", defaultSize ).toSize()
@@ -248,6 +253,34 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def configWidgetDestroyed(self):
         self.config_widget = None
         self.config_ui = None
+
+### now playing
+
+    def initNowPlaying(self):        
+        self.now_playing_engine = self.dataEngine('nowplaying')
+        self.connect(self.now_playing_engine, SIGNAL('sourceAdded(QString)'), self.playerAdded)
+        self.connect(self.now_playing_engine, SIGNAL('sourceRemoved(QString)'), self.playerRemoved)
+        self.connectToNowPlayingEngine()
+            
+    def connectToNowPlayingEngine(self):
+        # get sources and connect
+        for source in self.now_playing_engine.sources():
+            self.playerAdded(source)
+            
+    def playerAdded(self, player):
+        self.now_playing_engine.disconnectSource(player, self)
+        self.now_playing_engine.connectSource(player, self, 1000)   
+        controller = self.now_playing_engine.serviceForSource(player)
+        self.nowplaying_player_added.emit(player, controller )
+
+    def playerRemoved(self, player):
+        self.now_playing_engine.disconnectSource(player, self)
+        self.nowplaying_player_removed.emit(player)
+
+    @pyqtSignature('dataUpdated(const QString&, const Plasma::DataEngine::Data&)')
+    def dataUpdated(self, sourceName, data):
+        self.nowplaying_player_dataUpdated.emit(sourceName, data)
+
 
 def CreateApplet(parent):
     # Veromix is dedicated to my girlfriend Vero.

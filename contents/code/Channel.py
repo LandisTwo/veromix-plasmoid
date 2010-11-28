@@ -49,6 +49,7 @@ class Channel( Plasma.Frame):
 
     def init(self):
         self.layout = QGraphicsLinearLayout(Qt.Vertical)
+        # padding:
         self.layout.setContentsMargins(6,3,6,3)
         #self.layout.setContentsMargins(6,6,6,6)
         self.setLayout(self.layout)

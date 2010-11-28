@@ -28,6 +28,7 @@ from SinkUI import SinkUI
 from SinkInputUI import InputSinkUI
 from SourceUI import SourceUI
 from SourceOutputUI import SourceOutputUI
+from NowPlaying import NowPlaying
 
 class VeroMix(QGraphicsWidget):
     sinkOutputChanged = pyqtSignal()
@@ -35,8 +36,6 @@ class VeroMix(QGraphicsWidget):
     def __init__(self,parent):
         QGraphicsWidget.__init__(self)
         self.applet = parent
-        #self.sinks = {}
-        self.sources = {}
         self.mouse_is_over = False
         self.pa = None
 
@@ -80,8 +79,8 @@ class VeroMix(QGraphicsWidget):
         self.sink_panel_layout.setContentsMargins(0,0,0,0)
 
         #QTimer.singleShot(4000, self.start_pa)
-        #self.restore = False
         self.start_pa()
+        self.start_nowplaying()
 
     # connect to pulseaudio(dbus) callbacks
     def start_pa(self):
@@ -108,6 +107,11 @@ class VeroMix(QGraphicsWidget):
         self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
         self.pa.requestInfo()
 
+    def start_nowplaying(self):
+        self.applet.nowplaying_player_added.connect(self.on_nowplaying_added)
+        self.applet.nowplaying_player_removed.connect(self.on_nowplaying_removed)
+        self.applet.nowplaying_player_dataUpdated.connect(self.on_nowplaying_dataUpdated)
+
 ## helpers UI
 
     def check_geometries(self):
@@ -123,8 +127,6 @@ class VeroMix(QGraphicsWidget):
         if self.applet.formFactor()  == Plasma.Planar:
             pass
         else:
-            #pass
-            #print "formfactor" =
             #self.setSizePolicy(QSizePolicy.Preferred)
             self.setMinimumHeight(self.scrolled_panel.preferredSize().height())
             self.setMaximumHeight(self.scrolled_panel.preferredSize().height())
@@ -209,8 +211,8 @@ class VeroMix(QGraphicsWidget):
     def on_volume_meter_source(self, index, level):
         if not self.mouse_is_over:
             return
-        for sink in self.sources:
-            self.sources[sink].on_update_meter(index,int(level), len(self.sources))
+        for source in self.source_panel_layout.getChannels().values():
+            source.on_update_meter(index,int(level), len(self.sources))
 
 ## Callbacks mouse -> start volume-meter callbacks (they will automatically stop after 5 seconds )
 
@@ -246,6 +248,19 @@ class VeroMix(QGraphicsWidget):
         sink = self.getDefaultSink()
         if sink != None:
             sink.on_step_volume(up)
+
+### callback nowplaying
+
+    def on_nowplaying_added(self, name, controller):
+        self.add_channel(name, NowPlaying(self, controller),None, self.sink_panel_layout)
+
+    def on_nowplaying_removed(self, name):
+        self.remove_channel(name,self.sink_panel_layout)
+
+    def on_nowplaying_dataUpdated(self, name, values):
+        channel = self.sink_panel_layout.getChannel(name)
+        if channel:
+            channel.update_with_info(values)
 
 ### panel icons
 
@@ -295,6 +310,6 @@ class VeroMix(QGraphicsWidget):
         for i in self.sink_panel_layout.getChannels().values():
             # if a slider is not visible, plasmoidviewer crashes if the slider is not removed before exit... (dont ask me)
             i.removeSlider()
-        for i in self.sources.values():
+        for i in self.source_panel_layout.getChannels().values():
             # if a slider is not visible, plasmoidviewer crashes if the slider is not removed before exit... (dont ask me)
             i.removeSlider()
