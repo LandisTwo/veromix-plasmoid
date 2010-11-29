@@ -44,12 +44,10 @@ class Channel( Plasma.Frame):
         self.plasma_timestamp = datetime.datetime.now() + d
 
         self.extended_panel_shown = False
-        self.setFrameShadow(Plasma.Frame.Sunken)
         self.init()
 
     def init(self):
         self.layout = QGraphicsLinearLayout(Qt.Vertical)
-        # padding:
         self.layout.setContentsMargins(6,3,6,3)
         #self.layout.setContentsMargins(6,6,6,6)
         self.setLayout(self.layout)
@@ -181,3 +179,9 @@ class Channel( Plasma.Frame):
 
     def isSinkOutput(self):
         return False
+        
+    def isSinkInput(self):
+        return False
+        
+    def isNowplaying(self):
+        return False        
