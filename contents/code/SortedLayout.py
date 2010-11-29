@@ -34,6 +34,20 @@ class SortedLayout(QGraphicsLinearLayout):
             if self.channels[index].isSinkOutput():
                 toreturn.append(self.channels[index])
         return toreturn
+        
+    def getSinkInputs(self):
+        toreturn = []
+        for index in self.channels.keys() :
+            if self.channels[index].isSinkInput():
+                toreturn.append(self.channels[index])
+        return toreturn        
+
+    def getNowPlaying(self):
+        toreturn = []
+        for index in self.channels.keys() :
+            if self.channels[index].isNowplaying():
+                toreturn.append(self.channels[index])
+        return toreturn        
 
     def getChannel(self, key):
         if key in self.channels.keys():
@@ -65,6 +79,8 @@ class SortedLayout(QGraphicsLinearLayout):
                 return
 
     def needs_ordering(self):
+        for c in self.channels.values():
+            c.updateSortOrderIndex()
         sorting = self.sort(self.channels.values(), 'sortOrderIndex')
         for i in range(0,len(sorting)):
             if self.itemAt(i).graphicsItem ()  != sorting[i]:
