@@ -269,13 +269,18 @@ class VeroMixPlasmoid(plasmascript.Applet):
             
     def playerAdded(self, player):
         self.now_playing_engine.disconnectSource(player, self)
-        self.now_playing_engine.connectSource(player, self, 1000)   
+        if player in self.getNowplayingPlayerBlacklist():
+            return 
+        self.now_playing_engine.connectSource(player, self, 2000)   
         controller = self.now_playing_engine.serviceForSource(player)
         self.nowplaying_player_added.emit(player, controller )
 
     def playerRemoved(self, player):
         self.now_playing_engine.disconnectSource(player, self)
         self.nowplaying_player_removed.emit(player)
+
+    def getNowplayingPlayerBlacklist(self):
+        return ["org.mpris.MediaPlayer2.amarok"]
 
     @pyqtSignature('dataUpdated(const QString&, const Plasma::DataEngine::Data&)')
     def dataUpdated(self, sourceName, data):
