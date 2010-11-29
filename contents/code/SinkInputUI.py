@@ -37,6 +37,21 @@ class InputSinkUI(SinkUI):
     def init(self):
         SinkUI.init(self)
         self.setAcceptDrops(False)
+        self.updateBorders()
+   
+    def hasNowPlayingExtension(self):
+        for player in self.veromix.getNowPlaying():
+            if player.matches(self):
+                return True
+        return False
+   
+    def updateBorders(self):
+        if self.hasNowPlayingExtension():        
+            self.setEnabledBorders (Plasma.FrameSvg.LeftBorder)
+            self.setEnabledBorders (Plasma.FrameSvg.RightBorder)
+            self.setEnabledBorders (Plasma.FrameSvg.BottomBorder)
+        else:
+            self.setEnabledBorders (Plasma.FrameSvg.AllBorders)
 
     def createMute(self):
         self.mute = InputMuteButton(self)
@@ -61,7 +76,7 @@ class InputSinkUI(SinkUI):
 
     def updateSortOrderIndex(self):
         if self.pa_sink:
-            self.sortOrderIndex =  self.sinkIndexFor(int(self.getOutputIndex())) - self.index
+            self.sortOrderIndex =  self.sinkIndexFor(int(self.getOutputIndex())) - (self.index * 10 ) 
 
     def getOutputIndex(self):
         return self.pa_sink.props["sink"]
@@ -85,6 +100,7 @@ class InputSinkUI(SinkUI):
         if self.slider:
             self.slider.setText(text)
             self.slider.setBoldText(bold)
+            self.text = bold
         iconname = None
         if self.pa_sink.props["app_icon"] != "None":
             iconname = self.pa_sink.props["app_icon"]
@@ -123,9 +139,15 @@ class InputSinkUI(SinkUI):
         #drag.setHotSpot(event.pos() - self.rect().topLeft())
         dropAction = drag.start(Qt.MoveAction)
 
-
     def isSinkOutput(self):
         return False
 
+    def isSinkInput(self):
+        return True
+
     def isDefaultSink(self):
         return False
+        
+    def update_with_info(self,info):
+        SinkUI.update_with_info(self, info)
+        self.updateBorders()
