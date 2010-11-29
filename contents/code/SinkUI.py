@@ -132,28 +132,5 @@ class SinkUI(Channel):
     def startDrag(self,event):
         pass
 
-
-    def paint2(self, painter,  option, widget = 0):
-        QGraphicsWidget.paint(self, painter, option, widget)
-        margin = 10
-        width = 6
-        height = 6
-        size = self.contentsRect()
-
-        m_left = margin
-        m_right =  size.width() - ( margin) - width
-        m_top = margin
-        m_bottom = size.height()  -  ( margin) - height
-
-        print m_left, m_top, m_right, m_bottom
-        painter.setRenderHint(QPainter.Antialiasing)
-        #p = Plasma.PaintUtils.roundedRectangle(
-                            #self.contentsRect().adjusted(m_left, m_top, -m_right, -m_bottom), 4)
-        p = Plasma.PaintUtils.roundedRectangle(
-                            self.contentsRect().adjusted(m_left, m_top, -m_right, -m_bottom), 4)
-        c = Plasma.Theme.defaultTheme().color(Plasma.Theme.TextColor)
-        c.setAlphaF(0.3)
-        painter.fillPath(p, c)
-
     def isSinkOutput(self):
         return True
