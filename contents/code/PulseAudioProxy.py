@@ -116,10 +116,19 @@ class PulseAudio(QObject):
         pa_obj  = self.bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
         return dbus.Interface(pa_obj, 'org.veromix.pulseaudio')
 
-    def getNowPlaying(self):
-        pa_obj  = self.bus.get_object("org.mpris.amarok","/Player")
-        return dbus.Interface(pa_obj, 'org.freedesktop.MediaPlayer')
+    def getNowPlayingObj(self, destination):
+        return  self.bus.get_object(destination, '/org/mpris/MediaPlayer2')
 
+    def getNowPlaying(self, destination):
+        pa_obj = self.getNowPlayingObj(destination)
+        #pa_obj  = self.bus.get_object("org.mpris.amarok","/Player")
+        return dbus.Interface(pa_obj, 'org.mpris.MediaPlayer2.Player')
+        
+    def getNowPlayingProperty(self, destination, name):
+        pa_obj = self.getNowPlayingObj(destination)
+        props = dbus.Interface(pa_obj, 'org.freedesktop.DBus.Properties')
+        return props.Get('org.mpris.MediaPlayer2.Player', name )
+        #rbprops.Set('org.gnome.Rhythmbox.Shell', 'visibility', force_visible or (not is_visible))
 
     def on_sink_input_info(self,   index,   name,  muted  , volume ,  props):
         sink =SinkInfo(self, index,   name,  muted  , volume ,  props)
@@ -201,9 +210,28 @@ class PulseAudio(QObject):
     def move_source_output(self, sink, output):
         self.getMixer().move_source_output(sink, output)
 
-    def nextTrack(self):
-        self.getNowPlaying().Next()
+    def nowplaying_next(self, destination):
+        self.getNowPlaying(str(destination)).Next()
 
+    def nowplaying_prev(self, destination):
+        self.getNowPlaying(str(destination)).Previous()
+        
+    def nowplaying_pause(self, destination):
+        self.getNowPlaying(str(destination)).Pause()        
+    
+    def nowplaying_play(self, destination):
+        self.getNowPlaying(str(destination)).Play()        
+
+    def nowplaying_getPosition(self, destination):
+        return self.getNowPlayingProperty( str(destination) , "Position" )
+
+    def nowplaying_getMetadata(self, destination):
+        return self.getNowPlayingProperty( str(destination) , "Metadata" )
+
+    def nowplaying_getPlaybackStatus(self, destination):
+        return self.getNowPlayingProperty( str(destination) , "PlaybackStatus" )
+        #return self.getNowPlaying(str(destination)).GetAll() #("PlaybackStatus")
+        
     def requestInfo(self):
         try:
             self.getMixer().requestInfo()
