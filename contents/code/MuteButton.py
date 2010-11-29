@@ -25,10 +25,10 @@ from Utils import *
 
 class MuteButton(Plasma.IconWidget):
 
-    BIGSIZE= 28
 
     def __init__(self , parent):
         Plasma.IconWidget.__init__(self)
+        self.BIGSIZE= 28
         self.setPreferredSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
         self.setMaximumSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
         self.setParent(parent)
@@ -37,6 +37,11 @@ class MuteButton(Plasma.IconWidget):
 
     def mouseMoveEvent(self,event):
         self.parent().startDrag(event)
+
+    def setAbsSize(self, value):
+        self.BIGSIZE = value
+        self.setPreferredSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
+        self.setMaximumSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
 
     def setMuted(self, boolean):
         if boolean :
