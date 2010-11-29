@@ -211,8 +211,9 @@ class VeroMix(QGraphicsWidget):
     def on_volume_meter_source(self, index, level):
         if not self.mouse_is_over:
             return
-        for source in self.source_panel_layout.getChannels().values():
-            source.on_update_meter(index,int(level), len(self.sources))
+        sources = self.source_panel_layout.getChannels().values()
+        for source in sources:
+            source.on_update_meter(index,int(level), len(sources))
 
 ## Callbacks mouse -> start volume-meter callbacks (they will automatically stop after 5 seconds )
 
@@ -252,7 +253,10 @@ class VeroMix(QGraphicsWidget):
 ### callback nowplaying
 
     def on_nowplaying_added(self, name, controller):
+        print name
+        self.sink_panel_layout.setSpacing(0)
         self.add_channel(name, NowPlaying(self, controller),None, self.sink_panel_layout)
+        #self.sink_panel_layout.setItemSpacing()
 
     def on_nowplaying_removed(self, name):
         self.remove_channel(name,self.sink_panel_layout)
@@ -290,6 +294,12 @@ class VeroMix(QGraphicsWidget):
 
     def getSinkOutputs(self):
         return self.sink_panel_layout.getSinkOutputs()
+
+    def getSinkInputs(self):
+        return self.sink_panel_layout.getSinkInputs()
+
+    def getNowPlaying(self):
+        return self.sink_panel_layout.getNowPlaying()
 
     def getDefaultSink(self):
         for sink in self.sink_panel_layout.getChannels().values():
