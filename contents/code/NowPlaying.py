@@ -75,7 +75,7 @@ class NowPlaying( Channel ):
         self.panel_layout.addStretch()
         self.panel_layout.addItem(self.middle)    
         self.panel_layout.addStretch()
-        self.CONTROLSBAR_SIZE = 128
+        self.CONTROLSBAR_SIZE = 112
         self.middle.setPreferredSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
         self.middle.setMaximumSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
 
@@ -169,7 +169,7 @@ class NowPlaying( Channel ):
     def createMiddle(self):
         self.middle = Plasma.IconWidget()
         self.middle_layout = QGraphicsLinearLayout(Qt.Vertical)
-        #self.middle_layout.setContentsMargins(6,8,6,0)
+        self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setLayout(self.middle_layout)
         self.middle.setIcon(KIcon(self.getPauseIcon()))
         #self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
@@ -187,7 +187,6 @@ class NowPlaying( Channel ):
         self.prev = MuteButton(self)
         self.prev.setAbsSize(20)
         self.prev.setSvg(self.svg_path, "prev-normal")        
-        #self.prev.setPrefix('prev')
         self.connect(self.prev, SIGNAL("clicked()"), self.on_prev_cb  )
 
     def createPlayPause(self):
@@ -244,7 +243,6 @@ class NowPlaying( Channel ):
             if val != self.cover_string:                
                 data[QString('Artwork')] =  QPixmap(val)
                 self.cover_string = val
-                print val
         if dbus.String("mpris:length") in metadata.keys():
             v =  int(metadata[str(dbus.String("mpris:length"))])  / 1000000 
             data[QString('Length')] = v
@@ -281,7 +279,6 @@ class NowPlaying( Channel ):
             if str(sink.text).lower() == name:
                 return sink
         for sink in self.veromix.getSinkInputs():
-            print sink.text
             if str(sink.text).lower().find(name) >= 0 :
                 return sink                      
         for sink in self.veromix.getSinkInputs():
