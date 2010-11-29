@@ -20,9 +20,11 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 from PyKDE4.plasma import Plasma
+import dbus
 
 import signal, os, datetime
 from LabelSlider import LabelSlider
+from LabelSlider import Label
 from Channel import Channel
 from MuteButton  import *
 
@@ -34,232 +36,163 @@ class NowPlaying( Channel ):
         Channel.__init__(self, veromix)  
         self.index = -1
         self.state = NowPlaying.NA
-        self.artist = ""
-        self.title = ""
-        self.album =""
-        self.volume = 0
         self.position = 0
-        self.length = 0
+        self.length = 0  
+        self.artwork = ""
+        self.cover_string = ""
+        self.setEnabledBorders (Plasma.FrameSvg.LeftBorder)
+        self.setEnabledBorders (Plasma.FrameSvg.RightBorder)
+        self.setEnabledBorders (Plasma.FrameSvg.TopBorder)
         
-
-    def initArrangement(self):
-        
+    def initArrangement(self):        
         #self.setContentsMargins(6,3,6,0)
         #self.layout.setContentsMargins(6,3,6,10)
         self.svg_path = self.veromix.applet.package().filePath('images', 'buttons.svgz')
         self.createMiddle()      
+        self.createSlider()
         self.createPlayControlsBar()
-        self.createPanel()
         self.createPanel()
         self.createPrev()
         self.createPlayPause()
         self.createNext() 
+        self.createPositionLabel()
 
     def composeArrangement(self):
-        self.layout.addItem(self.panel)
+        self.composeArrangement1()
         
-        #self.panel_layout.addStretch()
+    def composeArrangement1(self):
+        self.layout.addItem(self.panel)
         self.controlsbar_layout.addItem(self.prev)
         self.controlsbar_layout.addStretch()
         self.controlsbar_layout.addItem(self.play)
         self.controlsbar_layout.addStretch()
         self.controlsbar_layout.addItem(self.next)
         
+        self.middle_layout.setSpacing(0)
         self.middle_layout.addStretch()        
+        self.middle_layout.addItem(self.positionLabel)
         self.middle_layout.addItem(self.controlsbar)
-        
         self.panel_layout.addStretch()
-        self.panel_layout.addItem(self.middle)
+        self.panel_layout.addItem(self.middle)    
         self.panel_layout.addStretch()
-        #self.panel_layout.addItem(self.meter)
-        #self.panel_layout.addItem(self.mute)
-        #self.panel_layout.addItem(self.mute)       
+        self.CONTROLSBAR_SIZE = 128
+        self.middle.setPreferredSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
+        self.middle.setMaximumSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
 
 
-    def update_with_info(self, data):        
+    def composeArrangement2(self):
+        self.layout.addItem(self.middle)
+        self.layout.addItem(self.panel)
+        self.panel_layout.addItem(self.prev)
+        self.panel_layout.addItem(self.play)
+        self.panel_layout.addItem(self.next)
+        #self.panel_layout.addItem(self.slider)
+        self.CONTROLSBAR_SIZE = 90
+        self.middle.setPreferredSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
+        self.middle.setMaximumSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
+
+    def update_with_info(self, info):                
+        data = info
+        if self.useDbusWorkaround():
+            data = self.getDbusInfo()
         self.updateState(data)
         self.updatePosition(data)
-        self.updateArtistInfo(data)
-        self.updateCover(data)
-        
+        self.updateCover(data)        
+        self.updateSortOrderIndex()
         
     def updateState(self,data):
         state = self.state
         if QString('State') in data:
             if data[QString('State')] == u'playing':
                 state = NowPlaying.Playing
-            elif data[QString('State')] == u'paused':
+            else:
                 state = NowPlaying.Paused
-            elif data[QString('State')] == u'stopped':
-                state = NowPlaying.Stopped
-
         if self.state != state:
             self.state = state
             if self.state == NowPlaying.Playing:
-                self.play.setSvg(self.svg_path, "stop-normal")     
+                self.play.setSvg(self.svg_path, "pause-normal")     
             else:
                 self.play.setSvg(self.svg_path, "play-normal")     
-                
-        #self.checkPlayPause()
-        #self.checkVisibility()
-        #changed = True
         
+    def getPauseIcon(self):
+        name = self.get_application_name()
+        app = self.veromix.query_application(str(name))
+        if app == None:
+            return name
+        return app
         
-    def updateCover(self,data):
-        #self.mute.dataUpdated("amarok",data)
+    def updateCover(self,data):      
+        if self.state == NowPlaying.Paused  :
+            if self.artwork != None:
+                self.artwork = None
+                self.middle.setIcon(KIcon(self.getPauseIcon()))
+            return 
         if QString('Artwork') in data:
-                self.middle.setIcon(QIcon(QPixmap(data[QString('Artwork')])))
-        else:
-            img = None
-            #self.mute.setImage(QPixmap(data[QString('Artwork')]))
-        pass
-    
-    def updateArtistInfo(self,data):
-        if QString('Artist') in data:
-            artist = data[QString('Artist')]
-        #elif self.player != '':
-            #artist = U(self.player)
-            #artist = artist[artist.rfind('.') + 1:].title()
-        else:
-            artist = i18n('No Player')
-          
-        artist = self.controller.destination() +" " +artist
-        #artist = self.
-        if artist != self.artist:
-            self.artist = artist
-            if self.slider != None:
-                self.slider.setBoldText(self.artist)
-            changed = True
-
+            val = data[QString('Artwork')]
+            if self.artwork !=  val:
+                self.artwork = val
+                if val == None:
+                    self.middle.setIcon(KIcon(self.getPauseIcon()))
+                else:
+                    self.middle.setIcon(QIcon(QPixmap(val)))
+                    
     def updatePosition(self, data):
-
         if QString('Position') in data:
             v = data[QString('Position')]
-            if v != self.position:
+            if v != self.position:               
                 self.position = v
-                if self.slider != None:
-                    self.slider.setValue(v)
-                    #self.current.setText('%d:%02d' % (v / 60, v % 60))            
-            
+                pos_str = ( '%d:%02d' % (v / 60, v % 60))
+                self.positionLabel.setBoldText(pos_str)            
         if QString('Length') in data:
             v = data[QString('Length')]
             if v != self.length:
                 self.length = v
-                if self.slider != None:
-                    self.slider.setMaximum(v)
-                    #self.total.setText('%d:%02d' % (v / 60, v % 60))
+                pos_str = ( '%d:%02d' % (v / 60, v % 60))
+                self.positionLabel.setText("<b>/ "+pos_str+"</b>")
 
-    def gugus(self):
-        changed = False
-        state = NowPlaying.Stopped
-        
-        if QString('Title') in data:
-            title = U(data[QString('Title')])
-            if self.state == NowPlaying.Paused:
-                title += U(i18n(' (paused)'))
-            if self.state == NowPlaying.Stopped:
-                title += U(i18n(' (stopped)'))
-        else:
-            if self.state == NowPlaying.Stopped:
-                title = U(i18n('Stopped'))
-            else:
-                title = U(i18n('N/A'))
-        if title != self.title:
-            self.title = title
-            if self.slider != None:
-                self.slider.setText(self.title)
-            changed = True
-
-        #if QString('Album') in data:
-            #album = U(data[QString('Album')])
-        #else:
-            #album = ''
-        #if self.album != album:
-            #self.album = album
-            #changed = True
-
-        if QString('Artwork') in data:
-            if changed:
-                self.cover.setIcon(KIcon(QPixmap(data[QString('Artwork')])))
-        else:
-            img = None
-            #self.meter.setImage(QPixmap(data[QString('Artwork')]))
-            #if album != '':
-                #key = artist + '|' + album
-                #if key in self.coverCache:
-                    #img = self.coverCache[key]
-                #elif self.coverPlugin != None:
-                    #img = self.coverPlugin(artist, album)
-                    #self.coverCache[key] = img
-            #if not img:
-                #img = self.logo
-
-            #if self.cover.image() != img:
-                #self.cover.setImage(img)
-
-        #if changed and self.formFactor() in [Plasma.Horizontal, Plasma.Vertical]:
-            #self.artwork = self.cover.scaledPixmap(50, 50)
-            #toolTip = Plasma.ToolTipContent(self.artist, self.title, self.artwork)
-            #Plasma.ToolTipManager.self().setContent(self.applet, toolTip)
-
-        #if QString('Volume') in data:
-            #v = I(F(data[QString('Volume')]) * 100.0)
-            #if v != self.volume:
-                #self.volume = v
-                #if self.slider != None:
-                    #self.slider.setValue(v)
     def createMeter(self):
         pass
-        #self.meter.setMeterType(Plasma.Meter.AnalogMeter)
-        #self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum, True))
-        #self.connect(self.meter, SIGNAL("clicked()"), self.on_show_info_widget  )
+
+    def createPositionLabel(self):
+        self.positionLabel = Label()
+        self.positionLabel.setContentsMargins(0,0,0,0)
+        self.positionLabel.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum, True))
+        self.positionLabel.setAlignment(Qt.AlignRight)
 
     def createPlayControlsBar(self):
         self.controlsbar = Plasma.IconWidget()
         self.controlsbar_layout = QGraphicsLinearLayout(Qt.Horizontal)
         self.controlsbar_layout.setContentsMargins(0,0,0,0)
-
         self.controlsbar.setLayout(self.controlsbar_layout)
-        #self.controlsbar.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
-        self.controlsbar.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding))
-        
-
-        #self.setMaximumSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
+        self.controlsbar.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum))
         
     def createMiddle(self):
         self.middle = Plasma.IconWidget()
         self.middle_layout = QGraphicsLinearLayout(Qt.Vertical)
         #self.middle_layout.setContentsMargins(6,8,6,0)
-
-
-        self.CONTROLSBAR_SIZE = 128
-        self.middle.setPreferredSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
-        self.middle.setMaximumSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
-
         self.middle.setLayout(self.middle_layout)
+        self.middle.setIcon(KIcon(self.getPauseIcon()))
         #self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-
-        self.createSlider()
-        self.connect(self.slider, SIGNAL("valueChanged(int)"), self.on_slider_cb  )
-        #self.middle_layout.addItem(self.slider)
 
     def createMute(self):
         pass
 
     def createNext(self):
         self.next = MuteButton(self)
+        self.next.setAbsSize(20)
         self.next.setSvg(self.svg_path , "next-normal")
         self.connect(self.next, SIGNAL("clicked()"), self.on_next_cb  )
 
     def createPrev(self):
         self.prev = MuteButton(self)
+        self.prev.setAbsSize(20)
         self.prev.setSvg(self.svg_path, "prev-normal")        
         #self.prev.setPrefix('prev')
         self.connect(self.prev, SIGNAL("clicked()"), self.on_prev_cb  )
 
     def createPlayPause(self):
-        #self.mute = NowRocking(self.veromix)
         self.play = MuteButton(self)
+        self.play.setAbsSize(20)
         self.play.setSvg(self.svg_path, "stop-normal")        
         self.connect(self.play, SIGNAL("clicked()"), self.on_play_cb  )
 
@@ -267,18 +200,94 @@ class NowPlaying( Channel ):
         pass
     
     def on_next_cb(self):
-        #self.veromix.pa.nextTrack()
-        self.controller.startOperationCall(self.controller.operationDescription('next'))
+        if self.useDbusWorkaround():
+            self.veromix.pa.nowplaying_next(self.controller.destination())
+        else:
+            self.controller.startOperationCall(self.controller.operationDescription('next'))
 
     def on_prev_cb(self):
-        self.controller.startOperationCall(self.controller.operationDescription('previous'))
+        if self.useDbusWorkaround():
+            self.veromix.pa.nowplaying_prev(self.controller.destination())
+        else:
+            self.controller.startOperationCall(self.controller.operationDescription('previous'))
         
     def on_play_cb(self):
         if self.state == NowPlaying.Playing:
-            self.controller.startOperationCall(self.controller.operationDescription('pause'))
+            if self.useDbusWorkaround():
+                self.veromix.pa.nowplaying_pause(self.controller.destination())
+            else:
+                self.controller.startOperationCall(self.controller.operationDescription('pause'))
         else:
-            self.controller.startOperationCall(self.controller.operationDescription('play'))
+            if self.useDbusWorkaround():            
+                self.veromix.pa.nowplaying_play(self.controller.destination())
+            else:
+                self.controller.startOperationCall(self.controller.operationDescription('play'))
         
     def on_slider_cb(self, value):
         pass
 
+    def useDbusWorkaround(self):
+        return self.controller.destination() in self.getMpris2Clients()
+    
+    def getMpris2Clients(self):
+        return ["org.mpris.MediaPlayer2.banshee"]
+        
+    def getDbusInfo(self):
+        data = {}        
+        status = self.veromix.pa.nowplaying_getPlaybackStatus(self.controller.destination())        
+        data[QString('State')] =  u'paused'
+        if status == 'Playing':
+            data[QString('State')] =  u'playing'            
+        metadata = self.veromix.pa.nowplaying_getMetadata(self.controller.destination())       
+        if dbus.String("mpris:artUrl") in metadata.keys():
+            val = str(metadata[dbus.String("mpris:artUrl")])[7:]
+            if val != self.cover_string:                
+                data[QString('Artwork')] =  QPixmap(val)
+                self.cover_string = val
+                print val
+        if dbus.String("mpris:length") in metadata.keys():
+            v =  int(metadata[str(dbus.String("mpris:length"))])  / 1000000 
+            data[QString('Length')] = v
+        data[QString('Position')] = int(self.veromix.pa.nowplaying_getPosition(self.controller.destination()))  / 1000000 
+        return data
+        
+    def get_application_name(self):
+        name = self.controller.destination()
+        if name.indexOf("org.mpris.MediaPlayer2.")  == 0:
+            return name[23:]
+        if name.indexOf("org.mpris.")  == 0:
+            return name[10:]
+        return name
+        
+    def updateSortOrderIndex(self):
+        sink = self.findSink()      
+        if sink != None:
+            new =  sink.sortOrderIndex - 1
+            if self.sortOrderIndex != new:
+                self.sortOrderIndex = new
+                self.veromix.check_ItemOrdering()
+        else:
+            self.sortOrderIndex
+    
+    def matches(self, sink):
+        sink = self.findSink()
+        if sink == None:
+            return False
+        return True  
+  
+    def findSink(self):
+        name = str(self.get_application_name()).lower()
+        for sink in self.veromix.getSinkInputs():            
+            if str(sink.text).lower() == name:
+                return sink
+        for sink in self.veromix.getSinkInputs():
+            print sink.text
+            if str(sink.text).lower().find(name) >= 0 :
+                return sink                      
+        for sink in self.veromix.getSinkInputs():
+            if str(sink.text).find(sink.text.lower()) >= 0 :
+                return sink    
+        return None
+
+    def isNowplaying(self):
+        return True    
