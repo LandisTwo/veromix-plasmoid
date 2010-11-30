@@ -1,0 +1,15 @@
+Source: veromix-plasmoid
+Section: kde
+Priority: optional
+Maintainer: Nik Lutz <nik.lutz@gmail.com>
+Build-Depends: debhelper (>= 8)
+Standards-Version: 3.9.1
+Homepage: http://code.google.com/p/veromix-plasmoid/
+#Vcs-Browser: http://veromix-plasmoid.googlecode.com/svn/trunk/
+#Vcs-Svn: http://veromix-plasmoid.googlecode.com/svn/trunk/
+
+Package: veromix-plasmoid
+Architecture: all
+Depends: ${misc:Depends}
+Description: FIXME
+ FIXME
