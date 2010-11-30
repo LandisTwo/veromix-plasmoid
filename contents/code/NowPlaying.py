@@ -79,7 +79,6 @@ class NowPlaying( Channel ):
         self.middle.setPreferredSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
         self.middle.setMaximumSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
 
-
     def composeArrangement2(self):
         self.layout.addItem(self.middle)
         self.layout.addItem(self.panel)
@@ -226,10 +225,13 @@ class NowPlaying( Channel ):
         pass
 
     def useDbusWorkaround(self):
-        return self.controller.destination() in self.getMpris2Clients()
+        for name in self.getMpris2Clients():
+            if str(self.controller.destination()) .find(name) == 0:
+                return True
+        False
     
     def getMpris2Clients(self):
-        return ["org.mpris.MediaPlayer2.banshee"]
+        return self.veromix.applet.getMpris2Clients()
         
     def getDbusInfo(self):
         data = {}        
