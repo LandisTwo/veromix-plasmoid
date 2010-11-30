@@ -230,7 +230,6 @@ class PulseAudio(QObject):
 
     def nowplaying_getPlaybackStatus(self, destination):
         return self.getNowPlayingProperty( str(destination) , "PlaybackStatus" )
-        #return self.getNowPlaying(str(destination)).GetAll() #("PlaybackStatus")
         
     def requestInfo(self):
         try:
