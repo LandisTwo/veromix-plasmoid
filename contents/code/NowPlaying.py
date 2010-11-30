@@ -265,7 +265,6 @@ class NowPlaying( Channel ):
             new =  sink.sortOrderIndex - 1
             if self.sortOrderIndex != new:
                 self.sortOrderIndex = new
-                self.veromix.check_ItemOrdering()
         else:
             self.sortOrderIndex
     
