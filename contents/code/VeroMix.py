@@ -50,11 +50,11 @@ class VeroMix(QGraphicsWidget):
 
         self.source_panel = QGraphicsWidget()
         self.sink_panel = QGraphicsWidget()
-
-        useTabs = False
-        if useTabs:
+        
+        self.showsTabs =  self.applet.useTabs()
+        if self.showsTabs:
             self.scrolled_panel = Plasma.TabBar()
-            self.scrolled_panel.addTab("Play", self.sink_panel)
+            self.scrolled_panel.addTab("Playback", self.sink_panel)
             self.scrolled_panel.addTab("Record", self.source_panel)
         else:
             self.scrolled_panel = QGraphicsWidget()
@@ -69,6 +69,8 @@ class VeroMix(QGraphicsWidget):
         self.source_panel_layout = SortedLayout(Qt.Vertical, True)
         self.source_panel.setLayout(self.source_panel_layout)
         self.source_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+        if self.showsTabs:
+            self.source_panel_layout.addStretch()
 
         self.sink_panel_layout = SortedLayout(Qt.Vertical, False)
         self.sink_panel.setLayout(self.sink_panel_layout)
@@ -138,6 +140,8 @@ class VeroMix(QGraphicsWidget):
         pass
 
     def setSourcesPanelVisible(self, aBoolean):
+        if self.showsTabs:
+            return 
         #if self.applet.isPopupShowing():
         if aBoolean :
             self.source_panel.show()
@@ -253,10 +257,8 @@ class VeroMix(QGraphicsWidget):
 ### callback nowplaying
 
     def on_nowplaying_added(self, name, controller):
-        print name
         self.sink_panel_layout.setSpacing(0)
         self.add_channel(name, NowPlaying(self, controller),None, self.sink_panel_layout)
-        #self.sink_panel_layout.setItemSpacing()
 
     def on_nowplaying_removed(self, name):
         self.remove_channel(name,self.sink_panel_layout)
