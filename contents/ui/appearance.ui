@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>320</height>
+    <width>516</width>
+    <height>496</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -24,20 +24,20 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>381</width>
-     <height>231</height>
+     <width>402</width>
+     <height>288</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="2" column="0">
-     <widget class="QLabel" name="label">
+     <widget class="QLabel" name="backgroundLabel">
       <property name="text">
-       <string>Show background</string>
+       <string>Background</string>
       </property>
      </widget>
     </item>
     <item row="0" column="0">
-     <widget class="QLabel" name="label_6">
+     <widget class="QLabel" name="popupModeLabel">
       <property name="text">
        <string>Popup Mode</string>
       </property>
@@ -82,35 +82,35 @@
       </item>
      </widget>
     </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="label_7">
+    <item row="8" column="0">
+     <widget class="QLabel" name="homepageLabel">
       <property name="text">
        <string>Homepage</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QLabel" name="label_8">
+    <item row="8" column="1">
+     <widget class="QLabel" name="veromixUrl">
       <property name="text">
        <string>&lt;a href=&quot;http://code.google.com/p/veromix-plasmoid/&quot;&gt;http://code.google.com/p/veromix-plasmoid/&lt;/A&gt;</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
-     <widget class="QLabel" name="label_2">
+    <item row="9" column="0">
+     <widget class="QLabel" name="versionLabel">
       <property name="text">
        <string>Version</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
+    <item row="9" column="1">
      <widget class="QLabel" name="version">
       <property name="text">
        <string>X.Y</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
+    <item row="7" column="0">
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -122,6 +122,20 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="3" column="1">
+     <widget class="QCheckBox" name="useTabs">
+      <property name="text">
+       <string>Use tabs (requires plasma restart)</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="backgroundLabel_2">
+      <property name="text">
+       <string>Layout</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
