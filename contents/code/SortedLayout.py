@@ -57,7 +57,11 @@ class SortedLayout(QGraphicsLinearLayout):
     def addChannel(self, key, widget):
         if(key not in self.channels.keys()):
             self.channels[key]  = widget
-            self.addItem(widget)
+            for i in self.getNowPlaying():
+                i.updateSortOrderIndex()                
+            sorting = self.sort(self.channels.values(), 'sortOrderIndex')
+            index = sorting.index(widget)
+            self.insertItem(index , widget )
 
     def removeChannel(self, key):
         if(key  in self.channels.keys()):
