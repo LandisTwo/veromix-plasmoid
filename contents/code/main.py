@@ -169,6 +169,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.tooltip.setMainText( self.widget.getDefaultSink().app)
             self.tooltip.setSubText( str(vol) + "%")
             Plasma.ToolTipManager.self().setContent(self.applet, self.tooltip)
+     
+    def showTooltip(self):
+        Plasma.ToolTipManager.self().show(self.applet)
         
     @pyqtSlot(name="toolTipAboutToShow")
     def toolTipAboutToShow(self):
