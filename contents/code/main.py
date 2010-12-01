@@ -54,6 +54,7 @@ from PyKDE4.plasma import Plasma
 from PyKDE4.kdeui import KIcon
 from PyKDE4.kdeui import KActionCollection
 from PyKDE4.kdeui import KShortcut
+from PyKDE4.kdecore import KGlobal
 
 from VeroMix import VeroMix
 from Utils import *
@@ -78,6 +79,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
             print "Error installing veromix icon:", out
 
         createDbusServiceDescription(self)
+	
+        KGlobal.locale().insertCatalog("veromix-plasmoid")
 
         self.setHasConfigurationInterface(True)
         self.setAspectRatioMode(Plasma.IgnoreAspectRatio)
