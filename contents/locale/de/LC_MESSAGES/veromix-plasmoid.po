@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-02 01:08+0100\n"
+"POT-Creation-Date: 2010-12-02 01:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -129,26 +129,30 @@ msgid ""
 "size: small;\">(right click and copy url)</span>."
 msgstr ""
 
-#: code/main.py:126
+#: code/main.py:62
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr ""
+
+#: code/main.py:128
 msgid "Veromix volume up"
 msgstr ""
 
-#: code/main.py:132
+#: code/main.py:134
 msgid "Veromix volume down"
 msgstr ""
 
-#: code/main.py:138
+#: code/main.py:140
 msgid "Veromix toggle  mute"
 msgstr ""
 
-#: code/main.py:148
+#: code/main.py:150
 msgid "Main Volume"
 msgstr ""
 
-#: code/main.py:230
+#: code/main.py:232
 msgid "Appearance"
 msgstr ""
 
-#: code/main.py:242
+#: code/main.py:244
 msgid "Media Player Controls"
 msgstr ""

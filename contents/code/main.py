@@ -59,6 +59,8 @@ from PyKDE4.kdecore import *
 from VeroMix import VeroMix
 from Utils import *
 
+COMMENT=i18n("Veromix is a mixer for the Pulseaudio sound server. ")
+
 class VeroMixPlasmoid(plasmascript.Applet):
     VERSION="0.9.0"
     
