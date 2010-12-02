@@ -222,6 +222,8 @@ class VeroMix(QGraphicsWidget):
 ## Callbacks mouse -> start volume-meter callbacks (they will automatically stop after 5 seconds )
 
     def hoverMoveEvent(self,event):
+        if  self.mouse_is_over:
+            return
         self.mouse_is_over = True
         self.trigger_volume_updates()
 
@@ -231,7 +233,7 @@ class VeroMix(QGraphicsWidget):
     def trigger_volume_updates(self):
         if self.mouse_is_over :
             self.pa.trigger_volume_updates()
-            QTimer.singleShot(2000, self.trigger_volume_updates)
+            QTimer.singleShot(4000, self.trigger_volume_updates)
 
     def resizeEvent(self, e):
         self.emit(SIGNAL("resized()"))

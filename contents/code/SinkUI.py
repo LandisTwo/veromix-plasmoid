@@ -44,18 +44,26 @@ class SinkUI(Channel):
     def updateMutedInfo(self, aBoolean):
         if self.isDefaultSink():
             self.muteInfo.emit(aBoolean)
-
-    def on_update_meter(self, index, value, number_of_sinks):
-        if (self.number_of_input_sinks != number_of_sinks):
-            self.number_of_input_sinks = number_of_sinks
-            self.meter_levels[index] = {}
-        self.meter_levels[index] = value
-
+    
+    def on_update_meter(self, index, value, old):
+        ## FIXME:awful code-
+        sinks = []
+        for sink in self.veromix.getSinkInputs():
+            if sink.getOutputIndex() == str(self.index):
+                sinks.append(sink)        
+        number_of_sinks = len(sinks)
+        if number_of_sinks == 0:
+            pass 
+        else:    
+            if (self.number_of_input_sinks != number_of_sinks):
+                self.number_of_input_sinks = number_of_sinks
+                self.meter_levels[index] = {}
+            self.meter_levels[index] = value
+        # get max
         level = 0
         for i in self.meter_levels:
             if self.meter_levels[i] > level:
                 level = self.meter_levels[i]
-
         vol = self.getVolume()
         level =   level * (vol / 100.0)
         self.meter.setValue(level)

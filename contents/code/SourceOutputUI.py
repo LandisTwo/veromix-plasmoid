@@ -69,6 +69,7 @@ class SourceOutputUI( Channel ):
             self.slider.setText(text)
             #self.slider.setBoldText(bold+" "+str(self.index) + " "+  str(self.sortOrderIndex) + " "+str( self.sinkIndexFor(self.getOutputIndex())) + " "+str(self.getOutputIndex()))
             self.slider.setBoldText(bold)
+        iconname = None
         if "application.icon_name" in self.pa_sink.props.keys():
             iconname = self.pa_sink.props["application.icon_name"]
         if iconname == None and  "app" in self.pa_sink.props.keys():
