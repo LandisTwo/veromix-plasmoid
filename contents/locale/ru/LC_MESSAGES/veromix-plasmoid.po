@@ -1,0 +1,156 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# prodoomman, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-12-02 01:08+0100\n"
+"PO-Revision-Date: 2010-12-02 01:12+0300\n"
+"Last-Translator: prodoomman\n"
+"Language-Team: Russian <kde-russian@lists.kde.ru>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.1\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: rc.py:3 rc.py:18 rc.py:60
+msgid "Form"
+msgstr ""
+
+#: rc.py:6 rc.py:48
+msgid "Version"
+msgstr "Версия"
+
+#: rc.py:9 rc.py:42
+msgid "Homepage"
+msgstr "Домашняя страница"
+
+#: rc.py:12 rc.py:45
+msgid ""
+"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+"com/p/veromix-plasmoid/</A>"
+msgstr ""
+
+#: rc.py:15 rc.py:51
+msgid "X.Y"
+msgstr ""
+
+#: rc.py:21
+msgid "Background"
+msgstr "Фон"
+
+#: rc.py:24
+msgid "Popup Mode"
+msgstr "Окно микшера"
+
+#: rc.py:27
+msgid "Close when loosing focus"
+msgstr "Закрывать при потере фокуса"
+
+#: rc.py:30
+msgid "Close manually"
+msgstr "Закрывать вручную"
+
+#: rc.py:33
+msgid "No background"
+msgstr "Без фона"
+
+#: rc.py:36
+msgid "Translucent background"
+msgstr "Полупрозрачный фон"
+
+#: rc.py:39
+msgid "Standard background"
+msgstr "Стандартный фон"
+
+#: rc.py:54
+msgid "Use tabs (requires plasma restart)"
+msgstr "Использовать табы (нужен перезапуск plasma)"
+
+#: rc.py:57
+msgid "Layout"
+msgstr ""
+
+#: rc.py:63
+msgid "Enable media player controls"
+msgstr "Включить управление проигрывателями"
+
+#: rc.py:66
+msgid "mpris2 Mediaplayers"
+msgstr "Mpris2 проигрыватели"
+
+#: rc.py:69
+msgid "Media player blacklist"
+msgstr "Черный список проигрывателей"
+
+#: rc.py:72
+msgid "Running media players"
+msgstr "Запущенные проигрыватели"
+
+#: code/Utils.py:29
+msgid "Please remove and re-add myself"
+msgstr ""
+
+#: code/Utils.py:35
+msgid ""
+"<b>Configuration updated</b><br/>             Because of a known bug in KDE "
+"4.4 initialization of Veromix failed.<br/><br/>            A workaround is "
+"now installed.<br/><br/>            Please <b>remove</b> this applet and "
+"<b>add</b> Veromix again to your desktop/panel (alternatively you can "
+"restart plasma-desktop).<br/><br/>             Sorry for the inconvenience."
+"<br/><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/"
+"wiki/VeromixComponents#KDE_4.4_compatibility\">See wiki for more details</a> "
+"<span style=\"font-size: small;\">(right click and copy url)</span>. "
+msgstr ""
+
+#: code/VeroMix.py:57
+msgid "Playback"
+msgstr ""
+
+#: code/VeroMix.py:58
+msgid "Record"
+msgstr ""
+
+#: code/VeroMix.py:92
+msgid ""
+"There is a problem with the backgroud-"
+"service.                                                         "
+"<ul>                                                         <li>If you just "
+"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
+"this plasmoid</li>                                                         "
+"<li>If you don't know how to do that consider rebooting</li></ul><br/"
+">                                                        <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
+"_VeromixServiceMain.py\">See wiki for more details</a> <span style=\"font-"
+"size: small;\">(right click and copy url)</span>."
+msgstr ""
+
+#: code/main.py:126
+msgid "Veromix volume up"
+msgstr ""
+
+#: code/main.py:132
+msgid "Veromix volume down"
+msgstr ""
+
+#: code/main.py:138
+msgid "Veromix toggle  mute"
+msgstr ""
+
+#: code/main.py:148
+msgid "Main Volume"
+msgstr ""
+
+#: code/main.py:230
+msgid "Appearance"
+msgstr ""
+
+#: code/main.py:242
+#, fuzzy
+msgid "Media Player Controls"
+msgstr "Включить управление проигрывателями"
