@@ -54,13 +54,13 @@ from PyKDE4.plasma import Plasma
 from PyKDE4.kdeui import KIcon
 from PyKDE4.kdeui import KActionCollection
 from PyKDE4.kdeui import KShortcut
-from PyKDE4.kdecore import KGlobal
+from PyKDE4.kdecore import *
 
 from VeroMix import VeroMix
 from Utils import *
 
 class VeroMixPlasmoid(plasmascript.Applet):
-    VERSION="0.8.7"
+    VERSION="0.9.0"
     
     nowplaying_player_added = pyqtSignal(QString, QObject)
     nowplaying_player_removed = pyqtSignal(QString )
@@ -123,19 +123,19 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.actionCollection = KActionCollection(self)
         
         louder = self.actionCollection.addAction("VeromixVolumeUp")
-        louder.setText("Veromix volume up")
+        louder.setText( i18n("Veromix volume up") )
         #louder.setGlobalShortcut(KShortcut(Qt.CTRL + Qt.ALT+ Qt.Key_U))
         louder.setGlobalShortcut(KShortcut())        
         louder.triggered.connect(self.widget.on_step_volume_up)
         
         lower = self.actionCollection.addAction("VeromixVolumeDown")
-        lower.setText("Veromix volume down")
+        lower.setText(i18n("Veromix volume down"))
         #lower.setGlobalShortcut(KShortcut(Qt.CTRL + Qt.ALT+ Qt.Key_D))
         lower.setGlobalShortcut(KShortcut())        
         lower.triggered.connect(self.widget.on_step_volume_down)
         
         mute = self.actionCollection.addAction("VeromixVolumeMute")
-        mute.setText("Veromix toggle  mute")
+        mute.setText(i18n("Veromix toggle  mute"))
         #lower.setGlobalShortcut(KShortcut(Qt.CTRL + Qt.ALT+ Qt.Key_M))
         mute.setGlobalShortcut(KShortcut())        
         mute.triggered.connect(self.widget.on_toggle_mute)        
@@ -145,7 +145,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if (self.formFactor() != Plasma.Planar):   
             self.tooltip = Plasma.ToolTipContent() 
             self.tooltip.setImage(pixmapFromSVG("audio-volume-high"))
-            self.tooltip.setMainText( "Main Volume")
+            self.tooltip.setMainText(i18n( "Main Volume") )
             #self.tooltip.setSubText( "" )    
             Plasma.ToolTipManager.self().setContent(self.applet, self.tooltip)
             Plasma.ToolTipManager.self().registerWidget(self.applet)
@@ -227,7 +227,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
         self.config_ui.useTabs.setChecked(self.useTabs() )
         self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
-        parent.addPage(self.config_widget, "Veromix", "veromix-plasmoid-128" )
+        parent.addPage(self.config_widget, i18n("Appearance"), "veromix-plasmoid-128" )
        
         self.nowplaying_widget = QWidget(parent)
         self.nowplaying_ui = uic.loadUi(str(self.package().filePath('ui', 'nowplaying.ui')), self.nowplaying_widget)    
@@ -239,7 +239,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         
         self.nowplaying_ui.useNowplaying.setChecked(self.isNowplayingEnabled() ) 
         self.nowplaying_ui.useNowplaying.stateChanged.connect(self.on_setting_nowplaying_changed)        
-        parent.addPage(self.nowplaying_widget, "Media Player Controls", "veromix-plasmoid-128" )      
+        parent.addPage(self.nowplaying_widget, i18n("Media Player Controls"), "veromix-plasmoid-128" )      
         
         #self.about_widget = QWidget(parent)
         #self.about_ui = uic.loadUi(str(self.package().filePath('ui', 'about.ui')), self.about_widget)

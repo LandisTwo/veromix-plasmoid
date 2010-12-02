@@ -54,8 +54,8 @@ class VeroMix(QGraphicsWidget):
         self.showsTabs =  self.applet.useTabs()
         if self.showsTabs:
             self.scrolled_panel = Plasma.TabBar()
-            self.scrolled_panel.addTab("Playback", self.sink_panel)
-            self.scrolled_panel.addTab("Record", self.source_panel)
+            self.scrolled_panel.addTab(i18n("Playback"), self.sink_panel)
+            self.scrolled_panel.addTab(i18n("Record"), self.source_panel)
         else:
             self.scrolled_panel = QGraphicsWidget()
             self.scrolled_panel_layout = QGraphicsLinearLayout(Qt.Vertical)
@@ -89,11 +89,11 @@ class VeroMix(QGraphicsWidget):
         try:
             self.pa = PulseAudio(self)
         except:
-            self.showMessage(KIcon("script-error"), "There is a problem with the backgroud-service. \
+            self.showMessage(KIcon("script-error"), i18n("There is a problem with the backgroud-service. \
                                                         <ul> \
                                                         <li>If you just upgraded try killing the process named: VeromixServiceMain.py and relaunch this plasmoid</li> \
                                                         <li>If you don't know how to do that consider rebooting</li></ul><br/>\
-                                                        <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:_VeromixServiceMain.py\">See wiki for more details</a> <span style=\"font-size: small;\">(right click and copy url)</span>.")
+                                                        <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:_VeromixServiceMain.py\">See wiki for more details</a> <span style=\"font-size: small;\">(right click and copy url)</span>."))
             return
         self.connect(self.pa, SIGNAL("on_sink_input_info(PyQt_PyObject)"), self.on_sink_input_info)
         self.connect(self.pa, SIGNAL("on_sink_info(PyQt_PyObject)"), self.on_sink_info)
