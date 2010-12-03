@@ -1,9 +1,14 @@
+0.9.0
+- nowplaying integration
+- localization
+- more configuration options
+
 0.8.7
 - bugfix
-- merged configuration dialogs 
+- merged configuration dialogs
 - improved error-messages with link to the wiki
 
-0.8.6 - 
+0.8.6 -
 - global keyboard shortcuts
 
 0.8.5 - 19.11.2010
@@ -21,7 +26,7 @@
 0.8.2 - 22.10.2010
 - Panel icon: mute default sink with mouse middle button
 - Panel icon: increase/decrease volume of default sink with mouse wheel
-0.8.1 
+0.8.1
 - packaging fixes
 0.8 - 2.10.2010
 - control input devices (recording) - sources are only shown if at least one application is recording
@@ -39,7 +44,7 @@ Release Notes:
 - create directory ~/.local/share/dbus-1/services/ if it does not exist
 - mute-button shows application icon when muted
 0.7.4 - 03.08.2010
-- changed ServiceTypes=Plasma/Applet;Plasma/PopupApplet 
+- changed ServiceTypes=Plasma/Applet;Plasma/PopupApplet
 - use less space
 0.7.3 - 03.08.2010
 - support multiple plasmoid instances
