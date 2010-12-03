@@ -183,7 +183,7 @@ class VeroMix(QGraphicsWidget):
  ## callbacks sink
 
     def on_sink_info(self,sink):
-        key = "sinkinput" + str(sink.index)
+        key = "sink" + str(sink.index)
         if not self.update_channel(key ,sink, self.sink_panel_layout ):
             widget =  SinkUI(  self)
             self.add_channel(key, widget , sink, self.sink_panel_layout )
