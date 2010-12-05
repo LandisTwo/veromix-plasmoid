@@ -65,6 +65,9 @@ class InputSinkUI(SinkUI):
     def setVolume(self, value):
         self.pa.set_sink_input_volume(self.index, value)
 
+    def getMeter(self):
+        return self.meter.value()
+
     def on_mute_cb(self ):
         if self.isMuted():
             self.pa.set_sink_input_mute(self.index, False)
