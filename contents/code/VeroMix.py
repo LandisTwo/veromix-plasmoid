@@ -207,14 +207,10 @@ class VeroMix(QGraphicsWidget):
 ## Callbacks volume menters
 
     def on_volume_meter_sink_input(self, index, level):
-        if not self.mouse_is_over:
-            return
         for sink in self.sink_panel_layout.getChannels().values():
             sink.on_update_meter(index,int(level), len(self.sink_panel_layout.getChannels()))
 
     def on_volume_meter_source(self, index, level):
-        if not self.mouse_is_over:
-            return
         sources = self.source_panel_layout.getChannels().values()
         for source in sources:
             source.on_update_meter(index,int(level), len(sources))
