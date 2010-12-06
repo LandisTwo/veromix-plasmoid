@@ -17,6 +17,7 @@
 # USA
 
 from PyQt4.QtGui import *
+from SinkInputUI import InputSinkUI
 
 class SortedLayout(QGraphicsLinearLayout):
 
