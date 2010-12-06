@@ -16,13 +16,13 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
+import dbus,  os, datetime
+
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 from PyKDE4.plasma import Plasma
-import dbus
 
-import signal, os, datetime
 from LabelSlider import LabelSlider
 from LabelSlider import Label
 from Channel import Channel
@@ -55,7 +55,9 @@ class NowPlaying( Channel ):
         self.createPrev()
         self.createPlayPause()
         self.createNext() 
+        self.createLabelBar()
         self.createPositionLabel()
+        self.createLengthLabel()
 
     def composeArrangement(self):
         self.composeArrangement1()
@@ -69,16 +71,20 @@ class NowPlaying( Channel ):
         self.controlsbar_layout.addItem(self.next)
         
         self.middle_layout.setSpacing(0)
-        self.middle_layout.addStretch()        
-        self.middle_layout.addItem(self.positionLabel)
+        self.middle_layout.addStretch()
+        
+        self.labelBarLayout.addItem(self.lengthLabel)        
+        self.labelBarLayout.addItem(self.positionLabel)
+        
+        self.middle_layout.addItem(self.labelBar)
         self.middle_layout.addItem(self.controlsbar)
         self.panel_layout.addStretch()
         self.panel_layout.addItem(self.middle)    
         self.panel_layout.addStretch()
         self.CONTROLSBAR_SIZE = 112
-        self.middle.setMinimumSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
-        self.middle.setPreferredSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
-        self.middle.setMaximumSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
+        self.setMinimumHeight(self.CONTROLSBAR_SIZE)
+        self.setPreferredHeight(self.CONTROLSBAR_SIZE)
+        self.setMaximumHeight(self.CONTROLSBAR_SIZE)
 
     def composeArrangement2(self):
         self.layout.addItem(self.middle)
@@ -142,16 +148,21 @@ class NowPlaying( Channel ):
             if v != self.position:               
                 self.position = v
                 pos_str = ( '%d:%02d' % (v / 60, v % 60))
-                self.positionLabel.setBoldText(pos_str)            
+                self.lengthLabel.setBoldText(pos_str)            
         if QString('Length') in data:
             v = data[QString('Length')]
             if v != self.length:
                 self.length = v
                 pos_str = ( '%d:%02d' % (v / 60, v % 60))
-                self.positionLabel.setText("<b>/ "+pos_str+"</b>")
+                self.positionLabel.setBoldText(pos_str)
 
     def createMeter(self):
         pass
+
+    def createLabelBar(self):
+        self.labelBar = QGraphicsWidget()
+        self.labelBarLayout = QGraphicsLinearLayout(Qt.Horizontal)
+        self.labelBar.setLayout(self.labelBarLayout)
 
     def createPositionLabel(self):
         self.positionLabel = Label()
@@ -159,6 +170,12 @@ class NowPlaying( Channel ):
         self.positionLabel.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum, True))
         self.positionLabel.setAlignment(Qt.AlignRight)
 
+    def createLengthLabel(self):
+        self.lengthLabel = Label()
+        self.lengthLabel.setContentsMargins(0,0,0,0)
+        self.lengthLabel.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum, True))
+        self.lengthLabel.setAlignment(Qt.AlignLeft)
+        
     def createPlayControlsBar(self):
         self.controlsbar = Plasma.IconWidget()
         self.controlsbar_layout = QGraphicsLinearLayout(Qt.Horizontal)
@@ -172,7 +189,7 @@ class NowPlaying( Channel ):
         self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setLayout(self.middle_layout)
         self.middle.setIcon(KIcon(self.getPauseIcon()))
-        #self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+        self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
 
     def createMute(self):
         pass
@@ -242,9 +259,13 @@ class NowPlaying( Channel ):
             data[QString('State')] =  u'playing'            
         metadata = self.veromix.pa.nowplaying_getMetadata(self.controller.destination())       
         if dbus.String("mpris:artUrl") in metadata.keys():
-            val = str(metadata[dbus.String("mpris:artUrl")])[7:]
-            if val != self.cover_string:                
-                data[QString('Artwork')] =  QPixmap(val)
+            print metadata[dbus.String("mpris:artUrl")]
+            val = QUrl(str(metadata[dbus.String("mpris:artUrl")])).path()
+            if val != self.cover_string:       
+                if (os.path.isfile(val)):
+                    data[QString('Artwork')] =  QPixmap(val)
+                else:
+                    data[QString('Artwork')] = None
                 self.cover_string = val
         if dbus.String("mpris:length") in metadata.keys():
             v =  int(metadata[str(dbus.String("mpris:length"))])  / 1000000 
