@@ -24,7 +24,17 @@ class SortedLayout(QGraphicsLinearLayout):
         QGraphicsLinearLayout.__init__(self, orient)
         self.reverse= reverse
         self.channels = {}
-
+        self.sink_pool = []
+     
+    def getNewInputSink(self, veromix):
+        if len(self.sink_pool) == 0:
+            return InputSinkUI(veromix)
+        else:
+            val = self.sink_pool[0]
+            self.sink_pool.remove(val)
+            val.show()
+            return val
+        
     def getChannels(self):
         return self.channels
 
@@ -65,8 +75,11 @@ class SortedLayout(QGraphicsLinearLayout):
 
     def removeChannel(self, key):
         if(key  in self.channels.keys()):
+            self.channels[key].hide()
             self.removeItem(self.channels[key])
-            self.channels[key].deleteLater()
+            if self.channels[key].isSinkInput():
+                self.sink_pool.append(self.channels[key])
+            #self.channels[key].deleteLater()
             del self.channels[key]
 
     def check_ItemOrdering(self):

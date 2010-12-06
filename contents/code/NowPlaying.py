@@ -76,6 +76,7 @@ class NowPlaying( Channel ):
         self.panel_layout.addItem(self.middle)    
         self.panel_layout.addStretch()
         self.CONTROLSBAR_SIZE = 112
+        self.middle.setMinimumSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
         self.middle.setPreferredSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
         self.middle.setMaximumSize(QSizeF(self.CONTROLSBAR_SIZE,self.CONTROLSBAR_SIZE))
 
@@ -133,7 +134,7 @@ class NowPlaying( Channel ):
                 if val == None:
                     self.middle.setIcon(KIcon(self.getPauseIcon()))
                 else:
-                    self.middle.setIcon(QIcon(QPixmap(val)))
+                    self.middle.setIcon(QIcon(QPixmap(self.artwork)))
                     
     def updatePosition(self, data):
         if QString('Position') in data:

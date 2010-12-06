@@ -30,6 +30,10 @@ class SinkUI(Channel):
 
     def __init__(self , parent):
         Channel.__init__(self, parent)
+        size = 40
+        self.setMinimumHeight(s)
+        self.setMaximumHeight(s)
+        self.setPreferredHeight(s)
 
     def updateIcon(self):
         if self.isMuted():

@@ -125,11 +125,10 @@ class VeroMix(QGraphicsWidget):
         self.setSourcesPanelVisible( count > 0 )
         self.sink_panel.adjustSize()
         self.source_panel.adjustSize()
-        self.scrolled_panel.adjustSize()
+        #self.scrolled_panel.adjustSize()
         if self.applet.formFactor()  == Plasma.Planar:
             pass
         else:
-            #self.setSizePolicy(QSizePolicy.Preferred)
             self.setMinimumHeight(self.scrolled_panel.preferredSize().height())
             self.setMaximumHeight(self.scrolled_panel.preferredSize().height())
         #self.updateGeometry()
@@ -199,7 +198,8 @@ class VeroMix(QGraphicsWidget):
     def on_sink_input_info(self,  sink):
         key = "sinkinput" + str(sink.index)
         if not self.update_channel(key ,sink, self.sink_panel_layout ):
-            self.add_channel(key,  InputSinkUI(  self), sink , self.sink_panel_layout)
+            #self.add_channel(key,  InputSinkUI(  self), sink , self.sink_panel_layout)
+            self.add_channel(key, self.sink_panel_layout.getNewInputSink(self), sink , self.sink_panel_layout)
 
     def on_remove_sink_input(self, index):
         self.remove_channel("sinkinput" + str(index), self.sink_panel_layout)
