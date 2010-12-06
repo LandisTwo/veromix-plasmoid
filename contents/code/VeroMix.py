@@ -85,6 +85,10 @@ class VeroMix(QGraphicsWidget):
         self.start_pa()
         self.start_nowplaying()
 
+    def switchView(self):
+        ## FIXME
+        pass
+
     # connect to pulseaudio(dbus) callbacks
     def start_pa(self):
         try:
@@ -199,7 +203,6 @@ class VeroMix(QGraphicsWidget):
     def on_sink_input_info(self,  sink):
         key = "sinkinput" + str(sink.index)
         if not self.update_channel(key ,sink, self.sink_panel_layout ):
-            #self.add_channel(key,  InputSinkUI(  self), sink , self.sink_panel_layout)
             self.add_channel(key, self.sink_panel_layout.getNewInputSink(self), sink , self.sink_panel_layout)
 
     def on_remove_sink_input(self, index):

@@ -90,8 +90,6 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
         self.widget = VeroMix(self)
         self.widget.init()
-        if self.isNowplayingEnabled():
-            self.initNowPlaying()
 
         defaultSize =  QVariant(QSize (0,0))
         size = self.config().readEntry("size", defaultSize ).toSize()
@@ -252,12 +250,16 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def configChanged(self):
         self.config().writeEntry("background",str(self.config_ui.showBackground.currentIndex()))
         self.config().writeEntry("popupMode", str(self.config_ui.popupMode.currentIndex()))        
+        tabs = self.useTabs()
         self.config().writeEntry("useTabs", bool(self.config_ui.useTabs.isChecked()))        
         
         self.config().writeEntry("useNowplaying", str(self.nowplaying_ui.useNowplaying.isChecked()))                
         self.config().writeEntry("mpris2List",str(self.nowplaying_ui.mpris2List.toPlainText()).strip() )
         self.config().writeEntry("nowplayingBlacklist",str(self.nowplaying_ui.mediaplayerBlacklist.toPlainText()).strip())
         self.applyConfig()
+        
+        if tabs != self.useTabs():
+            self.widget.switchView()
 
     def on_setting_nowplaying_changed(self, value):
         aBoolean = (value == 2)
