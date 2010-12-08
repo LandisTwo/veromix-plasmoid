@@ -15,4 +15,4 @@ override_dh_auto_install:
 		sed -i -e 's|Plasma/Applet,Plasma/PopupApplet|Plasma/PopupApplet|' debian/plasma-widget-veromix/usr/share/kde4/apps/plasma/plasmoids/veromix/metadata.desktop ; \
 	fi; \
 	mkdir -p debian/plasma-widget-veromix/usr/share/kde4/services/ ; \
-	cp debian/plasma-widget-veromix/usr/share/kde4/apps/plasma/plasmoids/veromix/metadata.desktop debian/plasma-widget-veromix/usr/share/kde4/services/
+	cp debian/plasma-widget-veromix/usr/share/kde4/apps/plasma/plasmoids/veromix/metadata.desktop debian/plasma-widget-veromix/usr/share/kde4/services/plasma-widget-veromix.desktop
