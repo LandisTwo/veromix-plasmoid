@@ -1,4 +1,15 @@
 #!/usr/bin/make -f
 
+SHELL := sh -e
+
 %:
 	dh ${@}
+
+override_dh_auto_install:
+	dh_auto_install
+
+	# legacy hack for kde 4.4
+	if [ $( kde4-config --version | awk -F\. '/^KDE: / { print $2 }') -lt 5 ]; \
+	then \
+		sed -i -e 's|Plasma/Applet,Plasma/PopupApplet|Plasma/PopupApplet|' debian/veromix-plasmoid/usr/share/kde4/services/veromix-plasmoid.desktop; \
+	fi
