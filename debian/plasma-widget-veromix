@@ -1,2 +1,3 @@
-FIXME_FOO	/usr/bin
-FIXME_BAR	/usr/share
+metadata.desktop		/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid
+contents/			/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid/contents/
+dbus-service/			/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid/contents/dbus-service/
