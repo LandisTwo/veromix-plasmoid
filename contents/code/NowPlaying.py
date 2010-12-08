@@ -43,6 +43,7 @@ class NowPlaying( Channel ):
         self.setEnabledBorders (Plasma.FrameSvg.LeftBorder)
         self.setEnabledBorders (Plasma.FrameSvg.RightBorder)
         self.setEnabledBorders (Plasma.FrameSvg.TopBorder)
+        self.last_playing_icon = KIcon(self.getPauseIcon())
         
     def initArrangement(self):        
         #self.setContentsMargins(6,3,6,0)
@@ -115,6 +116,7 @@ class NowPlaying( Channel ):
             self.state = state
             if self.state == NowPlaying.Playing:
                 self.play.setSvg(self.svg_path, "pause-normal")     
+                self.middle.setIcon(self.last_playing_icon)
             else:
                 self.play.setSvg(self.svg_path, "play-normal")     
         
@@ -136,9 +138,10 @@ class NowPlaying( Channel ):
             if self.artwork !=  val:
                 self.artwork = val
                 if val == None:
-                    self.middle.setIcon(KIcon(self.getPauseIcon()))
+                     self.last_playing_icon = KIcon(self.getPauseIcon())
                 else:
-                    self.middle.setIcon(QIcon(QPixmap(self.artwork)))
+                    self.last_playing_icon = QIcon(QPixmap(self.artwork))
+                self.middle.setIcon(self.last_playing_icon)
                     
     def updatePosition(self, data):
         if QString('Position') in data:
