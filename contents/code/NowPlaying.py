@@ -70,14 +70,12 @@ class NowPlaying( Channel ):
         self.controlsbar_layout.addStretch()
         self.controlsbar_layout.addItem(self.next)
         
-        self.middle_layout.setSpacing(0)
-        self.middle_layout.addStretch()
-        
         self.labelBarLayout.addItem(self.lengthLabel)        
         self.labelBarLayout.addItem(self.positionLabel)
         
-        self.middle_layout.addItem(self.labelBar)
+        self.middle_layout.addStretch()        
         self.middle_layout.addItem(self.controlsbar)
+        self.middle_layout.addItem(self.labelBar)
         self.panel_layout.addStretch()
         self.panel_layout.addItem(self.middle)    
         self.panel_layout.addStretch()
@@ -148,13 +146,13 @@ class NowPlaying( Channel ):
             if v != self.position:               
                 self.position = v
                 pos_str = ( '%d:%02d' % (v / 60, v % 60))
-                self.lengthLabel.setBoldText(pos_str)            
+                self.lengthLabel.setText(pos_str)            
         if QString('Length') in data:
             v = data[QString('Length')]
             if v != self.length:
                 self.length = v
                 pos_str = ( '%d:%02d' % (v / 60, v % 60))
-                self.positionLabel.setBoldText(pos_str)
+                self.positionLabel.setText(pos_str)
 
     def createMeter(self):
         pass
@@ -190,6 +188,7 @@ class NowPlaying( Channel ):
         self.middle.setLayout(self.middle_layout)
         self.middle.setIcon(KIcon(self.getPauseIcon()))
         self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+        self.middle.clicked.connect(self.on_play_cb)
 
     def createMute(self):
         pass
@@ -259,7 +258,6 @@ class NowPlaying( Channel ):
             data[QString('State')] =  u'playing'            
         metadata = self.veromix.pa.nowplaying_getMetadata(self.controller.destination())       
         if dbus.String("mpris:artUrl") in metadata.keys():
-            print metadata[dbus.String("mpris:artUrl")]
             val = QUrl(str(metadata[dbus.String("mpris:artUrl")])).path()
             if val != self.cover_string:       
                 if (os.path.isfile(val)):
