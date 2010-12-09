@@ -5,25 +5,31 @@ Maintainer: Nik Lutz <nik.lutz@gmail.com>
 Build-Depends: debhelper (>= 8), kdelibs-bin
 Standards-Version: 3.9.1
 Homepage: http://code.google.com/p/veromix-plasmoid/
-#Vcs-Browser: http://veromix-plasmoid.googlecode.com/svn/trunk/
-#Vcs-Svn: http://veromix-plasmoid.googlecode.com/svn/trunk/
+Vcs-Browser: http://code.google.com/p/veromix-plasmoid/source/browse/
+Vcs-Svn: http://veromix-plasmoid.googlecode.com/svn/trunk/
 
 Package: plasma-widget-veromix
 Architecture: all
-Depends: ${misc:Depends} plasma-scriptengine-python, python-xdg, python-qt4-dbus, pulseaudio
-Description: Veromix is a mixer for the Pulseaudio sound server. 
+Depends:
+ ${misc:Depends}, ${python:Depends}, plasma-scriptengine-python, pulseaudio,
+ python-xdg, python-qt4-dbus
+Description: plasma widget to control pulseaudio
+ Veromix is a mixer for the Pulseaudio sound server.
+ .
  Features:
- - control volume of each playback stream
- - control volume of devices (hardware)
- - control volume of input devices (microphone)
- - move playback streams between different devices (drag icon of playback stream and drop it on target device)
- - mute/unmute (click icon)
- - volume meter (on mouse over)
- - PopUp-Applet (icon-representation if inside panel)
- - can life in system tray / notification area
- - kill playback streams (click on meter to expand the channel)
- - set default output device (click on meter to expand the channel)
- - show hardware information (click on meter to expand the channel)
- - Middle-click on panel icon mutes default output
- - Mouse-wheel over panel icon increases/decreases volume of default output
- - supports global hotkeys: Systemsettings / Custom Shortcuts / Global Hotkeys / Plasma-Workspace OR run "kcmshell4 keys" and select "Plasma Workspace"
+  * control volume of each playback stream
+  * control volume of devices (hardware)
+  * control volume of input devices (microphone)
+  * move playback streams between different devices (drag icon of playback
+    stream and drop it on target device)
+  * mute/unmute (click icon)
+  * volume meter (on mouse over)
+  * PopUp-Applet (icon-representation if inside panel)
+  * can life in system tray / notification area
+  * kill playback streams (click on meter to expand the channel)
+  * set default output device (click on meter to expand the channel)
+  * show hardware information (click on meter to expand the channel)
+  * Middle-click on panel icon mutes default output
+  * Mouse-wheel over panel icon increases/decreases volume of default output
+  * supports global hotkeys: Systemsettings / Custom Shortcuts / Global Hotkeys
+    / Plasma-Workspace OR run "kcmshell4 keys" and select "Plasma Workspace"
