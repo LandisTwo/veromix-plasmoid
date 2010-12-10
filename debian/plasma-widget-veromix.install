@@ -1,3 +1,3 @@
-contents			/usr/share/kde4/apps/plasma/plasmoids/veromix
-dbus-service		/usr/share/kde4/apps/plasma/plasmoids/veromix
-metadata.desktop	/usr/share/kde4/apps/plasma/plasmoids/veromix
+contents			/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid
+dbus-service		/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid
+metadata.desktop	/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid
