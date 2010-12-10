@@ -122,7 +122,9 @@ class PulseAudio(QObject):
             attr.tlength = 0
             attr.prebuf = 0
             attr.minreq = 0
-            pa_stream_connect_record(pa_stream, str(monitor_index), attr, 10752)
+            flags = 10752
+            flags = PA_STREAM_PEAK_DETECT 
+            pa_stream_connect_record(pa_stream, str(monitor_index), attr, flags)
 
     def pa_create_monitor_stream_for_source(self, index,source, name, force = False):
         if not index in self.monitor_sources or force :
@@ -150,7 +152,9 @@ class PulseAudio(QObject):
             attr.tlength = 0
             attr.prebuf = 0
             attr.minreq = 0
-            pa_stream_connect_record(pa_stream, device , attr, 10752)
+            flags = 10752
+            flags = PA_STREAM_PEAK_DETECT 
+            pa_stream_connect_record(pa_stream, device , attr, flags)
 
 
 ############# callbacks

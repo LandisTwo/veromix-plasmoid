@@ -16,6 +16,7 @@
 # USA
 
 import signal
+import datetime
 import dbus
 import dbus.service
 import dbus.mainloop.qt
@@ -28,11 +29,15 @@ from VeromixUtils import *
 # Pass info/signals from PA to DBUS
 ###
 class Pa2dBus(QObject):
-    dbus = None
+    
     def __init__(self, veromixdbus, pulseaudio):
         QObject.__init__(self )
         self.dbus = veromixdbus
         self.pulse = pulseaudio
+        self.LIMIT_SEND_METER_ENABLED = True
+        self.METER_SEND_MSECS = 200000 #micro
+        self.last_volume_meter_send = datetime.datetime.now()
+        self.last_source_meter_send = datetime.datetime.now()
         self.connect(self.pulse, SIGNAL("sink_info(PyQt_PyObject)"), self.on_sink_info)
         self.connect(self.pulse, SIGNAL("sink_remove(int)"), self.on_remove_sink)
 
@@ -98,8 +103,22 @@ class Pa2dBus(QObject):
 
     def on_volume_meter_sink_input(self, index, level):
         if self.dbus.should_send_volume_updates() and level == level:
-            self.dbus.volume_meter_sink_input(int(index),level)
+            if self.LIMIT_SEND_METER_ENABLED:
+                now = datetime.datetime.now()
+                # FIXME limit dbus spam but this solution could always prevent the same source  from transmitting
+                if (now - self.last_volume_meter_send).microseconds > self.METER_SEND_MSECS :
+                    self.last_volume_meter_send = now
+                    self.dbus.volume_meter_sink_input(int(index),level)
+            else:
+                self.dbus.volume_meter_sink_input(int(index),level)
 
     def on_volume_meter_source(self, index, level):
         if self.dbus.should_send_volume_updates() and level == level:
-            self.dbus.volume_meter_source(int(index),level)
+            if self.LIMIT_SEND_METER_ENABLED:
+                now = datetime.datetime.now()
+                # FIXME limit dbus spam but this solution could always prevent the same source  from transmitting
+                if (now - self.last_source_meter_send).microseconds > self.METER_SEND_MSECS :
+                    self.last_source_meter_send = now       
+                    self.dbus.volume_meter_source(int(index),level)
+            else:
+                self.dbus.volume_meter_source(int(index),level)
