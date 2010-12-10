@@ -52,20 +52,14 @@ class VeroMix(QGraphicsWidget):
         self.source_panel = QGraphicsWidget()
         self.sink_panel = QGraphicsWidget()
         
-        self.showsTabs =  self.applet.useTabs()
-        if self.showsTabs:
-            self.scrolled_panel = Plasma.TabBar()
-            self.scrolled_panel.addTab(i18n("Playback"), self.sink_panel)
-            self.scrolled_panel.addTab(i18n("Record"), self.source_panel)
-        else:
-            self.scrolled_panel = QGraphicsWidget()
-            self.scrolled_panel_layout = QGraphicsLinearLayout(Qt.Vertical)
-            self.scrolled_panel.setLayout(self.scrolled_panel_layout)
-            self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-            self.scrolled_panel_layout.addItem(self.source_panel)
-            self.scrolled_panel_layout.addItem(self.sink_panel)
-            self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
-        self.scroller.setWidget(self.scrolled_panel)
+        self.scrolled_panel_layout = QGraphicsLinearLayout(Qt.Vertical)    
+        self.scrolled_panel_widget = QGraphicsWidget()
+        self.scrolled_panel_widget.setLayout(self.scrolled_panel_layout)
+        self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+        self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
+                
+        self.showsTabs =  not self.applet.useTabs()
+        self.switchView(True)
 
         self.source_panel_layout = SortedLayout(Qt.Vertical, True)
         self.source_panel.setLayout(self.source_panel_layout)
@@ -85,9 +79,28 @@ class VeroMix(QGraphicsWidget):
         self.start_pa()
         self.start_nowplaying()
 
-    def switchView(self):
+    def switchView(self, startup=False):
         ## FIXME
-        pass
+        if self.showsTabs:
+            self.scrolled_panel_layout = QGraphicsLinearLayout(Qt.Vertical)    
+            scrolled_panel = QGraphicsWidget()
+            scrolled_panel.setLayout(self.scrolled_panel_layout)
+            self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+            self.scrolled_panel_layout.setContentsMargins(0,0,0,6)        
+            self.scrolled_panel_layout.addItem(self.source_panel)
+            self.scrolled_panel_layout.addItem(self.sink_panel)      
+            #self.scrolled_panel = scrolled_panel
+        else:
+            scrolled_panel = Plasma.TabBar()
+            scrolled_panel.addTab(i18n("Playback"), self.sink_panel)
+            scrolled_panel.addTab(i18n("Record"), self.source_panel)      
+            self.source_panel.show()
+        
+        self.scrolled_panel = scrolled_panel  
+        self.showsTabs = not self.showsTabs
+        self.scroller.setWidget(self.scrolled_panel)
+        if not startup:
+            self.check_geometries()
 
     # connect to pulseaudio(dbus) callbacks
     def start_pa(self):
