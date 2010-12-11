@@ -64,7 +64,8 @@ class SourceUI( Channel ):
         self.sortOrderIndex =  self.sinkIndexFor(self.index)
 
     def setVolume(self, value):
-        self.pa.set_source_volume(self.index, value)
+        v = self.pa_sink.volumeDiffFor(value)
+        self.pa.set_source_volume(self.index, v)
 
     def on_mute_cb(self ):
         if self.isMuted():

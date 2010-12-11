@@ -38,14 +38,14 @@ class VeromixDbus(dbus.service.Object):
         self.pulse = pulseaudio
         self.send_volume_updates = False
         self.timer = None
-        self.VERSION = 3
+        self.VERSION = 4
 
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='')
     def veromix_startup(self):
         pass
 
 ## ----------------------------- source -----------------------------------------
-    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{si}a{ss}')
+    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{ia{si}}a{ss}')
     def source_info(self, index,  name , mute, volume , dictProperties):
         pass
 
@@ -74,7 +74,7 @@ class VeromixDbus(dbus.service.Object):
     def source_mute(self, index, mute):
         self.pulse.pulse_source_mute(long(index), int(mute))
 
-    @dbus.service.method("org.veromix.pulseaudio", in_signature='ii', out_signature='')
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def source_volume(self, index, vol):
         self.pulse.pulse_set_source_volume(index, PulseVolume(vol))
 
@@ -84,7 +84,7 @@ class VeromixDbus(dbus.service.Object):
 
 
 ## -----------------------------sink -----------------------------------------
-    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{si}a{ss}')
+    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{ia{si}}a{ss}')
     def sink_info(self, index,  name , mute, volume , dictProperties):
         pass
 
@@ -96,7 +96,7 @@ class VeromixDbus(dbus.service.Object):
     def sink_mute(self, index, mute):
         self.pulse.pulse_sink_mute(long(index), int(mute))
 
-    @dbus.service.method("org.veromix.pulseaudio", in_signature='ii', out_signature='')
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def sink_volume(self, index, vol):
         self.pulse.pulse_set_sink_volume(long (index), PulseVolume(vol))
 
@@ -105,7 +105,7 @@ class VeromixDbus(dbus.service.Object):
         self.pulse.pulse_set_default_sink(index)
 
 ## -----------------------------sink input-----------------------------------------
-    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{si}a{ss}')
+    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{ia{si}}a{ss}')
     def sink_input_info(self, index,  name , mute, volume , dictProperties):
         pass
 
@@ -121,7 +121,7 @@ class VeromixDbus(dbus.service.Object):
     def sink_input_mute(self, index, mute):
         self.pulse.pulse_sink_input_mute(long(index), int(mute))
 
-    @dbus.service.method("org.veromix.pulseaudio", in_signature='ii', out_signature='')
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def sink_input_volume(self, index, vol):
         v = PulseVolume(vol)
         self.pulse.pulse_set_sink_input_volume( index , v)

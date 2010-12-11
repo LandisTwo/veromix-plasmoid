@@ -94,11 +94,12 @@ class PulseSinkInfo(PulseSink):
         PulseSink.__init__(self, pa_sink_info.index,
                                  pa_sink_info.name,
                                  pa_sink_info.mute,
-                                 PulseVolumeCtypes(pa_sink_info.volume),
+                                 PulseVolumeCtypes(pa_sink_info.volume, pa_sink_info.channel_map),
                                  PulseClient("Selected Sink"))
         self.description         = pa_sink_info.description
         self.sample_spec         = pa_sink_info.sample_spec
-        self.channel_map         = pa_sink_info.channel_map
+        self.channel_map         = pa_sink_info.channel_map      
+            
         self.owner_module        = pa_sink_info.owner_module
         self.monitor_source      = pa_sink_info.monitor_source
         self.monitor_source_name = pa_sink_info.monitor_source_name
@@ -194,13 +195,14 @@ class PulseSinkInputInfo(PulseSink):
         PulseSink.__init__(self, pa_sink_input_info.index,
                                  pa_sink_input_info.name,
                                  pa_sink_input_info.mute,
-                                 PulseVolumeCtypes(pa_sink_input_info.volume),
+                                 PulseVolumeCtypes(pa_sink_input_info.volume, pa_sink_input_info.channel_map),
                                  PulseClient("Unknown client"))
         self.owner_module    = pa_sink_input_info.owner_module
         self.client_id       = pa_sink_input_info.client
         self.sink            = pa_sink_input_info.sink
         self.sample_spec     = pa_sink_input_info.sample_spec
         self.channel_map     = pa_sink_input_info.channel_map
+                
         self.buffer_usec     = pa_sink_input_info.buffer_usec
         self.sink_usec       = pa_sink_input_info.sink_usec
         self.resample_method = pa_sink_input_info.resample_method

@@ -77,7 +77,7 @@ class PulseSourceInfo(PulseSource):
                                  pa_source_info.name,
                                  PulseClient("PulseSourceInfo"))
         self.mute =  pa_source_info.mute
-        self.volume = PulseVolumeCtypes(pa_source_info.volume)
+        self.volume = PulseVolumeCtypes(pa_source_info.volume,pa_source_info.channel_map )
 
         self.description          = pa_source_info.description
         self.sample_spec          = pa_source_info.sample_spec

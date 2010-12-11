@@ -107,8 +107,19 @@ class SinkUI(Channel):
         self.adjustSize()
         self.veromix.check_geometries()
 
+    automatically_muted = False
     def setVolume(self, value):
-        self.pa.set_sink_volume(self.index, value)
+        vol = self.pa_sink.volumeDiffFor(value)
+        for c in vol:
+            if c <= 0:
+                ## FIXME HACK for MurzNN this should be conditional
+                self.pa.set_sink_mute(self.index, True)
+                self.automatically_muted = True
+                return    
+        if self.automatically_muted :            
+            self.automatically_muted = False
+            self.pa.set_sink_mute(self.index, False)
+        self.pa.set_sink_volume(self.index, vol)
 
     def sink_input_kill(self):
         pass

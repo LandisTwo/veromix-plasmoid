@@ -58,7 +58,7 @@ class Pa2dBus(QObject):
         index =   int(sink.index)
         name = in_unicode(sink.name)
         muted = (sink.mute == 1)
-        volume = {"left": sink.volume.getVolume() , "right": sink.volume.getVolume() }
+        volume = sink.volume.getVolumes()
         self.dbus.source_info(  index,   name,  muted  , volume ,  sink.propDict() )
 
 
@@ -78,15 +78,15 @@ class Pa2dBus(QObject):
     def on_sink_input_info(self, sink):
         index =   int(sink.index)
         name = in_unicode(sink.name)
-        muted = (sink.mute == 1)
-        volume = {"left": sink.volume.getVolume() , "right": sink.volume.getVolume() }
+        muted = (sink.mute == 1)     
+        volume = sink.volume.getVolumes()
         self.dbus.sink_input_info(  index,   name,  muted  , volume ,  sink.propDict() )
 
     def on_sink_info(self, sink):
         index =   int(sink.index)
         name = in_unicode(sink.name)
         muted = (sink.mute == 1)
-        volume = {"left": sink.volume.getVolume() , "right": sink.volume.getVolume() }
+        volume = sink.volume.getVolumes()
         self.dbus.sink_info( index,   name,  muted  , volume ,  sink.propDict() )
 
     def on_remove_sink(self, index):

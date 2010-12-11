@@ -27,15 +27,17 @@ import math
 
 # This contains all basic volume features
 class PulseVolume:
-    def __init__(self, vol = 0, channels = 2):
+    def __init__(self, vol, channels):
         self.channels = channels
-
         if vol > 100 or vol < 0:
             print "WARNING: Volume is invalid!"
             vol = 0
-
         self.values   = [vol] * self.channels
+        return
 
+    def __init__(self, values):
+        self.channels = len(values)
+        self.values   = values
         return
 
     ##############################
@@ -51,19 +53,15 @@ class PulseVolume:
     def toCtypes(self):
         ct = struct_pa_cvolume()
         ct.channels = self.channels
-
         for x in range(0, self.channels):
             ct.values[x] = (self.values[x] * PA_VOLUME_NORM) / 100
-
         return ct
 
     def toCtypes2(self, num):
         ct = struct_pa_cvolume()
         ct.channels = num
-
         for x in range(0, num):
             ct.values[x] = (self.values[x] * PA_VOLUME_NORM) / 100
-
         return ct
 
     ###
@@ -79,16 +77,12 @@ class PulseVolume:
     def incVolume(self, vol):
         "Increment volume level (mono only)"
         vol += sum(self.values) / len(self.values)
-
         vol = int(vol)
-
         if vol > 100:
             vol = 100
         elif vol < 0:
             vol = 0
-
         self.setVolume(vol)
-
         return
 
     ###
@@ -98,7 +92,6 @@ class PulseVolume:
             self.values = [vol] * self.channels
         else:
             self.values[balance] = vol
-
         return
 
     ###
@@ -116,8 +109,18 @@ class PulseVolume:
 ################################################################################
 
 class PulseVolumeCtypes(PulseVolume):
-    def __init__(self, pa_cvolume):
+    def __init__(self, pa_cvolume, pa_channel_map):
         self.channels = pa_cvolume.channels
+        self.channel_map = pa_channel_map
         self.values   = map(lambda x: (math.ceil(float(x) * 100 / PA_VOLUME_NORM)),
                             pa_cvolume.values[0:self.channels])
         return
+
+    def getVolumes(self):
+        vol = {}        
+        for i in range(0, self.channels):
+            key = pa_channel_position_to_pretty_string(self.channel_map.map[i])
+            entry = {}
+            entry[str(key)] = self.values[i]
+            vol[i] = entry 
+        return vol

@@ -63,7 +63,8 @@ class InputSinkUI(SinkUI):
         self.extended_panel = SinkInputInfoWidget(self.veromix, self)
 
     def setVolume(self, value):
-        self.pa.set_sink_input_volume(self.index, value)
+        v = self.pa_sink.volumeDiffFor(value)
+        self.pa.set_sink_input_volume(self.index, v)
 
     def getMeter(self):
         return self.meter.value()

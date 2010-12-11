@@ -16,12 +16,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-
 import signal
 import dbus.mainloop.qt
 from PyQt4.QtCore import *
-#from PyQt4.QtDBus import *
-
 
 class SinkInfo(QObject):
 
@@ -32,19 +29,33 @@ class SinkInfo(QObject):
         self.name =   name
         self.mute  =   muted
         self. volume  =   volume
-        #self.client_index = client_index
-        #self.client_name = client_name
         self.props = props
-
+            
     def getVolume(self):
-        return self.volume["left"]
+        val =0
+        for t in self.volume.keys():
+            val += self.volume[t].values()[0]
+        return int(val/ len(self.volume.keys()))
 
+    def getVolumes(self):
+        return self.volumes        
+
+    def volumeDiffFor(self, value):
+        vol = []
+        diff = self.getVolume() - value
+        for key in self.volume.keys():
+            value = self.volume[key].values()[0] - diff
+            if value < 0:
+                value = -1
+            vol.append(value )
+        return vol
+        
 
 class PulseAudio(QObject):
 
     def __init__(self, parent ):
         QObject.__init__(self)
-        REQUIRED_SERVICE_VERSION = 3
+        REQUIRED_SERVICE_VERSION = 4
         if not dbus.get_default_main_loop():
             mainloop=dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
         else:
@@ -167,7 +178,6 @@ class PulseAudio(QObject):
 
     def on_volume_meter_source(self, index, value):
         self.emit(SIGNAL("on_volume_meter_source(int,float)"), index ,value)
-
 
     # calls
 
