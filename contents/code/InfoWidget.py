@@ -21,6 +21,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 
+from LabelSlider import LabelSlider
 
 class SinkInfoWidget(QGraphicsWidget):
 
@@ -30,23 +31,50 @@ class SinkInfoWidget(QGraphicsWidget):
         self.sink = sink
         self.text = ""
         self.INFO_ICON = "hwinfo"
+        self.sliders = []
         self.init()
 
     def init(self):
         self.init_arrangement()
         self.create_text_area()
         self.create_switcher()
+        self.create_channel_sliders()
         self.compose_arrangement()
 
     def compose_arrangement(self):
-        self.layout.addItem(self.switcher)
-        self.layout.addStretch()
-        self.layout.addItem(self.button)
+        self.settings_layout.addItem(self.switcher)
+        self.settings_layout.addStretch()
+        self.settings_layout.addItem(self.button)
+        self.layout.addItem(self.settings_widget)
+        self.layout.addItem(self.slider_widget)
 
     def init_arrangement(self):
-        self.layout = QGraphicsLinearLayout(Qt.Horizontal)
+        self.layout = QGraphicsLinearLayout(Qt.Vertical)
         self.layout.setContentsMargins(0,0,0,0)
+        
+        self.settings_layout = QGraphicsLinearLayout(Qt.Horizontal)
+        self.settings_layout.setContentsMargins(0,0,0,0)
+        
+        self.settings_widget = QGraphicsWidget()
+        self.settings_widget.setLayout(self.settings_layout)
+        
         self.setLayout(self.layout)
+
+    def create_channel_sliders(self):
+        self.slider_layout = QGraphicsLinearLayout(Qt.Vertical)
+        self.slider_layout.setContentsMargins(0,0,0,0)
+        
+        self.slider_widget = QGraphicsWidget()
+        self.slider_widget.setLayout(self.slider_layout)
+        for channel in self.sink.pa_sink.getChannels():
+            slider = LabelSlider()
+            slider.setOrientation(Qt.Horizontal)
+            slider.setBoldText(channel.getName())
+            slider.setValue(channel.getVolume())
+            slider.setMaximum(100)
+            slider.valueChanged.connect(self.on_slider_cb)
+            self.sliders.append(slider)
+            self.slider_layout.addItem(slider)            
 
     def create_text_area(self):
         self.button = Plasma.PushButton()
@@ -65,7 +93,7 @@ class SinkInfoWidget(QGraphicsWidget):
         values.sort()
         for key in values:
             self.text += "<b>" + key + ":</b> "+ info.props[key]+"<br/>"
-        self.updateOutputSwitcher()
+        self.updateOutputSwitcher()            
 
     def on_change_switcher(self,boolean):
         if boolean:
@@ -78,6 +106,20 @@ class SinkInfoWidget(QGraphicsWidget):
         if self.veromix.applet.isPopupShowing():
             self.veromix.applet.hidePopup()
         self.veromix.showMessage(KIcon(self.INFO_ICON), self.text)
+
+    def set_slider_values(self,info):
+        channels = self.sink.pa_sink.getChannels()
+        for i in range(0,len(channels)):
+            self.sliders[i].setBoldText(channels[i].getName())
+            self.sliders[i].setValue(channels[i].getVolume())
+
+    def on_slider_cb(self, value):
+        vol = []
+        for slider in self.sliders:
+            vol.append(slider.value())
+        self.sink.setVolumes(vol)
+    
+        
 
 class SinkInputInfoWidget(SinkInfoWidget):
 

@@ -44,6 +44,7 @@ class Channel( Plasma.Frame):
         self.plasma_timestamp = datetime.datetime.now() + d
 
         self.extended_panel_shown = False
+        self.extended_panel= None
         self.init()
 
     def init(self):
@@ -54,11 +55,10 @@ class Channel( Plasma.Frame):
         self.initArrangement()
         self.composeArrangement()
         self.setAcceptDrops(True)
-        self.on_show_info_widget()
-        self.on_show_info_widget()
+        #self.on_show_info_widget()
+        #self.on_show_info_widget()
 
     def initArrangement(self):
-        self.createExtender()
         self.createPanel()
         self.createMute()
         self.createMiddle()
@@ -138,7 +138,10 @@ class Channel( Plasma.Frame):
         now = datetime.datetime.now()
         if (now - self.plasma_timestamp).seconds > 1 :
             self.update_pulse_timestamp()
-            self.slider.setValue(info.getVolume())
+            self.slider.setValue(info.getVolume())            
+            if self.extended_panel:
+                self.extended_panel.set_slider_values(info)
+                
         self._set_values(info)
         self.update()
         if self.extended_panel:
@@ -158,11 +161,14 @@ class Channel( Plasma.Frame):
         pass
 
     def on_slider_cb(self, value):
-        now = datetime.datetime.now()
-        if (now - self.pulse_timestamp ).seconds > 1:
+        if self.check_plasma_timestamp():
             self.update_plasma_timestamp()
             self.setVolume(value)
 
+    def check_plasma_timestamp(self):
+        now = datetime.datetime.now()
+        return  (now - self.pulse_timestamp ).seconds > 1
+            
     def isSourceOutput(self):
         return False
 
@@ -184,4 +190,10 @@ class Channel( Plasma.Frame):
         return False
         
     def isNowplaying(self):
-        return False        
+        return False      
+        
+    def setVolume(self, value):
+        pass
+    
+    def setVolumes(self, values):
+        pass    

@@ -30,10 +30,20 @@ class SinkUI(Channel):
 
     def __init__(self , parent):
         Channel.__init__(self, parent)
+        self.applySmallSize()        
+        
+    def applySmallSize(self):
         size = 40
         self.setMinimumHeight(size)
         self.setMaximumHeight(size)
         self.setPreferredHeight(size)
+
+    def applyBigSize(self):
+        size = 40
+        self.setMinimumHeight(-1)
+        self.setMaximumHeight(-1)
+        self.setPreferredHeight(-1)
+        self.adjustSize()
 
     def updateIcon(self):
         if self.isMuted():
@@ -71,13 +81,7 @@ class SinkUI(Channel):
         if self.isMuted():
             self.pa.set_sink_mute(self.index, False)
         else:
-            self.pa.set_sink_mute(self.index, True)
-
-    def on_slider_cb(self, value):
-        now = datetime.datetime.now()
-        if (now - self.pulse_timestamp ).seconds > 1:
-            self.update_plasma_timestamp()
-            self.setVolume(value)
+            self.pa.set_sink_mute(self.index, True)           
 
     def isDefaultSink(self):
         return self.pa_sink.props["isdefault"] == "True"
@@ -100,10 +104,14 @@ class SinkUI(Channel):
             self.extended_panel_shown = False
             self.extended_panel.hide()
             self.layout.removeItem( self.extended_panel)
+            self.applySmallSize()
         else:
+            self.createExtender()
             self.extended_panel_shown = True
             self.layout.insertItem(0, self.extended_panel)
             self.extended_panel.show()
+            self.applyBigSize()
+            #self.veromix.adjustSize()
         self.adjustSize()
         self.veromix.check_geometries()
 
@@ -130,6 +138,10 @@ class SinkUI(Channel):
             self.automatically_muted = None
             return
         self.pa.set_sink_volume(self.index, vol)
+
+    def setVolumes(self, values):
+        if self.check_plasma_timestamp():
+            self.pa.set_sink_volume(self.index, values)            
 
     def sink_input_kill(self):
         pass

@@ -20,6 +20,19 @@ import signal
 import dbus.mainloop.qt
 from PyQt4.QtCore import *
 
+class SinkChannel(QObject):
+    
+    def __init__(self, name, volume):
+        QObject.__init__(self)
+        self.name = name
+        self.volume = volume
+        
+    def getName(self) :
+        return self.name
+    
+    def getVolume(self):
+        return self.volume
+
 class SinkInfo(QObject):
 
     def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props):
@@ -37,8 +50,17 @@ class SinkInfo(QObject):
             val += self.volume[t].values()[0]
         return int(val/ len(self.volume.keys()))
 
-    def getVolumes(self):
-        return self.volumes        
+    ##def getVolumes(self):
+        ##return self.volumes        
+
+    def getChannels(self):
+        channels = []
+        for key in self.volume.keys():
+            t = self.volume[key]
+            name = t.keys()[0]
+            vol = t.values()[0]
+            channels.append(SinkChannel(name,vol))
+        return channels
 
     def volumeDiffFor(self, value):
         vol = []
