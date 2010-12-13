@@ -25,7 +25,6 @@ from Utils import *
 
 class MuteButton(Plasma.IconWidget):
 
-
     def __init__(self , parent):
         Plasma.IconWidget.__init__(self)
         self.BIGSIZE= 28

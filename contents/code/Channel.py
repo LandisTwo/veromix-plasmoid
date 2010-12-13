@@ -39,9 +39,6 @@ class Channel( Plasma.Frame):
         self.sortOrderIndex = 0
         self.deleted = True
         self.pa_sink = None
-        d =  datetime.timedelta(seconds=2)
-        self.pulse_timestamp = datetime.datetime.now()  + d
-        self.plasma_timestamp = datetime.datetime.now() + d
 
         self.extended_panel_shown = False
         self.extended_panel= None
@@ -93,7 +90,7 @@ class Channel( Plasma.Frame):
         self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
 
         self.createSlider()
-        self.connect(self.slider, SIGNAL("valueChanged(int)"), self.on_slider_cb  )
+        self.slider.volumeChanged.connect( self.on_slider_cb  )
         self.middle_layout.addItem(self.slider)
 
     def createSlider(self):
@@ -107,12 +104,6 @@ class Channel( Plasma.Frame):
         self.meter.setMeterType(Plasma.Meter.AnalogMeter)
         self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum, True))
         self.connect(self.meter, SIGNAL("clicked()"), self.on_show_info_widget  )
-
-    def update_pulse_timestamp(self):
-        self.pulse_timestamp = datetime.datetime.now()
-
-    def update_plasma_timestamp(self):
-        self.plasma_timestamp = datetime.datetime.now()
 
     def _set_values(self, info):
         self.updateIcon()
@@ -135,13 +126,7 @@ class Channel( Plasma.Frame):
 
     def update_with_info(self,info):
         self.update_essentials(info)
-        now = datetime.datetime.now()
-        if (now - self.plasma_timestamp).seconds > 1 :
-            self.update_pulse_timestamp()
-            self.slider.setValue(info.getVolume())            
-            if self.extended_panel:
-                self.extended_panel.set_slider_values(info)
-                
+        self.slider.setValueFromPulse(info.getVolume())        
         self._set_values(info)
         self.update()
         if self.extended_panel:
@@ -161,13 +146,7 @@ class Channel( Plasma.Frame):
         pass
 
     def on_slider_cb(self, value):
-        if self.check_plasma_timestamp():
-            self.update_plasma_timestamp()
-            self.setVolume(value)
-
-    def check_plasma_timestamp(self):
-        now = datetime.datetime.now()
-        return  (now - self.pulse_timestamp ).seconds > 1
+        self.setVolume(value)
             
     def isSourceOutput(self):
         return False

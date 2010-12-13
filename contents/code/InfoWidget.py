@@ -72,7 +72,7 @@ class SinkInfoWidget(QGraphicsWidget):
             slider.setBoldText(channel.getName())
             slider.setValue(channel.getVolume())
             slider.setMaximum(100)
-            slider.valueChanged.connect(self.on_slider_cb)
+            slider.volumeChanged.connect(self.on_slider_cb)
             self.sliders.append(slider)
             self.slider_layout.addItem(slider)            
 
@@ -93,6 +93,7 @@ class SinkInfoWidget(QGraphicsWidget):
         values.sort()
         for key in values:
             self.text += "<b>" + key + ":</b> "+ info.props[key]+"<br/>"
+        self.set_slider_values()
         self.updateOutputSwitcher()            
 
     def on_change_switcher(self,boolean):
@@ -107,17 +108,19 @@ class SinkInfoWidget(QGraphicsWidget):
             self.veromix.applet.hidePopup()
         self.veromix.showMessage(KIcon(self.INFO_ICON), self.text)
 
-    def set_slider_values(self,info):
+    def set_slider_values(self):
         channels = self.sink.pa_sink.getChannels()
         for i in range(0,len(channels)):
-            self.sliders[i].setBoldText(channels[i].getName())
-            self.sliders[i].setValue(channels[i].getVolume())
+            name = channels[i].getName()
+            if name != "None":
+                self.sliders[i].setBoldText(name)
+            self.sliders[i].setValueFromPulse(channels[i].getVolume())
 
     def on_slider_cb(self, value):
         vol = []
         for slider in self.sliders:
             vol.append(slider.value())
-        self.sink.setVolumes(vol)
+        self.sink.pa.set_sink_volume(self.sink.index, vol)  
     
         
 

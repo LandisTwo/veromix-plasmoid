@@ -139,10 +139,6 @@ class SinkUI(Channel):
             return
         self.pa.set_sink_volume(self.index, vol)
 
-    def setVolumes(self, values):
-        if self.check_plasma_timestamp():
-            self.pa.set_sink_volume(self.index, values)            
-
     def sink_input_kill(self):
         pass
 

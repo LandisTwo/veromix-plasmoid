@@ -16,6 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
+import datetime
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.plasma import Plasma
@@ -24,7 +25,6 @@ from PyKDE4.kdeui import *
 from PyKDE4.kdecore import *
 from PyKDE4.kdecore import *
 from PyKDE4.plasma import *
-import sys
 
 class Label(Plasma.Label):
     def __init__(self):
@@ -44,12 +44,17 @@ class Label(Plasma.Label):
 
 
 class LabelSlider(Plasma.Slider):
-
+    volumeChanged = pyqtSignal(int)
+    
     def __init__(self):
         self.text = ""
         self.bold_text = ""
         self.draw_slider = True
+        d =  datetime.timedelta(seconds=2)
+        self.pulse_timestamp = datetime.datetime.now()  + d
+        self.plasma_timestamp = datetime.datetime.now() + d
         Plasma.Slider.__init__(self)
+        self.valueChanged.connect( self.on_slider_cb)
 
     def setText(self, text):
         if text:
@@ -61,6 +66,39 @@ class LabelSlider(Plasma.Slider):
 
     def hideSlider(self):
         self.draw_slider = False
+    
+    def setValueFromPlasma(self, value):
+        if self.check_pulse_timestamp():
+            self.update_plasma_timestamp()
+            self.setValue(value)
+        
+    def setValueFromPulse(self, value):
+        if self.check_plasma_timestamp():
+            self.update_pulse_timestamp()
+            self.setValue(value)
+
+    def on_slider_cb(self, value):
+        if self.check_pulse_timestamp():
+            self.update_plasma_timestamp()
+            self.volumeChanged.emit(value)
+
+# private
+    def update_pulse_timestamp(self):
+        self.pulse_timestamp = datetime.datetime.now()
+
+    def update_plasma_timestamp(self):
+        self.plasma_timestamp = datetime.datetime.now()
+
+## testing
+    def check_plasma_timestamp(self):
+        now = datetime.datetime.now()
+        return  (now - self.plasma_timestamp ).seconds > 1
+        
+    def check_pulse_timestamp(self):
+        now = datetime.datetime.now()
+        return  (now - self.pulse_timestamp ).seconds > 1
+
+
 
     def paint(self, painter, option, widget_p):
         widget = self.nativeWidget()
