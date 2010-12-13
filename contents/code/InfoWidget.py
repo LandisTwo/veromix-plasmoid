@@ -120,9 +120,7 @@ class SinkInfoWidget(QGraphicsWidget):
         vol = []
         for slider in self.sliders:
             vol.append(slider.value())
-        self.sink.pa.set_sink_volume(self.sink.index, vol)  
-    
-        
+        self.sink.pa.set_sink_volume(self.sink.index, vol)         
 
 class SinkInputInfoWidget(SinkInfoWidget):
 
@@ -133,12 +131,13 @@ class SinkInputInfoWidget(SinkInfoWidget):
         SinkInfoWidget.__init__(self, veromix, sink)
         self.veromix.sinkOutputChanged.connect(self.updateOutputSwitcher)
 
-
     def compose_arrangement(self):
-        self.layout.addStretch()
-        self.layout.addItem(self.switcher)
-        self.layout.addItem(self.button)
-
+        self.settings_layout.addStretch()
+        self.settings_layout.addItem(self.switcher)
+        self.settings_layout.addItem(self.button)
+        self.layout.addItem(self.settings_widget)
+        self.layout.addItem(self.slider_widget)
+        
     def create_switcher(self):
         self.switcher = Plasma.ComboBox()
         self.switcher.activated.connect(self.on_change_switcher)
@@ -183,91 +182,8 @@ class SinkInputInfoWidget(SinkInfoWidget):
                 self.sink.pa.move_sink_input(self.sink.index, int(output.index))
                 return 0
 
-    def update_with_info3(self, info):
-        #self.name =   name
-        #self.mute  =   muted
-        #self. volume  =   volume
-        #self.client_index = client_index
-        #self.client_name = client_name
-        #self.props = props
-
-        values = info.props.keys()
-
-        blacklist = ["app",
-                                "application.process.machine_id" ,
-                                "application.process.session_id",
-                                "application.process.user" ,
-                                "application.icon_name" ,
-                                "module-stream-restore.id",
-                                #"application.process.host",
-                                "application.language",
-                                "owner_module",
-                                "name",
-                                "sink",
-                                "index",
-                                "client_id",
-                                "native-protocol.version" ,
-                                "window.x11.display",
-                                "channel_map",
-                                "app_icon",
-                                "sink_usec",
-                                "buffer_usec",
-                                "sample_spec"]
-        for b in blacklist:
-            if b in values:
-                del values[values.index(b)]
-        values.sort()
-
-        text = self.keys_for_string("application", values,info.props)
-        text += "<br/>"
-        text += self.keys_for_string("media", values,info.props)
-        #self.text_area.setText(text)
-        text += "<br/>"
-
-        for key in values:
-            text += "<b>" + key + ":</b> "+ info.props[key] +"<br/>"
-        #self.text_area.setText(text)
-        self.updateOutputSwitcher()
-
-
-    ## input info
-        #('name', c_char_p),
-    #('index', c_uint32),
-    #('description', c_char_p),
-    #('sample_spec', pa_sample_spec),
-    #('channel_map', pa_channel_map),
-    #('owner_module', c_uint32),
-    #('volume', pa_cvolume),
-    #('mute', c_int),
-    #('monitor_source', c_uint32),
-    #('monitor_source_name', c_char_p),
-    #('latency', pa_usec_t),
-    #('driver', c_char_p),
-    #('flags', pa_sink_flags_t),
-    #("proplist",        POINTER(c_int)),
-
-    #class struct_pa_sink_input_info(Structure):
-    #__slots__ = [
-        #'index',
-        #'name',
-        #'owner_module',
-        #'client',
-        #'sink',
-        #'sample_spec',
-        #'channel_map',
-        #'volume',
-        #'buffer_usec',
-        #'sink_usec',
-        #'resample_method',
-        #'driver',
-        #'mute',
-        #'proplist',
-        #'monitor_index',
-
-    #class struct_pa_client_info(Structure):
-    #__slots__ = [
-        #'index',
-        #'name',
-        #'owner_module',
-        #'driver',
-        #'proplist'
+    def on_slider_cb(self, value):
+        vol = []
+        for slider in self.sliders:
+            vol.append(slider.value())
+        self.sink.pa.set_sink_input_volume(self.sink.index, vol)  
