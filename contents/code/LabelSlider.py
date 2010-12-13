@@ -45,6 +45,7 @@ class Label(Plasma.Label):
 
 class LabelSlider(Plasma.Slider):
     volumeChanged = pyqtSignal(int)
+    DELAY=  1
     
     def __init__(self):
         self.text = ""
@@ -92,13 +93,11 @@ class LabelSlider(Plasma.Slider):
 ## testing
     def check_plasma_timestamp(self):
         now = datetime.datetime.now()
-        return  (now - self.plasma_timestamp ).seconds > 1
+        return  (now - self.plasma_timestamp ).seconds > self.DELAY
         
     def check_pulse_timestamp(self):
         now = datetime.datetime.now()
-        return  (now - self.pulse_timestamp ).seconds > 1
-
-
+        return  (now - self.pulse_timestamp ).seconds > self.DELAY
 
     def paint(self, painter, option, widget_p):
         widget = self.nativeWidget()
