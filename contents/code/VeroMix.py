@@ -51,13 +51,13 @@ class VeroMix(QGraphicsWidget):
 
         self.source_panel = QGraphicsWidget()
         self.sink_panel = QGraphicsWidget()
-        
-        self.scrolled_panel_layout = QGraphicsLinearLayout(Qt.Vertical)    
+
+        self.scrolled_panel_layout = QGraphicsLinearLayout(Qt.Vertical)
         self.scrolled_panel_widget = QGraphicsWidget()
         self.scrolled_panel_widget.setLayout(self.scrolled_panel_layout)
         self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
-                
+
         self.showsTabs =  not self.applet.useTabs()
         self.switchView(True)
 
@@ -67,7 +67,9 @@ class VeroMix(QGraphicsWidget):
         if self.showsTabs:
             self.source_panel_layout.addStretch()
 
-        self.sink_panel_layout = SortedLayout(Qt.Vertical, False)
+        self.sink_panel_layout = SortedLayout(Qt.Vertical, True)
+        self.sink_panel_layout.setSpacing(0)
+
         self.sink_panel.setLayout(self.sink_panel_layout)
         self.sink_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
 
@@ -80,23 +82,23 @@ class VeroMix(QGraphicsWidget):
         self.start_nowplaying()
 
     def switchView(self, startup=False):
-        ## FIXME
         if self.showsTabs:
-            self.scrolled_panel_layout = QGraphicsLinearLayout(Qt.Vertical)    
+            self.scrolled_panel_layout = QGraphicsLinearLayout(Qt.Vertical)
             scrolled_panel = QGraphicsWidget()
+            #scrolled_panel = Plasma.Frame()
+            #scrolled_panel.setFrameShadow(Plasma.Frame.Sunken)
             scrolled_panel.setLayout(self.scrolled_panel_layout)
             self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-            self.scrolled_panel_layout.setContentsMargins(0,0,0,6)        
+            self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
             self.scrolled_panel_layout.addItem(self.source_panel)
-            self.scrolled_panel_layout.addItem(self.sink_panel)      
-            #self.scrolled_panel = scrolled_panel
+            self.scrolled_panel_layout.addItem(self.sink_panel)
         else:
             scrolled_panel = Plasma.TabBar()
             scrolled_panel.addTab(i18n("Playback"), self.sink_panel)
-            scrolled_panel.addTab(i18n("Record"), self.source_panel)      
+            scrolled_panel.addTab(i18n("Record"), self.source_panel)
             self.source_panel.show()
-        
-        self.scrolled_panel = scrolled_panel  
+
+        self.scrolled_panel = scrolled_panel
         self.showsTabs = not self.showsTabs
         self.scroller.setWidget(self.scrolled_panel)
         if not startup:
@@ -158,7 +160,7 @@ class VeroMix(QGraphicsWidget):
 
     def setSourcesPanelVisible(self, aBoolean):
         if self.showsTabs:
-            return 
+            return
         #if self.applet.isPopupShowing():
         if aBoolean :
             self.source_panel.show()
@@ -261,10 +263,10 @@ class VeroMix(QGraphicsWidget):
 
     def on_step_volume_up(self):
         self.on_step_volume(True)
-    
+
     def on_step_volume_down(self):
         self.on_step_volume(False)
-        
+
     def on_step_volume(self, up):
         sink = self.getDefaultSink()
         if sink != None:
@@ -274,7 +276,7 @@ class VeroMix(QGraphicsWidget):
 ### callback nowplaying
 
     def on_nowplaying_added(self, name, controller):
-        self.sink_panel_layout.setSpacing(0)
+        #self.sink_panel_layout.setSpacing(0)
         self.add_channel(name, NowPlaying(self, controller),None, self.sink_panel_layout)
 
     def on_nowplaying_removed(self, name):

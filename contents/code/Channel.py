@@ -27,10 +27,17 @@ from InfoWidget import SinkInfoWidget
 from MuteButton  import MuteButton
 from ClickableMeter import ClickableMeter
 
-class Channel( Plasma.Frame):
+
+#class Channel( Plasma.Frame):
+class Channel(QGraphicsWidget):
     def __init__(self , parent):
-        Plasma.Frame.__init__(self)
-        self.setFrameShadow(Plasma.Frame.Sunken)
+        QGraphicsWidget.__init__(self)
+        #Plasma.Frame.__init__(self)
+        #self.setAutoFillBackground(False)
+        #self.setBackgroundHints(Plasma.Applet.NoBackground)
+        #self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding,True) )
+
+        #self.setFrameShadow(Plasma.Frame.Sunken)
         self.veromix = parent
         self.index = -1
         self.pa = parent.getPulseAudio()
@@ -42,18 +49,18 @@ class Channel( Plasma.Frame):
 
         self.extended_panel_shown = False
         self.extended_panel= None
+
         self.init()
 
     def init(self):
         self.layout = QGraphicsLinearLayout(Qt.Vertical)
-        self.layout.setContentsMargins(6,3,6,3)
+        self.layout.setContentsMargins(2,2,2,2)
         #self.layout.setContentsMargins(6,6,6,6)
+        #self.layout.setContentsMargins(0,0,0,0)
         self.setLayout(self.layout)
         self.initArrangement()
         self.composeArrangement()
         self.setAcceptDrops(True)
-        #self.on_show_info_widget()
-        #self.on_show_info_widget()
 
     def initArrangement(self):
         self.createPanel()
@@ -63,17 +70,19 @@ class Channel( Plasma.Frame):
 
     def composeArrangement(self):
         self.layout.addItem(self.panel)
-        self.panel_layout.addItem(self.meter)
-        self.panel_layout.addItem(self.middle)
         self.panel_layout.addItem(self.mute)
+        self.panel_layout.addItem(self.middle)
+        self.panel_layout.addItem(self.meter)
 
     def createExtender(self):
         self.extended_panel = SinkInfoWidget(self.veromix, self )
 
     def createPanel(self):
-        self.panel = QGraphicsWidget()
+        self.panel = Plasma.Frame()
         self.panel_layout = QGraphicsLinearLayout(Qt.Horizontal)
-        self.panel_layout.setContentsMargins(0,0,0,0)
+
+        self.panel.setEnabledBorders (Plasma.FrameSvg.NoBorder)
+        self.panel.setFrameShadow(Plasma.Frame.Plain)
         self.panel.setLayout(self.panel_layout)
 
     def createMute(self):
@@ -126,7 +135,7 @@ class Channel( Plasma.Frame):
 
     def update_with_info(self,info):
         self.update_essentials(info)
-        self.slider.setValueFromPulse(info.getVolume())        
+        self.slider.setValueFromPulse(info.getVolume())
         self._set_values(info)
         self.update()
         if self.extended_panel:
@@ -147,7 +156,7 @@ class Channel( Plasma.Frame):
 
     def on_slider_cb(self, value):
         self.setVolume(value)
-            
+
     def isSourceOutput(self):
         return False
 
@@ -164,15 +173,15 @@ class Channel( Plasma.Frame):
 
     def isSinkOutput(self):
         return False
-        
+
     def isSinkInput(self):
         return False
-        
+
     def isNowplaying(self):
-        return False      
-        
+        return False
+
     def setVolume(self, value):
         pass
-    
+
     def setVolumes(self, values):
-        pass    
+        pass

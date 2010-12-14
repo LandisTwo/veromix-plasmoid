@@ -26,6 +26,7 @@ import signal, os, datetime
 from LabelSlider import *
 from InfoWidget import *
 from SinkUI import *
+from Channel import *
 from MuteButton  import InputMuteButton
 
 class InputSinkUI(SinkUI):
@@ -33,25 +34,35 @@ class InputSinkUI(SinkUI):
     def __init__(self , parent):
         self.mouse_pressed = False
         SinkUI.__init__(self, parent)
+        #self.setFrameShadow(Plasma.Frame.Sunken)
+        #self.setEnabledBorders (Plasma.FrameSvg.NoBorder)
+        #self.setEnabledBorders (Plasma.FrameSvg.BottomBorder)
+        #self.setFrameShadow(Plasma.Frame.Plain)
+
+        self.setContentsMargins(0,0,0,0)
+        self.panel.setEnabledBorders (Plasma.FrameSvg.NoBorder)
+        self.panel.setFrameShadow(Plasma.Frame.Plain)
+        #self.panel_layout.setContentsMargins(0,12,0,12)
+        #self.setContentsMargins(50,-1,-1,-1)
 
     def init(self):
         SinkUI.init(self)
         self.setAcceptDrops(False)
+        self.layout.setContentsMargins(6,2,6,2)
         self.updateBorders()
-   
+
     def hasNowPlayingExtension(self):
         for player in self.veromix.getNowPlaying():
             if player.matches(self):
                 return True
         return False
-   
+
     def updateBorders(self):
-        if self.hasNowPlayingExtension():        
-            self.setEnabledBorders (Plasma.FrameSvg.LeftBorder)
-            self.setEnabledBorders (Plasma.FrameSvg.RightBorder)
-            self.setEnabledBorders (Plasma.FrameSvg.BottomBorder)
-        else:
-            self.setEnabledBorders (Plasma.FrameSvg.AllBorders)
+        pass
+        #if self.hasNowPlayingExtension():
+            #self.setEnabledBorders (Plasma.FrameSvg.NoBorder )
+        #else:
+            #self.setEnabledBorders (Plasma.FrameSvg.NoBorder)
 
     def createMute(self):
         self.mute = InputMuteButton(self)
@@ -80,7 +91,7 @@ class InputSinkUI(SinkUI):
 
     def updateSortOrderIndex(self):
         if self.pa_sink:
-            self.sortOrderIndex =  self.sinkIndexFor(int(self.getOutputIndex())) - (self.index * 10 ) 
+            self.sortOrderIndex =  self.sinkIndexFor(int(self.getOutputIndex())) - (self.index * 10 )
 
     def getOutputIndex(self):
         return self.pa_sink.props["sink"]
@@ -151,7 +162,7 @@ class InputSinkUI(SinkUI):
 
     def isDefaultSink(self):
         return False
-        
+
     def update_with_info(self,info):
         SinkUI.update_with_info(self, info)
         self.updateBorders()

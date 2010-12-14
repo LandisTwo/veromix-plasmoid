@@ -31,19 +31,28 @@ class SinkUI(Channel):
     def __init__(self , parent):
         self.automatically_muted = False
         Channel.__init__(self, parent)
+        #self.setFrameShadow(Plasma.Frame.Plain)
+        
+        self.setContentsMargins(0,0,0,0)
+        self.panel.setEnabledBorders (Plasma.FrameSvg.AllBorders)
+        self.panel.setFrameShadow(Plasma.Frame.Raised)
+        
+        #self.setEnabledBorders (Plasma.FrameSvg.AllBorders)
+        #self.setFrameShadow(Plasma.Frame.Raised)
+        #self.panel_layout.setContentsMargins(0,0,0,0)
         self.applySmallSize()        
         
     def applySmallSize(self):
-        size = 40
-        self.setMinimumHeight(size)
-        self.setMaximumHeight(size)
-        self.setPreferredHeight(size)
+        size = 60
+        #self.setMinimumHeight(size)
+        #self.setMaximumHeight(size)
+        #self.setPreferredHeight(size)
 
     def applyBigSize(self):
-        size = 40
-        self.setMinimumHeight(-1)
+        size = 60
+        #self.setMinimumHeight(-1)
         self.setMaximumHeight(-1)
-        self.setPreferredHeight(-1)
+        #self.setPreferredHeight(-1)
         self.adjustSize()
 
     def updateIcon(self):
