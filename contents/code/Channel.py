@@ -27,17 +27,9 @@ from InfoWidget import SinkInfoWidget
 from MuteButton  import MuteButton
 from ClickableMeter import ClickableMeter
 
-
-#class Channel( Plasma.Frame):
 class Channel(QGraphicsWidget):
     def __init__(self , parent):
         QGraphicsWidget.__init__(self)
-        #Plasma.Frame.__init__(self)
-        #self.setAutoFillBackground(False)
-        #self.setBackgroundHints(Plasma.Applet.NoBackground)
-        #self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding,True) )
-
-        #self.setFrameShadow(Plasma.Frame.Sunken)
         self.veromix = parent
         self.index = -1
         self.pa = parent.getPulseAudio()
@@ -46,17 +38,13 @@ class Channel(QGraphicsWidget):
         self.sortOrderIndex = 0
         self.deleted = True
         self.pa_sink = None
-
         self.extended_panel_shown = False
         self.extended_panel= None
-
         self.init()
 
     def init(self):
         self.layout = QGraphicsLinearLayout(Qt.Vertical)
         self.layout.setContentsMargins(2,2,2,2)
-        #self.layout.setContentsMargins(6,6,6,6)
-        #self.layout.setContentsMargins(0,0,0,0)
         self.setLayout(self.layout)
         self.initArrangement()
         self.composeArrangement()

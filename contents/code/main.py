@@ -71,6 +71,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def __init__(self,parent,args=None):        
         plasmascript.Applet.__init__(self,parent)
         self.engine = None
+        self.now_playing_engine = None
 
     def init(self):
         out = commands.getstatusoutput("xdg-icon-resource install --size 128 " + unicode(self.package().path()) + "contents/icons/veromix-plasmoid-128.png veromix-plasmoid")
@@ -272,7 +273,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.applyNowPlaying(aBoolean)
         self.nowplaying_ui.runningMediaplayers.setPlainText(self.getNowplayingSourcesString()) 
         
-    def applyNowPlaying(self, enabled):            
+    def applyNowPlaying(self, enabled):      
         self.disableNowPlaying()     
         if enabled:
             self.initNowPlaying()         
@@ -313,7 +314,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         for player in self.widget.getNowPlaying():
             self.playerRemoved(player.controller.destination())
 
-    def initNowPlaying(self):        
+    def initNowPlaying(self):
         self.now_playing_engine = self.dataEngine('nowplaying')
         self.connect(self.now_playing_engine, SIGNAL('sourceAdded(QString)'), self.playerAdded)
         self.connect(self.now_playing_engine, SIGNAL('sourceRemoved(QString)'), self.playerRemoved)
@@ -340,6 +341,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.nowplaying_player_removed.emit(player)
 
     def getNowplayingSourcesString(self):
+        if self.now_playing_engine == None:
+            return ""
         val = ""
         for source in self.now_playing_engine.sources():
             val += source + "\n"

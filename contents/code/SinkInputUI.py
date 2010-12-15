@@ -34,16 +34,9 @@ class InputSinkUI(SinkUI):
     def __init__(self , parent):
         self.mouse_pressed = False
         SinkUI.__init__(self, parent)
-        #self.setFrameShadow(Plasma.Frame.Sunken)
-        #self.setEnabledBorders (Plasma.FrameSvg.NoBorder)
-        #self.setEnabledBorders (Plasma.FrameSvg.BottomBorder)
-        #self.setFrameShadow(Plasma.Frame.Plain)
-
         self.setContentsMargins(0,0,0,0)
         self.panel.setEnabledBorders (Plasma.FrameSvg.NoBorder)
         self.panel.setFrameShadow(Plasma.Frame.Plain)
-        #self.panel_layout.setContentsMargins(0,12,0,12)
-        #self.setContentsMargins(50,-1,-1,-1)
 
     def init(self):
         SinkUI.init(self)
@@ -59,14 +52,9 @@ class InputSinkUI(SinkUI):
 
     def updateBorders(self):
         pass
-        #if self.hasNowPlayingExtension():
-            #self.setEnabledBorders (Plasma.FrameSvg.NoBorder )
-        #else:
-            #self.setEnabledBorders (Plasma.FrameSvg.NoBorder)
 
     def createMute(self):
         self.mute = InputMuteButton(self)
-        #self.updateIcon()
         self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum,True) )
         self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
 
