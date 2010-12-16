@@ -42,6 +42,7 @@ class NowPlaying( Channel ):
         self.cover_string = ""
         self.last_playing_icon = KIcon(self.getPauseIcon())
         self.layout.setContentsMargins(6,2,6,0)
+        self.name = "nowplaying"
 
     def initArrangement(self):
         self.svg_path = self.veromix.applet.package().filePath('images', 'buttons.svgz')
@@ -270,8 +271,10 @@ class NowPlaying( Channel ):
             new =  sink.sortOrderIndex + 1
             if self.sortOrderIndex != new:
                 self.sortOrderIndex = new
-        else:
-            self.sortOrderIndex
+        #else:
+            #for s in self.veromix.getSinkInputs():
+                #print self.pa_sink
+            #self.sortOrderIndex
 
     def matches(self, sink):
         sink = self.get_assotiated_sink()
@@ -287,9 +290,10 @@ class NowPlaying( Channel ):
         for sink in self.veromix.getSinkInputs():
             if str(sink.text).lower().find(name) >= 0 :
                 return sink
-        for sink in self.veromix.getSinkInputs():
-            if str(sink.text).find(sink.text.lower()) >= 0 :
-                return sink
+        #for sink in self.veromix.getSinkInputs():
+            #if str(sink.text).find(sink.text.lower()) >= 0 :
+                #print name, "3", sink.text
+                #return sink
         return None
 
     def isNowplaying(self):

@@ -143,12 +143,15 @@ class VeroMix(QGraphicsWidget):
             if source.isSourceOutput():
                 count += 1
         self.setSourcesPanelVisible( count > 0 )
-        self.sink_panel.adjustSize()
-        self.source_panel.adjustSize()
+        # REstore
+        #self.sink_panel.adjustSize()
+        #self.source_panel.adjustSize()
         #self.scrolled_panel.adjustSize()
         if self.applet.formFactor()  == Plasma.Planar:
             pass
+        # RESTORE
         else:
+            #self.adjustSize()
             self.setMinimumHeight(self.scrolled_panel.preferredSize().height())
             self.setMaximumHeight(self.scrolled_panel.preferredSize().height())
         #self.updateGeometry()

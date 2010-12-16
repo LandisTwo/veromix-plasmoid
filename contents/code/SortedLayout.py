@@ -66,13 +66,16 @@ class SortedLayout(QGraphicsLinearLayout):
         return None
 
     def addChannel(self, key, widget):
+        #for i in range(0,len(self.channels.keys())):
+            #print "a",i, self.itemAt(i).graphicsItem().name  ," so" , self.itemAt(i).graphicsItem().sortOrderIndex
         if(key not in self.channels.keys()):
             self.channels[key]  = widget
             for i in self.getNowPlaying():
                 i.updateSortOrderIndex()                
             sorting = self.sort(self.channels.values(), 'sortOrderIndex')
             index = sorting.index(widget)
-            self.insertItem(index , widget )
+            self.insertItem(index, widget )
+            #print "inserting at",  index, key, widget.sortOrderIndex
 
     def removeChannel(self, key):
         if(key  in self.channels.keys()):
@@ -89,11 +92,14 @@ class SortedLayout(QGraphicsLinearLayout):
 
     def order_items(self):
         sorting = self.sort(self.channels.values(), 'sortOrderIndex')
-        for i in range(0,len(sorting)):
+        #for i in range(0,len(sorting)):
+            #print "m",i, self.itemAt(i).graphicsItem().name  ," so" , self.itemAt(i).graphicsItem().sortOrderIndex
+        for i in range(0,len(sorting)):            
             if self.itemAt(i).graphicsItem ()  != sorting[i]:
                 item = self.itemAt(i).graphicsItem()
                 index = sorting.index(item)
                 self.insertItem(index , item )
+                #print "order item from",  i, "to", index, item.name,item.sortOrderIndex
                 return
 
     def needs_ordering(self):

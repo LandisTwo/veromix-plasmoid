@@ -119,7 +119,8 @@ class SinkUI(Channel):
             self.extended_panel.show()
             self.applyBigSize()
             #self.veromix.adjustSize()
-        self.adjustSize()
+        #RESTORE
+        #self.adjustSize()
         self.veromix.check_geometries()
 
     def setVolume(self, value):
