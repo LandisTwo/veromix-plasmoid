@@ -16,6 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
+import datetime
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.plasma import Plasma
@@ -38,7 +39,9 @@ class VeroMix(QGraphicsWidget):
         QGraphicsWidget.__init__(self)
         self.applet = parent
         self.mouse_is_over = False
-        self.pa = None
+        self.pa = None            
+        self.last_resize_running = datetime.datetime.now()
+        self.last_resize_running_timer_running = False
 
     def init(self):
         self.setAcceptsHoverEvents (True)
@@ -149,12 +152,29 @@ class VeroMix(QGraphicsWidget):
         #self.scrolled_panel.adjustSize()
         if self.applet.formFactor()  == Plasma.Planar:
             pass
-        # RESTORE
         else:
-            #self.adjustSize()
+            self.trigger_schedule_timer()
+        #self.updateGeometry()
+
+    def do_scheduled_resize(self):
+        now = datetime.datetime.now()
+        if  (now - self.last_resize_running).seconds > 1:
+            self.adjustSize()
             self.setMinimumHeight(self.scrolled_panel.preferredSize().height())
             self.setMaximumHeight(self.scrolled_panel.preferredSize().height())
-        #self.updateGeometry()
+            self.last_resize_running = datetime.datetime.now()
+        else:
+            self.trigger_schedule_timer()
+
+    def trigger_schedule_timer(self):
+        if self.last_resize_running_timer_running:
+                return
+        self.last_resize_running_timer_running = True
+        QTimer.singleShot(1000, self.on_schedule_resize_timer_cb)
+
+    def on_schedule_resize_timer_cb(self):
+        self.last_resize_running_timer_running = False
+        self.do_scheduled_resize()
 
     def check_ItemOrdering(self):
         self.sink_panel_layout.check_ItemOrdering()
