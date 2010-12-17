@@ -74,7 +74,8 @@ class SinkInfo(QObject):
         
 
 class PulseAudio(QObject):
-
+    mpris2_properties_changed = pyqtSignal(str,dict)
+    
     def __init__(self, parent ):
         QObject.__init__(self)
         REQUIRED_SERVICE_VERSION = 4
@@ -132,8 +133,7 @@ class PulseAudio(QObject):
         self.bus.add_signal_receiver(self.on_volume_meter_source,
                 dbus_interface="org.veromix.notification",
                 signal_name="volume_meter_source")
-
-
+                
         #pa_obj  = bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
         #interface = dbus.Interface(pa_obj,dbus_interface="org.veromix.notification")
         #interface.connect_to_signal("sink_input_info", self.on_sink_input_info)
@@ -144,6 +144,17 @@ class PulseAudio(QObject):
         ##rbplayerobj = bus.get_object("org.veromix.pulseaudio", '/org/veromix/pulseaudio')
         #pa_obj  = bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
         #self.mixer = dbus.Interface(pa_obj, 'org.veromix.pulseaudio')
+
+    def connect_mpris2_player(self, callback, name):
+        self.bus.add_signal_receiver(callback ,
+                dbus_interface="org.freedesktop.DBus.Properties",
+                signal_name="PropertiesChanged",
+                bus_name=name)
+
+    def on_mpris2_properties_changed(self, interface, properties, signature):
+        print interface, type(interface)
+        print signature
+        self.mpris2_properties_changed.emit(str(interface), properties)
 
     def getMixer(self):
         pa_obj  = self.bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")

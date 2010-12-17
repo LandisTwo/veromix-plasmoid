@@ -331,8 +331,14 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.now_playing_engine.disconnectSource(player, self)
         for entry in self.getNowplayingPlayerBlacklist(): 
             if str(player).find(entry) == 0:
-                return 
-        self.now_playing_engine.connectSource(player, self, 2000)   
+                return
+        #FIXME
+        do = True
+        for entry in self.getMpris2Clients():
+            if str(player).find(entry) == 0:
+                do = False
+        if do:
+            self.now_playing_engine.connectSource(player, self, 2000)   
         controller = self.now_playing_engine.serviceForSource(player)
         self.nowplaying_player_added.emit(player, controller )
 

@@ -43,7 +43,8 @@ class NowPlaying( Channel ):
         self.last_playing_icon = KIcon(self.getPauseIcon())
         self.layout.setContentsMargins(6,2,6,0)
         self.name = "nowplaying"
-
+        self.connect_mpris2()
+        
     def initArrangement(self):
         self.svg_path = self.veromix.applet.package().filePath('images', 'buttons.svgz')
         self.createMiddle()
@@ -74,10 +75,17 @@ class NowPlaying( Channel ):
         self.panel_layout.addItem(self.next_panel)
         self.panel_layout.addStretch()
 
+    def connect_mpris2(self):
+        if self.use_dbus_workaround:
+            self.veromix.pa.connect_mpris2_player(self.on_mpris2_properties_changed, str(self.controller.destination()) )
+        self.get_dbus_info()
+
     def update_with_info(self, info):
         data = info
-        if self.use_dbus_workaround():
-            data = self.get_dbus_info()
+        #if self.use_dbus_workaround():
+            #return
+            #data = self.convert_dbus_info(info)
+            #data = self.get_dbus_info()
         self.update_state(data)
         #self.update_position(data)
         self.update_cover(data)
@@ -106,17 +114,18 @@ class NowPlaying( Channel ):
         return app
 
     def update_cover(self,data):
-        if self.state == NowPlaying.Paused  :
-            if self.artwork != None:
-                self.artwork = None
-                self.middle.setIcon(KIcon(self.getPauseIcon()))
-            return
+        #if self.state == NowPlaying.Paused  :
+            #if self.artwork != None:
+                #self.artwork = None
+                #self.middle.setIcon(KIcon(self.getPauseIcon()))
+            #print "paused no cover"
+            #return
         if QString('Artwork') in data:
             val = data[QString('Artwork')]
             if self.artwork !=  val:
                 self.artwork = val
                 if val == None:
-                     self.last_playing_icon = KIcon(self.getPauseIcon())
+                    self.last_playing_icon = KIcon(self.getPauseIcon())
                 else:
                     self.last_playing_icon = QIcon(QPixmap(self.artwork))
                 self.middle.setIcon(self.last_playing_icon)
@@ -236,6 +245,28 @@ class NowPlaying( Channel ):
     def get_mpris2_clients(self):
         return self.veromix.applet.getMpris2Clients()
 
+
+    def on_mpris2_properties_changed(self, interface, properties, signature):
+        data = {}
+        if dbus.String("PlaybackStatus") in properties.keys():
+            status = properties[dbus.String("PlaybackStatus")]
+            data[QString('State')] =  u'paused'
+            if status == 'Playing':
+                data[QString('State')] =  u'playing'
+        
+        if dbus.String("Metadata") in properties.keys():
+            metadata = properties[dbus.String("Metadata")]
+            if dbus.String("mpris:artUrl") in metadata.keys():
+                val = QUrl(str(metadata[dbus.String("mpris:artUrl")])).path()
+                if val != self.cover_string:
+                    if (os.path.isfile(val)):
+                        data[QString('Artwork')] =  QPixmap(val)
+                    else:
+                        data[QString('Artwork')] = None
+                    self.cover_string = val
+        self.update_with_info(data)
+
+
     def get_dbus_info(self):
         data = {}
         status = self.veromix.pa.nowplaying_getPlaybackStatus(self.controller.destination())
@@ -255,7 +286,7 @@ class NowPlaying( Channel ):
             #v =  int(metadata[str(dbus.String("mpris:length"))])  / 1000000
             #data[QString('Length')] = v
         #data[QString('Position')] = int(self.veromix.pa.nowplaying_getPosition(self.controller.destination()))  / 1000000
-        return data
+        self.update_with_info(data)
 
     def get_application_name(self):
         name = self.controller.destination()

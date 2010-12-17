@@ -130,6 +130,7 @@ class VeroMix(QGraphicsWidget):
 
         self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
+        #self.pa.mpris2_properties_changed.connect(self.on_mpris2_properties_changed)
         self.pa.requestInfo()
 
     def start_nowplaying(self):
@@ -309,6 +310,21 @@ class VeroMix(QGraphicsWidget):
         channel = self.sink_panel_layout.getChannel(name)
         if channel:
             channel.update_with_info(values)
+
+    #def on_mpris2_properties_changed(self, destination, properties):
+        #print "d", destination, type(destination)
+        #for i in properties.keys():
+            #print i
+            #print "---"
+            #print properties[i]
+            #print "--------"
+
+        #print "==="
+        #self.on_nowplaying_dataUpdated(destination, properties)
+        #channel = self.sink_panel_layout.getChannel(str(destination))
+        #if channel:
+            #print "got channel"
+            #channel.convert_dbus_info(values)
 
 ### panel icons
 
