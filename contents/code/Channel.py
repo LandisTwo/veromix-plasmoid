@@ -33,8 +33,8 @@ class Channel(QGraphicsWidget):
         self.veromix = parent
         self.index = -1
         self.pa = parent.getPulseAudio()
-        self.app = "output"   # str(sink.client_id )
-        self.name = "" #sink.name
+        self.app = "output"  
+        self.name = "" 
         self.sortOrderIndex = 0
         self.deleted = True
         self.pa_sink = None
@@ -51,13 +51,16 @@ class Channel(QGraphicsWidget):
         self.setAcceptDrops(True)
 
     def initArrangement(self):
-        self.createPanel()
+        self.create_frame()
+        self.create_panel()
         self.createMute()
         self.createMiddle()
         self.createMeter()
 
     def composeArrangement(self):
-        self.layout.addItem(self.panel)
+        self.layout.addItem(self.frame)
+        self.frame_layout.addItem(self.panel)
+        
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
         self.panel_layout.addItem(self.meter)
@@ -65,12 +68,17 @@ class Channel(QGraphicsWidget):
     def createExtender(self):
         self.extended_panel = SinkInfoWidget(self.veromix, self )
 
-    def createPanel(self):
-        self.panel = Plasma.Frame()
-        self.panel_layout = QGraphicsLinearLayout(Qt.Horizontal)
+    def create_frame(self):
+        self.frame = Plasma.Frame()
+        self.frame_layout = QGraphicsLinearLayout(Qt.Vertical)
+        self.frame.setEnabledBorders (Plasma.FrameSvg.NoBorder)
+        self.frame.setFrameShadow(Plasma.Frame.Plain)
+        self.frame_layout.setContentsMargins(0,0,0,0)
+        self.frame.setLayout(self.frame_layout)
 
-        self.panel.setEnabledBorders (Plasma.FrameSvg.NoBorder)
-        self.panel.setFrameShadow(Plasma.Frame.Plain)
+    def create_panel(self):
+        self.panel = QGraphicsWidget()
+        self.panel_layout = QGraphicsLinearLayout(Qt.Horizontal)
         self.panel.setLayout(self.panel_layout)
 
     def createMute(self):
@@ -82,10 +90,8 @@ class Channel(QGraphicsWidget):
         self.middle = QGraphicsWidget()
         self.middle_layout = QGraphicsLinearLayout(Qt.Vertical)
         self.middle_layout.setContentsMargins(6,8,6,0)
-
         self.middle.setLayout(self.middle_layout)
         self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
-
         self.createSlider()
         self.slider.volumeChanged.connect( self.on_slider_cb  )
         self.middle_layout.addItem(self.slider)
@@ -135,7 +141,6 @@ class Channel(QGraphicsWidget):
     def update_label(self):
         pass
 
-    #
     def sinkIndexFor( self, index ):
         return (index * 100000) + 100000
 

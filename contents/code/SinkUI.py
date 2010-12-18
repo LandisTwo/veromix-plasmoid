@@ -32,25 +32,16 @@ class SinkUI(Channel):
         self.automatically_muted = False
         Channel.__init__(self, parent)        
         self.setContentsMargins(0,0,0,0)
-        self.panel.setEnabledBorders (Plasma.FrameSvg.AllBorders)
-        self.panel.setFrameShadow(Plasma.Frame.Raised)
-        self.applySmallSize()       
+        self.frame.setEnabledBorders (Plasma.FrameSvg.AllBorders)
+        self.frame.setFrameShadow(Plasma.Frame.Raised)
+        self.apply_small_size()
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True) )
 
-        
-    def applySmallSize(self):
+    def apply_small_size(self):
         size = 42
-        #self.setMinimumHeight(size)
-        #self.setMaximumHeight(size)
-        #self.setPreferredHeight(size)
 
-    def applyBigSize(self):
-        self.applySmallSize()
-        #size = 60
-        ##self.setMinimumHeight(-1)
-        #self.setMaximumHeight(-1)
-        ##self.setPreferredHeight(-1)
-        #self.adjustSize()
+    def apply_big_size(self):
+        self.apply_small_size()
 
     def updateIcon(self):
         if self.isMuted():
@@ -110,17 +101,14 @@ class SinkUI(Channel):
         if (self.extended_panel_shown):
             self.extended_panel_shown = False
             self.extended_panel.hide()
-            self.layout.removeItem( self.extended_panel)
-            self.applySmallSize()
+            self.frame_layout.removeItem( self.extended_panel)
+            self.apply_small_size()
         else:
             self.createExtender()
             self.extended_panel_shown = True
-            self.layout.insertItem(0, self.extended_panel)
+            self.frame_layout.insertItem(0, self.extended_panel)
             self.extended_panel.show()
-            self.applyBigSize()
-            #self.veromix.adjustSize()
-        #RESTORE
-        #self.adjustSize()
+            self.apply_big_size()
         self.veromix.check_geometries()
 
     def setVolume(self, value):

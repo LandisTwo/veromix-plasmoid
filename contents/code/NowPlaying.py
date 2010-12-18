@@ -50,7 +50,8 @@ class NowPlaying( Channel ):
         self.createMiddle()
         self.createSlider()
         self.create_prev_panel()
-        self.createPanel()
+        self.create_frame()
+        self.create_panel()
         self.create_prev_button()
         self.create_play_pause_button()
         self.create_next_button()
@@ -59,7 +60,9 @@ class NowPlaying( Channel ):
         self.createLengthLabel()
 
     def composeArrangement(self):
-        self.layout.addItem(self.panel)
+        self.layout.addItem(self.frame)
+        self.frame_layout.addItem(self.panel)
+        
         self.prev_panel_layout.addStretch()
         self.prev_panel_layout.addItem(self.prev)
         self.next_panel_layout.addStretch()
@@ -80,14 +83,8 @@ class NowPlaying( Channel ):
             self.veromix.pa.connect_mpris2_player(self.on_mpris2_properties_changed, str(self.controller.destination()) )
         self.get_dbus_info()
 
-    def update_with_info(self, info):
-        data = info
-        #if self.use_dbus_workaround():
-            #return
-            #data = self.convert_dbus_info(info)
-            #data = self.get_dbus_info()
+    def update_with_info(self, data):
         self.update_state(data)
-        #self.update_position(data)
         self.update_cover(data)
         self.updateSortOrderIndex()
 
@@ -114,6 +111,7 @@ class NowPlaying( Channel ):
         return app
 
     def update_cover(self,data):
+        ## FIXME
         #if self.state == NowPlaying.Paused  :
             #if self.artwork != None:
                 #self.artwork = None
@@ -245,7 +243,6 @@ class NowPlaying( Channel ):
     def get_mpris2_clients(self):
         return self.veromix.applet.getMpris2Clients()
 
-
     def on_mpris2_properties_changed(self, interface, properties, signature):
         data = {}
         if dbus.String("PlaybackStatus") in properties.keys():
@@ -266,8 +263,8 @@ class NowPlaying( Channel ):
                     self.cover_string = val
         self.update_with_info(data)
 
-
     def get_dbus_info(self):
+        ## FIXME fetch info can call on_mpris2_properties_changed
         data = {}
         status = self.veromix.pa.nowplaying_getPlaybackStatus(self.controller.destination())
         data[QString('State')] =  u'paused'
@@ -302,10 +299,6 @@ class NowPlaying( Channel ):
             new =  sink.sortOrderIndex + 1
             if self.sortOrderIndex != new:
                 self.sortOrderIndex = new
-        #else:
-            #for s in self.veromix.getSinkInputs():
-                #print self.pa_sink
-            #self.sortOrderIndex
 
     def matches(self, sink):
         sink = self.get_assotiated_sink()
@@ -321,10 +314,6 @@ class NowPlaying( Channel ):
         for sink in self.veromix.getSinkInputs():
             if str(sink.text).lower().find(name) >= 0 :
                 return sink
-        #for sink in self.veromix.getSinkInputs():
-            #if str(sink.text).find(sink.text.lower()) >= 0 :
-                #print name, "3", sink.text
-                #return sink
         return None
 
     def isNowplaying(self):

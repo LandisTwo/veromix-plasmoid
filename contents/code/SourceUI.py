@@ -33,7 +33,9 @@ class SourceUI( Channel ):
         Channel.__init__(self, parent)
 
     def composeArrangement(self):
-        self.layout.addItem(self.panel)
+        self.layout.addItem(self.frame)
+        self.frame_layout.addItem(self.panel)
+        
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
         self.panel_layout.addItem(self.meter)
@@ -45,7 +47,6 @@ class SourceUI( Channel ):
         self.mute.setBigIconName("audio-input-microphone.png")
 
     def update_label(self):
-        #text = "<b>" + self.pa_sink.app + "</b><span>" + self.pa_sink.name + "</span>"
         text =  ""
         bold = self.pa_sink.name
         if "description" in self.pa_sink.props.keys():
@@ -53,7 +54,6 @@ class SourceUI( Channel ):
             text = self.pa_sink.name
         if self.slider:
             self.slider.setText(text )
-            #self.slider.setBoldText(bold+" "+str(self.index) + "  "+ str(self.sortOrderIndex) )
             self.slider.setBoldText(bold )
 
     def on_update_meter(self, index, value, number_of_sinks):
@@ -81,6 +81,7 @@ class SourceUI( Channel ):
             self.mute.setMuted(True)
         else:
             self.mute.setMuted(False)
+
 ## Drag and Drop Support
 
     def dropEvent(self, dropEvent):

@@ -35,8 +35,8 @@ class InputSinkUI(SinkUI):
         self.mouse_pressed = False
         SinkUI.__init__(self, parent)
         self.setContentsMargins(0,0,0,0)
-        self.panel.setEnabledBorders (Plasma.FrameSvg.NoBorder)
-        self.panel.setFrameShadow(Plasma.Frame.Plain)
+        self.frame.setEnabledBorders (Plasma.FrameSvg.NoBorder)
+        self.frame.setFrameShadow(Plasma.Frame.Plain)
 
     def init(self):
         SinkUI.init(self)
@@ -85,7 +85,8 @@ class InputSinkUI(SinkUI):
         return self.pa_sink.props["sink"]
 
     def composeArrangement(self):
-        self.layout.addItem(self.panel)
+        self.layout.addItem(self.frame)
+        self.frame_layout.addItem(self.panel)        
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
         self.panel_layout.addItem(self.meter)
@@ -94,12 +95,8 @@ class InputSinkUI(SinkUI):
         pass
 
     def update_label(self):
-        #text = "<b>" + self.pa_sink.app + "</b><span>" + self.pa_sink.name + "</span>"
         text =  self.pa_sink.name
         bold = self.pa_sink.props["app"]
-        ## don't want the absolute path of the executable..
-        #if (len(bold) > 0 and bold.rfind("/") > 0 ):
-            #bold = bold[(bold.rfind("/") + 1 ) : ]
         if self.slider:
             self.slider.setText(text)
             self.slider.setBoldText(bold)
@@ -112,7 +109,6 @@ class InputSinkUI(SinkUI):
         if iconname is None and bold == "plugin-container":
             iconname = 'flash'
         if iconname :
-            #self.icon = KIcon(iconname)
             self.mute.setBigIconName(iconname)
             self.updateIcon()
 
