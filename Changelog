@@ -1,14 +1,21 @@
-0.9.0
+0.9.1 - 20.12.2010
+- new UI
+- per channel volume control (mono, stereo, dolby 5.1 ... )
+- better mpris2 support (don't poll - listen for notifications)
+- UI components are no longer deleted, they are stored and reused
+- improved resizing behaviour
+
+0.9.0 - 03.12.2010
 - nowplaying integration
 - localization
 - more configuration options
 
-0.8.7
+0.8.7 - 26.11.2010
 - bugfix
 - merged configuration dialogs
 - improved error-messages with link to the wiki
 
-0.8.6 -
+0.8.6 - 23.11.2010
 - global keyboard shortcuts
 
 0.8.5 - 19.11.2010
