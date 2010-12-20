@@ -41,6 +41,7 @@ class Channel(QGraphicsWidget):
         self.extended_panel_shown = False
         self.extended_panel= None
         self.init()
+        self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True) )
 
     def init(self):
         self.layout = QGraphicsLinearLayout(Qt.Vertical)

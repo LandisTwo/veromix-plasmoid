@@ -35,7 +35,6 @@ class SinkUI(Channel):
         self.frame.setEnabledBorders (Plasma.FrameSvg.AllBorders)
         self.frame.setFrameShadow(Plasma.Frame.Raised)
         self.apply_small_size()
-        self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True) )
 
     def apply_small_size(self):
         size = 42
@@ -107,6 +106,7 @@ class SinkUI(Channel):
             self.createExtender()
             self.extended_panel_shown = True
             self.frame_layout.insertItem(0, self.extended_panel)
+            self.extended_panel.update_with_info(self.pa_sink)            
             self.extended_panel.show()
             self.apply_big_size()
         self.veromix.check_geometries()

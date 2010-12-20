@@ -33,6 +33,8 @@ class SourceUI( Channel ):
         Channel.__init__(self, parent)
 
     def composeArrangement(self):
+        self.frame.setEnabledBorders (Plasma.FrameSvg.AllBorders)
+        self.frame.setFrameShadow(Plasma.Frame.Raised)
         self.layout.addItem(self.frame)
         self.frame_layout.addItem(self.panel)
         

@@ -64,7 +64,7 @@ class VeroMix(QGraphicsWidget):
         self.showsTabs =  not self.applet.useTabs()
         self.switchView(True)
 
-        self.source_panel_layout = SortedLayout(Qt.Vertical, True)
+        self.source_panel_layout = SortedLayout(Qt.Vertical, False)
         self.source_panel.setLayout(self.source_panel_layout)
         self.source_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         if self.showsTabs:
@@ -178,7 +178,7 @@ class VeroMix(QGraphicsWidget):
         self.do_scheduled_resize()
 
     def check_ItemOrdering(self):
-        self.sink_panel_layout.check_ItemOrdering()
+        self.source_panel_layout.check_ItemOrdering()
         self.sink_panel_layout.check_ItemOrdering()
         pass
 
