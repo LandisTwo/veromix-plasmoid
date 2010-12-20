@@ -50,7 +50,7 @@ class SinkInfoWidget(QGraphicsWidget):
 
     def init_arrangement(self):
         self.layout = QGraphicsLinearLayout(Qt.Vertical)
-        self.layout.setContentsMargins(0,0,0,0)
+        self.layout.setContentsMargins(42,0,42,0)
         
         self.settings_layout = QGraphicsLinearLayout(Qt.Horizontal)
         self.settings_layout.setContentsMargins(0,0,0,0)

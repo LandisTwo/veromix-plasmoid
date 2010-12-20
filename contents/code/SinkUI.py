@@ -30,30 +30,17 @@ class SinkUI(Channel):
 
     def __init__(self , parent):
         self.automatically_muted = False
-        Channel.__init__(self, parent)
-        #self.setFrameShadow(Plasma.Frame.Plain)
-        
+        Channel.__init__(self, parent)        
         self.setContentsMargins(0,0,0,0)
-        self.panel.setEnabledBorders (Plasma.FrameSvg.AllBorders)
-        self.panel.setFrameShadow(Plasma.Frame.Raised)
-        
-        #self.setEnabledBorders (Plasma.FrameSvg.AllBorders)
-        #self.setFrameShadow(Plasma.Frame.Raised)
-        #self.panel_layout.setContentsMargins(0,0,0,0)
-        self.applySmallSize()        
-        
-    def applySmallSize(self):
-        size = 60
-        #self.setMinimumHeight(size)
-        #self.setMaximumHeight(size)
-        #self.setPreferredHeight(size)
+        self.frame.setEnabledBorders (Plasma.FrameSvg.AllBorders)
+        self.frame.setFrameShadow(Plasma.Frame.Raised)
+        self.apply_small_size()
 
-    def applyBigSize(self):
-        size = 60
-        #self.setMinimumHeight(-1)
-        self.setMaximumHeight(-1)
-        #self.setPreferredHeight(-1)
-        self.adjustSize()
+    def apply_small_size(self):
+        size = 42
+
+    def apply_big_size(self):
+        self.apply_small_size()
 
     def updateIcon(self):
         if self.isMuted():
@@ -113,16 +100,15 @@ class SinkUI(Channel):
         if (self.extended_panel_shown):
             self.extended_panel_shown = False
             self.extended_panel.hide()
-            self.layout.removeItem( self.extended_panel)
-            self.applySmallSize()
+            self.frame_layout.removeItem( self.extended_panel)
+            self.apply_small_size()
         else:
             self.createExtender()
             self.extended_panel_shown = True
-            self.layout.insertItem(0, self.extended_panel)
+            self.frame_layout.insertItem(0, self.extended_panel)
+            self.extended_panel.update_with_info(self.pa_sink)            
             self.extended_panel.show()
-            self.applyBigSize()
-            #self.veromix.adjustSize()
-        self.adjustSize()
+            self.apply_big_size()
         self.veromix.check_geometries()
 
     def setVolume(self, value):

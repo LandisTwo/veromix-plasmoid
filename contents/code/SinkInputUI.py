@@ -34,16 +34,9 @@ class InputSinkUI(SinkUI):
     def __init__(self , parent):
         self.mouse_pressed = False
         SinkUI.__init__(self, parent)
-        #self.setFrameShadow(Plasma.Frame.Sunken)
-        #self.setEnabledBorders (Plasma.FrameSvg.NoBorder)
-        #self.setEnabledBorders (Plasma.FrameSvg.BottomBorder)
-        #self.setFrameShadow(Plasma.Frame.Plain)
-
         self.setContentsMargins(0,0,0,0)
-        self.panel.setEnabledBorders (Plasma.FrameSvg.NoBorder)
-        self.panel.setFrameShadow(Plasma.Frame.Plain)
-        #self.panel_layout.setContentsMargins(0,12,0,12)
-        #self.setContentsMargins(50,-1,-1,-1)
+        self.frame.setEnabledBorders (Plasma.FrameSvg.NoBorder)
+        self.frame.setFrameShadow(Plasma.Frame.Plain)
 
     def init(self):
         SinkUI.init(self)
@@ -59,14 +52,9 @@ class InputSinkUI(SinkUI):
 
     def updateBorders(self):
         pass
-        #if self.hasNowPlayingExtension():
-            #self.setEnabledBorders (Plasma.FrameSvg.NoBorder )
-        #else:
-            #self.setEnabledBorders (Plasma.FrameSvg.NoBorder)
 
     def createMute(self):
         self.mute = InputMuteButton(self)
-        #self.updateIcon()
         self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum,True) )
         self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
 
@@ -97,7 +85,8 @@ class InputSinkUI(SinkUI):
         return self.pa_sink.props["sink"]
 
     def composeArrangement(self):
-        self.layout.addItem(self.panel)
+        self.layout.addItem(self.frame)
+        self.frame_layout.addItem(self.panel)        
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
         self.panel_layout.addItem(self.meter)
@@ -106,12 +95,8 @@ class InputSinkUI(SinkUI):
         pass
 
     def update_label(self):
-        #text = "<b>" + self.pa_sink.app + "</b><span>" + self.pa_sink.name + "</span>"
         text =  self.pa_sink.name
         bold = self.pa_sink.props["app"]
-        ## don't want the absolute path of the executable..
-        #if (len(bold) > 0 and bold.rfind("/") > 0 ):
-            #bold = bold[(bold.rfind("/") + 1 ) : ]
         if self.slider:
             self.slider.setText(text)
             self.slider.setBoldText(bold)
@@ -124,7 +109,6 @@ class InputSinkUI(SinkUI):
         if iconname is None and bold == "plugin-container":
             iconname = 'flash'
         if iconname :
-            #self.icon = KIcon(iconname)
             self.mute.setBigIconName(iconname)
             self.updateIcon()
 

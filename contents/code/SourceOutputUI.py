@@ -32,6 +32,7 @@ class SourceOutputUI( Channel ):
     def __init__(self , parent):
         self.mouse_pressed = False
         Channel.__init__(self, parent)
+        self.layout.setContentsMargins(6,2,6,2)
 
     def createMute(self):
         self.mute = InputMuteButton(self)
@@ -90,7 +91,7 @@ class SourceOutputUI( Channel ):
 
     def updateSortOrderIndex(self):
         if self.pa_sink:
-            self.sortOrderIndex =  self.sinkIndexFor(int(self.getOutputIndex())) +  self.index
+            self.sortOrderIndex =  self.sinkIndexFor(int(self.getOutputIndex())) + self.index
 
     def on_slider_cb(self, value):
         pass

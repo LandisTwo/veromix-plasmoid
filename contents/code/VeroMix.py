@@ -16,6 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
+import datetime
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.plasma import Plasma
@@ -38,7 +39,9 @@ class VeroMix(QGraphicsWidget):
         QGraphicsWidget.__init__(self)
         self.applet = parent
         self.mouse_is_over = False
-        self.pa = None
+        self.pa = None            
+        self.last_resize_running = datetime.datetime.now()
+        self.last_resize_running_timer_running = False
 
     def init(self):
         self.setAcceptsHoverEvents (True)
@@ -61,7 +64,7 @@ class VeroMix(QGraphicsWidget):
         self.showsTabs =  not self.applet.useTabs()
         self.switchView(True)
 
-        self.source_panel_layout = SortedLayout(Qt.Vertical, True)
+        self.source_panel_layout = SortedLayout(Qt.Vertical, False)
         self.source_panel.setLayout(self.source_panel_layout)
         self.source_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         if self.showsTabs:
@@ -127,6 +130,7 @@ class VeroMix(QGraphicsWidget):
 
         self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
+        #self.pa.mpris2_properties_changed.connect(self.on_mpris2_properties_changed)
         self.pa.requestInfo()
 
     def start_nowplaying(self):
@@ -143,18 +147,38 @@ class VeroMix(QGraphicsWidget):
             if source.isSourceOutput():
                 count += 1
         self.setSourcesPanelVisible( count > 0 )
-        self.sink_panel.adjustSize()
-        self.source_panel.adjustSize()
+        # REstore
+        #self.sink_panel.adjustSize()
+        #self.source_panel.adjustSize()
         #self.scrolled_panel.adjustSize()
         if self.applet.formFactor()  == Plasma.Planar:
             pass
         else:
-            self.setMinimumHeight(self.scrolled_panel.preferredSize().height())
-            self.setMaximumHeight(self.scrolled_panel.preferredSize().height())
+            self.trigger_schedule_timer()
         #self.updateGeometry()
 
+    def do_scheduled_resize(self):
+        now = datetime.datetime.now()
+        if  (now - self.last_resize_running).seconds > 1:
+            self.adjustSize()
+            self.setMinimumHeight(self.scrolled_panel.preferredSize().height())
+            self.setMaximumHeight(self.scrolled_panel.preferredSize().height())
+            self.last_resize_running = datetime.datetime.now()
+        else:
+            self.trigger_schedule_timer()
+
+    def trigger_schedule_timer(self):
+        if self.last_resize_running_timer_running:
+                return
+        self.last_resize_running_timer_running = True
+        QTimer.singleShot(1000, self.on_schedule_resize_timer_cb)
+
+    def on_schedule_resize_timer_cb(self):
+        self.last_resize_running_timer_running = False
+        self.do_scheduled_resize()
+
     def check_ItemOrdering(self):
-        self.sink_panel_layout.check_ItemOrdering()
+        self.source_panel_layout.check_ItemOrdering()
         self.sink_panel_layout.check_ItemOrdering()
         pass
 
@@ -286,6 +310,21 @@ class VeroMix(QGraphicsWidget):
         channel = self.sink_panel_layout.getChannel(name)
         if channel:
             channel.update_with_info(values)
+
+    #def on_mpris2_properties_changed(self, destination, properties):
+        #print "d", destination, type(destination)
+        #for i in properties.keys():
+            #print i
+            #print "---"
+            #print properties[i]
+            #print "--------"
+
+        #print "==="
+        #self.on_nowplaying_dataUpdated(destination, properties)
+        #channel = self.sink_panel_layout.getChannel(str(destination))
+        #if channel:
+            #print "got channel"
+            #channel.convert_dbus_info(values)
 
 ### panel icons
 
