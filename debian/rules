@@ -13,8 +13,7 @@ override_dh_auto_clean:
 override_dh_auto_build:
 	dh_auto_build
 
-	chmod u+x Messages.sh
-	./Messages.sh
+	sh Messages.sh
 
 override_dh_install:
 	dh_install
@@ -24,8 +23,8 @@ override_dh_install:
 	then \
 		sed -i -e 's|Plasma/Applet,Plasma/PopupApplet|Plasma/PopupApplet|' debian/plasma-widget-veromix/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid/metadata.desktop ; \
 	fi; \
-	mkdir -p debian/plasma-widget-veromix/usr/share/dbus-1/services/ ; \
-	echo "[D-BUS Service]\nName=org.veromix.pulseaudioservice\nExec=/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid/dbus-service/VeromixServiceMain.py\n" > debian/plasma-widget-veromix/usr/share/dbus-1/services/org.veromix.pulseaudio.service
+	mkdir -p debian/plasma-widget-veromix/usr/share/dbus-1/services/
+	echo -e "[D-BUS Service]\nName=org.veromix.pulseaudioservice\nExec=/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid/dbus-service/VeromixServiceMain.py\n" > debian/plasma-widget-veromix/usr/share/dbus-1/services/org.veromix.pulseaudio.service
 
 override_dh_fixperms:
 	dh_fixperms
