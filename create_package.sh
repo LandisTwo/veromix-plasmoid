@@ -9,11 +9,11 @@ find ./ -name '*.pyc' | xargs rm
 zip -r  ../$NAME * -x */*.svn/*
 plasmapkg -u ../$NAME
 rm ../$TAR_NAME
-tar zcvf ../$TAR_NAME --exclude=.svn  --exclude=debian --exclude="*.sh" --exclude="metadata.desktop.kde4.4" --exclude="*.mo" .
+tar zcvf ../$TAR_NAME --exclude=.svn  --exclude=debian --exclude="reload_plasma.sh"  --exclude="kill_service.sh" --exclude="create_package.sh"  --exclude="metadata.desktop.kde4.4" --exclude="*.mo" .
 echo $NAME
 ORIG=$(pwd)
 if [ "$1" = "debian" ] ; then
-    TMP=$(mktemp -d) 
+    TMP=$(mktemp -d)
     cp ../$TAR_NAME  $TMP
     BUILD="$TMP/plasma-widget-veromix/"
     mkdir -p $BUILD
@@ -21,7 +21,7 @@ if [ "$1" = "debian" ] ; then
     cp Messages.sh $BUILD/Messages.sh
     cd $BUILD
     tar -xzf $TMP/$TAR_NAME
-    dpkg-buildpackage -sa 
+    dpkg-buildpackage -sa
     cd $ORIG
     cp $TMP/* ../
     echo $TMP
