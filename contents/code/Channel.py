@@ -179,3 +179,8 @@ class Channel(QGraphicsWidget):
 
     def setVolumes(self, values):
         pass
+
+    def wheelEvent(self, event):
+        if self.slider:
+            self.slider.wheelEvent(event)
+
