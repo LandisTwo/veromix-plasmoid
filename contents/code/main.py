@@ -185,7 +185,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
     ## FIXME Looks like a bug in plasma: Only when sending a
     # KIcon instance PopUpApplet acts like a Poppupapplet...
     def fixPopupIcon(self):
-        self.widget.getDefaultSink().updateIcon() 
+        sink = self.widget.getDefaultSink()
+        if sink:
+            sink.updateIcon()
 
     def doExit(self):
         # prevent crash in plasmoidviewer

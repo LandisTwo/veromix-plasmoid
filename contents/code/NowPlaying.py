@@ -80,7 +80,8 @@ class NowPlaying( Channel ):
 
     def connect_mpris2(self):
         if self.use_dbus_workaround:
-            self.veromix.pa.connect_mpris2_player(self.on_mpris2_properties_changed, str(self.controller.destination()) )
+            if self.veromix.pa:
+                self.veromix.pa.connect_mpris2_player(self.on_mpris2_properties_changed, str(self.controller.destination()) )
         self.get_dbus_info()
 
     def update_with_info(self, data):
@@ -208,18 +209,24 @@ class NowPlaying( Channel ):
         pass
 
     def on_next_cb(self):
+        if not self.veromix.pa:
+            return
         if self.use_dbus_workaround():
             self.veromix.pa.nowplaying_next(self.controller.destination())
         else:
             self.controller.startOperationCall(self.controller.operationDescription('next'))
 
     def on_prev_cb(self):
+        if not self.veromix.pa:
+            return
         if self.use_dbus_workaround():
             self.veromix.pa.nowplaying_prev(self.controller.destination())
         else:
             self.controller.startOperationCall(self.controller.operationDescription('previous'))
 
     def on_play_cb(self):
+        if not self.veromix.pa:
+            return
         if self.state == NowPlaying.Playing:
             if self.use_dbus_workaround():
                 self.veromix.pa.nowplaying_pause(self.controller.destination())
@@ -266,6 +273,8 @@ class NowPlaying( Channel ):
     def get_dbus_info(self):
         ## FIXME fetch info can call on_mpris2_properties_changed
         data = {}
+        if not self.veromix.pa:
+            return 
         status = self.veromix.pa.nowplaying_getPlaybackStatus(self.controller.destination())
         data[QString('State')] =  u'paused'
         if status == 'Playing':

@@ -111,12 +111,13 @@ class VeroMix(QGraphicsWidget):
     def start_pa(self):
         try:
             self.pa = PulseAudio(self)
-        except:
+        except Exception, e:
             self.showMessage(KIcon("script-error"), i18n("There is a problem with the backgroud-service. \
                                                         <ul> \
                                                         <li>If you just upgraded try killing the process named: VeromixServiceMain.py and relaunch this plasmoid</li> \
                                                         <li>If you don't know how to do that consider rebooting</li></ul><br/>\
                                                         <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:_VeromixServiceMain.py\">See wiki for more details</a> <span style=\"font-size: small;\">(right click and copy url)</span>."))
+            print "\nError connecting to veromix-service:\n" , e, "\n"
             return
         self.connect(self.pa, SIGNAL("on_sink_input_info(PyQt_PyObject)"), self.on_sink_input_info)
         self.connect(self.pa, SIGNAL("on_sink_info(PyQt_PyObject)"), self.on_sink_info)
@@ -130,7 +131,6 @@ class VeroMix(QGraphicsWidget):
 
         self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
-        #self.pa.mpris2_properties_changed.connect(self.on_mpris2_properties_changed)
         self.pa.requestInfo()
 
     def start_nowplaying(self):
@@ -271,7 +271,8 @@ class VeroMix(QGraphicsWidget):
 
     def trigger_volume_updates(self):
         if self.mouse_is_over :
-            self.pa.trigger_volume_updates()
+            if self.pa:
+                self.pa.trigger_volume_updates()
             QTimer.singleShot(4000, self.trigger_volume_updates)
 
     def resizeEvent(self, e):
