@@ -53,7 +53,9 @@ from PyKDE4 import plasmascript
 from PyKDE4.plasma import Plasma
 from PyKDE4.kdeui import KIcon
 from PyKDE4.kdeui import KActionCollection
+from PyKDE4.kdeui import KAction
 from PyKDE4.kdeui import KShortcut
+from PyKDE4.kdeui import KKeySequenceWidget 
 from PyKDE4.kdecore import *
 
 from VeroMix import VeroMix
@@ -72,6 +74,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
         plasmascript.Applet.__init__(self,parent)
         self.engine = None
         self.now_playing_engine = None
+        self.louder_action_editor = None
+        self.lower_action_editor = None
+        self.mute_action_editor = None
 
     def init(self):
         out = commands.getstatusoutput("xdg-icon-resource install --size 128 " + unicode(self.package().path()) + "contents/icons/veromix-plasmoid-128.png veromix-plasmoid")
@@ -122,25 +127,21 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def initShortcuts(self):
         self.actionCollection = KActionCollection(self)
+        #self.actionCollection.setConfigGlobal(True)
+        self.louder_action = self.actionCollection.addAction("VeromixVolumeUp")
+        self.louder_action.setText( i18n("Veromix volume up") )
+        self.louder_action.setGlobalShortcut(KShortcut())
+        self.louder_action.triggered.connect(self.widget.on_step_volume_up)
         
-        louder = self.actionCollection.addAction("VeromixVolumeUp")
-        louder.setText( i18n("Veromix volume up") )
-        #louder.setGlobalShortcut(KShortcut(Qt.CTRL + Qt.ALT+ Qt.Key_U))
-        louder.setGlobalShortcut(KShortcut())        
-        louder.triggered.connect(self.widget.on_step_volume_up)
+        self.lower_action = self.actionCollection.addAction("VeromixVolumeDown")
+        self.lower_action.setText(i18n("Veromix volume down"))
+        self.lower_action.setGlobalShortcut(KShortcut())
+        self.lower_action.triggered.connect(self.widget.on_step_volume_down)
         
-        lower = self.actionCollection.addAction("VeromixVolumeDown")
-        lower.setText(i18n("Veromix volume down"))
-        #lower.setGlobalShortcut(KShortcut(Qt.CTRL + Qt.ALT+ Qt.Key_D))
-        lower.setGlobalShortcut(KShortcut())        
-        lower.triggered.connect(self.widget.on_step_volume_down)
-        
-        mute = self.actionCollection.addAction("VeromixVolumeMute")
-        mute.setText(i18n("Veromix toggle  mute"))
-        #lower.setGlobalShortcut(KShortcut(Qt.CTRL + Qt.ALT+ Qt.Key_M))
-        mute.setGlobalShortcut(KShortcut())        
-        mute.triggered.connect(self.widget.on_toggle_mute)        
-
+        self.mute_action = self.actionCollection.addAction("VeromixVolumeMute")
+        self.mute_action.setText(i18n("Veromix toggle  mute"))
+        self.mute_action.setGlobalShortcut(KShortcut())
+        self.mute_action.triggered.connect(self.widget.on_toggle_mute)
 
     def initTooltip(self):
         if (self.formFactor() != Plasma.Planar):   
@@ -246,7 +247,33 @@ class VeroMixPlasmoid(plasmascript.Applet):
         #self.about_ui = uic.loadUi(str(self.package().filePath('ui', 'about.ui')), self.about_widget)
         #self.about_ui.version.setText(VeroMixPlasmoid.VERSION)
         #parent.addPage(self.about_widget, "About", "help-about" )
+        self.addGlobalShortcutPage(parent)
         return self.config_widget
+
+    # anybody knows how to remove/extend the default shortcuts page?
+    def addGlobalShortcutPage(self,dialog):
+        self.kb_settings_page = QWidget()
+
+        layout = QGridLayout()
+        self.kb_settings_page.setLayout(layout)
+
+        self.louder_action_editor = KKeySequenceWidget()
+        self.louder_action_editor.setKeySequence( self.louder_action.globalShortcut().primary())
+        layout.addWidget(QLabel(i18n("Veromix volume up")), 0,0)
+        layout.addWidget(self.louder_action_editor, 0,1)
+
+        self.lower_action_editor = KKeySequenceWidget()
+        self.lower_action_editor.setKeySequence( self.lower_action.globalShortcut().primary())
+        layout.addWidget(QLabel(i18n("Veromix volume down")), 1, 0)
+        layout.addWidget(self.lower_action_editor, 1, 1)
+
+        self.mute_action_editor = KKeySequenceWidget()
+        self.mute_action_editor.setKeySequence( self.mute_action.globalShortcut().primary())
+        layout.addWidget(QLabel(i18n("Veromix toggle  mute")), 2, 0)
+        layout.addWidget(self.mute_action_editor, 2, 1)
+
+        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding ), 3,3)
+        dialog.addPage(self.kb_settings_page, i18n("Keyboard Shortcuts"), "preferences-desktop-keyboard")
 
     def configChanged(self):
         self.config().writeEntry("background",str(self.config_ui.showBackground.currentIndex()))
@@ -296,7 +323,21 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.setPassivePopup(True)
         else:
             self.setPassivePopup(True)
-        self.update()           
+
+        if self.louder_action_editor:
+            sequence = self.louder_action_editor.keySequence()
+            if sequence != self.louder_action.globalShortcut().primary():
+                self.louder_action.setGlobalShortcut(KShortcut(sequence), KAction.ActiveShortcut, KAction.NoAutoloading )
+        if self.lower_action_editor:
+            sequence = self.lower_action_editor.keySequence()
+            if sequence != self.lower_action.globalShortcut().primary():
+                self.lower_action.setGlobalShortcut(KShortcut(sequence), KAction.ActiveShortcut, KAction.NoAutoloading )
+        if self.mute_action_editor:
+            sequence = self.mute_action_editor.keySequence()
+            if sequence != self.mute_action.globalShortcut().primary():
+                self.mute_action.setGlobalShortcut(KShortcut(sequence), KAction.ActiveShortcut, KAction.NoAutoloading )
+
+        self.update()
 
     def configWidgetDestroyed(self):
         self.config_widget = None
