@@ -41,7 +41,7 @@ class NowPlaying( Channel ):
         self.artwork = ""
         self.cover_string = ""
         self.last_playing_icon = KIcon(self.getPauseIcon())
-        self.layout.setContentsMargins(6,2,6,0)
+        self.layout.setContentsMargins(6,0,6,2)
         self.name = "nowplaying"
         self.connect_mpris2()
         
@@ -305,7 +305,7 @@ class NowPlaying( Channel ):
     def updateSortOrderIndex(self):
         sink = self.get_assotiated_sink()
         if sink != None:
-            new =  sink.sortOrderIndex + 1
+            new =  sink.sortOrderIndex - 1
             if self.sortOrderIndex != new:
                 self.sortOrderIndex = new
 

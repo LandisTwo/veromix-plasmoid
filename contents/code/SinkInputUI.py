@@ -41,7 +41,7 @@ class InputSinkUI(SinkUI):
     def init(self):
         SinkUI.init(self)
         self.setAcceptDrops(False)
-        self.layout.setContentsMargins(6,2,6,2)
+        self.layout.setContentsMargins(6,2,6,0)
         self.updateBorders()
 
     def hasNowPlayingExtension(self):

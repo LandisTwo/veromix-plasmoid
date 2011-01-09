@@ -45,7 +45,7 @@ class Channel(QGraphicsWidget):
 
     def init(self):
         self.layout = QGraphicsLinearLayout(Qt.Vertical)
-        self.layout.setContentsMargins(2,2,2,2)
+        self.layout.setContentsMargins(2,2,2,0)
         self.setLayout(self.layout)
         self.initArrangement()
         self.composeArrangement()
