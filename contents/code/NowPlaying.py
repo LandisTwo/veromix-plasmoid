@@ -99,10 +99,12 @@ class NowPlaying( Channel ):
         if self.state != state:
             self.state = state
             if self.state == NowPlaying.Playing:
-                self.play.setSvg(self.svg_path, "pause-normal")
+                #self.play.setSvg(self.svg_path, "pause-normal")
+                self.play.setIcon(KIcon("media-playback-pause"))
                 self.middle.setIcon(self.last_playing_icon)
             else:
-                self.play.setSvg(self.svg_path, "play-normal")
+                #self.play.setSvg(self.svg_path, "play-normal")
+                self.play.setIcon(KIcon("media-playback-start"))
 
     def getPauseIcon(self):
         name = self.get_application_name()
@@ -190,19 +192,22 @@ class NowPlaying( Channel ):
     def create_next_button(self):
         self.next = MuteButton(self)
         self.next.setAbsSize(20)
-        self.next.setSvg(self.svg_path , "next-normal")
+        #self.next.setSvg(self.svg_path , "next-normal")
+        self.next.setIcon(KIcon("media-skip-forward"))
         self.connect(self.next, SIGNAL("clicked()"), self.on_next_cb  )
 
     def create_prev_button(self):
         self.prev = MuteButton(self)
         self.prev.setAbsSize(20)
-        self.prev.setSvg(self.svg_path, "prev-normal")
+        #self.prev.setSvg(self.svg_path, "prev-normal")
+        self.prev.setIcon(KIcon("media-skip-backward"))
         self.connect(self.prev, SIGNAL("clicked()"), self.on_prev_cb  )
 
     def create_play_pause_button(self):
         self.play = MuteButton(self)
         self.play.setAbsSize(-1)
-        self.play.setSvg(self.svg_path, "stop-normal")
+        #self.play.setSvg(self.svg_path, "stop-normal")
+        self.play.setIcon(KIcon("media-playback-stop"))
         self.connect(self.play, SIGNAL("clicked()"), self.on_play_cb  )
 
     def on_mute_cb(self):
