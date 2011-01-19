@@ -78,7 +78,7 @@ class PulseAudio(QObject):
     
     def __init__(self, parent ):
         QObject.__init__(self)
-        REQUIRED_SERVICE_VERSION = 4
+        REQUIRED_SERVICE_VERSION = 5
         if not dbus.get_default_main_loop():
             mainloop=dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
         else:
@@ -252,6 +252,14 @@ class PulseAudio(QObject):
 
     def move_source_output(self, sink, output):
         self.getMixer().move_source_output(sink, output)
+
+    def start_monitor_for_sinkinput(self, sinkinput_index, sink_index, named):
+        self.getMixer().start_monitor_for_sinkinput(sinkinput_index, sink_index, named)
+        
+    def start_monitor_for_source(self,  source_index, named):
+        self.getMixer().start_monitor_for_source( source_index, named)
+
+    # FIXME
 
     def nowplaying_next(self, destination):
         self.getNowPlaying(str(destination)).Next()

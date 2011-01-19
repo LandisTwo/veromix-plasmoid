@@ -58,6 +58,10 @@ class SourceUI( Channel ):
             self.slider.setText(text )
             self.slider.setBoldText(bold )
 
+    def on_show_info_widget(self):
+        self.veromix.pa.start_monitor_for_source(self.index, self.name )
+
+
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:
             self.meter.setValue(value)
