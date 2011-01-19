@@ -227,7 +227,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.connect(self.config_widget, SIGNAL('destroyed(QObject*)'), self.configWidgetDestroyed)
         
         self.config_ui = uic.loadUi(str(self.package().filePath('ui', 'appearance.ui')), self.config_widget)        
-        self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background",False).toInt() [0] ) 
+        self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background","0").toInt() [0] )
         self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
         self.config_ui.useTabs.setChecked(self.useTabs() )
         self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
@@ -310,14 +310,13 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def applyConfig(self):
         self.applyNowPlaying(self.isNowplayingEnabled() )
                 
-        bg = self.config().readEntry("background",False).toBool()
+        bg = self.config().readEntry("background","0").toInt()[0]
         if  bg == 0:
             self.setBackgroundHints(Plasma.Applet.NoBackground)
         elif bg == 1:
             self.setBackgroundHints(Plasma.Applet.TranslucentBackground)
         else:
             self.setBackgroundHints(Plasma.Applet.StandardBackground)
-            
         mode =  self.config().readEntry("popupMode",False).toInt()[0]
         if  mode== 0:
             self.setPassivePopup(False)
