@@ -254,10 +254,10 @@ class PulseAudio(QObject):
         self.getMixer().move_source_output(sink, output)
 
     def start_monitor_for_sinkinput(self, sinkinput_index, sink_index, named):
-        self.getMixer().start_monitor_for_sinkinput(sinkinput_index, sink_index, named)
+        self.getMixer().toggle_monitor_of_sinkinput(sinkinput_index, sink_index, named)
         
     def start_monitor_for_source(self,  source_index, named):
-        self.getMixer().start_monitor_for_source( source_index, named)
+        self.getMixer().toggle_monitor_of_source( source_index, named)
 
     # FIXME
 

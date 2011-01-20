@@ -83,8 +83,8 @@ class VeromixDbus(dbus.service.Object):
         self.pulse.pulse_move_source_output( index, output)
         
     @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
-    def start_monitor_for_source(self, source_index, named ):
-        self.pulse.pulse_create_monitor_stream_for_source( source_index, named)
+    def toggle_monitor_of_source(self, source_index, named ):
+        self.pulse.pulse_toggle_monitor_of_source( source_index, named)
 
 ## -----------------------------sink -----------------------------------------
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{ia{si}}a{ss}')
@@ -138,8 +138,8 @@ class VeromixDbus(dbus.service.Object):
         pass
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='iis', out_signature='')
-    def start_monitor_for_sinkinput(self, sink_input_index, sink_index, named ):
-        self.pulse.pulse_create_monitor_stream_for_sinkinput( sink_input_index, sink_index, named)
+    def toggle_monitor_of_sinkinput(self, sink_input_index, sink_index, named ):
+        self.pulse.pulse_toggle_monitor_of_sinkinput( sink_input_index, sink_index, named)
         
 ## ----------------------------- generic -----------------------------------------
 

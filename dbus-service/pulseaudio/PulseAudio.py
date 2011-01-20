@@ -44,8 +44,8 @@ class PulseAudio(QObject):
         self.sinks = {}
         self.sources = {}
         self.loaded_modules = []
-        self.monitor_sinks = []
-        self.monitor_sources = []
+        self.monitor_sinks = {}
+        self.monitor_sources = {}
         self.module_stream_restore_argument = ""
         self.default_source_name = ""
         self.default_sink_name = ""
@@ -81,7 +81,7 @@ class PulseAudio(QObject):
         self._context = None
         self.sinks = {}
         self.loaded_modules = []
-        self.monitor_sinks = []
+        self.monitor_sinks = {}
         self._context_notify_cb = None
 
         self._pa_stream_request_cb = None
@@ -102,14 +102,20 @@ class PulseAudio(QObject):
             #print "Except---------------",
 
 #############
-    def pulse_create_monitor_stream_for_sinkinput(self, sink_input_index, sink_index, name):
-        #self.pa_create_monitor_stream_for_sink_input(sink_input_index, sink_index, name, False)
-        self.pa_create_monitor_stream_for_sink_input(sink_input_index, self.sinks[float(sink_index)], name)
+    
+    def pulse_toggle_monitor_of_sinkinput(self, sinkinput_index, sink_index, name):
+        if float(sinkinput_index) in self.monitor_sinks.keys():
+            self.pa_disconnect_monitor_of_sinkinput(sinkinput_index)
+        else:
+            self.pa_create_monitor_stream_for_sink_input(sinkinput_index, self.sinks[float(sink_index)], name)
           
+    def pa_disconnect_monitor_of_sinkinput(self, sinkinput_index):
+        if float(sinkinput_index) in self.monitor_sinks.keys():
+            pa_stream_disconnect(self.monitor_sinks[float(sinkinput_index)])
+            del self.monitor_sinks[float(sinkinput_index)]
     
     def pa_create_monitor_stream_for_sink_input(self, index, monitor_index, name, force = False):
-        if not index in self.monitor_sinks or force :
-            self.monitor_sinks.append(index)
+        if not index in self.monitor_sinks.keys() or force :
             # Create new stream
             ss = pa_sample_spec()
             ss.channels = 1
@@ -129,13 +135,27 @@ class PulseAudio(QObject):
             flags = 10752
             flags = PA_STREAM_PEAK_DETECT 
             pa_stream_connect_record(pa_stream, str(monitor_index), attr, flags)
+            self.monitor_sinks[float(index)] =  pa_stream
 
-    def pulse_create_monitor_stream_for_source(self,  source_index, named):
-        self.pa_create_monitor_stream_for_source(source_index, self.sources[ float(source_index) ], named)
 
-    def pa_create_monitor_stream_for_source(self, index,source, name, force = False):
+###########
+
+    def pulse_toggle_monitor_of_source(self, source_index, name):
+        if float(source_index) in self.monitor_sources.keys():
+            self.pa_disconnect_monitor_of_source(source_index)
+        else:
+            self.pa_create_monitor_for_source(source_index, self.sources[float(source_index)], name)
+
+    def pa_disconnect_monitor_of_source(self, source_index):
+        if float(source_index) in self.monitor_sources.keys():
+            pa_stream_disconnect(self.monitor_sources[float(source_index)])
+            del self.monitor_sources[float(source_index)]
+
+    #def pulse_create_monitor_stream_for_source(self,  source_index, named):
+        #self.pa_create_monitor_stream_for_source(source_index, self.sources[ float(source_index) ], named)
+
+    def pa_create_monitor_for_source(self, index,source, name, force = False):
         if not index in self.monitor_sources or force :
-            self.monitor_sources.append(index)
             # Create new stream
             samplespec = pa_sample_spec()
             #samplespec.channels = source.sample_spec.channels
@@ -162,6 +182,7 @@ class PulseAudio(QObject):
             flags = 10752
             flags = PA_STREAM_PEAK_DETECT 
             pa_stream_connect_record(pa_stream, device , attr, flags)
+            self.monitor_sources[float(index)] = pa_stream
 
 
 ############# callbacks
@@ -265,7 +286,8 @@ class PulseAudio(QObject):
             if et == PA_SUBSCRIPTION_EVENT_SINK_INPUT:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
                     self.emit(SIGNAL("sink_input_remove(int)"),  int(index) )
-                    self.monitor_sinks.remove(index)
+                    if float(index) in self.monitor_sinks.keys():
+                        del self.monitor_sinks[float(index)]
                 else:
                     o = pa_context_get_sink_input_info(self._context, int(index), self._pa_sink_input_info_list_cb, True)
                     pa_operation_unref(o)
@@ -281,8 +303,9 @@ class PulseAudio(QObject):
 
             if et == PA_SUBSCRIPTION_EVENT_SOURCE:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
-                    self.monitor_sources.remove(int(index) )
                     self.emit(SIGNAL("source_remove(int)"),int(index) )
+                    if float(index) in self.monitor_sources.keys():
+                        del self.monitor_sources[float(index)]
                 else:
                     #o = pa_context_get_source_info_by_index(self._context, int(index), self._pa_source_info_cb, None)
                     o = pa_context_get_source_info_list(self._context, self._pa_source_info_cb, None)
