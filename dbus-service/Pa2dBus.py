@@ -102,7 +102,7 @@ class Pa2dBus(QObject):
         self.dbus.source_output_remove(int(index))
 
     def on_volume_meter_sink_input(self, index, level):
-        if self.dbus.should_send_volume_updates() and level == level:
+        if level == level:
             if self.LIMIT_SEND_METER_ENABLED:
                 now = datetime.datetime.now()
                 # FIXME limit dbus spam but this solution could always prevent the same source  from transmitting
@@ -113,7 +113,7 @@ class Pa2dBus(QObject):
                 self.dbus.volume_meter_sink_input(int(index),level)
 
     def on_volume_meter_source(self, index, level):
-        if self.dbus.should_send_volume_updates() and level == level:
+        if level == level:
             if self.LIMIT_SEND_METER_ENABLED:
                 now = datetime.datetime.now()
                 # FIXME limit dbus spam but this solution could always prevent the same source  from transmitting

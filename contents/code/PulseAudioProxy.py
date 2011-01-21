@@ -244,9 +244,6 @@ class PulseAudio(QObject):
     def set_default_source(self, index):
         self.getMixer().set_default_source(index)
 
-    def trigger_volume_updates(self):
-        self.getMixer().trigger_volume_updates()
-
     def move_sink_input(self, sink, output):
         self.getMixer().move_sink_input(sink, output)
 

@@ -36,8 +36,6 @@ class VeromixDbus(dbus.service.Object):
     def __init__(self, pulseaudio, conn , object_path='/org/veromix/pulseaudio'):
         dbus.service.Object.__init__(self, conn, object_path)
         self.pulse = pulseaudio
-        self.send_volume_updates = False
-        self.timer = None
         self.VERSION = 5
 
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='')
@@ -147,10 +145,6 @@ class VeromixDbus(dbus.service.Object):
     def requestInfo(self):
         self.pulse.requestInfo()
 
-    @dbus.service.method("org.veromix.pulseaudio", in_signature='', out_signature='')
-    def  trigger_volume_updates(self):
-        self.start_volume_updates()
-
     @dbus.service.method("org.veromix.pulseaudio", in_signature='', out_signature='i')
     def  veromix_service_version(self):
         return self.VERSION
@@ -159,20 +153,3 @@ class VeromixDbus(dbus.service.Object):
     def  veromix_service_quit(self):
         sys.exit(0)
 
-## ----------------------------- private -----------------------------------------
-    def start_volume_updates(self):
-        self.send_volume_updates = True
-        if self.timer != None:
-            self.timer.stop()
-            self.timer.start(3000)
-        else:
-            self.timer = QTimer()
-            self.timer.timeout.connect(self.stop_volume_updates)
-            self.timer.start(3000)
-
-    def stop_volume_updates(self):
-        self.send_volume_updates = False
-        self.timer.stop()
-
-    def should_send_volume_updates(self):
-        return self.send_volume_updates

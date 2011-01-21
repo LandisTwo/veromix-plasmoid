@@ -38,7 +38,6 @@ class VeroMix(QGraphicsWidget):
     def __init__(self,parent):
         QGraphicsWidget.__init__(self)
         self.applet = parent
-        self.mouse_is_over = False
         self.pa = None            
         self.last_resize_running = datetime.datetime.now()
         self.last_resize_running_timer_running = False
@@ -257,23 +256,6 @@ class VeroMix(QGraphicsWidget):
         sources = self.source_panel_layout.getChannels().values()
         for source in sources:
             source.on_update_meter(index,int(level), len(sources))
-
-## Callbacks mouse -> start volume-meter callbacks (they will automatically stop after 5 seconds )
-
-    def hoverMoveEvent(self,event):
-        if  self.mouse_is_over:
-            return
-        self.mouse_is_over = True
-        self.trigger_volume_updates()
-
-    def hoverLeaveEvent(self,event):
-        self.mouse_is_over = False
-
-    def trigger_volume_updates(self):
-        if self.mouse_is_over :
-            if self.pa:
-                self.pa.trigger_volume_updates()
-            QTimer.singleShot(4000, self.trigger_volume_updates)
 
     def resizeEvent(self, e):
         self.emit(SIGNAL("resized()"))

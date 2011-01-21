@@ -202,7 +202,7 @@ class PulseSinkInputInfo(PulseSink):
         self.sink            = pa_sink_input_info.sink
         self.sample_spec     = pa_sink_input_info.sample_spec
         self.channel_map     = pa_sink_input_info.channel_map
-                
+        self.monitor_index =  pa_sink_input_info.monitor_index
         self.buffer_usec     = pa_sink_input_info.buffer_usec
         self.sink_usec       = pa_sink_input_info.sink_usec
         self.resample_method = pa_sink_input_info.resample_method

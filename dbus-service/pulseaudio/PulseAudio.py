@@ -151,9 +151,6 @@ class PulseAudio(QObject):
             pa_stream_disconnect(self.monitor_sources[float(source_index)])
             del self.monitor_sources[float(source_index)]
 
-    #def pulse_create_monitor_stream_for_source(self,  source_index, named):
-        #self.pa_create_monitor_stream_for_source(source_index, self.sources[ float(source_index) ], named)
-
     def pa_create_monitor_for_source(self, index,source, name, force = False):
         if not index in self.monitor_sources or force :
             # Create new stream

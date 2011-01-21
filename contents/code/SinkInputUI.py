@@ -70,6 +70,7 @@ class InputSinkUI(SinkUI):
 
     def on_show_info_widget(self):
         self.veromix.pa.start_monitor_for_sinkinput(self.index, int(self.getOutputIndex()), self.name )
+        self.meter.setValue(0)
 
     def on_mute_cb(self ):
         if self.isMuted():
