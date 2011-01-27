@@ -69,7 +69,7 @@ class InputSinkUI(SinkUI):
         return self.meter.value()
 
     def on_show_info_widget(self):
-        self.veromix.pa.start_monitor_for_sinkinput(self.index, int(self.getOutputIndex()), self.name )
+        self.veromix.pa.toggle_monitor_of_sinkinput(self.index, int(self.getOutputIndex()), self.name )
         self.meter.setValue(0)
 
     def on_mute_cb(self ):
@@ -115,10 +115,6 @@ class InputSinkUI(SinkUI):
         if iconname :
             self.mute.setBigIconName(iconname)
             self.updateIcon()
-
-    def on_update_meter(self, index, value, number_of_sinks):
-        if self.index == index:
-            self.meter.setValue(value)
 
 ### Drag and Drop
 

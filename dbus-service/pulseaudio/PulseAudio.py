@@ -42,6 +42,7 @@ class PulseAudio(QObject):
     def __init__(self):
         QObject.__init__(self)
         self.sinks = {}
+        self.sink_inputs = {}
         self.sources = {}
         self.loaded_modules = []
         self.monitor_sinks = {}
@@ -79,7 +80,7 @@ class PulseAudio(QObject):
         self.pa_mainloop_api = None
         self.pa_mainloop = None
         self._context = None
-        self.sinks = {}
+        self.sink_inputs = {}
         self.loaded_modules = []
         self.monitor_sinks = {}
         self._context_notify_cb = None
@@ -107,14 +108,14 @@ class PulseAudio(QObject):
         if float(sinkinput_index) in self.monitor_sinks.keys():
             self.pa_disconnect_monitor_of_sinkinput(sinkinput_index)
         else:
-            self.pa_create_monitor_stream_for_sink_input(sinkinput_index, self.sinks[float(sink_index)], name)
+            self.pa_create_monitor_stream_for_sink_input(sinkinput_index, sink_index, name)
           
     def pa_disconnect_monitor_of_sinkinput(self, sinkinput_index):
         if float(sinkinput_index) in self.monitor_sinks.keys():
             pa_stream_disconnect(self.monitor_sinks[float(sinkinput_index)])
             del self.monitor_sinks[float(sinkinput_index)]
     
-    def pa_create_monitor_stream_for_sink_input(self, index, monitor_index, name, force = False):
+    def pa_create_monitor_stream_for_sink_input(self, index,sink_index,  name, force = False):
         if not index in self.monitor_sinks.keys() or force :
             # Create new stream
             ss = pa_sample_spec()
@@ -122,7 +123,8 @@ class PulseAudio(QObject):
             ss.format = 5
             #ss.rate = 25
             ss.rate = 10
-            pa_stream = pa_stream_new(self._context, "Sinkinput Peak detect - " + name, ss, None)
+            #sink = self.sink_inputs[float(index)]
+            pa_stream = pa_stream_new(self._context, "Sinkinput Peak detect - ", ss, None)
             pa_stream_set_monitor_stream(pa_stream, index)
             pa_stream_set_read_callback(pa_stream, self._pa_stream_request_cb, index)
             pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
@@ -133,10 +135,52 @@ class PulseAudio(QObject):
             attr.prebuf = 0
             attr.minreq = 0
             flags = 10752
-            flags = PA_STREAM_PEAK_DETECT 
-            pa_stream_connect_record(pa_stream, str(monitor_index), attr, flags)
+            flags = PA_STREAM_PEAK_DETECT
+            #print "si", sink_index
+            pa_stream_connect_record(pa_stream, str(sink_index), attr, flags)
+            #pa_stream_connect_record(pa_stream, str(monitor_index), attr, flags)
             self.monitor_sinks[float(index)] =  pa_stream
 
+###########
+
+    def pulse_toggle_monitor_of_sink(self, sink_index, name):
+        if float(sink_index) in self.monitor_sinks.keys():
+            self.pa_disconnect_monitor_of_sink(sink_index)
+        else:
+            self.pa_create_monitor_stream_for_sink(sink_index, name)
+
+    def pa_disconnect_monitor_of_sink(self, sink_index):
+        if float(sink_index) in self.monitor_sinks.keys():
+            pa_stream_disconnect(self.monitor_sinks[float(sink_index)])
+            del self.monitor_sinks[float(sink_index)]
+
+    def pa_create_monitor_stream_for_sink(self, index,  name, force = False):
+        if not index in self.monitor_sinks.keys() or force :
+            if float(index) not in self.sinks.keys():
+                return
+            samplespec = pa_sample_spec()
+            samplespec.channels = 1
+            samplespec.format = 5
+            samplespec.rate = 10
+            pa_stream = pa_stream_new(self._context, "Sink Peak detect - " + name, samplespec, None)
+            pa_stream_set_read_callback(pa_stream, self._pa_sink_stream_request_cb, index+1)
+            pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
+
+            sink = self.sinks[float(index)]
+            device = str(sink.monitor_source)
+            #device = None
+            flags = pa_stream_flags_t()
+            attr = pa_buffer_attr()
+            attr.fragsize = 4
+            attr.maxlength = 10
+            attr.tlength = 0
+            attr.prebuf = 0
+            attr.minreq = 0
+            flags = 10752
+            flags = PA_STREAM_PEAK_DETECT
+            #pa_stream_connect_playback(pa_stream, str(index) , None, 0, None, None)
+            pa_stream_connect_record(pa_stream, device , None, flags)
+            self.monitor_sinks[float(index)] =  pa_stream
 
 ###########
 
@@ -200,6 +244,7 @@ class PulseAudio(QObject):
                 self._pa_context_success_cb = pa_context_success_cb_t(self.pa_context_success_cb)
                 self._pa_stream_request_cb = pa_stream_request_cb_t(self.pa_stream_request_cb)
                 self._pa_source_stream_request_cb = pa_stream_request_cb_t(self.pa_source_stream_request_cb)
+                self._pa_sink_stream_request_cb = pa_stream_request_cb_t(self.pa_sink_stream_request_cb)
 
                 self._pa_stream_notify_cb = pa_stream_notify_cb_t(self.pa_stream_request_cb)
                 self._pa_sink_info_cb = pa_sink_info_cb_t(self.pa_sink_info_cb)
@@ -326,17 +371,18 @@ class PulseAudio(QObject):
 
     def pa_sink_input_info_cb(self, context, struct, index, user_data):
         if struct :
-            #if float(struct.contents.sink) in self.sinks:
-                #self.pa_create_monitor_stream_for_sink_input(int(struct.contents.index), self.sinks[float(struct.contents.sink)], struct.contents.name)
+            #if float(struct.contents.sink) in self.sink_inputs:
+                #self.pa_create_monitor_stream_for_sink_input(int(struct.contents.index), self.sink_inputs[float(struct.contents.sink)], struct.contents.name)
             sink = PulseSinkInputInfo(struct[0])
             #print ( pa_proplist_to_string(struct.contents.proplist))
+            #self.sink_inputs[ float(sink.index) ] = sink
             self.emit(SIGNAL("sink_input_info(PyQt_PyObject)"), sink )
 
     def pa_sink_info_cb(self, context, struct, index, data):
         if struct:
             sink = PulseSinkInfo(struct[0])
             sink.updateDefaultSink(self.default_sink_name)
-            self.sinks[ float(struct.contents.index) ] = sink.monitor_source
+            self.sinks[float(sink.index)] = sink
             self.emit(SIGNAL("sink_info(PyQt_PyObject)"), sink )
 
     def pa_client_info_cb(self, context, struct, c_int, user_data):
@@ -386,6 +432,18 @@ class PulseAudio(QObject):
         pa_stream_drop(stream)
         if index:
             self.emit(SIGNAL("volume_meter_source(int, float )"),int(index), float(v))
+
+    def pa_sink_stream_request_cb(self, stream, length, index_incr):
+        index = index_incr - 1
+        data = POINTER(c_float)()
+        pa_stream_peek(stream, data, ctypes.c_ulong(length))
+        v = data[length / 4 -1] * 100
+        if (v < 0):
+            v = 0
+        if (v > 100):
+            return
+        pa_stream_drop(stream)
+        self.emit(SIGNAL("volume_meter_sink(int, float )"),int(index), float(v))
 
     def pa_module_info_cb(self, context, pa_module_info, eol, user_data):
         if user_data and pa_module_info:
@@ -474,13 +532,13 @@ class PulseAudio(QObject):
     def pulse_move_sink_input(self, index, target):
         operation = pa_context_move_sink_input_by_index(self._context,index, target, self._null_cb, None)
         pa_operation_unref(operation)
-        #self.pa_create_monitor_stream_for_sink_input(int(index), self.sinks[float(target)], "", True)
+        #self.pa_create_monitor_stream_for_sink_input(int(index), self.sink_inputs[float(target)], "", True)
         return
 
     def pulse_move_source_output(self, index, target):
         operation = pa_context_move_source_output_by_index(self._context,index, target, self._null_cb, None)
         pa_operation_unref(operation)
-        #self.pa_create_monitor_stream_for_source(int(index), self.sinks[float(target)], "", True)
+        #self.pa_create_monitor_stream_for_source(int(index), self.sink_inputs[float(target)], "", True)
         return
 
     def __print(self, text):

@@ -127,7 +127,8 @@ class VeroMix(QGraphicsWidget):
         self.connect(self.pa, SIGNAL("on_sink_input_remove(int)"), self.on_remove_sink_input)
         self.connect(self.pa, SIGNAL("on_source_remove(int)"), self.on_remove_source)
         self.connect(self.pa, SIGNAL("on_source_output_remove(int)"), self.on_remove_source_output)
-
+        
+        self.connect(self.pa, SIGNAL("on_volume_meter_sink(int, float )"), self.on_volume_meter_sink)
         self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
         self.pa.requestInfo()
@@ -248,6 +249,10 @@ class VeroMix(QGraphicsWidget):
 
 ## Callbacks volume menters
 
+    def on_volume_meter_sink(self, index, level):
+        for sink in self.sink_panel_layout.getChannels().values():
+            sink.on_update_meter(index,int(level), len(self.sink_panel_layout.getChannels()))
+            
     def on_volume_meter_sink_input(self, index, level):
         for sink in self.sink_panel_layout.getChannels().values():
             sink.on_update_meter(index,int(level), len(self.sink_panel_layout.getChannels()))

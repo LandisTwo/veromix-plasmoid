@@ -101,6 +101,14 @@ class VeromixDbus(dbus.service.Object):
     def sink_volume(self, index, vol):
         self.pulse.pulse_set_sink_volume(long (index), PulseVolume(vol))
 
+    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='id')
+    def volume_meter_sink(self, index,value ):
+        pass
+
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
+    def toggle_monitor_of_sink(self, sink_index,named ):
+        self.pulse.pulse_toggle_monitor_of_sink( sink_index, named)
+
     @dbus.service.method("org.veromix.pulseaudio", in_signature='i', out_signature='')
     def set_default_sink(self, index):
         self.pulse.pulse_set_default_sink(index)

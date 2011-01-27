@@ -53,17 +53,6 @@ class SinkUI(Channel):
     def updateMutedInfo(self, aBoolean):
         if self.isDefaultSink():
             self.muteInfo.emit(aBoolean)
-    
-    def on_update_meter(self, index, value, old):
-        level = 0
-        for sink in self.veromix.getSinkInputs():
-            if sink.getOutputIndex() == str(self.index):
-                meter = sink.getMeter()   
-                if meter > level:
-                    level = meter
-        vol = self.getVolume()
-        level =   level * (vol / 100.0)
-        self.meter.setValue(level)
 
     def getVolume(self):
         return self.pa_sink.getVolume()
@@ -97,6 +86,10 @@ class SinkUI(Channel):
         self.setVolume(vol)
 
     def on_show_info_widget(self):
+        self.veromix.pa.toggle_monitor_of_sink(self.index, str(self.name) )
+        self.meter.setValue(0)
+
+    def on_show_info_widget2(self):
         if (self.extended_panel_shown):
             self.extended_panel_shown = False
             self.extended_panel.hide()

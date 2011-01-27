@@ -120,7 +120,8 @@ class Channel(QGraphicsWidget):
         pass
 
     def on_update_meter(self, index, value, number_of_sinks):
-        pass
+        if self.index == index:
+            self.meter.setValue(value)
 
     def update_essentials(self,info):
         self.name = info.name

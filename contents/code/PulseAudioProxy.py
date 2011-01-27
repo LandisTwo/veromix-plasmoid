@@ -133,6 +133,10 @@ class PulseAudio(QObject):
         self.bus.add_signal_receiver(self.on_volume_meter_source,
                 dbus_interface="org.veromix.notification",
                 signal_name="volume_meter_source")
+
+        self.bus.add_signal_receiver(self.on_volume_meter_sink,
+                dbus_interface="org.veromix.notification",
+                signal_name="volume_meter_sink")
                 
         #pa_obj  = bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
         #interface = dbus.Interface(pa_obj,dbus_interface="org.veromix.notification")
@@ -208,6 +212,10 @@ class PulseAudio(QObject):
 
     def on_volume_meter_sink_input(self, index, value):
         self.emit(SIGNAL("on_volume_meter_sink_input(int,float)"), index ,value)
+        
+    def on_volume_meter_sink(self, index, value):
+        print "-", index, value
+        self.emit(SIGNAL("on_volume_meter_sink(int,float)"), index ,value)
 
     def on_volume_meter_source(self, index, value):
         self.emit(SIGNAL("on_volume_meter_source(int,float)"), index ,value)
@@ -250,10 +258,13 @@ class PulseAudio(QObject):
     def move_source_output(self, sink, output):
         self.getMixer().move_source_output(sink, output)
 
-    def start_monitor_for_sinkinput(self, sinkinput_index, sink_index, named):
+    def toggle_monitor_of_sink(self, sink_index, named):
+        self.getMixer().toggle_monitor_of_sink(sink_index, named)
+
+    def toggle_monitor_of_sinkinput(self, sinkinput_index, sink_index, named):
         self.getMixer().toggle_monitor_of_sinkinput(sinkinput_index, sink_index, named)
-        
-    def start_monitor_for_source(self,  source_index, named):
+
+    def toggle_monitor_of_source(self,  source_index, named):
         self.getMixer().toggle_monitor_of_source( source_index, named)
 
     # FIXME
