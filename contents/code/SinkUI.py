@@ -88,6 +88,7 @@ class SinkUI(Channel):
     def on_show_info_widget(self):
         self.veromix.pa.toggle_monitor_of_sink(self.index, str(self.name) )
         self.meter.setValue(0)
+        self.on_show_info_widget2()
 
     def on_show_info_widget2(self):
         if (self.extended_panel_shown):
@@ -98,7 +99,8 @@ class SinkUI(Channel):
         else:
             self.createExtender()
             self.extended_panel_shown = True
-            self.frame_layout.insertItem(0, self.extended_panel)
+            #self.frame_layout.insertItem(0, self.extended_panel)
+            self.frame_layout.addItem(self.extended_panel)
             self.extended_panel.update_with_info(self.pa_sink)            
             self.extended_panel.show()
             self.apply_big_size()

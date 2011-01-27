@@ -23,18 +23,21 @@ from PyKDE4.kdeui import *
 
 from LabelSlider import LabelSlider
 
-class SinkInfoWidget(QGraphicsWidget):
+class SinkInfoWidget(Plasma.TabBar):
 
     def __init__(self, veromix, sink):
         QGraphicsWidget.__init__(self)
         self.veromix = veromix
         self.sink = sink
         self.text = ""
+        self.textwidget = None
         self.INFO_ICON = "hwinfo"
         self.sliders = []
         self.init()
 
     def init(self):
+        self.textwidget = Plasma.TextBrowser()
+        self.textwidget.setText("<b>Info</b>")
         self.init_arrangement()
         self.create_text_area()
         self.create_switcher()
@@ -45,12 +48,16 @@ class SinkInfoWidget(QGraphicsWidget):
         self.settings_layout.addItem(self.switcher)
         self.settings_layout.addStretch()
         self.settings_layout.addItem(self.button)
-        self.layout.addItem(self.settings_widget)
-        self.layout.addItem(self.slider_widget)
+        #self.layout.addItem(self.settings_widget)
+        #self.layout.addItem(self.slider_widget)
+        self.addTab("Pan", self.slider_widget)
+        self.addTab("Settings", self.settings_widget)
+        self.addTab("Info", self.textwidget)
 
     def init_arrangement(self):
-        self.layout = QGraphicsLinearLayout(Qt.Vertical)
-        self.layout.setContentsMargins(42,0,42,0)
+        #self.layout = QGraphicsLinearLayout(Qt.Vertical)
+        #self.layout.setContentsMargins(42,0,42,0)
+        self.layout().setContentsMargins(42,0,42,0)
         
         self.settings_layout = QGraphicsLinearLayout(Qt.Horizontal)
         self.settings_layout.setContentsMargins(0,0,0,0)
@@ -58,7 +65,7 @@ class SinkInfoWidget(QGraphicsWidget):
         self.settings_widget = QGraphicsWidget()
         self.settings_widget.setLayout(self.settings_layout)
         
-        self.setLayout(self.layout)
+        #self.setLayout(self.layout)
 
     def create_channel_sliders(self):
         self.slider_layout = QGraphicsLinearLayout(Qt.Vertical)
@@ -93,8 +100,10 @@ class SinkInfoWidget(QGraphicsWidget):
         values.sort()
         for key in values:
             self.text += "<b>" + key + ":</b> "+ info.props[key]+"<br/>"
+        if self.textwidget:
+            self.textwidget.setText(self.text)
         self.set_slider_values()
-        self.updateOutputSwitcher()            
+        self.updateOutputSwitcher()
 
     def on_change_switcher(self,boolean):
         if boolean:
@@ -104,9 +113,10 @@ class SinkInfoWidget(QGraphicsWidget):
         self.switcher.nativeWidget().setChecked(self.sink.pa_sink.props["isdefault"] == "True")
 
     def on_show_message(self):
-        if self.veromix.applet.isPopupShowing():
-            self.veromix.applet.hidePopup()
-        self.veromix.showMessage(KIcon(self.INFO_ICON), self.text)
+        pass
+        #if self.veromix.applet.isPopupShowing():
+            #self.veromix.applet.hidePopup()
+        #self.veromix.showMessage(KIcon(self.INFO_ICON), self.text)
 
     def set_slider_values(self):
         channels = self.sink.pa_sink.getChannels()
@@ -135,8 +145,11 @@ class SinkInputInfoWidget(SinkInfoWidget):
         self.settings_layout.addStretch()
         self.settings_layout.addItem(self.switcher)
         self.settings_layout.addItem(self.button)
-        self.layout.addItem(self.settings_widget)
-        self.layout.addItem(self.slider_widget)
+        #self.layout.addItem(self.settings_widget)
+        #self.layout.addItem(self.slider_widget)
+        self.addTab("Pan", self.slider_widget)
+        self.addTab("Settings", self.settings_widget)
+        self.addTab("Info", self.textwidget)
         
     def create_switcher(self):
         self.switcher = Plasma.ComboBox()
