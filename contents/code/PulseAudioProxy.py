@@ -156,8 +156,6 @@ class PulseAudio(QObject):
                 bus_name=name)
 
     def on_mpris2_properties_changed(self, interface, properties, signature):
-        print interface, type(interface)
-        print signature
         self.mpris2_properties_changed.emit(str(interface), properties)
 
     def getMixer(self):
@@ -187,12 +185,10 @@ class PulseAudio(QObject):
         self.emit(SIGNAL("on_sink_info(PyQt_PyObject)"), sink )
 
     def on_source_output_info(self,  index,   name, props):
-        #print "source_output_info"
         sink = SinkInfo( self,  index,   name, True, {"left":0, "right":0},  props)
         self.emit(SIGNAL("on_source_output_info(PyQt_PyObject)"), sink )
 
     def on_source_info(self,  index,   name,  muted  , volume ,  props):
-        #print "on_source_info"
         sink = SinkInfo( self,  index,   name,  muted  , volume , props)
         self.emit(SIGNAL("on_source_info(PyQt_PyObject)"), sink )
 
@@ -203,18 +199,15 @@ class PulseAudio(QObject):
         self.emit(SIGNAL("on_sink_remove(int)"), index )
 
     def on_source_remove(self, index):
-        #print "on_source_remove"
         self.emit(SIGNAL("on_source_remove(int)"), index )
 
     def on_source_output_remove(self, index):
-        #print "on_source_output_remove"
         self.emit(SIGNAL("on_source_output_remove(int)"), index )
 
     def on_volume_meter_sink_input(self, index, value):
         self.emit(SIGNAL("on_volume_meter_sink_input(int,float)"), index ,value)
         
     def on_volume_meter_sink(self, index, value):
-        print "-", index, value
         self.emit(SIGNAL("on_volume_meter_sink(int,float)"), index ,value)
 
     def on_volume_meter_source(self, index, value):

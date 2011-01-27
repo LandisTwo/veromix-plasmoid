@@ -34,8 +34,8 @@ class Pa2dBus(QObject):
         QObject.__init__(self )
         self.dbus = veromixdbus
         self.pulse = pulseaudio
-        self.LIMIT_SEND_METER_ENABLED = True
-        self.METER_SEND_MSECS = 200000 #micro
+        self.LIMIT_SEND_METER_ENABLED = False
+        self.METER_SEND_MSECS = 100000 #micro
         self.last_volume_meter_send = datetime.datetime.now()
         self.last_source_meter_send = datetime.datetime.now()
         self.connect(self.pulse, SIGNAL("sink_info(PyQt_PyObject)"), self.on_sink_info)

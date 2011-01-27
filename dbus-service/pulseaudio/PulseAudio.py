@@ -121,24 +121,13 @@ class PulseAudio(QObject):
             ss = pa_sample_spec()
             ss.channels = 1
             ss.format = 5
-            #ss.rate = 25
             ss.rate = 10
-            #sink = self.sink_inputs[float(index)]
             pa_stream = pa_stream_new(self._context, "Sinkinput Peak detect - ", ss, None)
             pa_stream_set_monitor_stream(pa_stream, index)
             pa_stream_set_read_callback(pa_stream, self._pa_stream_request_cb, index)
             pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
-            attr = pa_buffer_attr()
-            attr.fragsize = 4
-            attr.maxlength = 10
-            attr.tlength = 0
-            attr.prebuf = 0
-            attr.minreq = 0
-            flags = 10752
-            flags = PA_STREAM_PEAK_DETECT
-            #print "si", sink_index
-            pa_stream_connect_record(pa_stream, str(sink_index), attr, flags)
-            #pa_stream_connect_record(pa_stream, str(monitor_index), attr, flags)
+            
+            pa_stream_connect_record(pa_stream, str(sink_index), None, PA_STREAM_PEAK_DETECT)
             self.monitor_sinks[float(index)] =  pa_stream
 
 ###########
@@ -167,19 +156,7 @@ class PulseAudio(QObject):
             pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
 
             sink = self.sinks[float(index)]
-            device = str(sink.monitor_source)
-            #device = None
-            flags = pa_stream_flags_t()
-            attr = pa_buffer_attr()
-            attr.fragsize = 4
-            attr.maxlength = 10
-            attr.tlength = 0
-            attr.prebuf = 0
-            attr.minreq = 0
-            flags = 10752
-            flags = PA_STREAM_PEAK_DETECT
-            #pa_stream_connect_playback(pa_stream, str(index) , None, 0, None, None)
-            pa_stream_connect_record(pa_stream, device , None, flags)
+            pa_stream_connect_record(pa_stream, str(sink.monitor_source) , None, PA_STREAM_PEAK_DETECT)
             self.monitor_sinks[float(index)] =  pa_stream
 
 ###########
@@ -199,30 +176,16 @@ class PulseAudio(QObject):
         if not index in self.monitor_sources or force :
             # Create new stream
             samplespec = pa_sample_spec()
-            #samplespec.channels = source.sample_spec.channels
             samplespec.channels = 1
             samplespec.format = 5
             samplespec.rate = 10
-            #samplespec.rate = source.sample_spec.rate
 
             pa_stream = pa_stream_new(self._context, "Source Peak detect - " + name, samplespec, None)
-            #pa_stream_set_monitor_stream(pa_stream, source.index);
-            #pa_stream_set_read_callback(pa_stream, self._pa_stream_request_cb, index)
-            #pa_stream_set_read_callback(pa_stream, self._pa_stream_request_cb, source.monitor_of_sink)
             pa_stream_set_read_callback(pa_stream, self._pa_source_stream_request_cb, index)
             pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
 
-            device = pa_xstrdup( source.name );
-            flags = pa_stream_flags_t()
-            attr = pa_buffer_attr()
-            attr.fragsize = 4
-            attr.maxlength = 10
-            attr.tlength = 0
-            attr.prebuf = 0
-            attr.minreq = 0
-            flags = 10752
-            flags = PA_STREAM_PEAK_DETECT 
-            pa_stream_connect_record(pa_stream, device , attr, flags)
+            device = pa_xstrdup( source.name )
+            pa_stream_connect_record(pa_stream, device , None, PA_STREAM_PEAK_DETECT)
             self.monitor_sources[float(index)] = pa_stream
 
 
