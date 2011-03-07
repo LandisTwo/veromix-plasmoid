@@ -71,6 +71,8 @@ class NowPlaying( Channel ):
         self.play.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.middle_layout.addStretch()
         self.middle_layout.addItem(self.play)
+        self.panel.setContentsMargins(0,0,0,0)
+        self.panel_layout.setContentsMargins(6,0,10,6)
         self.panel_layout.addStretch()
         self.panel_layout.addItem(self.prev_panel)
         self.panel_layout.addItem(self.middle)
@@ -104,6 +106,7 @@ class NowPlaying( Channel ):
             else:
                 #self.play.setSvg(self.svg_path, "play-normal")
                 self.play.setIcon(KIcon("media-playback-start"))
+                self.middle.setIcon(KIcon(self.getPauseIcon()))
 
     def getPauseIcon(self):
         name = self.get_application_name()
@@ -113,13 +116,6 @@ class NowPlaying( Channel ):
         return app
 
     def update_cover(self,data):
-        ## FIXME
-        #if self.state == NowPlaying.Paused  :
-            #if self.artwork != None:
-                #self.artwork = None
-                #self.middle.setIcon(KIcon(self.getPauseIcon()))
-            #print "paused no cover"
-            #return
         if QString('Artwork') in data:
             val = data[QString('Artwork')]
             if self.artwork !=  val:
@@ -177,7 +173,6 @@ class NowPlaying( Channel ):
         self.middle_layout = QGraphicsLinearLayout(Qt.Vertical)
         self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setLayout(self.middle_layout)
-        self.CONTROLSBAR_SIZE = 112
         self.CONTROLSBAR_SIZE = 80
         self.setMinimumHeight(self.CONTROLSBAR_SIZE)
         self.setPreferredHeight(self.CONTROLSBAR_SIZE)
