@@ -33,11 +33,8 @@ class SourceUI( Channel ):
         Channel.__init__(self, parent)
 
     def composeArrangement(self):
-        self.frame.setEnabledBorders (Plasma.FrameSvg.AllBorders)
-        self.frame.setFrameShadow(Plasma.Frame.Raised)
         self.layout.addItem(self.frame)
         self.frame_layout.addItem(self.panel)
-        
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
         self.panel_layout.addItem(self.meter)
@@ -61,7 +58,6 @@ class SourceUI( Channel ):
     def on_show_info_widget(self):
         self.veromix.pa.toggle_monitor_of_source(self.index, self.name )
 
-
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:
             self.meter.setValue(value)
@@ -71,7 +67,10 @@ class SourceUI( Channel ):
 
     def setVolume(self, value):
         v = self.pa_sink.volumeDiffFor(value)
-        self.pa.set_source_volume(self.index, v)
+        self.set_channel_volumes(v)
+
+    def set_channel_volumes(self, values):
+        self.pa.set_source_volume(self.index, values)
 
     def on_mute_cb(self ):
         if self.isMuted():

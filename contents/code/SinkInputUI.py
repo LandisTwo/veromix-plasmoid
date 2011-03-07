@@ -35,35 +35,29 @@ class InputSinkUI(SinkUI):
         self.mouse_pressed = False
         SinkUI.__init__(self, parent)
         self.setContentsMargins(0,0,0,0)
-        self.frame.setEnabledBorders (Plasma.FrameSvg.NoBorder)
-        self.frame.setFrameShadow(Plasma.Frame.Plain)
 
     def init(self):
         SinkUI.init(self)
         self.setAcceptDrops(False)
         self.layout.setContentsMargins(6,2,6,0)
-        self.updateBorders()
 
     def hasNowPlayingExtension(self):
         for player in self.veromix.getNowPlaying():
             if player.matches(self):
                 return True
         return False
-
-    def updateBorders(self):
-        pass
-
+        
     def createMute(self):
         self.mute = InputMuteButton(self)
-        self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum,True) )
+        self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed,True) )
         self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
-
-    def createExtender(self):
-        self.extended_panel = SinkInputInfoWidget(self.veromix, self)
 
     def setVolume(self, value):
         v = self.pa_sink.volumeDiffFor(value)
-        self.pa.set_sink_input_volume(self.index, v)
+        self.set_channel_volumes(v)
+
+    def set_channel_volumes(self, values):
+        self.pa.set_sink_input_volume(self.index, values)
 
     def getMeter(self):
         return self.meter.value()
@@ -71,7 +65,6 @@ class InputSinkUI(SinkUI):
     def on_show_info_widget(self):
         self.veromix.pa.toggle_monitor_of_sinkinput(self.index, int(self.getOutputIndex()), self.name )
         self.meter.setValue(0)
-        self.on_show_info_widget2()
 
     def on_mute_cb(self ):
         if self.isMuted():
@@ -91,7 +84,7 @@ class InputSinkUI(SinkUI):
 
     def composeArrangement(self):
         self.layout.addItem(self.frame)
-        self.frame_layout.addItem(self.panel)        
+        self.frame_layout.addItem(self.panel)
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
         self.panel_layout.addItem(self.meter)
@@ -150,4 +143,3 @@ class InputSinkUI(SinkUI):
 
     def update_with_info(self,info):
         SinkUI.update_with_info(self, info)
-        self.updateBorders()

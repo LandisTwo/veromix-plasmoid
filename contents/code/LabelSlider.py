@@ -27,21 +27,24 @@ from PyKDE4.kdecore import *
 from PyKDE4.plasma import *
 
 class Label(Plasma.Label):
-    def __init__(self):
+    
+    def __init__(self, parent=None):
         self.text = ""
         self.bold_text = ""
-        Plasma.Label.__init__(self)
+        Plasma.Label.__init__(self, parent)
 
     def setText(self, text):
-        if text:
+        if text and text != "None":
             self.text = text
-        Plasma.Label.setText(self, "<b>"+self.bold_text + "</b> " + self.text)
+        self._set_text()
 
     def setBoldText(self,text):
-        if text:
+        if text and text != "None":
             self.bold_text = text
-        self.setText(self.text)
+        self._set_text()
 
+    def _set_text(self):
+        Plasma.Label.setText(self, "<b>"+self.bold_text+"</b> "+self.text)
 
 class LabelSlider(Plasma.Slider):
     volumeChanged = pyqtSignal(int)
@@ -55,15 +58,31 @@ class LabelSlider(Plasma.Slider):
         self.pulse_timestamp = datetime.datetime.now()  + d
         self.plasma_timestamp = datetime.datetime.now() + d
         Plasma.Slider.__init__(self)
+        #self.setContentsMargins(0,0,0,0)
+        self.label = Label(self)
+        self.label.setPos(0, -4)
+        #self.meter = Plasma.Meter(self)
+        #self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
+        #self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed, True))
+        #self.meter.setValue(50)
+        #self.meter.setMaximumHeight(6)
+        #self.meter.setPos(0, 11)
+
+        self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
         self.valueChanged.connect( self.on_slider_cb)
-
+        
+    def _resize_widgets(self):
+        w = self.size().width() 
+        #self.meter.setMinimumWidth(w)
+        #self.meter.setMaximumWidth(w)
+        self.label.setMinimumWidth(w)
+        self.label.setMaximumWidth(w)
+        
     def setText(self, text):
-        if text:
-            self.text = text
-
+        self.label.setText(text)
+        
     def setBoldText(self,text):
-        if text:
-            self.bold_text = text
+        self.label.setBoldText(text)
 
     def hideSlider(self):
         self.draw_slider = False
@@ -72,6 +91,9 @@ class LabelSlider(Plasma.Slider):
         if self.check_pulse_timestamp():
             self.update_plasma_timestamp()
             self.setValue(value)
+
+    def update_with_info(self, info):
+        self.setValueFromPlasma(info.getVolume())
         
     def setValueFromPulse(self, value):
         if self.check_plasma_timestamp():
@@ -98,43 +120,3 @@ class LabelSlider(Plasma.Slider):
     def check_pulse_timestamp(self):
         now = datetime.datetime.now()
         return  (now - self.pulse_timestamp ).seconds > self.DELAY
-
-    def paint(self, painter, option, widget_p):
-        widget = self.nativeWidget()
-        if self.widget and widget.width() > 0:
-            size = 10
-            font = QFont()
-            font.setPixelSize(size)
-            font.setBold(True)
-            painter.setPen(Plasma.Theme.defaultTheme().color(Plasma.Theme.TextColor))
-
-            # Check if the font is too big
-            fm = QFontMetrics(font)
-            font.setPointSize(size)
-            message = self.bold_text + " " + self.text
-            if fm.width(message) > widget.width():
-                while fm.width(message) > widget.width() and size > 0 and len(message) > 0:
-                    #size = size - 1
-                    message = message[0:-1]
-                    #font.setPointSize(size)
-                    fm = QFontMetrics(font)
-                    #print size
-            painter.setFont(font)
-            text_target =  QRect(widget.rect())
-            text_target.moveTo(0 ,-5)
-            fm = QFontMetrics(font)
-            bold_text_width = fm.width(self.bold_text + " ")
-            if len(message) > len(self.bold_text + " ") :
-                painter.drawText(text_target, Qt.AlignTop | Qt.AlignLeft, self.bold_text + " ")
-                cut = len(message) - len(self.bold_text + " ")
-                if True:
-                    msg = self.text[ 0:cut ]
-                    font.setBold(False)
-                    painter.setFont(font)
-                    painter.setPen(Plasma.Theme.defaultTheme().color(Plasma.Theme.TextColor))
-                    text_target.moveTo( bold_text_width ,-5)
-                    painter.drawText(text_target, Qt.AlignTop | Qt.AlignLeft, msg)
-            else:
-                painter.drawText(text_target, Qt.AlignTop | Qt.AlignLeft, message)
-            if self.draw_slider:
-                Plasma.Slider.paint(self, painter, option, widget)

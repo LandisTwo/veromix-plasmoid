@@ -27,7 +27,8 @@ class MuteButton(Plasma.IconWidget):
 
     def __init__(self , parent):
         Plasma.IconWidget.__init__(self)
-        self.BIGSIZE= 28
+        self.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed,True) )
+        self.BIGSIZE= 24
         self.setPreferredSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
         self.setMaximumSize(QSizeF(self.BIGSIZE,self.BIGSIZE))
         self.setParent(parent)
@@ -44,8 +45,7 @@ class MuteButton(Plasma.IconWidget):
 
     def setMuted(self, boolean):
         if boolean :
-            self.setSvg("icons/audio", self.muted_Icon)
-            
+            self.setSvg("icons/audio", self.muted_Icon)            
         else:
             self.setSvg("icons/audio", self.play_Icon)
     
@@ -82,8 +82,10 @@ class InputMuteButton(MuteButton):
     def _draw_icon(self ):
         if self.status_icon == self.muted_Icon:
             size =  self.BIGSIZE
-            size2= 18
-            orig =  KIcon(self.big_name).pixmap(22, 22)
+            size2= 22
+            #pos = self.size().height() - size2 + int(size2/4)
+            pos = 8
+            orig =  KIcon(self.big_name).pixmap(size2, size2)
             #over = KIcon(self.status_icon).pixmap(size2,size2)
             over = pixmapFromSVG(self.status_icon)
             
@@ -106,7 +108,7 @@ class InputMuteButton(MuteButton):
 
             paint = QPainter(pixmap)
             #over = KIconLoader.loadIcon(loader, "audio-volume-muted", KIconLoader.NoGroup, size2, KIconLoader.DefaultState, "", "", True)
-            paint.drawPixmap( 12  , 12, over)
+            paint.drawPixmap( pos  , pos, over)
             paint.end()
             return QIcon(pixmap)
         else:

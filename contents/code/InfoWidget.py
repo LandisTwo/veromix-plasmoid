@@ -22,7 +22,7 @@ from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 
 from LabelSlider import LabelSlider
-
+        
 class SinkInfoWidget(Plasma.TabBar):
 
     def __init__(self, veromix, sink):
@@ -131,6 +131,9 @@ class SinkInfoWidget(Plasma.TabBar):
         for slider in self.sliders:
             vol.append(slider.value())
         self.sink.pa.set_sink_volume(self.sink.index, vol)         
+
+
+
 
 class SinkInputInfoWidget(SinkInfoWidget):
 

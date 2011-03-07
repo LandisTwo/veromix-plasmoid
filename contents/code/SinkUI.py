@@ -30,17 +30,9 @@ class SinkUI(Channel):
 
     def __init__(self , parent):
         self.automatically_muted = False
+        self.extended_panel = None
         Channel.__init__(self, parent)        
         self.setContentsMargins(0,0,0,0)
-        self.frame.setEnabledBorders (Plasma.FrameSvg.AllBorders)
-        self.frame.setFrameShadow(Plasma.Frame.Raised)
-        self.apply_small_size()
-
-    def apply_small_size(self):
-        size = 42
-
-    def apply_big_size(self):
-        self.apply_small_size()
 
     def updateIcon(self):
         if self.isMuted():
@@ -85,26 +77,9 @@ class SinkUI(Channel):
             vol = 100
         self.setVolume(vol)
 
-    def on_show_info_widget(self):
+    def on_show_info_widget(self):        
         self.veromix.pa.toggle_monitor_of_sink(self.index, str(self.name) )
         self.meter.setValue(0)
-        self.on_show_info_widget2()
-
-    def on_show_info_widget2(self):
-        if (self.extended_panel_shown):
-            self.extended_panel_shown = False
-            self.extended_panel.hide()
-            self.frame_layout.removeItem( self.extended_panel)
-            self.apply_small_size()
-        else:
-            self.createExtender()
-            self.extended_panel_shown = True
-            #self.frame_layout.insertItem(0, self.extended_panel)
-            self.frame_layout.addItem(self.extended_panel)
-            self.extended_panel.update_with_info(self.pa_sink)            
-            self.extended_panel.show()
-            self.apply_big_size()
-        self.veromix.check_geometries()
 
     def setVolume(self, value):
         vol = self.pa_sink.volumeDiffFor(value)
@@ -117,7 +92,10 @@ class SinkUI(Channel):
         if self.automatically_muted :            
             self.automatically_muted = False
             self.pa.set_sink_mute(self.index, False)
-        self.pa.set_sink_volume(self.index, vol)
+        self.set_channel_volumes(vol)
+            
+    def set_channel_volumes(self, values):
+        self.pa.set_sink_volume(self.index, values)
 
     def sink_input_kill(self):
         pass

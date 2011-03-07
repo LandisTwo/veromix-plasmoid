@@ -87,8 +87,6 @@ class VeroMix(QGraphicsWidget):
         if self.showsTabs:
             self.scrolled_panel_layout = QGraphicsLinearLayout(Qt.Vertical)
             scrolled_panel = QGraphicsWidget()
-            #scrolled_panel = Plasma.Frame()
-            #scrolled_panel.setFrameShadow(Plasma.Frame.Sunken)
             scrolled_panel.setLayout(self.scrolled_panel_layout)
             self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
             self.scrolled_panel_layout.setContentsMargins(0,0,0,6)

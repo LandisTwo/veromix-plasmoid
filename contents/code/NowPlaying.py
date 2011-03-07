@@ -62,7 +62,6 @@ class NowPlaying( Channel ):
     def composeArrangement(self):
         self.layout.addItem(self.frame)
         self.frame_layout.addItem(self.panel)
-        
         self.prev_panel_layout.addStretch()
         self.prev_panel_layout.addItem(self.prev)
         self.next_panel_layout.addStretch()
@@ -179,6 +178,7 @@ class NowPlaying( Channel ):
         self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setLayout(self.middle_layout)
         self.CONTROLSBAR_SIZE = 112
+        self.CONTROLSBAR_SIZE = 80
         self.setMinimumHeight(self.CONTROLSBAR_SIZE)
         self.setPreferredHeight(self.CONTROLSBAR_SIZE)
         self.setMaximumHeight(self.CONTROLSBAR_SIZE)        

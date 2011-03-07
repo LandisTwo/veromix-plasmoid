@@ -26,6 +26,7 @@ from LabelSlider import LabelSlider
 from InfoWidget import SinkInfoWidget
 from MuteButton  import MuteButton
 from ClickableMeter import ClickableMeter
+from SinkChannelWidget import SinkChannelWidget
 
 class Channel(QGraphicsWidget):
     def __init__(self , parent):
@@ -57,17 +58,14 @@ class Channel(QGraphicsWidget):
         self.createMute()
         self.createMiddle()
         self.createMeter()
+        self.create_expander()
 
     def composeArrangement(self):
         self.layout.addItem(self.frame)
-        self.frame_layout.addItem(self.panel)
-        
+        self.frame_layout.addItem(self.panel)        
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
         self.panel_layout.addItem(self.meter)
-
-    def createExtender(self):
-        self.extended_panel = SinkInfoWidget(self.veromix, self )
 
     def create_frame(self):
         self.frame = Plasma.Frame()
@@ -80,34 +78,46 @@ class Channel(QGraphicsWidget):
     def create_panel(self):
         self.panel = QGraphicsWidget()
         self.panel_layout = QGraphicsLinearLayout(Qt.Horizontal)
+        self.panel_layout.setContentsMargins(6,8,10,6)
         self.panel.setLayout(self.panel_layout)
 
     def createMute(self):
         self.mute = MuteButton(self)
-        self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum,True) )
         self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
 
     def createMiddle(self):
         self.middle = QGraphicsWidget()
         self.middle_layout = QGraphicsLinearLayout(Qt.Vertical)
-        self.middle_layout.setContentsMargins(6,8,6,0)
+        #self.middle_layout.setContentsMargins(6,8,6,0)
+        self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setLayout(self.middle_layout)
         self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.createSlider()
-        self.slider.volumeChanged.connect( self.on_slider_cb  )
         self.middle_layout.addItem(self.slider)
-
+        
     def createSlider(self):
         self.slider = LabelSlider()
         self.slider.setOrientation(Qt.Horizontal)
         self.slider.setMaximum(100)
         self.slider.setMinimum(0)
+        self.slider.volumeChanged.connect( self.on_slider_cb  )
 
     def createMeter(self):
         self.meter = ClickableMeter()
         self.meter.setMeterType(Plasma.Meter.AnalogMeter)
-        self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum, True))
+        #self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
+        self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed, True))
         self.connect(self.meter, SIGNAL("clicked()"), self.on_show_info_widget  )
+
+    def create_expander(self):
+        self.expander = Plasma.IconWidget(self.panel)
+        self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
+        self.expander.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed))
+        self.expander.clicked.connect(self.on_expander_clicked)
+        self.expander.setSvg("widgets/arrows", "left-arrow")
+
+    def _resize_widgets(self):
+        self.expander.setPos(int(self.panel.size().width() - self.expander.size().width()) ,0)
 
     def _set_values(self, info):
         self.updateIcon()
@@ -115,13 +125,31 @@ class Channel(QGraphicsWidget):
 
     def on_show_info_widget(self):
         pass
-
+    
+    def on_expander_clicked(self):
+        self.middle_layout.removeItem(self.slider)
+        self.slider = None
+        if (self.extended_panel_shown):
+            self.extended_panel_shown = False
+            self.expander.setSvg("widgets/arrows", "left-arrow")            
+            self.createSlider()
+            self.middle_layout.addItem(self.slider)
+        else:
+            self.extended_panel_shown = True
+            self.expander.setSvg("widgets/arrows", "down-arrow")
+            self.slider = SinkChannelWidget(self.veromix, self)
+            self.middle_layout.addItem(self.slider)
+        self.middle_layout.setContentsMargins(0,0,0,0)
+        self.middle.setContentsMargins(0,0,0,0)
+        self.update_with_info(self.pa_sink)
+        self.veromix.check_geometries()
+        
     def on_mute_cb(self ):
         pass
 
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:
-            self.meter.setValue(value)
+            self.meter.setValue(int(value))
 
     def update_essentials(self,info):
         self.name = info.name
@@ -131,7 +159,7 @@ class Channel(QGraphicsWidget):
 
     def update_with_info(self,info):
         self.update_essentials(info)
-        self.slider.setValueFromPulse(info.getVolume())
+        self.slider.update_with_info(info)
         self._set_values(info)
         self.update()
         if self.extended_panel:
