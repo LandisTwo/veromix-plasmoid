@@ -24,10 +24,10 @@ from PyKDE4.plasma import Plasma
 import signal, os, datetime
 
 from LabelSlider import *
-from InfoWidget import *
 from SinkUI import *
 from Channel import *
 from MuteButton  import InputMuteButton
+from SettingsWidget import SinkInputSettingsWidget
 
 class InputSinkUI(SinkUI):
 
@@ -52,6 +52,10 @@ class InputSinkUI(SinkUI):
         self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed,True) )
         self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
 
+    def create_settings_widget(self):
+        self.settings_widget = SinkInputSettingsWidget(self.veromix, self)
+        self.settings_widget.update_with_info(self.pa_sink)
+
     def setVolume(self, value):
         v = self.pa_sink.volumeDiffFor(value)
         self.set_channel_volumes(v)
@@ -62,7 +66,7 @@ class InputSinkUI(SinkUI):
     def getMeter(self):
         return self.meter.value()
 
-    def on_show_info_widget(self):
+    def on_meter_clicked(self):
         self.veromix.pa.toggle_monitor_of_sinkinput(self.index, int(self.getOutputIndex()), self.name )
         self.meter.setValue(0)
 

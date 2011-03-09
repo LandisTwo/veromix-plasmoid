@@ -45,6 +45,9 @@ class SourceUI( Channel ):
         self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
         self.mute.setBigIconName("audio-input-microphone.png")
 
+    def create_settings_widget(self):
+        self.settings_widget = None
+        
     def update_label(self):
         text =  ""
         bold = self.pa_sink.name
@@ -55,7 +58,7 @@ class SourceUI( Channel ):
             self.slider.setText(text )
             self.slider.setBoldText(bold )
 
-    def on_show_info_widget(self):
+    def on_meter_clicked(self):
         self.veromix.pa.toggle_monitor_of_source(self.index, self.name )
 
     def on_update_meter(self, index, value, number_of_sinks):

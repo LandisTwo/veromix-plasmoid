@@ -24,6 +24,7 @@ from PyKDE4.kdeui import *
 from PyKDE4.plasma import Plasma
 
 from Channel import Channel
+from SettingsWidget import SinkSettingsWidget
 
 class SinkUI(Channel):
     muteInfo = pyqtSignal(bool)
@@ -77,7 +78,7 @@ class SinkUI(Channel):
             vol = 100
         self.setVolume(vol)
 
-    def on_show_info_widget(self):        
+    def on_meter_clicked(self):
         self.veromix.pa.toggle_monitor_of_sink(self.index, str(self.name) )
         self.meter.setValue(0)
 
@@ -108,6 +109,10 @@ class SinkUI(Channel):
             pass
         if self.slider:
             self.slider.setBoldText(self.app)
+
+    def create_settings_widget(self):
+        self.settings_widget = SinkSettingsWidget(self.veromix, self)
+        self.settings_widget.update_with_info(self.pa_sink)
 
 ## Drag and Drop Support
 

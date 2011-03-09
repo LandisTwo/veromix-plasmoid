@@ -59,6 +59,7 @@ class Channel(QGraphicsWidget):
         self.createMiddle()
         self.createMeter()
         self.create_expander()
+        self.create_settings_widget()
 
     def composeArrangement(self):
         self.layout.addItem(self.frame)
@@ -107,7 +108,7 @@ class Channel(QGraphicsWidget):
         self.meter.setMeterType(Plasma.Meter.AnalogMeter)
         #self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
         self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed, True))
-        self.connect(self.meter, SIGNAL("clicked()"), self.on_show_info_widget  )
+        self.connect(self.meter, SIGNAL("clicked()"), self.on_meter_clicked  )
 
     def create_expander(self):
         self.expander = Plasma.IconWidget(self.panel)
@@ -116,6 +117,9 @@ class Channel(QGraphicsWidget):
         self.expander.clicked.connect(self.on_expander_clicked)
         self.expander.setSvg("widgets/arrows", "left-arrow")
 
+    def create_settings_widget(self):
+        self.settings_widget = None
+
     def _resize_widgets(self):
         self.expander.setPos(int(self.panel.size().width() - self.expander.size().width()) ,0)
 
@@ -123,7 +127,7 @@ class Channel(QGraphicsWidget):
         self.updateIcon()
         self.update_label()
 
-    def on_show_info_widget(self):
+    def on_meter_clicked(self):
         pass
     
     def on_expander_clicked(self):
@@ -131,14 +135,18 @@ class Channel(QGraphicsWidget):
         self.slider = None
         if (self.extended_panel_shown):
             self.extended_panel_shown = False
-            self.expander.setSvg("widgets/arrows", "left-arrow")            
+            self.expander.setSvg("widgets/arrows", "left-arrow")
+            self.middle_layout.removeItem(self.settings_widget)
             self.createSlider()
             self.middle_layout.addItem(self.slider)
+            self.settings_widget=None
         else:
             self.extended_panel_shown = True
             self.expander.setSvg("widgets/arrows", "down-arrow")
             self.slider = SinkChannelWidget(self.veromix, self)
             self.middle_layout.addItem(self.slider)
+            self.create_settings_widget()
+            self.middle_layout.addItem(self.settings_widget)
         self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setContentsMargins(0,0,0,0)
         self.update_with_info(self.pa_sink)
@@ -164,6 +172,8 @@ class Channel(QGraphicsWidget):
         self.update()
         if self.extended_panel:
             self.extended_panel.update_with_info(info)
+        if self.settings_widget:
+            self.settings_widget.update_with_info(info)
 
     def updateSortOrderIndex(self):
         self.sortOrderIndex =  self.sinkIndexFor(self.index)
