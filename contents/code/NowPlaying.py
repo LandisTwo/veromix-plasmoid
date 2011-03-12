@@ -90,6 +90,9 @@ class NowPlaying( Channel ):
         self.update_cover(data)
         self.updateSortOrderIndex()
 
+    def on_update_configuration(self):
+        pass
+
     def update_state(self,data):
         state = self.state
         if QString('State') in data:

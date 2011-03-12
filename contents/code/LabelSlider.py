@@ -48,9 +48,9 @@ class Label(Plasma.Label):
 
 class LabelSlider(Plasma.Slider):
     volumeChanged = pyqtSignal(int)
-    DELAY=  1
     
     def __init__(self):
+        self.DELAY=  1
         self.text = ""
         self.bold_text = ""
         self.draw_slider = True
@@ -93,7 +93,7 @@ class LabelSlider(Plasma.Slider):
             self.setValue(value)
 
     def update_with_info(self, info):
-        self.setValueFromPlasma(info.getVolume())
+        self.setValueFromPulse(info.getVolume())
         
     def setValueFromPulse(self, value):
         if self.check_plasma_timestamp():

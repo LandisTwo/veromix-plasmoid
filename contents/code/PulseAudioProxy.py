@@ -68,7 +68,7 @@ class SinkInfo(QObject):
         for key in self.volume.keys():
             value = self.volume[key].values()[0] - diff
             if value < 0:
-                value = -1
+                value = 0
             vol.append(value )
         return vol
         

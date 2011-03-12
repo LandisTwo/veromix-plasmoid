@@ -230,6 +230,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background","0").toInt() [0] )
         self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
         self.config_ui.useTabs.setChecked(self.useTabs() )
+        self.config_ui.meter_visible.setChecked(self.get_meter_visible() )
+        
         self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
         parent.addPage(self.config_widget, i18n("Appearance"), "veromix-plasmoid-128" )
        
@@ -249,11 +251,32 @@ class VeroMixPlasmoid(plasmascript.Applet):
         #self.about_ui = uic.loadUi(str(self.package().filePath('ui', 'about.ui')), self.about_widget)
         #self.about_ui.version.setText(VeroMixPlasmoid.VERSION)
         #parent.addPage(self.about_widget, "About", "help-about" )
-        self.addGlobalShortcutPage(parent)
+        self.add_audio_settings(parent)
+        self.add_global_shortcut_page(parent)
         return self.config_widget
 
+    def add_audio_settings(self, dialog):
+        self.audio_settings_page = QWidget()
+        layout = QGridLayout()
+        self.audio_settings_page.setLayout(layout)
+
+        self.max_volume_spinbox = QSpinBox()
+        self.max_volume_spinbox.setRange(1,255)
+        self.max_volume_spinbox.setSingleStep(1)
+        self.max_volume_spinbox.setValue(self.get_max_volume_value())        
+        layout.addWidget(QLabel(i18n("Max volume value")), 0,0)
+        layout.addWidget(self.max_volume_spinbox, 0,1)
+
+        self.automute_checkbox = QCheckBox()
+        self.automute_checkbox.setChecked(self.get_auto_mute())        
+        layout.addWidget(QLabel(i18n("Mute if volume reaches zero")), 1,0)
+        layout.addWidget(self.automute_checkbox, 1,1)
+
+        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding ), 3,0)
+        dialog.addPage(self.audio_settings_page, i18n("Pulseaudio"), "preferences-desktop-sound")
+
     # anybody knows how to remove/extend the default shortcuts page?
-    def addGlobalShortcutPage(self,dialog):
+    def add_global_shortcut_page(self,dialog):
         self.kb_settings_page = QWidget()
 
         layout = QGridLayout()
@@ -274,22 +297,30 @@ class VeroMixPlasmoid(plasmascript.Applet):
         layout.addWidget(QLabel(i18n("Veromix toggle  mute")), 2, 0)
         layout.addWidget(self.mute_action_editor, 2, 1)
 
-        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding ), 3,3)
+        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding ), 3,0)
         dialog.addPage(self.kb_settings_page, i18n("Keyboard Shortcuts"), "preferences-desktop-keyboard")
 
     def configChanged(self):
         self.config().writeEntry("background",str(self.config_ui.showBackground.currentIndex()))
         self.config().writeEntry("popupMode", str(self.config_ui.popupMode.currentIndex()))        
         tabs = self.useTabs()
-        self.config().writeEntry("useTabs", bool(self.config_ui.useTabs.isChecked()))        
+        self.config().writeEntry("useTabs", bool(self.config_ui.useTabs.isChecked()))
+
+        meter_visible = self.get_meter_visible()
+        self.config().writeEntry("meter_visible", bool(self.config_ui.meter_visible.isChecked()))
         
         self.config().writeEntry("useNowplaying", str(self.nowplaying_ui.useNowplaying.isChecked()))                
         self.config().writeEntry("mpris2List",str(self.nowplaying_ui.mpris2List.toPlainText()).strip() )
         self.config().writeEntry("nowplayingBlacklist",str(self.nowplaying_ui.mediaplayerBlacklist.toPlainText()).strip())
+
+        self.config().writeEntry("max_volume", str(self.max_volume_spinbox.value()))
+        self.config().writeEntry("auto_mute", str(self.automute_checkbox.isChecked()))
+        
         self.applyConfig()
         
         if tabs != self.useTabs():
             self.widget.switchView()
+        self.widget.on_update_configuration()
 
     def on_setting_nowplaying_changed(self, value):
         aBoolean = (value == 2)
@@ -337,7 +368,6 @@ class VeroMixPlasmoid(plasmascript.Applet):
             sequence = self.mute_action_editor.keySequence()
             if sequence != self.mute_action.globalShortcut().primary():
                 self.mute_action.setGlobalShortcut(KShortcut(sequence), KAction.ActiveShortcut, KAction.NoAutoloading )
-
         self.update()
 
     def configWidgetDestroyed(self):
@@ -346,6 +376,16 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def useTabs(self):        
         return self.config().readEntry("useTabs",False ).toBool()    
+
+    def get_meter_visible(self):
+        return self.config().readEntry("meter_visible",True ).toBool()
+
+    def get_auto_mute(self):
+        return self.config().readEntry("auto_mute",False ).toBool()
+
+    def get_max_volume_value(self):
+        default = 100
+        return self.config().readEntry("max_volume",default ).toInt()[0]
 
 ### now playing
 

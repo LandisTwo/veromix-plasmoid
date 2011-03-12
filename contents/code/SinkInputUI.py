@@ -50,7 +50,7 @@ class InputSinkUI(SinkUI):
     def createMute(self):
         self.mute = InputMuteButton(self)
         self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed,True) )
-        self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
+        self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb )
 
     def create_settings_widget(self):
         self.settings_widget = SinkInputSettingsWidget(self.veromix, self)
@@ -91,7 +91,11 @@ class InputSinkUI(SinkUI):
         self.frame_layout.addItem(self.panel)
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
-        self.panel_layout.addItem(self.meter)
+        if self.veromix.get_meter_visible():
+            self.panel_layout.addItem(self.meter)
+            self.meter.show()
+        else:
+            self.meter.hide()
 
     def updateMutedInfo(self, aBoolean):
         pass

@@ -65,34 +65,22 @@ class SinkUI(Channel):
     def isDefaultSink(self):
         return self.pa_sink.props["isdefault"] == "True"
 
-    def on_step_volume(self, up):
-        vol = self.pa_sink.getVolume()
-        STEP = 5
-        if up:
-            vol = vol + STEP
-        else:
-            vol = vol - STEP
-        if vol < 0:
-            vol = 0
-        if vol > 100:
-            vol = 100
-        self.setVolume(vol)
-
     def on_meter_clicked(self):
         self.veromix.pa.toggle_monitor_of_sink(self.index, str(self.name) )
         self.meter.setValue(0)
 
     def setVolume(self, value):
         vol = self.pa_sink.volumeDiffFor(value)
-        for c in vol:
-            if c <= 0:
-                ## FIXME HACK for MurzNN this should be conditional
-                self.pa.set_sink_mute(self.index, True)
-                self.automatically_muted = True
-                return    
-        if self.automatically_muted :            
-            self.automatically_muted = False
-            self.pa.set_sink_mute(self.index, False)
+        if self.veromix.get_auto_mute():
+            for c in vol:
+                if c <= 0:
+                    ## FIXME HACK for MurzNN this should be conditional
+                    self.pa.set_sink_mute(self.index, True)
+                    self.automatically_muted = True
+                    return
+            if self.automatically_muted :
+                self.automatically_muted = False
+                self.pa.set_sink_mute(self.index, False)
         self.set_channel_volumes(vol)
             
     def set_channel_volumes(self, values):

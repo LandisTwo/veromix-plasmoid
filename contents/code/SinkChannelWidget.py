@@ -70,8 +70,8 @@ class SinkChannelWidget(QGraphicsWidget):
             slider = LabelSlider()
             slider.setOrientation(Qt.Horizontal)
             slider.setText(channel.getName())
+            slider.setMaximum(self.veromix.get_max_volume_value())
             slider.setValue(channel.getVolume())
-            slider.setMaximum(100)
             slider.volumeChanged.connect(self.on_slider_cb)
             self.sliders.append(slider)
             self.slider_layout.addItem(slider)
@@ -106,8 +106,13 @@ class SinkChannelWidget(QGraphicsWidget):
         vol = []
         for slider in self.sliders:
             vol.append(slider.value())
+            slider.update_plasma_timestamp()
         self.sink.set_channel_volumes(vol)
-        
+
+    def setMaximum(self, value):
+        for slider in self.sliders:
+            slider.setMaximum(value)
+ 
     def wheelEvent(self, event):
         # dont touch the sliders, they will get the new values
         # via the pa-callback

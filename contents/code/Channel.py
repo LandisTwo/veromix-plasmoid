@@ -66,7 +66,11 @@ class Channel(QGraphicsWidget):
         self.frame_layout.addItem(self.panel)        
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
-        self.panel_layout.addItem(self.meter)
+        if self.veromix.get_meter_visible():
+            self.panel_layout.addItem(self.meter)
+            self.meter.show()
+        else:
+            self.meter.hide()
 
     def create_frame(self):
         self.frame = Plasma.Frame()
@@ -99,7 +103,7 @@ class Channel(QGraphicsWidget):
     def createSlider(self):
         self.slider = LabelSlider()
         self.slider.setOrientation(Qt.Horizontal)
-        self.slider.setMaximum(100)
+        self.slider.setMaximum(self.veromix.get_max_volume_value())
         self.slider.setMinimum(0)
         self.slider.volumeChanged.connect( self.on_slider_cb  )
 
@@ -129,7 +133,20 @@ class Channel(QGraphicsWidget):
 
     def on_meter_clicked(self):
         pass
-    
+
+    def on_step_volume(self, up):
+        vol = self.pa_sink.getVolume()
+        STEP = 5
+        if up:
+            vol = vol + STEP
+        else:
+            vol = vol - STEP
+        if vol < 0:
+            vol = 0
+        if vol > self.veromix.get_max_volume_value():
+            vol = self.veromix.get_max_volume_value()
+        self.setVolume(vol)
+        
     def on_expander_clicked(self):
         self.middle_layout.removeItem(self.slider)
         self.slider = None
@@ -151,7 +168,17 @@ class Channel(QGraphicsWidget):
         self.middle.setContentsMargins(0,0,0,0)
         self.update_with_info(self.pa_sink)
         self.veromix.check_geometries()
-        
+
+    def on_update_configuration(self):
+        if self.veromix.get_meter_visible() !=  self.meter.isVisible():
+            if self.veromix.get_meter_visible() and not self.meter.isVisible():
+                self.panel_layout.addItem(self.meter)
+                self.meter.show()
+            else:
+                self.panel_layout.removeItem(self.meter)
+                self.meter.hide()
+        self.slider.setMaximum(self.veromix.get_max_volume_value())
+
     def on_mute_cb(self ):
         pass
 

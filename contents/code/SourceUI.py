@@ -37,7 +37,11 @@ class SourceUI( Channel ):
         self.frame_layout.addItem(self.panel)
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
-        self.panel_layout.addItem(self.meter)
+        if self.veromix.get_meter_visible():
+            self.panel_layout.addItem(self.meter)
+            self.meter.show()
+        else:
+            self.meter.hide()
 
     def createMute(self):
         self.mute = InputMuteButton(self)

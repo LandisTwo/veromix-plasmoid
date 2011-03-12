@@ -50,6 +50,8 @@ class VeroMix(QGraphicsWidget):
         self.scroller = LockableScrollWidget(self)
         self.scroller.setMinimumSize(120,90)
         self.layout.addItem(self.scroller)
+        if self.applet.formFactor() != Plasma.Planar  :
+            self.scroller.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.source_panel = QGraphicsWidget()
         self.sink_panel = QGraphicsWidget()
@@ -103,6 +105,12 @@ class VeroMix(QGraphicsWidget):
         self.scroller.setWidget(self.scrolled_panel)
         if not startup:
             self.check_geometries()
+
+    def on_update_configuration(self):
+        for source in self.source_panel_layout.getChannels().values():
+            source.on_update_configuration()
+        for sink in self.sink_panel_layout.getChannels().values():
+            sink.on_update_configuration()
 
     # connect to pulseaudio(dbus) callbacks
     def start_pa(self):
@@ -352,6 +360,15 @@ class VeroMix(QGraphicsWidget):
             if sink.isDefaultSink():
                 return sink
 ## helpers
+
+    def get_meter_visible(self):
+        return self.applet.get_meter_visible()
+
+    def get_max_volume_value(self):
+        return self.applet.get_max_volume_value()
+
+    def get_auto_mute(self):
+        return self.applet.get_auto_mute()
 
     def getPulseAudio(self):
         return self.pa
