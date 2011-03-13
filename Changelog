@@ -1,10 +1,16 @@
+0.10.1 - 14.3.2011
+- fix issue 39:   Settings in veromix are always default
+- workaround nowplaying DataEngine returns invalid (and not existing) player named "players"
+
 0.10 - 12.3.2011
 - expander button
 - new config options
     - show/hide meter
     - ability to turn the master volume above 100% (like gnome applet)
     - mute if volume reaches zero
+    - configure global shortcuts
 - only connect peak-meters if requested by the user (click on meter) - saves CPU cycles
+
 0.9.1 - 20.12.2010
 - new UI
 - per channel volume control (mono, stereo, dolby 5.1 ... )
