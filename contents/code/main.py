@@ -55,7 +55,9 @@ from PyKDE4.kdeui import KIcon
 from PyKDE4.kdeui import KActionCollection
 from PyKDE4.kdeui import KAction
 from PyKDE4.kdeui import KShortcut
-from PyKDE4.kdeui import KKeySequenceWidget 
+from PyKDE4.kdeui import KKeySequenceWidget
+from PyKDE4.kdeui import KPageDialog
+from PyKDE4.kdeui import KDialog
 from PyKDE4.kdecore import *
 
 from VeroMix import VeroMix
@@ -253,6 +255,10 @@ class VeroMixPlasmoid(plasmascript.Applet):
         #parent.addPage(self.about_widget, "About", "help-about" )
         self.add_audio_settings(parent)
         self.add_global_shortcut_page(parent)
+        
+        # FIXME KDE 4.6 workaround
+        self.connect(parent, SIGNAL("okClicked()"), self.configChanged)
+        #self.connect(parent, SIGNAL("cancelClicked()"), self.configDenied)
         return self.config_widget
 
     def add_audio_settings(self, dialog):
@@ -408,6 +414,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.playerAdded(source)
             
     def playerAdded(self, player):
+        if player == "players":
+            # FIXME 4.6 workaround
+            return 
         if not self.isNowplayingEnabled() :
             return 
         self.now_playing_engine.disconnectSource(player, self)
