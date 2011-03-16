@@ -27,7 +27,7 @@ import time
 from PulseSink      import PulseSinkInputInfo, PulseSinkInfo
 from PulseSource    import PulseSourceOutputInfo, PulseSourceInfo
 from PulseClient    import PulseClientCtypes
-
+from PulseCard      import CardInfo
 
 from PyQt4.QtCore import *
 
@@ -378,25 +378,8 @@ class PulseAudio(QObject):
 
     def pa_card_info_cb(self, context, struct, cindex, user_data):
         if struct:
-            print "index", struct[0].index
-            print "name", struct[0].name
-            print "active_profile name", struct[0].active_profile[0].name
-            print "active_profile description", struct[0].active_profile[0].description
-            print "active_profile n_sinks", struct[0].active_profile[0].n_sinks
-            print "active_profile n_sources", struct[0].active_profile[0].n_sources
-            print "active_profile priority", struct[0].active_profile[0].priority
-            n_profiles = struct[0].n_profiles
-
-            for index in range(0, n_profiles):
-                print "---------------"
-                profile = struct[0].profiles[index]
-                if profile:
-                    print "profile name", profile.name
-                    print "profile description", profile.description
-                    print "profile n_sinks", profile.n_sinks
-                    print "profile n_sources", profile.n_sources
-                    print "profile priority", profile.priority
-            
+            info = CardInfo(struct[0])
+            self.emit(SIGNAL("card_info(PyQt_PyObject)"), info) 
             #print ( pa_proplist_to_string(struct.contents.proplist))
 
     def pa_stream_request_cb(self, stream, length, index):
