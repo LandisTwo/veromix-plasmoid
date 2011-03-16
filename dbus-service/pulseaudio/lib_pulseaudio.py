@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Ear Candy - Pulseaduio sound managment tool
-# Copyright (C) 2008 Jason Taylor
+# Copyright (C) 2008 Jason Taylor, 2011 Nik Lutz
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,6 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+## Helpers:
+# python /usr/share/pyshared/ctypeslib/h2xml.py  /usr/include/pulse/introspect.h -o /tmp/test.xml
+# python /usr/share/pyshared/ctypeslib/xml2py.py test.xml  -k f  -l /usr/lib/libpulse.so -o lib.py
 import ctypes
 from ctypes import *
 
