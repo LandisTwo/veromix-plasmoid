@@ -288,6 +288,7 @@ PA_SUBSCRIPTION_MASK_CLIENT = 32
 PA_SUBSCRIPTION_MASK_SAMPLE_CACHE = 64
 PA_SUBSCRIPTION_MASK_SERVER = 128
 PA_SUBSCRIPTION_MASK_AUTOLOAD = 256
+PA_SUBSCRIPTION_MASK_CARD = 512
 PA_SUBSCRIPTION_MASK_ALL = 511
 pa_subscription_mask_t = enum_pa_subscription_mask      # /usr/include/pulse/def.h:261
 enum_pa_subscription_event_type = c_int
@@ -305,6 +306,7 @@ PA_SUBSCRIPTION_EVENT_NEW = 0
 PA_SUBSCRIPTION_EVENT_CHANGE = 16
 PA_SUBSCRIPTION_EVENT_REMOVE = 32
 PA_SUBSCRIPTION_EVENT_TYPE_MASK = 48
+PA_SUBSCRIPTION_EVENT_CARD = 9
 pa_subscription_event_type_t = enum_pa_subscription_event_type  # /usr/include/pulse/def.h:280
 class struct_pa_timing_info(Structure):
     __slots__ = [

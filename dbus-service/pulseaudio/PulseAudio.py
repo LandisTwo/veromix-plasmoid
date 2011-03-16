@@ -233,7 +233,8 @@ class PulseAudio(QObject):
                                                 PA_SUBSCRIPTION_MASK_SINK_INPUT|
                                                 PA_SUBSCRIPTION_MASK_SOURCE_OUTPUT|
                                                 PA_SUBSCRIPTION_MASK_CLIENT|
-                                                PA_SUBSCRIPTION_MASK_SERVER), self._null_cb, None)
+                                                PA_SUBSCRIPTION_MASK_SERVER|
+                                                PA_SUBSCRIPTION_MASK_CARD), self._null_cb, None)
 
                 #pa_operation_unref(o)
 
@@ -285,8 +286,11 @@ class PulseAudio(QObject):
                 pa_operation_unref(o)
                 o = pa_context_get_sink_info_list(self._context, self._pa_sink_info_cb, None)
                 pa_operation_unref(o)
-                ## FIXME _pa_card_info_cb
                 
+            if et == PA_SUBSCRIPTION_EVENT_CARD:
+                o = pa_context_get_card_info_list(self._context, self._pa_card_info_cb, None)
+                pa_operation_unref(o)
+            
             if et == PA_SUBSCRIPTION_EVENT_CLIENT:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
                     self.emit(SIGNAL("client_remove(int)"),int(index) )
@@ -373,14 +377,9 @@ class PulseAudio(QObject):
             self.emit(SIGNAL("source_info(PyQt_PyObject)"), source )
 
     def pa_card_info_cb(self, context, struct, cindex, user_data):
-        print "card info", struct, cindex, user_data
         if struct:
-            #('name', c_char_p),
-            #('description', c_char_p),
-            #('n_sinks', c_uint32),
-            #('n_sources', c_uint32),
-            #('priority', c_uint32),
-            print "profiles", struct[0].profiles
+            print "index", struct[0].index
+            print "name", struct[0].name
             print "active_profile name", struct[0].active_profile[0].name
             print "active_profile description", struct[0].active_profile[0].description
             print "active_profile n_sinks", struct[0].active_profile[0].n_sinks
