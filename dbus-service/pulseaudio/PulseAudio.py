@@ -91,6 +91,7 @@ class PulseAudio(QObject):
         self._pa_stream_request_cb  = None
         self._pa_stream_notify_cb  = None
         self._pa_sink_info_cb  = None
+        self._pa_card_info_cb = None
         self._pa_context_subscribe_cb  = None
         self._pa_source_info_cb  = None
         self._pa_source_output_info_cb  = None
@@ -215,6 +216,7 @@ class PulseAudio(QObject):
                 self._pa_source_info_cb = pa_source_info_cb_t(self.pa_source_info_cb)
                 self._pa_source_output_info_cb = pa_source_output_info_cb_t(self.pa_source_output_info_cb)
 
+                self._pa_card_info_cb = pa_card_info_cb_t(self.pa_card_info_cb)
                 self._pa_server_info_cb = pa_server_info_cb_t(self.pa_server_info_cb)
 
                 self._pa_sink_input_info_list_cb = pa_sink_input_info_cb_t(self.pa_sink_input_info_cb)
@@ -269,6 +271,9 @@ class PulseAudio(QObject):
         o = pa_context_get_source_output_info_list(self._context, self._pa_source_output_info_cb, None)
         pa_operation_unref(o)
 
+        o = pa_context_get_card_info_list(self._context, self._pa_card_info_cb, None)
+        pa_operation_unref(o)
+
 
     def pa_context_subscribe_cb(self, context, event_type, index, user_data):
         try:
@@ -280,7 +285,8 @@ class PulseAudio(QObject):
                 pa_operation_unref(o)
                 o = pa_context_get_sink_info_list(self._context, self._pa_sink_info_cb, None)
                 pa_operation_unref(o)
-
+                ## FIXME _pa_card_info_cb
+                
             if et == PA_SUBSCRIPTION_EVENT_CLIENT:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
                     self.emit(SIGNAL("client_remove(int)"),int(index) )
@@ -365,6 +371,34 @@ class PulseAudio(QObject):
             #if float(struct.contents.index) in self.sources:
                 #self.pa_create_monitor_stream_for_source(int(struct.contents.index), source, struct.contents.name)
             self.emit(SIGNAL("source_info(PyQt_PyObject)"), source )
+
+    def pa_card_info_cb(self, context, struct, cindex, user_data):
+        print "card info", struct, cindex, user_data
+        if struct:
+            #('name', c_char_p),
+            #('description', c_char_p),
+            #('n_sinks', c_uint32),
+            #('n_sources', c_uint32),
+            #('priority', c_uint32),
+            print "profiles", struct[0].profiles
+            print "active_profile name", struct[0].active_profile[0].name
+            print "active_profile description", struct[0].active_profile[0].description
+            print "active_profile n_sinks", struct[0].active_profile[0].n_sinks
+            print "active_profile n_sources", struct[0].active_profile[0].n_sources
+            print "active_profile priority", struct[0].active_profile[0].priority
+            n_profiles = struct[0].n_profiles
+
+            for index in range(0, n_profiles):
+                print "---------------"
+                profile = struct[0].profiles[index]
+                if profile:
+                    print "profile name", profile.name
+                    print "profile description", profile.description
+                    print "profile n_sinks", profile.n_sinks
+                    print "profile n_sources", profile.n_sources
+                    print "profile priority", profile.priority
+            
+            #print ( pa_proplist_to_string(struct.contents.proplist))
 
     def pa_stream_request_cb(self, stream, length, index):
       # This isnt quite right... maybe not a float.. ?

@@ -1935,3 +1935,49 @@ pa_proplist_to_string.argtypes = [
 pa_ext_stream_restore_delete = _lib.pa_ext_stream_restore_delete
 pa_ext_stream_restore_delete.restype = pa_operation
 pa_ext_stream_restore_delete.argtypes = [POINTER(pa_context), c_char_p, pa_context_success_cb_t, POINTER(None)]
+
+
+
+# CARD INFO STUFF
+class pa_card_profile_info(Structure):
+    pass
+pa_card_profile_info._fields_ = [
+    ('name', c_char_p),
+    ('description', c_char_p),
+    ('n_sinks', c_uint32),
+    ('n_sources', c_uint32),
+    ('priority', c_uint32),
+]
+class pa_card_info(Structure):
+    pass
+pa_card_info._fields_ = [
+    ('index', c_uint32),
+    ('name', c_char_p),
+    ('owner_module', c_uint32),
+    ('driver', c_char_p),
+    ('n_profiles', c_uint32),
+    ('profiles', POINTER(pa_card_profile_info)),
+    ('active_profile', POINTER(pa_card_profile_info)),
+    ('proplist', POINTER(c_int)),
+]
+pa_card_info_cb_t = CFUNCTYPE(None, POINTER(pa_context), POINTER(pa_card_info), c_int, c_void_p)
+
+pa_context_get_card_info_by_index = _lib.pa_context_get_card_info_by_index
+pa_context_get_card_info_by_index.restype = POINTER(pa_operation)
+pa_context_get_card_info_by_index.argtypes = [POINTER(pa_context), c_uint32, pa_card_info_cb_t, c_void_p]
+pa_context_get_card_info_by_name = _lib.pa_context_get_card_info_by_name
+pa_context_get_card_info_by_name.restype = POINTER(pa_operation)
+pa_context_get_card_info_by_name.argtypes = [POINTER(pa_context), c_char_p, pa_card_info_cb_t, c_void_p]
+pa_context_get_card_info_list = _lib.pa_context_get_card_info_list
+pa_context_get_card_info_list.restype = POINTER(pa_operation)
+pa_context_get_card_info_list.argtypes = [POINTER(pa_context), pa_card_info_cb_t, c_void_p]
+
+
+# CARD PROFILE
+
+pa_context_set_card_profile_by_index = _lib.pa_context_set_card_profile_by_index
+pa_context_set_card_profile_by_index.restype = POINTER(pa_operation)
+pa_context_set_card_profile_by_index.argtypes = [POINTER(pa_context), c_uint32, c_char_p, pa_context_success_cb_t, c_void_p]
+pa_context_set_card_profile_by_name = _lib.pa_context_set_card_profile_by_name
+pa_context_set_card_profile_by_name.restype = POINTER(pa_operation)
+pa_context_set_card_profile_by_name.argtypes = [POINTER(pa_context), c_char_p, c_char_p, pa_context_success_cb_t, c_void_p]
