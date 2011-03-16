@@ -288,6 +288,7 @@ class PulseAudio(QObject):
                 pa_operation_unref(o)
                 
             if et == PA_SUBSCRIPTION_EVENT_CARD:
+                # FIXME add and remote
                 o = pa_context_get_card_info_list(self._context, self._pa_card_info_cb, None)
                 pa_operation_unref(o)
             

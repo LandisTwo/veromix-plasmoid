@@ -23,14 +23,24 @@
 from VeromixUtils import *
 
 class CardProfile:
+
     def __init__(self, pa_card_profile):
         self.name =  pa_card_profile.name
         self.description =  pa_card_profile.description
         self.n_sinks =  pa_card_profile.n_sinks
         self.n_sources =  pa_card_profile.n_sources
         self.priority =  pa_card_profile.priority
-        print "got profile",  self.name, self.description, self.n_sinks, self.n_sources, self.priority
-        
+        #print "got profile",  self.name, self.description, self.n_sinks, self.n_sources, self.priority
+
+    def as_dict(self):
+        info = {}
+        info["name"] =str(self.name)
+        info["description"] = str(self.description)
+        info["n_sinks"] = str(self.n_sinks)
+        info["n_sources"] = str(self.n_sources)
+        info["priority"] = str(self.priority)
+        return info
+
 class CardInfo:
     
     def __init__(self, pa_card_info):
@@ -42,9 +52,25 @@ class CardInfo:
         
         self.active_profile = CardProfile(pa_card_info.active_profile[0])
         self.proplist = pa_card_info.proplist
-        print "got card", self.index, self.name, self.active_profile
+        #print "got card", self.index, self.name, self.active_profile
         self.profiles = []
         for index in range(0, self.n_profiles):
             profile = pa_card_info.profiles[index]
             if profile:
                 self.profiles.append(CardProfile(profile))
+
+    def properties(self):
+        # FIXME
+        info = {}
+        info["fix"] = "me"
+        return info
+
+    def active_profile_name(self):
+        return self.active_profile.name
+
+
+    def profiles_dict(self):
+        info = {}
+        for profile in self.profiles:
+            info[profile.name] = profile.as_dict()
+        return info

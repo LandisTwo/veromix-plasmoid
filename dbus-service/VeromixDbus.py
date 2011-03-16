@@ -146,7 +146,14 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.method("org.veromix.pulseaudio", in_signature='iis', out_signature='')
     def toggle_monitor_of_sinkinput(self, sink_input_index, sink_index, named ):
         self.pulse.pulse_toggle_monitor_of_sinkinput( sink_input_index, sink_index, named)
-        
+
+## ----------------------------- card info -----------------------------------------
+
+    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isa{ss}sa{sa{ss}}')
+    def card_info(self, index,  name , properties, active_profile_name , profiles):
+        pass
+
+
 ## ----------------------------- generic -----------------------------------------
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='', out_signature='')

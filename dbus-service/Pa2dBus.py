@@ -53,6 +53,8 @@ class Pa2dBus(QObject):
         self.connect(self.pulse, SIGNAL("volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pulse, SIGNAL("volume_meter_sink(int, float )"), self.on_volume_meter_sink)
         self.connect(self.pulse, SIGNAL("volume_meter_source(int, float )"), self.on_volume_meter_source)
+        
+        self.connect(self.pulse, SIGNAL("card_info(PyQt_PyObject)"), self.on_card_info)
 
     def on_source_info(self, sink):
         #sink.printDebug()
@@ -101,6 +103,12 @@ class Pa2dBus(QObject):
 
     def on_remove_source_output(self, index):
         self.dbus.source_output_remove(int(index))
+
+    def on_card_info(self, card_info):
+        print card_info.index,  card_info.name , card_info.properties(), card_info.active_profile_name() , card_info.profiles_dict()
+        
+        self.dbus.card_info(card_info.index,  card_info.name , card_info.properties(), card_info.active_profile_name() , card_info.profiles_dict())
+        
 
     def on_volume_meter_sink_input(self, index, level):
         if level == level:
