@@ -179,6 +179,10 @@ class PulseAudio(QObject):
         self.bus.add_signal_receiver(self.on_card_info,
                 dbus_interface="org.veromix.notification",
                 signal_name="card_info")
+                
+        self.bus.add_signal_receiver(self.on_card_remove,
+                dbus_interface="org.veromix.notification",
+                signal_name="card_remove")
         #pa_obj  = bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
         #interface = dbus.Interface(pa_obj,dbus_interface="org.veromix.notification")
         #interface.connect_to_signal("sink_input_info", self.on_sink_input_info)
@@ -257,7 +261,9 @@ class PulseAudio(QObject):
     def on_card_info(self, index, name, properties, active_profile_name, profiles_dict):
         info = CardInfo( index, name, properties, active_profile_name, profiles_dict)
         self.emit(SIGNAL("on_card_info(PyQt_PyObject)"), info)
-        
+
+    def on_card_remove(self, index):
+        self.emit(SIGNAL("on_card_remove(int)"), index )
     # calls
 
     def set_card_profile(self, index, value):

@@ -138,7 +138,9 @@ class VeroMix(QGraphicsWidget):
         self.connect(self.pa, SIGNAL("on_volume_meter_sink(int, float )"), self.on_volume_meter_sink)
         self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
+
         self.connect(self.pa, SIGNAL("on_card_info(PyQt_PyObject)"), self.on_card_info)
+        self.connect(self.pa, SIGNAL("on_card_remove(int)"), self.on_remove_card)
         self.pa.requestInfo()
 
     def start_nowplaying(self):
@@ -258,6 +260,12 @@ class VeroMix(QGraphicsWidget):
  ## callbacks card info
     def on_card_info(self, info):
         self.card_infos[info.name] = info
+
+    def on_remove_card(self, index):
+        for key in self.card_infos.keys():
+            card = self.card_infos[key]
+            if int(card.index) == int(index):
+                del self.card_infos[key]
 
 ## Callbacks volume menters
 

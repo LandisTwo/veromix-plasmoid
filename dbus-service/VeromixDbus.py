@@ -152,7 +152,11 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isa{ss}sa{sa{ss}}')
     def card_info(self, index,  name , properties, active_profile_name , profiles):
         pass
-    
+
+    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='i')
+    def card_remove(self, index ):
+        pass
+
     @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
     def set_card_profile(self, index, value):
         self.pulse.pulse_set_card_profile(index, value)
