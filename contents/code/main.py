@@ -66,7 +66,7 @@ from Utils import *
 COMMENT=i18n("Veromix is a mixer for the Pulseaudio sound server. ")
 
 class VeroMixPlasmoid(plasmascript.Applet):
-    VERSION="0.10.1"
+    VERSION="0.11.0"
     
     nowplaying_player_added = pyqtSignal(QString, QObject)
     nowplaying_player_removed = pyqtSignal(QString )
