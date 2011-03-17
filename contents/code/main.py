@@ -44,7 +44,7 @@
 ###### December 2009 & July 2010
 
 
-import commands
+import commands,dbus
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -79,6 +79,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.louder_action_editor = None
         self.lower_action_editor = None
         self.mute_action_editor = None
+        self.card_settings = None
 
     def init(self):
         out = commands.getstatusoutput("xdg-icon-resource install --size 128 " + unicode(self.package().path()) + "contents/icons/veromix-plasmoid-128.png veromix-plasmoid")
@@ -278,7 +279,30 @@ class VeroMixPlasmoid(plasmascript.Applet):
         layout.addWidget(QLabel(i18n("Mute if volume reaches zero")), 1,0)
         layout.addWidget(self.automute_checkbox, 1,1)
 
-        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding ), 3,0)
+        layout.addItem(QSpacerItem(0,20, QSizePolicy.Minimum,QSizePolicy.Fixed ), 2,0)
+        layout.addWidget(QLabel("<b>"+i18n("Sound Card Profiles")+"</b>"), 3,0)
+        index=4
+        self.card_settings = {}
+        for card in self.widget.card_infos.values():
+            combo = QComboBox()
+            #self.automute_checkbox.setChecked(self.get_auto_mute())
+            #print card.properties
+            layout.addWidget(QLabel(card.properties[dbus.String("device.description")]), index,0)
+            layout.addWidget(combo, index,1)
+            index = index + 1
+
+            self.card_settings[combo] = card
+            profiles = card.get_profiles()
+            active = card.get_active_profile_name()
+            active_index = 0
+            for profile in profiles:
+                combo.addItem(profile.description)
+                if active == profile.name:
+                    active_index = profiles.index(profile)
+            combo.setCurrentIndex(active_index)
+
+
+        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding ), index,0)
         dialog.addPage(self.audio_settings_page, i18n("Pulseaudio"), "preferences-desktop-sound")
 
     # anybody knows how to remove/extend the default shortcuts page?
@@ -374,6 +398,13 @@ class VeroMixPlasmoid(plasmascript.Applet):
             sequence = self.mute_action_editor.keySequence()
             if sequence != self.mute_action.globalShortcut().primary():
                 self.mute_action.setGlobalShortcut(KShortcut(sequence), KAction.ActiveShortcut, KAction.NoAutoloading )
+
+        if self.card_settings:
+            for combo in self.card_settings.keys():
+                card = self.card_settings[combo]
+                for profile in card.profiles:
+                    if combo.currentText() == profile.description:
+                        self.widget.pa.set_card_profile(card.index, profile.name)                        
         self.update()
 
     def configWidgetDestroyed(self):
