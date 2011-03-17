@@ -72,7 +72,35 @@ class SinkInfo(QObject):
             vol.append(value )
         return vol
         
+class CardProfile:
+    def __init__(self, name, properties):
+        self.name = name
+        self.description = properties["description"]
+        # FIXME other values
 
+class CardInfo:
+    def __init__(self, index,   name,  properties, active_profile_name ,  profiles_dict):
+         self.index = index
+         self.name = name
+         self.properties = properties
+         self.active_profile_name = active_profile_name
+         self.profiles_dict = profiles_dict
+         self.profiles = []
+         for key in self.profiles_dict.keys():
+             self.profiles.append(CardProfile(key, self.profiles_dict[key] ))
+
+    def get_profiles(self):
+        return self.profiles
+        
+    def get_active_profile(self):
+        for profile in self.card_profiles():
+            if self.active_profile_name == profile.name:
+                return profile
+        return None
+        
+    def get_active_profile_name(self):
+        return self.active_profile_name
+        
 class PulseAudio(QObject):
     mpris2_properties_changed = pyqtSignal(str,dict)
     
@@ -138,6 +166,9 @@ class PulseAudio(QObject):
                 dbus_interface="org.veromix.notification",
                 signal_name="volume_meter_sink")
                 
+        self.bus.add_signal_receiver(self.on_card_info,
+                dbus_interface="org.veromix.notification",
+                signal_name="card_info")
         #pa_obj  = bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
         #interface = dbus.Interface(pa_obj,dbus_interface="org.veromix.notification")
         #interface.connect_to_signal("sink_input_info", self.on_sink_input_info)
@@ -213,6 +244,10 @@ class PulseAudio(QObject):
     def on_volume_meter_source(self, index, value):
         self.emit(SIGNAL("on_volume_meter_source(int,float)"), index ,value)
 
+    def on_card_info(self, index, name, properties, active_profile_name, profiles_dict):
+        info = CardInfo( index, name, properties, active_profile_name, profiles_dict)
+        self.emit(SIGNAL("on_card_info(PyQt_PyObject)"), info)
+        
     # calls
 
     def set_sink_input_volume(self, index, vol):

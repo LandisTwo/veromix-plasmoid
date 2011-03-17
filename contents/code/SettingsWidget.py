@@ -34,10 +34,15 @@ class SinkSettingsWidget(QGraphicsWidget):
     def init(self):
         self.init_arrangement()
         self.create_switcher()
+        self.create_profile_switcher()
         self.compose_arrangement()
-
+        
     def compose_arrangement(self):
+
+        self.switcher.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding))
+        self.profile_switcher.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed))
         self.layout.addItem(self.switcher)
+        self.layout.addItem(self.profile_switcher)
 
     def init_arrangement(self):
         self.layout = QGraphicsLinearLayout(Qt.Horizontal)
@@ -55,8 +60,15 @@ class SinkSettingsWidget(QGraphicsWidget):
         self.switcher.setText(i18n("Default Sink"))
         self.switcher.setMinimumSize(self.switcher.preferredSize())
 
+    def create_profile_switcher(self):
+        self.profile_switcher = Plasma.ComboBox()
+        self.profile_switcher.activated.connect(self.on_change_profile)
+
     def update_with_info(self, info):
         self.updateOutputSwitcher()        
+
+    def on_change_profile(self,value):
+        print "profile changed", value
 
     def on_change_switcher(self,boolean):
         if boolean:
@@ -65,7 +77,21 @@ class SinkSettingsWidget(QGraphicsWidget):
     def updateOutputSwitcher(self):
         if self.sink.pa_sink:
             self.switcher.nativeWidget().setChecked(self.sink.pa_sink.props["isdefault"] == "True")
+        if self.veromix:
+            info = self.veromix.get_card_info_for(self.sink)
+            if info:
+                self.profile_switcher.clear()
+                profiles = info.get_profiles()
+                active = info.get_active_profile_name()
+                active_index = 0
+                for profile in profiles:
+                    self.profile_switcher.addItem(profile.description)
+                    if active == profile.name:
+                        active_index = profiles.index(profile)
+                self.profile_switcher.nativeWidget().setCurrentIndex(active_index)
 
+
+                
 class SinkInputSettingsWidget(SinkSettingsWidget):
 
     def __init__(self, veromix, sink):

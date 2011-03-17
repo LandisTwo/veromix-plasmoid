@@ -41,6 +41,7 @@ class VeroMix(QGraphicsWidget):
         self.pa = None            
         self.last_resize_running = datetime.datetime.now()
         self.last_resize_running_timer_running = False
+        self.card_infos = {}
 
     def init(self):
         self.setAcceptsHoverEvents (True)
@@ -137,6 +138,7 @@ class VeroMix(QGraphicsWidget):
         self.connect(self.pa, SIGNAL("on_volume_meter_sink(int, float )"), self.on_volume_meter_sink)
         self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
+        self.connect(self.pa, SIGNAL("on_card_info(PyQt_PyObject)"), self.on_card_info)
         self.pa.requestInfo()
 
     def start_nowplaying(self):
@@ -253,6 +255,11 @@ class VeroMix(QGraphicsWidget):
     def on_remove_sink_input(self, index):
         self.remove_channel("sinkinput" + str(index), self.sink_panel_layout)
 
+ ## callbacks card info
+    def on_card_info(self, info):
+        print info
+        self.card_infos[info.name] = info
+
 ## Callbacks volume menters
 
     def on_volume_meter_sink(self, index, level):
@@ -360,6 +367,12 @@ class VeroMix(QGraphicsWidget):
             if sink.isDefaultSink():
                 return sink
 ## helpers
+
+    def get_card_info_for(self, sink):
+        for info in self.card_infos.values():
+            if int(sink.index) == int(info.index):
+                return info
+        return None
 
     def get_meter_visible(self):
         return self.applet.get_meter_visible()
