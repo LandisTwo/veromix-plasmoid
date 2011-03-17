@@ -105,8 +105,6 @@ class Pa2dBus(QObject):
         self.dbus.source_output_remove(int(index))
 
     def on_card_info(self, card_info):
-        print card_info.index,  card_info.name , card_info.properties(), card_info.active_profile_name() , card_info.profiles_dict()
-        
         self.dbus.card_info(card_info.index,  card_info.name , card_info.properties(), card_info.active_profile_name() , card_info.profiles_dict())
         
 
