@@ -20,6 +20,7 @@
 #
 # Author: Nik Lutz <nik.lutz@gmail.com>
 #
+from lib_pulseaudio import *
 from VeromixUtils import *
 
 class CardProfile:
@@ -51,7 +52,10 @@ class CardInfo:
         self.n_profiles = pa_card_info.n_profiles
         
         self.active_profile = CardProfile(pa_card_info.active_profile[0])
-        self.proplist = pa_card_info.proplist
+        self.proplist_string =   pa_proplist_to_string(pa_card_info.proplist)
+        self.proplist = proplist_to_dict(self.proplist_string)
+        #print self.proplist
+        #self.proplist = pa_card_info.proplist
         #print "got card", self.index, self.name, self.active_profile
         self.profiles = []
         for index in range(0, self.n_profiles):
@@ -62,7 +66,9 @@ class CardInfo:
     def properties(self):
         # FIXME
         info = {}
-        info["fix"] = "me"
+        #info["owner_module"] = self.owner_module
+        for key in self.proplist.keys():
+            info[key] = self.proplist[key]
         return info
 
     def active_profile_name(self):

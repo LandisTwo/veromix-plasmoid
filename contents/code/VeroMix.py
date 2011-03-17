@@ -16,7 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-import datetime
+import datetime, dbus
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.plasma import Plasma
@@ -368,9 +368,14 @@ class VeroMix(QGraphicsWidget):
 ## helpers
 
     def get_card_info_for(self, sink):
+        if sink.pa_sink == None:
+            return None
+        if dbus.String(u'sysfs.path')  not in sink.pa_sink.props.keys():
+            return None
         for info in self.card_infos.values():
-            if sink.name.find(sink.name) >= 0:
-                return info
+            if dbus.String(u'sysfs.path')  in info.properties.keys():
+                if info.properties[dbus.String(u'sysfs.path')] == sink.pa_sink.props[dbus.String(u'sysfs.path')]:
+                    return info
         return None
 
     def get_meter_visible(self):
