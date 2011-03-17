@@ -116,7 +116,7 @@ class PulseAudio(QObject):
     
     def __init__(self, parent ):
         QObject.__init__(self)
-        REQUIRED_SERVICE_VERSION = 6
+        REQUIRED_SERVICE_VERSION = 7
         if not dbus.get_default_main_loop():
             mainloop=dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
         else:
