@@ -106,7 +106,7 @@ class PulseAudio(QObject):
     
     def __init__(self, parent ):
         QObject.__init__(self)
-        REQUIRED_SERVICE_VERSION = 5
+        REQUIRED_SERVICE_VERSION = 6
         if not dbus.get_default_main_loop():
             mainloop=dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
         else:
@@ -250,6 +250,9 @@ class PulseAudio(QObject):
         
     # calls
 
+    def set_card_profile(self, index, value):
+        self.getMixer().set_card_profile(index, value)
+        
     def set_sink_input_volume(self, index, vol):
         try:
             self.getMixer().sink_input_volume(index,vol)

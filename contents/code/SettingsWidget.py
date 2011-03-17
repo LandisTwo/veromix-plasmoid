@@ -38,7 +38,6 @@ class SinkSettingsWidget(QGraphicsWidget):
         self.compose_arrangement()
         
     def compose_arrangement(self):
-
         self.switcher.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.profile_switcher.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed))
         self.layout.addItem(self.switcher)
@@ -68,7 +67,9 @@ class SinkSettingsWidget(QGraphicsWidget):
         self.updateOutputSwitcher()        
 
     def on_change_profile(self,value):
-        print "profile changed", value
+        for profile in self.profiles:
+            if value == profile.description:
+                self.veromix.pa.set_card_profile(self.info.index, profile.name)
 
     def on_change_switcher(self,boolean):
         if boolean:
@@ -80,17 +81,16 @@ class SinkSettingsWidget(QGraphicsWidget):
         if self.veromix:
             info = self.veromix.get_card_info_for(self.sink)
             if info:
+                self.info = info
                 self.profile_switcher.clear()
-                profiles = info.get_profiles()
+                self.profiles = info.get_profiles()
                 active = info.get_active_profile_name()
                 active_index = 0
-                for profile in profiles:
+                for profile in self.profiles:
                     self.profile_switcher.addItem(profile.description)
                     if active == profile.name:
-                        active_index = profiles.index(profile)
+                        active_index = self.profiles.index(profile)
                 self.profile_switcher.nativeWidget().setCurrentIndex(active_index)
-
-
                 
 class SinkInputSettingsWidget(SinkSettingsWidget):
 

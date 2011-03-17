@@ -257,7 +257,6 @@ class VeroMix(QGraphicsWidget):
 
  ## callbacks card info
     def on_card_info(self, info):
-        print info
         self.card_infos[info.name] = info
 
 ## Callbacks volume menters
@@ -370,7 +369,7 @@ class VeroMix(QGraphicsWidget):
 
     def get_card_info_for(self, sink):
         for info in self.card_infos.values():
-            if int(sink.index) == int(info.index):
+            if sink.name.find(sink.name) >= 0:
                 return info
         return None
 

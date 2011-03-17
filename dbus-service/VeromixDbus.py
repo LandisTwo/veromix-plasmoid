@@ -36,7 +36,7 @@ class VeromixDbus(dbus.service.Object):
     def __init__(self, pulseaudio, conn , object_path='/org/veromix/pulseaudio'):
         dbus.service.Object.__init__(self, conn, object_path)
         self.pulse = pulseaudio
-        self.VERSION = 5
+        self.VERSION = 6
 
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='')
     def veromix_startup(self):
@@ -152,8 +152,10 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isa{ss}sa{sa{ss}}')
     def card_info(self, index,  name , properties, active_profile_name , profiles):
         pass
-
-
+    
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
+    def set_card_profile(self, index, value):
+        self.pulse.pulse_set_card_profile(index, value)
 ## ----------------------------- generic -----------------------------------------
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='', out_signature='')

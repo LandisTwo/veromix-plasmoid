@@ -448,6 +448,13 @@ class PulseAudio(QObject):
         self.__print("move_sink")
         pa_context_move_sink_input_by_name(self._context, sink_index, output_name, self._pa_context_success_cb, None)
 
+################## card profile
+
+    def pulse_set_card_profile(self, index, value):
+        operation = pa_context_set_card_profile_by_name(self._context,str(index),str(value) ,  self._null_cb,None)
+        pa_operation_unref(operation)
+        return  
+        
 ################## volume
     def pulse_mute_stream(self, index):
         self.pulse_sink_input_mute(index, 1)
