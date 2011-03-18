@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-18 01:52+0100\n"
-"PO-Revision-Date: 2011-03-17 13:10+0300\n"
+"PO-Revision-Date: 2011-03-18 10:35+0300\n"
 "Last-Translator: proDOOMman <prodoomman@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: \n"
@@ -16,8 +16,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.2\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: rc.py:3 rc.py:18 rc.py:63
 msgid "Form"
@@ -73,7 +73,7 @@ msgstr "Стандартный фон"
 
 #: rc.py:54
 msgid "Use tabs"
-msgstr ""
+msgstr "Использовать вкладки"
 
 #: rc.py:57
 msgid "Layout"
@@ -81,7 +81,7 @@ msgstr "Размещение"
 
 #: rc.py:60
 msgid "Show Meter"
-msgstr ""
+msgstr "Отображать метки громкости"
 
 #: rc.py:66
 msgid "Enable media player controls"
@@ -138,7 +138,7 @@ msgstr "Выключать звук при уменьшении громкост
 
 #: contents/code/main.py:283
 msgid "Sound Card Profiles"
-msgstr ""
+msgstr "Профили звуковых карт"
 
 #: contents/code/main.py:306
 msgid "Pulseaudio"

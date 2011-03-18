@@ -1,4 +1,4 @@
-0.11.0
+0.11.0 - TRUNK
 - Sound Card Profiles aka quick switching between hdmi and regular
 - show slider ticks if max volume is > 100%
 - tabbed view: Fixed not correctly removed meters
