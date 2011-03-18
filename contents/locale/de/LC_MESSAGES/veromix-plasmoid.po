@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-02 15:33+0100\n"
+"POT-Creation-Date: 2011-03-18 01:52+0100\n"
 "PO-Revision-Date: 2010-12-02 15:47+0100\n"
 "Last-Translator: nik lutz <nik.lutz@gmail.com>\n"
 "Language-Team: de <nik.lutz@gmail.com>\n"
@@ -17,29 +17,27 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: German\n"
 
-#: rc.py:3
-#: rc.py:18
-#: rc.py:60
+#: rc.py:3 rc.py:18 rc.py:63
 msgid "Form"
 msgstr "Von"
 
-#: rc.py:6
-#: rc.py:48
+#: rc.py:6 rc.py:48
 msgid "Version"
 msgstr "Version"
 
-#: rc.py:9
-#: rc.py:42
+#: rc.py:9 rc.py:42
 msgid "Homepage"
 msgstr "Homepage"
 
-#: rc.py:12
-#: rc.py:45
-msgid "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google.com/p/veromix-plasmoid/</A>"
-msgstr "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google.com/p/veromix-plasmoid/</A>"
+#: rc.py:12 rc.py:45
+msgid ""
+"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+"com/p/veromix-plasmoid/</A>"
+msgstr ""
+"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+"com/p/veromix-plasmoid/</A>"
 
-#: rc.py:15
-#: rc.py:51
+#: rc.py:15 rc.py:51
 msgid "X.Y"
 msgstr "X.Y"
 
@@ -72,75 +70,150 @@ msgid "Standard background"
 msgstr "Vorgabe Hintergrund"
 
 #: rc.py:54
-msgid "Use tabs (requires plasma restart)"
-msgstr "Tabs anzeigen (plasma muss neu gestartet werden)"
+msgid "Use tabs"
+msgstr ""
 
 #: rc.py:57
 msgid "Layout"
 msgstr "Layout"
 
-#: rc.py:63
+#: rc.py:60
+msgid "Show Meter"
+msgstr ""
+
+#: rc.py:66
 msgid "Enable media player controls"
 msgstr "Medien-Player Steuerung anzeigen"
 
-#: rc.py:66
+#: rc.py:69
 msgid "mpris2 Mediaplayers"
 msgstr "mpris2 Medien-Player "
 
-#: rc.py:69
+#: rc.py:72
 msgid "Media player blacklist"
 msgstr "Medien-Player ignorieren"
 
-#: rc.py:72
+#: rc.py:75
 msgid "Running media players"
 msgstr "Aktuell laufende Medien-Player "
 
-#: code/main.py:62
+#: contents/code/main.py:66
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
 msgstr "Veromix ist ein Lautstärkeregler für den Pulseaudio sound server."
 
-#: code/main.py:128
+#: contents/code/main.py:135 contents/code/main.py:317
 msgid "Veromix volume up"
 msgstr "Veromix Lautstärke erhöhen"
 
-#: code/main.py:134
+#: contents/code/main.py:140 contents/code/main.py:322
 msgid "Veromix volume down"
 msgstr "Veromix Lautstärke verringern"
 
-#: code/main.py:140
+#: contents/code/main.py:145 contents/code/main.py:327
 msgid "Veromix toggle  mute"
 msgstr "Veromix Stummschaltung ein/aus"
 
-#: code/main.py:150
+#: contents/code/main.py:153
 msgid "Main Volume"
 msgstr "Hauptregler"
 
-#: code/main.py:232
+#: contents/code/main.py:239
 msgid "Appearance"
 msgstr "Aussehen"
 
-#: code/main.py:244
+#: contents/code/main.py:251
 #, fuzzy
 msgid "Media Player Controls"
 msgstr "Medien-Player Steuerung anzeigen"
 
-#: code/Utils.py:29
+#: contents/code/main.py:274
+#, fuzzy
+msgid "Max volume value"
+msgstr "Veromix Lautstärke erhöhen"
+
+#: contents/code/main.py:279
+msgid "Mute if volume reaches zero"
+msgstr ""
+
+#: contents/code/main.py:283
+msgid "Sound Card Profiles"
+msgstr ""
+
+#: contents/code/main.py:306
+msgid "Pulseaudio"
+msgstr ""
+
+#: contents/code/main.py:331
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: contents/code/SettingsWidget.py:59
+msgid "Default Sink"
+msgstr ""
+
+#: contents/code/SettingsWidget.py:98
+msgid "Disconnect/kill"
+msgstr ""
+
+#: contents/code/SettingsWidget.py:115
+msgid "Output"
+msgstr ""
+
+#: contents/code/Utils.py:30
 msgid "Please remove and re-add myself"
-msgstr "Bitte <b>entfernen</b> Sie dieses Plasmoid und fügen Sie es erneut zu Ihrem Desktop hinzu. Alternativ können Sie Ihren Computer auch neu starten. "
+msgstr ""
+"Bitte <b>entfernen</b> Sie dieses Plasmoid und fügen Sie es erneut zu Ihrem "
+"Desktop hinzu. Alternativ können Sie Ihren Computer auch neu starten. "
 
-#: code/Utils.py:35
-msgid "<b>Configuration updated</b><br/>             Because of a known bug in KDE 4.4 initialization of Veromix failed.<br/><br/>            A workaround is now installed.<br/><br/>            Please <b>remove</b> this applet and <b>add</b> Veromix again to your desktop/panel (alternatively you can restart plasma-desktop).<br/><br/>             Sorry for the inconvenience.<br/><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#KDE_4.4_compatibility\">See wiki for more details</a> <span style=\"font-size: small;\">(right click and copy url)</span>. "
-msgstr "<b>Konfiguration aktualisiert</a><br/>Aufgrund eines bekannten Fehlers in KDE 4.4 konnte Veromix nicht geladen werden.<br/><br/>Die Konfiguration wurde aktualisiert, so dass beim nächsten Start dieser Fehler nicht mehr auftreten sollte.<br/><br/>Bitte <b>entfernen</b> Sie dieses Plasmoid und fügen Sie es erneut zu Ihrem Desktop hinzu. Alternativ können Sie Ihren Computer auch neu starten. <br/><br/><a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#KDE_4.4_compatibility\">Mehr Informationen finden sie im Wiki</a> <span style=\"font-size: small;\">(rechts click und \"Adresse kopieren\")</span>."
+#: contents/code/Utils.py:36
+msgid ""
+"<b>Configuration updated</b><br/>             Because of a known bug in KDE "
+"4.4 initialization of Veromix failed.<br/><br/>            A workaround is "
+"now installed.<br/><br/>            Please <b>remove</b> this applet and "
+"<b>add</b> Veromix again to your desktop/panel (alternatively you can "
+"restart plasma-desktop).<br/><br/>             Sorry for the inconvenience."
+"<br/><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/"
+"wiki/VeromixComponents#KDE_4.4_compatibility\">See wiki for more details</a> "
+"<span style=\"font-size: small;\">(right click and copy url)</span>. "
+msgstr ""
+"<b>Konfiguration aktualisiert</a><br/>Aufgrund eines bekannten Fehlers in "
+"KDE 4.4 konnte Veromix nicht geladen werden.<br/><br/>Die Konfiguration "
+"wurde aktualisiert, so dass beim nächsten Start dieser Fehler nicht mehr "
+"auftreten sollte.<br/><br/>Bitte <b>entfernen</b> Sie dieses Plasmoid und "
+"fügen Sie es erneut zu Ihrem Desktop hinzu. Alternativ können Sie Ihren "
+"Computer auch neu starten. <br/><br/><a href=\"http://code.google.com/p/"
+"veromix-plasmoid/wiki/VeromixComponents#KDE_4.4_compatibility\">Mehr "
+"Informationen finden sie im Wiki</a> <span style=\"font-size: small;\">"
+"(rechts click und \"Adresse kopieren\")</span>."
 
-#: code/VeroMix.py:57
+#: contents/code/VeroMix.py:100
 msgid "Playback"
 msgstr "Wiedergabe"
 
-#: code/VeroMix.py:58
+#: contents/code/VeroMix.py:101
 msgid "Record"
 msgstr "Aufnahme"
 
-#: code/VeroMix.py:92
-msgid "There is a problem with the backgroud-service.                                                         <ul>                                                         <li>If you just upgraded try killing the process named: VeromixServiceMain.py and relaunch this plasmoid</li>                                                         <li>If you don't know how to do that consider rebooting</li></ul><br/>                                                        <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:_VeromixServiceMain.py\">See wiki for more details</a> <span style=\"font-size: small;\">(right click and copy url)</span>."
-msgstr "Es besteht ein Problem mit der Verbindung zum Pulseaudio server.<ul><li> Falls Sie das Plasmoid gerade aktualisiert haben, versuchen Sie den Prozess mit dem Namen \"VeromixServiceMain.py\" zu beenden</li><li>Alternativ können Sie Ihren Computer auch neu starten</li></ul><br/><a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:_VeromixServiceMain.py\">Mehr Informationen finden sie im Wiki</a> <span style=\"font-size: small;\">(rechts click und \"Adresse kopieren\")</span>."
+#: contents/code/VeroMix.py:121
+msgid ""
+"There is a problem with the backgroud-"
+"service.                                                         "
+"<ul>                                                         <li>If you just "
+"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
+"this plasmoid</li>                                                         "
+"<li>If you don't know how to do that consider rebooting</li></ul><br/"
+">                                                        <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
+"_VeromixServiceMain.py\">See wiki for more details</a> <span style=\"font-"
+"size: small;\">(right click and copy url)</span>."
+msgstr ""
+"Es besteht ein Problem mit der Verbindung zum Pulseaudio server.<ul><li> "
+"Falls Sie das Plasmoid gerade aktualisiert haben, versuchen Sie den Prozess "
+"mit dem Namen \"VeromixServiceMain.py\" zu beenden</li><li>Alternativ können "
+"Sie Ihren Computer auch neu starten</li></ul><br/><a href=\"http://code."
+"google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
+"_VeromixServiceMain.py\">Mehr Informationen finden sie im Wiki</a> <span "
+"style=\"font-size: small;\">(rechts click und \"Adresse kopieren\")</span>."
 
+#~ msgid "Use tabs (requires plasma restart)"
+#~ msgstr "Tabs anzeigen (plasma muss neu gestartet werden)"

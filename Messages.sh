@@ -12,9 +12,9 @@ if [ "x$1" != "x" ]; then
     fi
 fi
 
-$EXTRACTRC ui/*.ui config/*.xml > ./rc.py
-$XGETTEXT rc.py code/*.py -o "$NAME.pot"
-sed -e 's/charset=CHARSET/charset=UTF-8/g' -i "$NAME.pot"
+$EXTRACTRC contents/ui/*.ui contents/config/*.xml > ./rc.py
+$XGETTEXT rc.py contents/code/*.py -o "$NAME.pot"
+sed -e 's/charset=CHARSET/charset=UTF-8/g' -i "contents/$NAME.pot"
 
 for d in contents/locale/*; do
     if [ -d "$d" ]; then
@@ -34,4 +34,4 @@ for d in contents/locale/*; do
 done
 
 rm -f rc.py
-rm -f $NAME.pot
+# rm -f $NAME.pot
