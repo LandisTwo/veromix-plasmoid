@@ -34,4 +34,4 @@ for d in contents/locale/*; do
 done
 
 rm -f rc.py
-# rm -f $NAME.pot
+rm -f $NAME.pot
