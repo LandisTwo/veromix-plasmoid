@@ -58,23 +58,22 @@ class LabelSlider(Plasma.Slider):
         self.pulse_timestamp = datetime.datetime.now()  + d
         self.plasma_timestamp = datetime.datetime.now() + d
         Plasma.Slider.__init__(self)
-        #self.setContentsMargins(0,0,0,0)
         self.label = Label(self)
         self.label.setPos(0, -4)
-        #self.meter = Plasma.Meter(self)
-        #self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
-        #self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed, True))
-        #self.meter.setValue(50)
-        #self.meter.setMaximumHeight(6)
-        #self.meter.setPos(0, 11)
 
         self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
         self.valueChanged.connect( self.on_slider_cb)
-        
+
+    def setMaximum(self, value):
+        Plasma.Slider.setMaximum(self,value)
+        if value > 100:
+            self.nativeWidget().setTickInterval(100)
+            self.nativeWidget().setTickPosition(QSlider.TicksBothSides)
+        else:
+            self.nativeWidget().setTickPosition(QSlider.NoTicks)
+            
     def _resize_widgets(self):
         w = self.size().width() 
-        #self.meter.setMinimumWidth(w)
-        #self.meter.setMaximumWidth(w)
         self.label.setMinimumWidth(w)
         self.label.setMaximumWidth(w)
         
