@@ -41,6 +41,7 @@ class Channel(QGraphicsWidget):
         self.pa_sink = None
         self.extended_panel_shown = False
         self.extended_panel= None
+        self.show_meter = True
         self.init()
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True) )
 
@@ -67,9 +68,11 @@ class Channel(QGraphicsWidget):
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
         if self.veromix.get_meter_visible():
+            self.show_meter = True
             self.panel_layout.addItem(self.meter)
             self.meter.show()
         else:
+            self.show_meter = False
             self.meter.hide()
 
     def create_frame(self):
@@ -170,11 +173,13 @@ class Channel(QGraphicsWidget):
         self.veromix.check_geometries()
 
     def on_update_configuration(self):
-        if self.veromix.get_meter_visible() !=  self.meter.isVisible():
-            if self.veromix.get_meter_visible() and not self.meter.isVisible():
+        if self.veromix.get_meter_visible() !=  self.show_meter:
+            if self.veromix.get_meter_visible() and not self.show_meter:
+                self.show_meter = True
                 self.panel_layout.addItem(self.meter)
                 self.meter.show()
             else:
+                self.show_meter = False
                 self.panel_layout.removeItem(self.meter)
                 self.meter.hide()
         self.slider.setMaximum(self.veromix.get_max_volume_value())
