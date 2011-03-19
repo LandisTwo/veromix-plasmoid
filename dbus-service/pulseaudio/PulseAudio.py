@@ -394,7 +394,7 @@ class PulseAudio(QObject):
         if (v < 0):
             v = 0
         if (v > 100):
-            v = 100
+            v = 99
         pa_stream_drop(stream)
         if index:
             self.emit(SIGNAL("volume_meter_sink_input(int, float )"),int(index), float(v))
@@ -408,9 +408,7 @@ class PulseAudio(QObject):
         if (v < 0):
             v = 0
         if (v > 100):
-            #print v
-            #v = 100
-            return
+            v = 99
         pa_stream_drop(stream)
         if index:
             self.emit(SIGNAL("volume_meter_source(int, float )"),int(index), float(v))
@@ -423,7 +421,7 @@ class PulseAudio(QObject):
         if (v < 0):
             v = 0
         if (v > 100):
-            return
+            v=99
         pa_stream_drop(stream)
         self.emit(SIGNAL("volume_meter_sink(int, float )"),int(index), float(v))
 
