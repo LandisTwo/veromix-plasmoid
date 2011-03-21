@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# copyright 2009  Nik Lutz nik.lutz@gmail.com
+# copyright 2009-2011  Nik Lutz nik.lutz@gmail.com
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,13 +28,7 @@
 # The service is launchd by dbus. For this to work veromix installs a service
 # description-file in /usr/share/dbus-1/services/ called org.veromix.pulseaudio.service .
 #
-# Whithout this separation there where two two problems:
-# - one could only add one veromix-plasmoid to the desktop/panel/.. (CTypes binds the
-#   loaded module to the parent process and accepts only one callback-function)
-# - There was crash that could not be fixed: When the parent process (plasma, plasmoidviewer, ..) exits
-#   the embedded python crashed. I don't know if this is a python or kde bug. Nobody could help me.
-#
-# Pulseaudio should provide their own dbus-interface. But currently they are still planning it:
+# Pulseaudio will (one day) provide their own dbus-interface:
 # http://pulseaudio.org/wiki/DBusInterface
 #
 # The python-interface to pulseaudio is a mix of these two projects:
@@ -66,7 +60,7 @@ from Utils import *
 COMMENT=i18n("Veromix is a mixer for the Pulseaudio sound server. ")
 
 class VeroMixPlasmoid(plasmascript.Applet):
-    VERSION="0.11.0"
+    VERSION="0.11.1"
     
     nowplaying_player_added = pyqtSignal(QString, QObject)
     nowplaying_player_removed = pyqtSignal(QString )
