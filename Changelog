@@ -1,3 +1,6 @@
+0.11.1 - 21.3.2011
+- added italian translations
+
 0.11.0 - 19.3.2011
 - sound card profiles support (aka quick switching between hdmi and regular)
 - show slider ticks if max volume is > 100%
