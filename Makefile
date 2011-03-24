@@ -2,39 +2,9 @@
 
 SHELL	:= sh -e
 
-SCRIPTS	:= contrib/*.sh
-
 VERSION	:= $$(awk -F= '/X-KDE-PluginInfo-Version/ { print $$2 }' metadata.desktop)
 
 all:	build
-
-test:
-	@echo -n "Checking for syntax errors"
-
-	@for SCRIPT in $(SCRIPTS); \
-	do \
-		sh -n $${SCRIPT}; \
-		echo -n "."; \
-	done
-
-	@echo " done."
-
-	@if [ -x "$$(which checkbashisms 2>/dev/null)" ]; \
-	then \
-		echo -n "Checking for bashisms"; \
-		for SCRIPT in $(SCRIPTS); \
-		do \
-			checkbashisms -f -x $${SCRIPT}; \
-			echo -n "."; \
-		done; \
-		echo " done."; \
-	else \
-		echo "W: checkbashisms - command not found"; \
-		echo "I: checkbashisms can be optained from: "; \
-		echo "I:   http://git.debian.org/?p=devscripts/devscripts.git"; \
-		echo "I: On Debian systems, checkbashisms can be installed with:"; \
-		echo "I:   apt-get install devscripts"; \
-	fi
 
 build:
 	sh Messages.sh
