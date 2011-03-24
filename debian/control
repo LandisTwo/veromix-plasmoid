@@ -2,7 +2,7 @@ Source: plasma-widget-veromix
 Section: kde
 Priority: optional
 Maintainer: Nik Lutz <nik.lutz@gmail.com>
-Build-Depends: debhelper (>= 8), kdelibs-bin
+Build-Depends: debhelper (>= 8), gettext, kdelibs-bin, kdesdk-scripts
 Standards-Version: 3.9.1
 Homepage: http://code.google.com/p/veromix-plasmoid/
 Vcs-Browser: http://code.google.com/p/veromix-plasmoid/source/browse/
@@ -26,10 +26,9 @@ Description: plasma widget to control pulseaudio
   * volume meter (on mouse over)
   * PopUp-Applet (icon-representation if inside panel)
   * can life in system tray / notification area
-  * kill playback streams (click on meter to expand the channel)
-  * set default output device (click on meter to expand the channel)
-  * show hardware information (click on meter to expand the channel)
+  * kill playback streams
+  * set default output device
   * Middle-click on panel icon mutes default output
   * Mouse-wheel over panel icon increases/decreases volume of default output
-  * supports global hotkeys: Systemsettings / Custom Shortcuts / Global Hotkeys
-    / Plasma-Workspace OR run "kcmshell4 keys" and select "Plasma Workspace"
+  * supports global hotkeys
+  * set volume above 100%
