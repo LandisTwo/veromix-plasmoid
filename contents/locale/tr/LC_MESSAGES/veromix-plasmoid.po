@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-18 01:52+0100\n"
+"POT-Creation-Date: 2011-03-24 11:35+0000\n"
 "PO-Revision-Date: 2010-12-16 03:41+0200\n"
 "Last-Translator: Anıl Özbek <ozbekanil@gmail.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
@@ -18,135 +18,6 @@ msgstr ""
 "X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-
-#: rc.py:3 rc.py:18 rc.py:63
-msgid "Form"
-msgstr "Form"
-
-#: rc.py:6 rc.py:48
-msgid "Version"
-msgstr "Sürüm"
-
-#: rc.py:9 rc.py:42
-msgid "Homepage"
-msgstr "Anasayfa"
-
-#: rc.py:12 rc.py:45
-msgid ""
-"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
-"com/p/veromix-plasmoid/</A>"
-msgstr ""
-"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
-"com/p/veromix-plasmoid/</A>"
-
-#: rc.py:15 rc.py:51
-msgid "X.Y"
-msgstr "X.Y"
-
-#: rc.py:21
-msgid "Background"
-msgstr "Arkaplan"
-
-#: rc.py:24
-msgid "Popup Mode"
-msgstr "Açılır Pencere KipiğpenPopu"
-
-#: rc.py:27
-msgid "Close when loosing focus"
-msgstr "Odak kaybettiğinde otomatik kapatolduğu"
-
-#: rc.py:30
-msgid "Close manually"
-msgstr "Elle kapat"
-
-#: rc.py:33
-msgid "No background"
-msgstr "Arkaplan yok"
-
-#: rc.py:36
-msgid "Translucent background"
-msgstr "Yarı saydam arkaplanf"
-
-#: rc.py:39
-msgid "Standard background"
-msgstr "Standart arkaplan"
-
-#: rc.py:54
-msgid "Use tabs"
-msgstr ""
-
-#: rc.py:57
-msgid "Layout"
-msgstr "Yerleşim"
-
-#: rc.py:60
-msgid "Show Meter"
-msgstr ""
-
-#: rc.py:66
-msgid "Enable media player controls"
-msgstr "Medya oynatıcı kontrollerini aktifleştir"
-
-#: rc.py:69
-msgid "mpris2 Mediaplayers"
-msgstr "mpris2 Medya oynatıcıları"
-
-#: rc.py:72
-msgid "Media player blacklist"
-msgstr "Medya oynatıcı karalistesi"
-
-#: rc.py:75
-msgid "Running media players"
-msgstr "Şu an çalışan medya oynatıcılarlayÖ"
-
-#: contents/code/main.py:66
-msgid "Veromix is a mixer for the Pulseaudio sound server. "
-msgstr "Veromix, PulseAudio ses sunucusu için bir karıştırıcıdır. "
-
-#: contents/code/main.py:135 contents/code/main.py:317
-msgid "Veromix volume up"
-msgstr "Veromix ses yükselt"
-
-#: contents/code/main.py:140 contents/code/main.py:322
-msgid "Veromix volume down"
-msgstr "Veromix ses kıs"
-
-#: contents/code/main.py:145 contents/code/main.py:327
-msgid "Veromix toggle  mute"
-msgstr "Veromix sessiz"
-
-#: contents/code/main.py:153
-msgid "Main Volume"
-msgstr "Ana Ses"
-
-#: contents/code/main.py:239
-msgid "Appearance"
-msgstr "Görünüm"
-
-#: contents/code/main.py:251
-msgid "Media Player Controls"
-msgstr "Medya Oynatıcı Kontrolleri"
-
-#: contents/code/main.py:274
-#, fuzzy
-msgid "Max volume value"
-msgstr "Veromix ses yükselt"
-
-#: contents/code/main.py:279
-msgid "Mute if volume reaches zero"
-msgstr ""
-
-#: contents/code/main.py:283
-msgid "Sound Card Profiles"
-msgstr ""
-
-#: contents/code/main.py:306
-msgid "Pulseaudio"
-msgstr ""
-
-#: contents/code/main.py:331
-msgid "Keyboard Shortcuts"
-msgstr ""
 
 #: contents/code/SettingsWidget.py:59
 msgid "Default Sink"
@@ -218,6 +89,110 @@ msgstr ""
 "code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
 "_VeromixServiceMain.py\">detaylar için vikiye bakınız</a> <span style=\"font-"
 "size: small;\">(sağ tıklayın ve bağlantıyı kopyalayın)</span>."
+
+#: contents/code/main.py:60
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr "Veromix, PulseAudio ses sunucusu için bir karıştırıcıdır. "
+
+#: contents/code/main.py:129 contents/code/main.py:311
+msgid "Veromix volume up"
+msgstr "Veromix ses yükselt"
+
+#: contents/code/main.py:134 contents/code/main.py:316
+msgid "Veromix volume down"
+msgstr "Veromix ses kıs"
+
+#: contents/code/main.py:139 contents/code/main.py:321
+msgid "Veromix toggle  mute"
+msgstr "Veromix sessiz"
+
+#: contents/code/main.py:147
+msgid "Main Volume"
+msgstr "Ana Ses"
+
+#: contents/code/main.py:233
+msgid "Appearance"
+msgstr "Görünüm"
+
+#: contents/code/main.py:245
+msgid "Media Player Controls"
+msgstr "Medya Oynatıcı Kontrolleri"
+
+#: contents/code/main.py:268
+#, fuzzy
+msgid "Max volume value"
+msgstr "Veromix ses yükselt"
+
+#: contents/code/main.py:273
+msgid "Mute if volume reaches zero"
+msgstr ""
+
+#: contents/code/main.py:277
+msgid "Sound Card Profiles"
+msgstr ""
+
+#: contents/code/main.py:300
+msgid "Pulseaudio"
+msgstr ""
+
+#: contents/code/main.py:325
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#~ msgid "Form"
+#~ msgstr "Form"
+
+#~ msgid "Version"
+#~ msgstr "Sürüm"
+
+#~ msgid "Homepage"
+#~ msgstr "Anasayfa"
+
+#~ msgid ""
+#~ "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+#~ "com/p/veromix-plasmoid/</A>"
+#~ msgstr ""
+#~ "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+#~ "com/p/veromix-plasmoid/</A>"
+
+#~ msgid "X.Y"
+#~ msgstr "X.Y"
+
+#~ msgid "Background"
+#~ msgstr "Arkaplan"
+
+#~ msgid "Popup Mode"
+#~ msgstr "Açılır Pencere KipiğpenPopu"
+
+#~ msgid "Close when loosing focus"
+#~ msgstr "Odak kaybettiğinde otomatik kapatolduğu"
+
+#~ msgid "Close manually"
+#~ msgstr "Elle kapat"
+
+#~ msgid "No background"
+#~ msgstr "Arkaplan yok"
+
+#~ msgid "Translucent background"
+#~ msgstr "Yarı saydam arkaplanf"
+
+#~ msgid "Standard background"
+#~ msgstr "Standart arkaplan"
+
+#~ msgid "Layout"
+#~ msgstr "Yerleşim"
+
+#~ msgid "Enable media player controls"
+#~ msgstr "Medya oynatıcı kontrollerini aktifleştir"
+
+#~ msgid "mpris2 Mediaplayers"
+#~ msgstr "mpris2 Medya oynatıcıları"
+
+#~ msgid "Media player blacklist"
+#~ msgstr "Medya oynatıcı karalistesi"
+
+#~ msgid "Running media players"
+#~ msgstr "Şu an çalışan medya oynatıcılarlayÖ"
 
 #~ msgid "Use tabs (requires plasma restart)"
 #~ msgstr "Sekme kullan (plasma'nın yeniden başlatılması gerekir)leri"

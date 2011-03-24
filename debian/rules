@@ -1,31 +1,4 @@
 #!/usr/bin/make -f
 
-SHELL := sh -e
-
 %:
 	dh ${@}
-
-override_dh_auto_clean:
-	dh_auto_clean
-
-	find contents/locale -name "*.mo" | xargs rm -f
-
-override_dh_auto_build:
-	dh_auto_build
-
-	sh Messages.sh
-
-override_dh_install:
-	dh_install
-	# legacy hack for kde 4.4
-	if [ "$$(kde4-config --kde-version | awk -F\. '{ print $$2 }')" -lt 5 ]; \
-	then \
-		sed -i -e 's|Plasma/Applet,Plasma/PopupApplet|Plasma/PopupApplet|' debian/plasma-widget-veromix/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid/metadata.desktop ; \
-	fi; \
-	mkdir -p debian/plasma-widget-veromix/usr/share/dbus-1/services/
-	echo -e "[D-BUS Service]\nName=org.veromix.pulseaudioservice\nExec=/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid/dbus-service/VeromixServiceMain.py\n" > debian/plasma-widget-veromix/usr/share/dbus-1/services/org.veromix.pulseaudio.service
-
-override_dh_fixperms:
-	dh_fixperms
-
-	find debian/plasma-widget-veromix/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid/contents/locale -name "*.mo" | xargs chmod 0644

@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.veromix.pulseaudioservice
+Exec=/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid/dbus-service/VeromixServiceMain.py
