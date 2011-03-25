@@ -11,15 +11,8 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>354</width>
-     <height>233</height>
-    </rect>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QCheckBox" name="useNowplaying">
@@ -85,7 +78,8 @@
      </layout>
     </item>
    </layout>
-  </widget>
+  </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
