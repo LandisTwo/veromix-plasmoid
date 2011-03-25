@@ -71,7 +71,18 @@ class SinkInfo(QObject):
                 value = 0
             vol.append(value )
         return vol
-        
+
+    def printDebug(self):
+        print "<sink>"
+        print  self.index
+        print self.name
+        print self.mute
+        print self. volume
+        #print self.props
+        for key in self.props.keys():
+            print key, self.props[key]
+        print "</sink>"
+
 class CardProfile:
     def __init__(self, name, properties):
         self.name = name
@@ -80,8 +91,11 @@ class CardProfile:
         # FIXME other values
 
     def printDebug(self):
+        print "<CardProfile>"
         print self.name
-        print self.properties
+        for key in self.properties.keys():
+            print key, self.properties[key]
+        print "</CardProfile>"
         
 class CardInfo:
     def __init__(self, index,   name,  properties, active_profile_name ,  profiles_dict):
@@ -107,9 +121,12 @@ class CardInfo:
         return self.active_profile_name
         
     def printDebug(self):
+        print "<CardInfo>"
         print self.index
         print self.name
-        print self.properties
+        for key in self.properties.keys():
+            print key, self.properties[key]
+        print "</CardInfo>"
         
 class PulseAudio(QObject):
     mpris2_properties_changed = pyqtSignal(str,dict)

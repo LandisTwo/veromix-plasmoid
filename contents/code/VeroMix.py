@@ -376,13 +376,17 @@ class VeroMix(QGraphicsWidget):
 ## helpers
 
     def get_card_info_for(self, sink):
+        card_identifier = dbus.String(u'alsa.long_card_name') #u'sysfs.path'        
         if sink.pa_sink == None:
+            #print "get_card_info_for: no pa_sink"
             return None
-        if dbus.String(u'sysfs.path')  not in sink.pa_sink.props.keys():
+        if card_identifier  not in sink.pa_sink.props.keys():
+            #print "get_card_info_for: key: ", card_identifier," not found in:",  sink.pa_sink.props.keys()
             return None
         for info in self.card_infos.values():
-            if dbus.String(u'sysfs.path')  in info.properties.keys():
-                if info.properties[dbus.String(u'sysfs.path')] == sink.pa_sink.props[dbus.String(u'sysfs.path')]:
+            if card_identifier  in info.properties.keys():
+                if info.properties[dbus.String(card_identifier)] == sink.pa_sink.props[card_identifier]:
+                    #print "get_card_info_for found"
                     return info
         return None
 
