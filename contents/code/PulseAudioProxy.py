@@ -33,6 +33,12 @@ class SinkChannel(QObject):
     def getVolume(self):
         return self.volume
 
+    def printDebug(self):
+        print "    <SinkChannel>"
+        print  "      <name>", self.name,  "</name>"
+        print "       <volume>", self.volume,  "</volume>"
+        print "    </SinkChannel>"
+
 class SinkInfo(QObject):
 
     def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props):
@@ -74,13 +80,17 @@ class SinkInfo(QObject):
 
     def printDebug(self):
         print "<sink>"
-        print  self.index
-        print self.name
-        print self.mute
-        print self. volume
-        #print self.props
+        print  "  <index>", self.index,  "</index>"
+        print "  <name>", self.name,  "</name>"
+        print "  <mute>", self.mute,  "</mute>"
+        print "  <volume>",
+        for channel in self.getChannels():
+            channel.printDebug()
+        print "  </volume>"
+        print "  <properties>"
         for key in self.props.keys():
-            print key, self.props[key]
+            print "    <" + key + ">", self.props[key],"</" + key + ">"
+        print "  </properties>"
         print "</sink>"
 
 class CardProfile:
@@ -92,9 +102,11 @@ class CardProfile:
 
     def printDebug(self):
         print "<CardProfile>"
-        print self.name
+        print "  <name>", self.name, "</name>"
+        print "  <properties>"
         for key in self.properties.keys():
-            print key, self.properties[key]
+            print "    <" + key + ">", self.properties[key],"</" + key + ">"
+        print "  </properties>"
         print "</CardProfile>"
         
 class CardInfo:
@@ -122,10 +134,12 @@ class CardInfo:
         
     def printDebug(self):
         print "<CardInfo>"
-        print self.index
-        print self.name
+        print  "  <index>", self.index,  "</index>"
+        print "  <name>", self.name, "</name>"
+        print "  <properties>"
         for key in self.properties.keys():
-            print key, self.properties[key]
+            print "    <" + key + ">", self.properties[key],"</" + key + ">"
+        print "  </properties>"
         print "</CardInfo>"
         
 class PulseAudio(QObject):

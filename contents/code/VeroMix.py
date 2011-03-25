@@ -236,6 +236,7 @@ class VeroMix(QGraphicsWidget):
  ## callbacks sink
 
     def on_sink_info(self,sink):
+        sink.printDebug()
         key = "sink" + str(sink.index)
         if not self.update_channel(key ,sink, self.sink_panel_layout ):
             widget =  SinkUI(  self)
@@ -260,6 +261,7 @@ class VeroMix(QGraphicsWidget):
  ## callbacks card info
     def on_card_info(self, info):
         self.card_infos[info.name] = info
+        info.printDebug()
 
     def on_remove_card(self, index):
         for key in self.card_infos.keys():
@@ -378,15 +380,15 @@ class VeroMix(QGraphicsWidget):
     def get_card_info_for(self, sink):
         card_identifier = dbus.String(u'alsa.long_card_name') #u'sysfs.path'        
         if sink.pa_sink == None:
-            #print "get_card_info_for: no pa_sink"
+            print "get_card_info_for: no pa_sink"
             return None
         if card_identifier  not in sink.pa_sink.props.keys():
-            #print "get_card_info_for: key: ", card_identifier," not found in:",  sink.pa_sink.props.keys()
+            print "get_card_info_for: key: ", card_identifier," not found in:",  sink.pa_sink.props.keys()
             return None
         for info in self.card_infos.values():
             if card_identifier  in info.properties.keys():
                 if info.properties[dbus.String(card_identifier)] == sink.pa_sink.props[card_identifier]:
-                    #print "get_card_info_for found"
+                    print "get_card_info_for found"
                     return info
         return None
 
