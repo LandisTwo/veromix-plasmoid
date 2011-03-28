@@ -383,6 +383,10 @@ class VeroMix(QGraphicsWidget):
         if info:
             return info
         card_identifier = dbus.String(u'device.string')
+        info = self._get_card_info_for(sink, card_identifier)
+        if info:
+            return info
+        card_identifier = dbus.String(u'sysfs.path')
         return self._get_card_info_for(sink, card_identifier)
 
     def _get_card_info_for(self, sink, card_identifier):
