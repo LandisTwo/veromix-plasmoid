@@ -141,7 +141,30 @@ class CardInfo:
             print "    <" + key + ">", self.properties[key],"</" + key + ">"
         print "  </properties>"
         print "</CardInfo>"
+
+class Mpris2DummyController(QObject):
+    def __init__(self,name, dbusproxy):
+        QObject.__init__(self)
+        self.name = name
+        self.dbus_proxy = dbusproxy
+
+    def destination(self):
+        return self.name
+
+    def startOperationCall(self, argument):
+        if argument == 'play':
+            self.dbus_proxy.nowplaying_play(self.destination())
+        if argument == 'pause':
+            self.dbus_proxy.nowplaying_pause(self.destination())
+        if argument == 'previous':
+            self.dbus_proxy.nowplaying_prev(self.destination())
+        if argument == 'next':
+            self.dbus_proxy.nowplaying_next(self.destination())
         
+
+    def operationDescription(self, name):
+        return name
+
 class PulseAudio(QObject):
     mpris2_properties_changed = pyqtSignal(str,dict)
     
@@ -214,16 +237,16 @@ class PulseAudio(QObject):
         self.bus.add_signal_receiver(self.on_card_remove,
                 dbus_interface="org.veromix.notification",
                 signal_name="card_remove")
-        #pa_obj  = bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
-        #interface = dbus.Interface(pa_obj,dbus_interface="org.veromix.notification")
-        #interface.connect_to_signal("sink_input_info", self.on_sink_input_info)
-        #interface.connect_to_signal("sink_info", self.on_sink_info)
-        #interface.connect_to_signal("sink_input_remove", self.on_sink_input_remove)
-        #interface.connect_to_signal("sink_remove", self.on_sink_remove)
-
-        ##rbplayerobj = bus.get_object("org.veromix.pulseaudio", '/org/veromix/pulseaudio')
-        #pa_obj  = bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
-        #self.mixer = dbus.Interface(pa_obj, 'org.veromix.pulseaudio')
+                
+        self.bus.add_signal_receiver(self.on_name_owner_changed,
+                                    signal_name="NameOwnerChanged"  ) 
+                
+    def on_name_owner_changed(self, val, val1=None, val2=None):
+        if "org.mpris.MediaPlayer2" in val:
+            if val in self.bus.list_names() :
+                self.emit(SIGNAL("mpris2_player_added(QString, PyQt_PyObject)"), str(val), Mpris2DummyController(QString(val), self))
+            else:
+                self.emit(SIGNAL("mpris2_player_removed(QString, PyQt_PyObject)"), str(val), Mpris2DummyController(QString(val), self))
 
     def connect_mpris2_player(self, callback, name):
         self.bus.add_signal_receiver(callback ,
@@ -233,6 +256,13 @@ class PulseAudio(QObject):
 
     def on_mpris2_properties_changed(self, interface, properties, signature):
         self.mpris2_properties_changed.emit(str(interface), properties)
+
+    def get_mpris2_players(self):
+        collection = []
+        for val in self.bus.list_names() :
+            if "org.mpris.MediaPlayer2" in val:
+                collection.append(Mpris2DummyController(QString(val), self))
+        return collection
 
     def getMixer(self):
         pa_obj  = self.bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")

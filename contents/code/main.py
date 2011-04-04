@@ -235,12 +235,12 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.nowplaying_widget = QWidget(parent)
         self.nowplaying_ui = uic.loadUi(str(self.package().filePath('ui', 'nowplaying.ui')), self.nowplaying_widget)    
         
-        self.nowplaying_ui.mediaplayerBlacklist.setPlainText(self.getNowplayingPlayerBlacklistString() ) 
-        self.nowplaying_ui.mpris2List.setPlainText(self.getMpris2ClientsString()) 
-        self.nowplaying_ui.runningMediaplayers.setPlainText(self.getNowplayingSourcesString()) 
+        self.nowplaying_ui.mediaplayerBlacklist.setPlainText(self.get_nowplaying_blacklistString() )
+        self.nowplaying_ui.mpris2List.setPlainText(self.get_mpris2_blacklistString())
+        self.nowplaying_ui.runningMediaplayers.setPlainText(self.get_running_mediaplayers())
         self.nowplaying_ui.runningMediaplayers.setReadOnly(True) 
         
-        self.nowplaying_ui.useNowplaying.setChecked(self.isNowplayingEnabled() ) 
+        self.nowplaying_ui.useNowplaying.setChecked(self.is_nowplaying_enabled() )
         self.nowplaying_ui.useNowplaying.stateChanged.connect(self.on_setting_nowplaying_changed)        
         parent.addPage(self.nowplaying_widget, i18n("Media Player Controls"), "veromix-plasmoid-128" )      
         
@@ -354,16 +354,22 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.nowplaying_ui.mpris2Label.setEnabled(aBoolean)
         self.nowplaying_ui.runningMediaplayers.setEnabled(aBoolean)
         self.nowplaying_ui.runningMediaplayersLabel.setEnabled(aBoolean)
-        self.applyNowPlaying(aBoolean)
-        self.nowplaying_ui.runningMediaplayers.setPlainText(self.getNowplayingSourcesString()) 
+        self.apply_nowplaying(aBoolean)
+        self.nowplaying_ui.runningMediaplayers.setPlainText(self.get_running_mediaplayers())
         
-    def applyNowPlaying(self, enabled):      
-        self.disableNowPlaying()     
+    def apply_nowplaying(self, enabled):
+        self.disable_nowplaying()
         if enabled:
-            self.initNowPlaying()         
+            self.init_nowplaying()
             
+    def apply_mpris2(self, enabled):
+        self.disable_mpris2()
+        if enabled:
+            self.init_mpris2()
+
     def applyConfig(self):
-        self.applyNowPlaying(self.isNowplayingEnabled() )
+        self.apply_nowplaying(self.is_nowplaying_enabled() )
+        self.apply_mpris2(self.is_mpris2_enabled() )
                 
         bg = self.config().readEntry("background","0").toInt()[0]
         if  bg == 0:
@@ -420,69 +426,86 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
 ### now playing
 
-    def isNowplayingEnabled(self):
-        return self.config().readEntry("useNowplaying",True).toBool() 
+    def is_nowplaying_enabled(self):
+        return self.config().readEntry("useNowplaying",False).toBool()
 
-    def disableNowPlaying(self):        
+    def is_mpris2_enabled(self):
+        return self.config().readEntry("useMpris2",True).toBool()
+
+    def disable_nowplaying(self):
         for player in self.widget.getNowPlaying():
-            self.playerRemoved(player.controller.destination())
+            if player.is_nowplaying_player():
+                self.on_nowplaying_player_removed(player.controller.destination())
 
-    def initNowPlaying(self):
+    def disable_mpris2(self):
+        for player in self.widget.getNowPlaying():
+            if player.is_mpris2_player():
+                self.on_mpris2_removed(player.name)
+
+    def init_nowplaying(self):
         self.now_playing_engine = self.dataEngine('nowplaying')
-        self.connect(self.now_playing_engine, SIGNAL('sourceAdded(QString)'), self.playerAdded)
-        self.connect(self.now_playing_engine, SIGNAL('sourceRemoved(QString)'), self.playerRemoved)
-        self.connectToNowPlayingEngine()
-            
-    def connectToNowPlayingEngine(self):
+        self.connect(self.now_playing_engine, SIGNAL('sourceAdded(QString)'), self.on_nowplaying_player_added)
+        self.connect(self.now_playing_engine, SIGNAL('sourceRemoved(QString)'), self.on_nowplaying_player_removed)
+        self.connect_to_nowplaying_engine()
+
+    def init_mpris2(self):
+        for player in self.widget.pa.get_mpris2_players():
+            self.nowplaying_player_added.emit(player.destination(), player )
+
+    def connect_to_nowplaying_engine(self):
         # get sources and connect
         for source in self.now_playing_engine.sources():
-            self.playerAdded(source)
+            self.on_nowplaying_player_added(source)
             
-    def playerAdded(self, player):
+    def on_nowplaying_player_added(self, player):
         if player == "players":
             # FIXME 4.6 workaround
             return 
-        if not self.isNowplayingEnabled() :
+        if not self.is_nowplaying_enabled() :
             return 
         self.now_playing_engine.disconnectSource(player, self)
-        for entry in self.getNowplayingPlayerBlacklist(): 
+        for entry in self.get_nowplaying_blacklist():
             if str(player).find(entry) == 0:
                 return
         #FIXME
-        do = True
-        for entry in self.getMpris2Clients():
-            if str(player).find(entry) == 0:
-                do = False
-        if do:
-            self.now_playing_engine.connectSource(player, self, 2000)   
+        #do = True
+        #for entry in self.getMpris2Clients():
+            #if str(player).find(entry) == 0:
+                #do = False
+        #if do:
+            #self.now_playing_engine.connectSource(player, self, 2000)   
         controller = self.now_playing_engine.serviceForSource(player)
         self.nowplaying_player_added.emit(player, controller )
 
-    def playerRemoved(self, player):
+    def on_nowplaying_player_removed(self, player):
         self.now_playing_engine.disconnectSource(player, self)
         self.nowplaying_player_removed.emit(player)
 
-    def getNowplayingSourcesString(self):
-        if self.now_playing_engine == None:
-            return ""
-        val = ""
-        for source in self.now_playing_engine.sources():
-            val += source + "\n"
+    def on_mpris2_removed(self, player):
+        self.nowplaying_player_removed.emit(player)
+
+    def get_running_mediaplayers(self):
+        val = ""        
+        if self.now_playing_engine != None:
+            for source in self.now_playing_engine.sources():
+                val += "nowplaying: "+source + "\n"
+        for player in self.widget.pa.get_mpris2_players():
+            val += "mpris2: "+player.name + "\n"
         return val
         
-    def getNowplayingPlayerBlacklist(self):
-        return self.getNowplayingPlayerBlacklistString().split("\n")
+    def get_nowplaying_blacklist(self):
+        return self.get_nowplaying_blacklistString().split("\n")
     
-    def getNowplayingPlayerBlacklistString(self):
+    def get_nowplaying_blacklistString(self):
         default =  "org.mpris.MediaPlayer2.amarok\norg.mpris.bangarang"
         return self.config().readEntry("nowplayingBlacklist",default ).toString()    
 
-    def getMpris2Clients(self):
-        return self.getMpris2ClientsString().split("\n")
-        
-    def getMpris2ClientsString(self):        
-        default = "org.mpris.MediaPlayer2.banshee"
-        return self.config().readEntry("mpris2List",default ).toString()    
+    def get_mpris2_blacklist(self):
+        return self.get_mpris2_blacklistString().split("\n")
+
+    def get_mpris2_blacklistString(self):
+        default =  ""
+        return self.config().readEntry("mpris2Blacklist",default ).toString()
 
     @pyqtSignature('dataUpdated(const QString&, const Plasma::DataEngine::Data&)')
     def dataUpdated(self, sourceName, data):

@@ -141,6 +141,10 @@ class VeroMix(QGraphicsWidget):
 
         self.connect(self.pa, SIGNAL("on_card_info(PyQt_PyObject)"), self.on_card_info)
         self.connect(self.pa, SIGNAL("on_card_remove(int)"), self.on_remove_card)
+
+        self.connect(self.pa, SIGNAL("mpris2_player_added(QString, PyQt_PyObject)"), self.on_nowplaying_added)
+        self.connect(self.pa, SIGNAL("mpris2_player_removed(QString, PyQt_PyObject)"), self.on_nowplaying_removed)
+        
         self.pa.requestInfo()
 
     def start_nowplaying(self):
