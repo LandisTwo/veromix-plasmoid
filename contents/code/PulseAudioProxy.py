@@ -238,9 +238,15 @@ class PulseAudio(QObject):
                 dbus_interface="org.veromix.notification",
                 signal_name="card_remove")
                 
+
+    def enable_mpris2(self):
         self.bus.add_signal_receiver(self.on_name_owner_changed,
-                                    signal_name="NameOwnerChanged"  ) 
-                
+                                    signal_name="NameOwnerChanged"  )
+
+    def disable_mpris2(self):
+        self.bus.remove_signal_receiver(self.on_name_owner_changed,
+                                    signal_name="NameOwnerChanged"  )
+
     def on_name_owner_changed(self, val, val1=None, val2=None):
         if "org.mpris.MediaPlayer2" in val:
             if val in self.bus.list_names() :
@@ -253,6 +259,12 @@ class PulseAudio(QObject):
                 dbus_interface="org.freedesktop.DBus.Properties",
                 signal_name="PropertiesChanged",
                 bus_name=name)
+
+    def disconnect_mpris2_player(self, callback, name):
+        self.bus.remove_signal_receiver(callback ,
+                dbus_interface="org.freedesktop.DBus.Properties",
+                signal_name="PropertiesChanged",
+                bus_name=name)        
 
     def on_mpris2_properties_changed(self, interface, properties, signature):
         self.mpris2_properties_changed.emit(str(interface), properties)

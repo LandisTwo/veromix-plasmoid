@@ -81,10 +81,10 @@ class NowPlaying( Channel ):
         self.panel_layout.addStretch()
 
     def is_nowplaying_player(self):
-        return type(self.controller) != Mpris2DummyController
+        return not self.is_mpris2_player() 
 
     def is_mpris2_player(self):
-        return not self.is_nowplaying_player()
+        return isinstance(self.controller, Mpris2DummyController)
         
     def connect_mpris2(self):
         if self.is_mpris2_player() :

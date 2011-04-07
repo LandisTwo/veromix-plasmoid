@@ -314,7 +314,8 @@ class VeroMix(QGraphicsWidget):
 ### callback nowplaying
 
     def on_nowplaying_added(self, name, controller):
-        #self.sink_panel_layout.setSpacing(0)
+        if self.applet.in_nowplaying_blacklist(name) :
+            return
         self.add_channel(name, NowPlaying(self, controller),None, self.sink_panel_layout)
 
     def on_nowplaying_removed(self, name):
