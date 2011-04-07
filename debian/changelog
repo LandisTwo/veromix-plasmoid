@@ -1,12 +1,15 @@
 plasma-widget-veromix (0.11.1-1) unstable; urgency=low
 
   * New upstream release.
-  * Change  debian/rules to use the new upstream Makefile.
-  * Update Build-Depends.
+  * Changed  debian/rules to use the new upstream Makefile.
+  * Removed debian/plasma-widget-veromix.links.
+  * Removed debian/plasma-widget-veromix.install.
+  * Updated Description in debian/control.
+  * Updated Build-Depends in debian/control.
 
- -- Nik Lutz <nik.lutz@gmail.com>  Thu, 24 Mar 2011 22:00:23 +0100
+ -- Nik Lutz <nik.lutz@gmail.com>  Thu, 07 Apr 2011 22:00:23 +0100
 
-plasma-widget-veromix (0.9.0-1) unstable; urgency=low
+plasma-widget-veromix (0.9.1-1) unstable; urgency=low
 
   * Initial release.
 
