@@ -240,10 +240,10 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.nowplaying_ui.runningMediaplayers.setReadOnly(True) 
         
         self.nowplaying_ui.use_nowplaying.setChecked(self.is_nowplaying_enabled() )
-        self.nowplaying_ui.use_nowplaying.stateChanged.connect(self.on_setting_nowplaying_changed)
+        self.nowplaying_ui.use_nowplaying.stateChanged.connect(self.update_nowplaying_ui)
 
         self.nowplaying_ui.use_mpris2.setChecked(self.is_mpris2_enabled() )
-        self.nowplaying_ui.use_mpris2.stateChanged.connect(self.on_setting_mpris2_changed)
+        self.nowplaying_ui.use_mpris2.stateChanged.connect(self.update_nowplaying_ui)
         
         parent.addPage(self.nowplaying_widget, i18n("Media Player Controls"), "veromix-plasmoid-128" )      
         
@@ -353,14 +353,6 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if tabs != self.useTabs():
             self.widget.switchView()
         self.widget.on_update_configuration()
-
-    def on_setting_mpris2_changed(self, value):
-        self.apply_mpris2(self.nowplaying_ui.use_mpris2.isChecked())
-        self.update_nowplaying_ui()
-        
-    def on_setting_nowplaying_changed(self, value):
-        self.apply_nowplaying(self.nowplaying_ui.use_nowplaying.isChecked())
-        self.update_nowplaying_ui()
         
     def update_nowplaying_ui(self):
         enable = ( self.nowplaying_ui.use_nowplaying.isChecked() or self.nowplaying_ui.use_mpris2.isChecked())
@@ -502,14 +494,14 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.nowplaying_player_removed.emit(player)
 
     def get_running_mediaplayers(self):
-        val = ""        
-        if self.now_playing_engine != None:
-            for source in self.now_playing_engine.sources():
-                val += "nowplaying: "+source + "\n"
-        # FIXME
-        if self.nowplaying_ui.use_mpris2.isChecked():
-            for player in self.widget.pa.get_mpris2_players():
-                val += "mpris2: "+player.name + "\n"
+        val = ""
+        engine =  self.now_playing_engine
+        if engine == None:
+            engine = self.dataEngine('nowplaying')
+        for source in engine.sources():
+            val += "nowplaying: "+source + "\n"
+        for player in self.widget.pa.get_mpris2_players():
+            val += "mpris2: "+player.name + "\n"
         return val
         
     def get_nowplaying_blacklist(self):
