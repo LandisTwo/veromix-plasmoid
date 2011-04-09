@@ -173,7 +173,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
             Plasma.ToolTipManager.self().setContent(self.applet, self.tooltip)
      
     def showTooltip(self):
-        Plasma.ToolTipManager.self().show(self.applet)
+        if self.get_show_toolip():
+            Plasma.ToolTipManager.self().show(self.applet)
         
     @pyqtSlot(name="toolTipAboutToShow")
     def toolTipAboutToShow(self):
@@ -227,7 +228,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background","0").toInt() [0] )
         self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
         self.config_ui.useTabs.setChecked(self.useTabs() )
-        self.config_ui.meter_visible.setChecked(self.get_meter_visible() )
+        self.config_ui.show_tooltip.setChecked(self.get_show_toolip())
+        self.config_ui.meter_visible.setChecked(self.get_meter_visible())
         
         self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
         parent.addPage(self.config_widget, i18n("Appearance"), "veromix-plasmoid-128" )
@@ -335,6 +337,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config().writeEntry("popupMode", str(self.config_ui.popupMode.currentIndex()))        
         tabs = self.useTabs()
         self.config().writeEntry("useTabs", bool(self.config_ui.useTabs.isChecked()))
+        self.config().writeEntry("show_tooltip", bool(self.config_ui.show_tooltip.isChecked()))
 
         meter_visible = self.get_meter_visible()
         self.config().writeEntry("meter_visible", bool(self.config_ui.meter_visible.isChecked()))
@@ -427,6 +430,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def get_auto_mute(self):
         return self.config().readEntry("auto_mute",False ).toBool()
 
+    def get_show_toolip(self):
+        return self.config().readEntry("show_toolip",True ).toBool()
+
     def get_max_volume_value(self):
         default = 100
         return self.config().readEntry("max_volume",default ).toInt()[0]
@@ -474,8 +480,6 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if self.in_nowplaying_blacklist(player) :
             return
         self.now_playing_engine.disconnectSource(player, self)
-
-        #FIXME
         self.now_playing_engine.connectSource(player, self, 2000)
         controller = self.now_playing_engine.serviceForSource(player)
         self.nowplaying_player_added.emit(player, controller )
