@@ -41,6 +41,10 @@ def null_cb(a=None, b=None, c=None, d=None):
 class PulseAudio(QObject):
     def __init__(self):
         QObject.__init__(self)
+        self.initialize_variables()      
+
+    def initialize_variables(self):
+        self._context = None        
         self.sinks = {}
         self.sink_inputs = {}
         self.sources = {}
@@ -50,8 +54,22 @@ class PulseAudio(QObject):
         self.module_stream_restore_argument = ""
         self.default_source_name = ""
         self.default_sink_name = ""
-
-
+        self._null_cb =  None
+        self.pa_mainloop_api = None
+        self.pa_mainloop = None
+        self._context_notify_cb = None
+        self._pa_context_subscribe_cb  = None
+        self._pa_context_index_cb  = None
+        self._pa_stream_request_cb = None
+        self._pa_stream_notify_cb  = None
+        self._pa_sink_info_cb  = None
+        self._pa_sink_input_info_list_cb  = None
+        self._pa_card_info_cb = None
+        self._pa_source_info_cb  = None
+        self._pa_source_output_info_cb  = None
+        self._pa_client_info_list_cb  = None
+        self._pa_module_info_cb = None
+        
     def start_pulsing(self):
         self.pa_mainloop = pa_threaded_mainloop_new();
         pa_threaded_mainloop_start(self.pa_mainloop)
@@ -77,32 +95,8 @@ class PulseAudio(QObject):
         #pa_threaded_mainloop_stop(self.pa_mainloop)
         pa_threaded_mainloop_free(self.pa_mainloop)
         #pa_threaded_mainloop_wait(self.pa_mainloop)
-        self.pa_mainloop_api = None
-        self.pa_mainloop = None
-        self._context = None
-        self.sink_inputs = {}
-        self.loaded_modules = []
-        self.monitor_sinks = {}
-        self._context_notify_cb = None
-
-        self._pa_stream_request_cb = None
-        self._null_cb =  None
-        self._pa_context_success_cb = None
-        self._pa_stream_request_cb  = None
-        self._pa_stream_notify_cb  = None
-        self._pa_sink_info_cb  = None
-        self._pa_card_info_cb = None
-        self._pa_context_subscribe_cb  = None
-        self._pa_source_info_cb  = None
-        self._pa_source_output_info_cb  = None
-        self._pa_sink_input_info_list_cb  = None
-        self._pa_client_info_list_cb  = None
-        self._pa_module_info_cb = None
-        self._pa_context_index_cb  = None
-        self.module_stream_restore_argument = ""
-        #except Exception ,e:
-            #print "Except---------------",
-
+        self.initialize_variables()
+        
 #############
     
     def pulse_toggle_monitor_of_sinkinput(self, sinkinput_index, sink_index, name):
