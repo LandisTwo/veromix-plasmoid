@@ -69,6 +69,7 @@ class PulseAudio(QObject):
         self._pa_source_output_info_cb  = None
         self._pa_client_info_list_cb  = None
         self._pa_module_info_cb = None
+        self.IS_READY = False
         
     def start_pulsing(self):
         self.pa_mainloop = pa_threaded_mainloop_new();
@@ -229,7 +230,7 @@ class PulseAudio(QObject):
                                                 PA_SUBSCRIPTION_MASK_CLIENT|
                                                 PA_SUBSCRIPTION_MASK_SERVER|
                                                 PA_SUBSCRIPTION_MASK_CARD), self._null_cb, None)
-
+                self.IS_READY = True
                 #pa_operation_unref(o)
 
             if ctc == PA_CONTEXT_FAILED :
@@ -245,6 +246,9 @@ class PulseAudio(QObject):
             self.__print("ERROR context_notify_cb %s" % text)
 
     def requestInfo(self):
+        if  not self.IS_READY :
+            # this method is also called when a new client starts  up that starts this service..
+            return 
         o = pa_context_get_module_info_list(self._context, self._pa_module_info_cb, True)
         pa_operation_unref(o)
 
