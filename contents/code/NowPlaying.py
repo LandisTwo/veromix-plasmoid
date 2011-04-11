@@ -41,7 +41,7 @@ class NowPlaying( Channel ):
         self.length = 0
         self.artwork = ""
         self.cover_string = ""
-        self.last_playing_icon = KIcon(self.getPauseIcon())
+        self.last_playing_icon = KIcon(self.get_pauseIcon())
         self.layout.setContentsMargins(6,0,6,2)
         self.name = "nowplaying"
         self.connect_mpris2()
@@ -84,13 +84,14 @@ class NowPlaying( Channel ):
         return not self.is_mpris2_player() 
 
     def is_mpris2_player(self):
+        # FIXME
         return isinstance(self.controller, Mpris2DummyController)
         
     def connect_mpris2(self):
         if self.is_mpris2_player() :
             if self.veromix.pa:
                 self.veromix.pa.connect_mpris2_player(self.on_mpris2_properties_changed, str(self.controller.destination()) )
-        self.get_dbus_info()
+                self.get_dbus_info()
 
     def update_with_info(self, data):
         self.update_state(data)
@@ -116,9 +117,9 @@ class NowPlaying( Channel ):
             else:
                 #self.play.setSvg(self.svg_path, "play-normal")
                 self.play.setIcon(KIcon("media-playback-start"))
-                self.middle.setIcon(KIcon(self.getPauseIcon()))
+                self.middle.setIcon(KIcon(self.get_pauseIcon()))
 
-    def getPauseIcon(self):
+    def get_pauseIcon(self):
         name = self.get_application_name()
         app = self.veromix.query_application(str(name))
         if app == None:
@@ -131,7 +132,7 @@ class NowPlaying( Channel ):
             if self.artwork !=  val:
                 self.artwork = val
                 if val == None:
-                    self.last_playing_icon = KIcon(self.getPauseIcon())
+                    self.last_playing_icon = KIcon(self.get_pauseIcon())
                 else:
                     self.last_playing_icon = QIcon(QPixmap(self.artwork))
                 self.middle.setIcon(self.last_playing_icon)
@@ -188,7 +189,7 @@ class NowPlaying( Channel ):
         self.setPreferredHeight(self.CONTROLSBAR_SIZE)
         self.setMaximumHeight(self.CONTROLSBAR_SIZE)        
         self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-        self.middle.setIcon(KIcon(self.getPauseIcon()))
+        self.middle.setIcon(KIcon(self.get_pauseIcon()))
         self.middle.clicked.connect(self.on_play_cb)
 
     def createMute(self):
@@ -259,25 +260,11 @@ class NowPlaying( Channel ):
         ## FIXME fetch info can call on_mpris2_properties_changed
         data = {}
         if not self.veromix.pa:
-            return 
-        status = self.veromix.pa.nowplaying_getPlaybackStatus(self.controller.destination())
-        data[QString('State')] =  u'paused'
-        if status == 'Playing':
-            data[QString('State')] =  u'playing'
-        metadata = self.veromix.pa.nowplaying_getMetadata(self.controller.destination())
-        if dbus.String("mpris:artUrl") in metadata.keys():
-            val = QUrl(str(metadata[dbus.String("mpris:artUrl")])).path()
-            if val != self.cover_string:
-                if (os.path.isfile(val)):
-                    data[QString('Artwork')] =  QPixmap(val)
-                else:
-                    data[QString('Artwork')] = None
-                self.cover_string = val
-        #if dbus.String("mpris:length") in metadata.keys():
-            #v =  int(metadata[str(dbus.String("mpris:length"))])  / 1000000
-            #data[QString('Length')] = v
-        #data[QString('Position')] = int(self.veromix.pa.nowplaying_getPosition(self.controller.destination()))  / 1000000
-        self.update_with_info(data)
+            return
+        properties = {}
+        properties[dbus.String("PlaybackStatus")] =self.veromix.pa.nowplaying_getPlaybackStatus(self.controller.destination())
+        properties[dbus.String("Metadata")] = self.veromix.pa.nowplaying_getMetadata(self.controller.destination())
+        self.on_mpris2_properties_changed(None, properties, None)
 
     def get_application_name(self):
         name = self.controller.destination()
