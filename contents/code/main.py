@@ -229,6 +229,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
         self.config_ui.useTabs.setChecked(self.useTabs() )
         self.config_ui.show_tooltip.setChecked(self.get_show_toolip())
+        self.config_ui.always_show_sources.setChecked(self.get_always_show_sources())
         self.config_ui.meter_visible.setChecked(self.get_meter_visible())
         
         self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
@@ -338,6 +339,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         tabs = self.useTabs()
         self.config().writeEntry("useTabs", bool(self.config_ui.useTabs.isChecked()))
         self.config().writeEntry("show_tooltip", bool(self.config_ui.show_tooltip.isChecked()))
+        self.config().writeEntry("always_show_sources", bool(self.config_ui.always_show_sources.isChecked()))
 
         meter_visible = self.get_meter_visible()
         self.config().writeEntry("meter_visible", bool(self.config_ui.meter_visible.isChecked()))
@@ -432,6 +434,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def get_show_toolip(self):
         return self.config().readEntry("show_toolip",True ).toBool()
+
+    def get_always_show_sources(self):
+        return self.config().readEntry("always_show_sources",True ).toBool()
 
     def get_max_volume_value(self):
         default = 100

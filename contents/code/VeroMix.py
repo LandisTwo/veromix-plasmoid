@@ -160,7 +160,7 @@ class VeroMix(QGraphicsWidget):
         for source in self.source_panel_layout.getChannels().values():
             if source.isSourceOutput():
                 count += 1
-        self.setSourcesPanelVisible( count > 0 )
+        self.setSourcesPanelVisible( self.applet.get_always_show_sources() or count > 0 )
         # REstore
         #self.sink_panel.adjustSize()
         #self.source_panel.adjustSize()
