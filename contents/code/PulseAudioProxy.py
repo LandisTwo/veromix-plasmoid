@@ -43,7 +43,8 @@ class SinkInfo(QObject):
 
     def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props):
         QObject.__init__(self)
-        self.pa = pulseaudio
+        self.pulse_proxy = pulseaudio
+        #self.pa = pulseaudio
         self.index =  index
         self.name =   name
         self.mute  =   muted
@@ -55,9 +56,6 @@ class SinkInfo(QObject):
         for t in self.volume.keys():
             val += self.volume[t].values()[0]
         return int(val/ len(self.volume.keys()))
-
-    ##def getVolumes(self):
-        ##return self.volumes        
 
     def getChannels(self):
         channels = []
@@ -93,6 +91,83 @@ class SinkInfo(QObject):
         print "  </properties>"
         print "</sink>"
 
+    def isMuted(self):
+        return self.mute == 1
+
+    def get_monitor_name(self):
+        name = "Veromix monitor"
+        try:
+            name = self.name.encode("ascii")
+        except Exception,  e:
+            print e
+        return name
+    ## functions
+
+    def set_volume(self, values):
+        self.pulse_proxy.set_sink_volume(self.index, values)
+
+    def toggle_mute(self ):
+        if self.isMuted():
+            self.pulse_proxy.set_sink_mute(self.index, False)
+        else:
+            self.pulse_proxy.set_sink_mute(self.index, True)
+
+    def toggle_monitor(self,parent):
+        self.pulse_proxy.toggle_monitor_of_sink(self.index, self.get_monitor_name())
+
+    def kill(self):
+        pass
+    
+class SinkInputInfo(SinkInfo):
+
+    def set_volume(self, values):
+        self.pulse_proxy.set_sink_input_volume(self.index, values)
+
+    def toggle_mute(self ):
+        if self.isMuted():
+            self.pulse_proxy.set_sink_input_mute(self.index, False)
+        else:
+            self.pulse_proxy.set_sink_input_mute(self.index, True)
+
+    def toggle_monitor(self,parent):
+        self.pulse_proxy.toggle_monitor_of_sinkinput(self.index, parent,self.get_monitor_name())
+
+    def kill(self):
+        self.pulse_proxy.sink_input_kill(self.index)
+
+class SourceInfo(SinkInfo):
+    
+    def set_volume(self, values):
+        self.pulse_proxy.set_source_volume(self.index, values)
+    
+    def toggle_mute(self ):
+        if self.isMuted():
+            self.pulse_proxy.set_source_mute(self.index, False)
+        else:
+            self.pulse_proxy.set_source_mute(self.index, True)
+
+    def toggle_monitor(self,parent):
+        self.pulse_proxy.toggle_monitor_of_source(self.index, self.get_monitor_name())
+
+    def kill(self):
+        pass
+
+class SourceOutputInfo(SinkInfo):
+
+    def set_volume(self, values):
+        pass
+
+    def toggle_mute(self ):
+        pass
+
+    def kill(self):
+        pass
+
+    def toggle_monitor(self,parent):
+        pass
+
+## 
+        
 class CardProfile:
     def __init__(self, name, properties):
         self.name = name
@@ -295,7 +370,7 @@ class PulseAudio(QObject):
         #rbprops.Set('org.gnome.Rhythmbox.Shell', 'visibility', force_visible or (not is_visible))
 
     def on_sink_input_info(self,   index,   name,  muted  , volume ,  props):
-        sink =SinkInfo(self, index,   name,  muted  , volume ,  props)
+        sink =SinkInputInfo(self, index,   name,  muted  , volume ,  props)
         self.emit(SIGNAL("on_sink_input_info(PyQt_PyObject)"), sink )
 
     def on_sink_info(self,  index,   name,  muted  , volume ,  props):
@@ -303,11 +378,11 @@ class PulseAudio(QObject):
         self.emit(SIGNAL("on_sink_info(PyQt_PyObject)"), sink )
 
     def on_source_output_info(self,  index,   name, props):
-        sink = SinkInfo( self,  index,   name, True, {"left":0, "right":0},  props)
+        sink = SourceOutputInfo( self,  index,   name, True, {"left":0, "right":0},  props)
         self.emit(SIGNAL("on_source_output_info(PyQt_PyObject)"), sink )
 
     def on_source_info(self,  index,   name,  muted  , volume ,  props):
-        sink = SinkInfo( self,  index,   name,  muted  , volume , props)
+        sink = SourceInfo( self,  index,   name,  muted  , volume , props)
         self.emit(SIGNAL("on_source_info(PyQt_PyObject)"), sink )
 
     def on_sink_input_remove(self, index):

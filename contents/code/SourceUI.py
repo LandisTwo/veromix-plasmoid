@@ -62,31 +62,12 @@ class SourceUI( Channel ):
             self.slider.setText(text )
             self.slider.setBoldText(bold )
 
-    def on_meter_clicked(self):
-        self.veromix.pa.toggle_monitor_of_source(self.index, self.name )
-
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:
             self.meter.setValue(value)
 
     def updateSortOrderIndex(self):
         self.sortOrderIndex =  self.sinkIndexFor(self.index)
-
-    def setVolume(self, value):
-        v = self.pa_sink.volumeDiffFor(value)
-        self.set_channel_volumes(v)
-
-    def set_channel_volumes(self, values):
-        self.pa.set_source_volume(self.index, values)
-
-    def on_mute_cb(self ):
-        if self.isMuted():
-            self.pa.set_source_mute(self.index, False)
-        else:
-            self.pa.set_source_mute(self.index, True)
-
-    def isMuted(self):
-        return self.pa_sink.mute == 1
 
     def updateIcon(self):
         if self.isMuted():

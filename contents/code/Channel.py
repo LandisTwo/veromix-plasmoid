@@ -134,9 +134,6 @@ class Channel(QGraphicsWidget):
         self.updateIcon()
         self.update_label()
 
-    def on_meter_clicked(self):
-        pass
-
     def on_step_volume(self, up):
         vol = self.pa_sink.getVolume()
         STEP = 5
@@ -149,7 +146,24 @@ class Channel(QGraphicsWidget):
         if vol > self.veromix.get_max_volume_value():
             vol = self.veromix.get_max_volume_value()
         self.setVolume(vol)
-        
+
+    def setVolume(self, value):
+        vol = self.pa_sink.volumeDiffFor(value)
+        if self.veromix.get_auto_mute():
+            for c in vol:
+                if c <= 0:
+                    ## FIXME HACK for MurzNN this should be conditional
+                    self.pa.set_sink_mute(self.index, True)
+                    self.automatically_muted = True
+                    return
+            if self.automatically_muted :
+                self.automatically_muted = False
+                self.pa.set_sink_mute(self.index, False)
+        self.set_channel_volumes(vol)
+
+    def getVolume(self):
+        return self.pa_sink.getVolume()
+
     def on_expander_clicked(self):
         self.middle_layout.removeItem(self.slider)
         self.slider = None
@@ -185,7 +199,17 @@ class Channel(QGraphicsWidget):
         self.slider.setMaximum(self.veromix.get_max_volume_value())
 
     def on_mute_cb(self ):
-        pass
+        self.pa_sink.toggle_mute()
+        
+    def sink_input_kill(self):
+        self.pa_sink.kill()
+        
+    def set_channel_volumes(self, values):
+        self.pa_sink.set_volume(values)
+        
+    def on_meter_clicked(self):
+        self.pa_sink.toggle_monitor(int(self.getOutputIndex()))
+        self.meter.setValue(0)
 
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:
@@ -213,6 +237,9 @@ class Channel(QGraphicsWidget):
     def update_label(self):
         pass
 
+    def getOutputIndex(self):
+        return self.index
+
     def sinkIndexFor( self, index ):
         return (index * 100000) + 100000
 
@@ -226,8 +253,10 @@ class Channel(QGraphicsWidget):
         return False
 
     def isDefaultSink(self):
+        if self.pa_sink and "isdefault" in self.pa_sink.props:
+            return self.pa_sink.props["isdefault"] == "True"
         return False
-
+        
     def startDrag(self,event):
         pass
 
@@ -235,6 +264,9 @@ class Channel(QGraphicsWidget):
         # if a slider is not visible, plasmoidviewer crashes if the slider is not removed.. (dont ask me)
         self.middle_layout.removeItem(self.slider)
         self.slider = None
+
+    def isMuted(self):
+        return self.pa_sink.isMuted()
 
     def isSinkOutput(self):
         return False
@@ -244,12 +276,6 @@ class Channel(QGraphicsWidget):
 
     def isNowplaying(self):
         return False
-
-    def setVolume(self, value):
-        pass
-
-    def setVolumes(self, values):
-        pass
 
     def wheelEvent(self, event):
         if self.slider:

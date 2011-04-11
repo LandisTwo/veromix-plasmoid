@@ -46,11 +46,6 @@ class SourceOutputUI( Channel ):
 
     def update_with_info(self,info):
         self.update_essentials(info)
-        #info.printDebug()
-        now = datetime.datetime.now()
-        #if (now - self.plasma_timestamp).seconds > 1 :
-            #self.update_pulse_timestamp()
-            #self.slider.setValue(info.getVolume())
         self._set_values(info)
         if self.extended_panel:
             self.extended_panel.update_with_info(info)

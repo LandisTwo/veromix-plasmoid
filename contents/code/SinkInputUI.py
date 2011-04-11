@@ -40,12 +40,6 @@ class InputSinkUI(SinkUI):
         SinkUI.init(self)
         self.setAcceptDrops(False)
         self.layout.setContentsMargins(6,2,6,0)
-
-    def hasNowPlayingExtension(self):
-        for player in self.veromix.getNowPlaying():
-            if player.matches(self):
-                return True
-        return False
         
     def createMute(self):
         self.mute = InputMuteButton(self)
@@ -55,29 +49,6 @@ class InputSinkUI(SinkUI):
     def create_settings_widget(self):
         self.settings_widget = SinkInputSettingsWidget(self.veromix, self)
         self.settings_widget.update_with_info(self.pa_sink)
-
-    def setVolume(self, value):
-        v = self.pa_sink.volumeDiffFor(value)
-        self.set_channel_volumes(v)
-
-    def set_channel_volumes(self, values):
-        self.pa.set_sink_input_volume(self.index, values)
-
-    def getMeter(self):
-        return self.meter.value()
-
-    def on_meter_clicked(self):
-        self.veromix.pa.toggle_monitor_of_sinkinput(self.index, int(self.getOutputIndex()), self.name )
-        self.meter.setValue(0)
-
-    def on_mute_cb(self ):
-        if self.isMuted():
-            self.pa.set_sink_input_mute(self.index, False)
-        else:
-            self.pa.set_sink_input_mute(self.index, True)
-
-    def sink_input_kill(self):
-        self.pa.sink_input_kill(self.index)
 
     def updateSortOrderIndex(self):
         if self.pa_sink:
@@ -96,9 +67,6 @@ class InputSinkUI(SinkUI):
             self.meter.show()
         else:
             self.meter.hide()
-
-    def updateMutedInfo(self, aBoolean):
-        pass
 
     def update_label(self):
         text =  self.pa_sink.name
@@ -146,8 +114,3 @@ class InputSinkUI(SinkUI):
     def isSinkInput(self):
         return True
 
-    def isDefaultSink(self):
-        return False
-
-    def update_with_info(self,info):
-        SinkUI.update_with_info(self, info)

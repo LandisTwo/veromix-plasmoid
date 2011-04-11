@@ -47,48 +47,6 @@ class SinkUI(Channel):
         if self.isDefaultSink():
             self.muteInfo.emit(aBoolean)
 
-    def getVolume(self):
-        return self.pa_sink.getVolume()
-
-    def getMeter(self):
-        return 0
-
-    def isMuted(self):
-        return self.pa_sink.mute == 1
-
-    def on_mute_cb(self ):
-        if self.isMuted():
-            self.pa.set_sink_mute(self.index, False)
-        else:
-            self.pa.set_sink_mute(self.index, True)           
-
-    def isDefaultSink(self):
-        return self.pa_sink.props["isdefault"] == "True"
-
-    def on_meter_clicked(self):
-        self.veromix.pa.toggle_monitor_of_sink(self.index, str(self.name) )
-        self.meter.setValue(0)
-
-    def setVolume(self, value):
-        vol = self.pa_sink.volumeDiffFor(value)
-        if self.veromix.get_auto_mute():
-            for c in vol:
-                if c <= 0:
-                    ## FIXME HACK for MurzNN this should be conditional
-                    self.pa.set_sink_mute(self.index, True)
-                    self.automatically_muted = True
-                    return
-            if self.automatically_muted :
-                self.automatically_muted = False
-                self.pa.set_sink_mute(self.index, False)
-        self.set_channel_volumes(vol)
-            
-    def set_channel_volumes(self, values):
-        self.pa.set_sink_volume(self.index, values)
-
-    def sink_input_kill(self):
-        pass
-
     def update_label(self):
         text = ""
         try:
