@@ -41,14 +41,21 @@ class SourceOutputUI( Channel ):
         self.mute.setBigIconName("audio-input-microphone.png")
 
     def createSlider(self):
-        Channel.createSlider(self)
-        self.slider.hideSlider()
+        self.slider = Label()
+        #self.slider.setOrientation(Qt.Horizontal)
+        #self.slider.setMaximum(self.veromix.get_max_volume_value())
+        #self.slider.setMinimum(0)
+        #self.slider.volumeChanged.connect( self.on_slider_cb  )
+
 
     def update_with_info(self,info):
         self.update_essentials(info)
         self._set_values(info)
         if self.extended_panel:
             self.extended_panel.update_with_info(info)
+
+    def create_expander(self):
+        pass
 
     def update_label(self):
         text =  ""

@@ -57,17 +57,6 @@ class InputSinkUI(SinkUI):
     def getOutputIndex(self):
         return self.pa_sink.props["sink"]
 
-    def composeArrangement(self):
-        self.layout.addItem(self.frame)
-        self.frame_layout.addItem(self.panel)
-        self.panel_layout.addItem(self.mute)
-        self.panel_layout.addItem(self.middle)
-        if self.veromix.get_meter_visible():
-            self.panel_layout.addItem(self.meter)
-            self.meter.show()
-        else:
-            self.meter.hide()
-
     def update_label(self):
         text =  self.pa_sink.name
         bold = self.pa_sink.props["app"]

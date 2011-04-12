@@ -27,6 +27,7 @@ from PyKDE4.kdecore import *
 from PyKDE4.plasma import *
 
 class Label(Plasma.Label):
+    volumeChanged = pyqtSignal(int)
     
     def __init__(self, parent=None):
         self.text = ""
@@ -46,6 +47,12 @@ class Label(Plasma.Label):
     def _set_text(self):
         Plasma.Label.setText(self, "<b>"+self.bold_text+"</b> "+self.text)
 
+    def setMinimum(self, value):
+        pass
+
+    def setMaximum(self, value):
+        pass
+    
 class LabelSlider(Plasma.Slider):
     volumeChanged = pyqtSignal(int)
     
@@ -53,7 +60,6 @@ class LabelSlider(Plasma.Slider):
         self.DELAY=  1
         self.text = ""
         self.bold_text = ""
-        self.draw_slider = True
         d =  datetime.timedelta(seconds=2)
         self.pulse_timestamp = datetime.datetime.now()  + d
         self.plasma_timestamp = datetime.datetime.now() + d
@@ -82,9 +88,6 @@ class LabelSlider(Plasma.Slider):
         
     def setBoldText(self,text):
         self.label.setBoldText(text)
-
-    def hideSlider(self):
-        self.draw_slider = False
     
     def setValueFromPlasma(self, value):
         if self.check_pulse_timestamp():
