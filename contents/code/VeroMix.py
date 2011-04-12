@@ -67,6 +67,7 @@ class VeroMix(QGraphicsWidget):
         self.switchView(True)
 
         self.source_panel_layout = SortedLayout(Qt.Vertical, False)
+        self.source_panel_layout.setSpacing(0)
         self.source_panel.setLayout(self.source_panel_layout)
         self.source_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         if self.showsTabs:
@@ -79,7 +80,7 @@ class VeroMix(QGraphicsWidget):
         self.sink_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
 
         self.layout.setContentsMargins(0,0,0,0)
-        self.source_panel_layout.setContentsMargins(0,0,0,12)
+        self.source_panel_layout.setContentsMargins(0,0,0,0)
         self.sink_panel_layout.setContentsMargins(0,0,0,0)
 
         #QTimer.singleShot(4000, self.start_pa)
@@ -92,7 +93,6 @@ class VeroMix(QGraphicsWidget):
             scrolled_panel = QGraphicsWidget()
             scrolled_panel.setLayout(self.scrolled_panel_layout)
             self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-            self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
             self.scrolled_panel_layout.addItem(self.source_panel)
             self.scrolled_panel_layout.addItem(self.sink_panel)
         else:

@@ -299,3 +299,9 @@ class NowPlaying( Channel ):
 
     def isNowplaying(self):
         return True
+
+    def isSinkOutput(self):
+        return False
+
+    def isSinkInput(self):
+        return False

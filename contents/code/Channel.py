@@ -249,9 +249,6 @@ class Channel(QGraphicsWidget):
     def on_slider_cb(self, value):
         self.setVolume(value)
 
-    def isSourceOutput(self):
-        return False
-
     def isDefaultSink(self):
         if self.pa_sink and "isdefault" in self.pa_sink.props:
             return self.pa_sink.props["isdefault"] == "True"
@@ -269,13 +266,16 @@ class Channel(QGraphicsWidget):
         return self.pa_sink.isMuted()
 
     def isSinkOutput(self):
-        return False
+        return self.pa_sink.is_sinkoutput()
 
     def isSinkInput(self):
-        return False
+        return self.pa_sink.is_sinkinput()
 
     def isNowplaying(self):
         return False
+
+    def isSourceOutput(self):
+        return self.pa_sink.is_sourceoutput()
 
     def wheelEvent(self, event):
         if self.slider:

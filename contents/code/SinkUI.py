@@ -70,6 +70,3 @@ class SinkUI(Channel):
 
     def startDrag(self,event):
         pass
-
-    def isSinkOutput(self):
-        return True

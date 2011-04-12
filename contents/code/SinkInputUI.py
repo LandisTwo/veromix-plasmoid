@@ -34,11 +34,8 @@ class InputSinkUI(SinkUI):
     def __init__(self , parent):
         self.mouse_pressed = False
         SinkUI.__init__(self, parent)
-        self.setContentsMargins(0,0,0,0)
-
-    def init(self):
-        SinkUI.init(self)
         self.setAcceptDrops(False)
+        self.setContentsMargins(0,0,0,0)
         self.layout.setContentsMargins(6,2,6,0)
         
     def createMute(self):
@@ -96,10 +93,4 @@ class InputSinkUI(SinkUI):
         drag.setMimeData(mimedata)
         #drag.setHotSpot(event.pos() - self.rect().topLeft())
         dropAction = drag.start(Qt.MoveAction)
-
-    def isSinkOutput(self):
-        return False
-
-    def isSinkInput(self):
-        return True
 

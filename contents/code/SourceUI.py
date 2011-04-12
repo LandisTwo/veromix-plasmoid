@@ -32,17 +32,6 @@ class SourceUI( Channel ):
     def __init__(self , parent):
         Channel.__init__(self, parent)
 
-    def composeArrangement(self):
-        self.layout.addItem(self.frame)
-        self.frame_layout.addItem(self.panel)
-        self.panel_layout.addItem(self.mute)
-        self.panel_layout.addItem(self.middle)
-        if self.veromix.get_meter_visible():
-            self.panel_layout.addItem(self.meter)
-            self.meter.show()
-        else:
-            self.meter.hide()
-
     def createMute(self):
         self.mute = InputMuteButton(self)
         self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum,True) )

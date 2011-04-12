@@ -42,11 +42,6 @@ class SourceOutputUI( Channel ):
 
     def createSlider(self):
         self.slider = Label()
-        #self.slider.setOrientation(Qt.Horizontal)
-        #self.slider.setMaximum(self.veromix.get_max_volume_value())
-        #self.slider.setMinimum(0)
-        #self.slider.volumeChanged.connect( self.on_slider_cb  )
-
 
     def update_with_info(self,info):
         self.update_essentials(info)
@@ -124,8 +119,3 @@ class SourceOutputUI( Channel ):
         #drag.setHotSpot(event.pos() - self.rect().topLeft())
         dropAction = drag.start(Qt.MoveAction)
 
-    def isSinkOutput(self):
-        return False
-
-    def isSourceOutput(self):
-        return True
