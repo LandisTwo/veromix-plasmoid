@@ -436,7 +436,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         return self.config().readEntry("show_toolip",True ).toBool()
 
     def get_always_show_sources(self):
-        return self.config().readEntry("always_show_sources",True ).toBool()
+        return self.config().readEntry("always_show_sources",False ).toBool()
 
     def get_max_volume_value(self):
         default = 100
