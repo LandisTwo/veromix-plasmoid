@@ -55,7 +55,7 @@ from MuteButton  import *
     #pass
 
    
-class NowPlaying( Channel ):
+class MediaPlayerUI( Channel ):
     Stopped, Playing, Paused, NA = range(4)
 
     def __init__(self,veromix, controller):
@@ -63,7 +63,7 @@ class NowPlaying( Channel ):
         Channel.__init__(self, veromix)
         self.index = -1
 
-        self.state = NowPlaying.NA
+        self.state = MediaPlayerUI.NA
         self.position = 0
         self.length = 0
         self.artwork = ""
@@ -123,12 +123,12 @@ class NowPlaying( Channel ):
         state = self.state
         if QString('State') in data:
             if data[QString('State')] == u'playing':
-                state = NowPlaying.Playing
+                state = MediaPlayerUI.Playing
             else:
-                state = NowPlaying.Paused
+                state = MediaPlayerUI.Paused
         if self.state != state:
             self.state = state
-            if self.state == NowPlaying.Playing:
+            if self.state == MediaPlayerUI.Playing:
                 #self.play.setSvg(self.svg_path, "pause-normal")
                 self.play.setIcon(KIcon("media-playback-pause"))
                 self.middle.setIcon(self.last_playing_icon)
@@ -243,7 +243,7 @@ class NowPlaying( Channel ):
     def on_play_cb(self):
         if not self.veromix.pa:
             return
-        if self.state == NowPlaying.Playing:
+        if self.state == MediaPlayerUI.Playing:
             self.controller.startOperationCall(self.controller.operationDescription('pause'))
         else:
             self.controller.startOperationCall(self.controller.operationDescription('play'))

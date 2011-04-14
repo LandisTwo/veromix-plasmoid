@@ -30,7 +30,7 @@ from SinkUI import SinkUI
 from SinkInputUI import InputSinkUI
 from SourceUI import SourceUI
 from SourceOutputUI import SourceOutputUI
-from NowPlaying import NowPlaying
+from MediaPlayerUI import MediaPlayerUI
 
 class VeroMix(QGraphicsWidget):
     sinkOutputChanged = pyqtSignal()
@@ -315,7 +315,7 @@ class VeroMix(QGraphicsWidget):
     def on_mediaplayer_added(self, name, controller):
         if self.applet.in_mediaplayer_blacklist(name) :
             return
-        self.add_channel(name, NowPlaying(self, controller),None, self.sink_panel_layout)
+        self.add_channel(name, MediaPlayerUI(self, controller),None, self.sink_panel_layout)
 
     def on_mediaplayer_removed(self, name):
         self.remove_channel(name,self.sink_panel_layout)
