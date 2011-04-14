@@ -58,7 +58,7 @@ from MuteButton  import *
 class MediaPlayerUI( Channel ):
     Stopped, Playing, Paused, NA = range(4)
 
-    def __init__(self,veromix, controller):
+    def __init__(self,name, veromix, controller):
         self.controller = controller
         Channel.__init__(self, veromix)
         self.index = -1
@@ -70,8 +70,9 @@ class MediaPlayerUI( Channel ):
         self.cover_string = ""
         self.last_playing_icon = KIcon(self.get_pauseIcon())
         self.layout.setContentsMargins(6,0,6,2)
-        self.name = "nowplaying"
+        self.name = name
         self.connect_mpris2()
+        self.connect_nowplaying()
         
     def initArrangement(self):
         self.svg_path = self.veromix.applet.package().filePath('images', 'buttons.svgz')
@@ -251,6 +252,16 @@ class MediaPlayerUI( Channel ):
     def on_slider_cb(self, value):
         pass
 
+# nowplaying
+
+    def connect_nowplaying(self):
+        if self.is_nowplaying_player() :
+            self.veromix.applet.nowplaying_player_dataUpdated.connect(self.on_nowplaying_data_updated)
+        
+    def on_nowplaying_data_updated(self, name, values):
+        if name == self.controller.destination():
+            self.update_with_info(values)
+            
 # dbus
 
     def connect_mpris2(self):

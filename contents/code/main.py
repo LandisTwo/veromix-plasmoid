@@ -503,14 +503,15 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.nowplaying_player_removed.emit(player)
 
     def get_running_mediaplayers(self):
-        val = ""
+        val = "nowplaying:\n"
         engine =  self.now_playing_engine
         if engine == None:
             engine = self.dataEngine('nowplaying')
         for source in engine.sources():
-            val += "nowplaying: "+source + "\n"
+            val += source + "\n"
+        val += "\nmpris2:\n"  
         for player in self.widget.pa.get_mpris2_players():
-            val += "mpris2: "+player.name + "\n"
+            val += player.name + "\n"
         return val
         
     def get_mediaplayer_blacklist(self):

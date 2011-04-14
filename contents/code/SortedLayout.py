@@ -60,7 +60,6 @@ class SortedLayout(QGraphicsLinearLayout):
                 toreturn.append(self.channels[index])
         return toreturn
  
-
     def getChannel(self, key):
         if key in self.channels.keys():
             return self.channels[key]

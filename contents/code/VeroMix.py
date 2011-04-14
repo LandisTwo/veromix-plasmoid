@@ -146,7 +146,6 @@ class VeroMix(QGraphicsWidget):
     def connect_mediaplayers(self):
         self.applet.nowplaying_player_added.connect(self.on_mediaplayer_added)
         self.applet.nowplaying_player_removed.connect(self.on_mediaplayer_removed)
-        self.applet.nowplaying_player_dataUpdated.connect(self.on_mediaplayer_data_updated)
 
         self.connect(self.pa, SIGNAL("mpris2_player_added(QString, PyQt_PyObject)"), self.on_mediaplayer_added)
         self.connect(self.pa, SIGNAL("mpris2_player_removed(QString, PyQt_PyObject)"), self.on_mediaplayer_removed)
@@ -315,15 +314,10 @@ class VeroMix(QGraphicsWidget):
     def on_mediaplayer_added(self, name, controller):
         if self.applet.in_mediaplayer_blacklist(name) :
             return
-        self.add_channel(name, MediaPlayerUI(self, controller),None, self.sink_panel_layout)
+        self.add_channel(name, MediaPlayerUI( name, self, controller),None, self.sink_panel_layout)
 
     def on_mediaplayer_removed(self, name):
         self.remove_channel(name,self.sink_panel_layout)
-
-    def on_mediaplayer_data_updated(self, name, values):
-        channel = self.sink_panel_layout.getChannel(name)
-        if channel:
-            channel.update_with_info(values)
 
 ### panel icons
 
