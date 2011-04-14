@@ -39,26 +39,27 @@ class SortedLayout(QGraphicsLinearLayout):
     def getChannels(self):
         return self.channels
 
-    def getSinkOutputs(self):
+    def get_sinkoutput_widgets(self):
         toreturn = []
         for index in self.channels.keys() :
             if self.channels[index].isSinkOutput():
                 toreturn.append(self.channels[index])
         return toreturn
         
-    def getSinkInputs(self):
+    def get_sinkinput_widgets(self):
         toreturn = []
         for index in self.channels.keys() :
             if self.channels[index].isSinkInput():
                 toreturn.append(self.channels[index])
         return toreturn        
 
-    def getNowPlaying(self):
+    def get_mediaplayer_widgets(self):
         toreturn = []
         for index in self.channels.keys() :
             if self.channels[index].isNowplaying():
                 toreturn.append(self.channels[index])
-        return toreturn        
+        return toreturn
+ 
 
     def getChannel(self, key):
         if key in self.channels.keys():
@@ -70,7 +71,7 @@ class SortedLayout(QGraphicsLinearLayout):
             #print "a",i, self.itemAt(i).graphicsItem().name  ," so" , self.itemAt(i).graphicsItem().sortOrderIndex
         if(key not in self.channels.keys()):
             self.channels[key]  = widget
-            for i in self.getNowPlaying():
+            for i in self.get_mediaplayer_widgets():
                 i.updateSortOrderIndex()                
             sorting = self.sort(self.channels.values(), 'sortOrderIndex')
             index = sorting.index(widget)

@@ -85,7 +85,7 @@ class VeroMix(QGraphicsWidget):
 
         #QTimer.singleShot(4000, self.start_pa)
         self.start_pa()
-        self.start_nowplaying()
+        self.connect_mediaplayers()
 
     def switchView(self, startup=False):
         if self.showsTabs:
@@ -141,16 +141,15 @@ class VeroMix(QGraphicsWidget):
 
         self.connect(self.pa, SIGNAL("on_card_info(PyQt_PyObject)"), self.on_card_info)
         self.connect(self.pa, SIGNAL("on_card_remove(int)"), self.on_remove_card)
-
-        self.connect(self.pa, SIGNAL("mpris2_player_added(QString, PyQt_PyObject)"), self.on_nowplaying_added)
-        self.connect(self.pa, SIGNAL("mpris2_player_removed(QString, PyQt_PyObject)"), self.on_nowplaying_removed)
-        
         self.pa.requestInfo()
 
-    def start_nowplaying(self):
-        self.applet.nowplaying_player_added.connect(self.on_nowplaying_added)
-        self.applet.nowplaying_player_removed.connect(self.on_nowplaying_removed)
-        self.applet.nowplaying_player_dataUpdated.connect(self.on_nowplaying_dataUpdated)
+    def connect_mediaplayers(self):
+        self.applet.nowplaying_player_added.connect(self.on_mediaplayer_added)
+        self.applet.nowplaying_player_removed.connect(self.on_mediaplayer_removed)
+        self.applet.nowplaying_player_dataUpdated.connect(self.on_mediaplayer_data_updated)
+
+        self.connect(self.pa, SIGNAL("mpris2_player_added(QString, PyQt_PyObject)"), self.on_mediaplayer_added)
+        self.connect(self.pa, SIGNAL("mpris2_player_removed(QString, PyQt_PyObject)"), self.on_mediaplayer_removed)
 
 ## helpers UI
 
@@ -311,35 +310,20 @@ class VeroMix(QGraphicsWidget):
             sink.on_step_volume(up)
         self.applet.showTooltip()
 
-### callback nowplaying
+### mediaplayer callbacks
 
-    def on_nowplaying_added(self, name, controller):
-        if self.applet.in_nowplaying_blacklist(name) :
+    def on_mediaplayer_added(self, name, controller):
+        if self.applet.in_mediaplayer_blacklist(name) :
             return
         self.add_channel(name, NowPlaying(self, controller),None, self.sink_panel_layout)
 
-    def on_nowplaying_removed(self, name):
+    def on_mediaplayer_removed(self, name):
         self.remove_channel(name,self.sink_panel_layout)
 
-    def on_nowplaying_dataUpdated(self, name, values):
+    def on_mediaplayer_data_updated(self, name, values):
         channel = self.sink_panel_layout.getChannel(name)
         if channel:
             channel.update_with_info(values)
-
-    #def on_mpris2_properties_changed(self, destination, properties):
-        #print "d", destination, type(destination)
-        #for i in properties.keys():
-            #print i
-            #print "---"
-            #print properties[i]
-            #print "--------"
-
-        #print "==="
-        #self.on_nowplaying_dataUpdated(destination, properties)
-        #channel = self.sink_panel_layout.getChannel(str(destination))
-        #if channel:
-            #print "got channel"
-            #channel.convert_dbus_info(values)
 
 ### panel icons
 
@@ -367,14 +351,14 @@ class VeroMix(QGraphicsWidget):
         target_layout.removeChannel(key)
         self.check_geometries()
 
-    def getSinkOutputs(self):
-        return self.sink_panel_layout.getSinkOutputs()
+    def get_sinkoutput_widgets(self):
+        return self.sink_panel_layout.get_sinkoutput_widgets()
 
-    def getSinkInputs(self):
-        return self.sink_panel_layout.getSinkInputs()
+    def get_sinkinput_widgets(self):
+        return self.sink_panel_layout.get_sinkinput_widgets()
 
-    def getNowPlaying(self):
-        return self.sink_panel_layout.getNowPlaying()
+    def get_mediaplayer_widgets(self):
+        return self.sink_panel_layout.get_mediaplayer_widgets()
 
     def getDefaultSink(self):
         for sink in self.sink_panel_layout.getChannels().values():

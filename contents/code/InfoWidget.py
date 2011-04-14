@@ -176,7 +176,7 @@ class SinkInputInfoWidget(SinkInfoWidget):
         else:
             return 0
         self.switcher.clear()
-        outputs =  self.veromix.getSinkOutputs()
+        outputs =  self.veromix.get_sinkoutput_widgets()
         ## fill combobox
         for output in outputs:
             self.switcher.addItem(output.app)
@@ -184,7 +184,7 @@ class SinkInputInfoWidget(SinkInfoWidget):
         ## set current selection
         for output in outputs:
             if int(output.index) == int(self.sink.getOutputIndex()) :
-                self.switcher.nativeWidget().setCurrentIndex(self.veromix.getSinkOutputs().index(output))
+                self.switcher.nativeWidget().setCurrentIndex(self.veromix.get_sinkoutput_widgets().index(output))
         self.switcher.setMinimumSize(self.switcher.preferredSize())
         #self.switcher.adjustSize()
 
@@ -193,7 +193,7 @@ class SinkInputInfoWidget(SinkInfoWidget):
             self.sink.sink_input_kill()
             return 0
         # search ouputs for text, and move sink_input
-        for output in self.veromix.getSinkOutputs():
+        for output in self.veromix.get_sinkoutput_widgets():
             if self.switcher.text() == output.app:
                 self.sink.pa.move_sink_input(self.sink.index, int(output.index))
                 return 0

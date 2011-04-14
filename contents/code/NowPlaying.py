@@ -29,6 +29,32 @@ from Channel import Channel
 from PulseAudioProxy import Mpris2DummyController
 from MuteButton  import *
 
+#class ExtensionWidgetQGraphicsWidget):
+
+    #def __init__(controller):
+        #self.controller = controller
+        #self.init()
+        #self.compose_arrangement()
+
+    #def init(self):
+        #self.init_arrangement()
+
+    #def init_arrangement(self):
+        #self.layout = QGraphicsLinearLayout(Qt.Horizontal)
+        #self.layout.setContentsMargins(0,0,0,0)
+        #self.setLayout(self.layout)
+        
+    #def compose_arrangement(self):
+        #pass
+
+    #def update_with_info(self, info):
+        #pass
+
+
+#class NowPlayingExtended(ExtensionWidgetQGraphicsWidget):
+    #pass
+
+   
 class NowPlaying( Channel ):
     Stopped, Playing, Paused, NA = range(4)
 
@@ -36,6 +62,7 @@ class NowPlaying( Channel ):
         self.controller = controller
         Channel.__init__(self, veromix)
         self.index = -1
+
         self.state = NowPlaying.NA
         self.position = 0
         self.length = 0
@@ -80,18 +107,7 @@ class NowPlaying( Channel ):
         self.panel_layout.addItem(self.next_panel)
         self.panel_layout.addStretch()
 
-    def is_nowplaying_player(self):
-        return not self.is_mpris2_player() 
-
-    def is_mpris2_player(self):
-        # FIXME
-        return isinstance(self.controller, Mpris2DummyController)
-        
-    def connect_mpris2(self):
-        if self.is_mpris2_player() :
-            if self.veromix.pa:
-                self.veromix.pa.connect_mpris2_player(self.on_mpris2_properties_changed, str(self.controller.destination()) )
-                self.get_dbus_info()
+## data input
 
     def update_with_info(self, data):
         self.update_state(data)
@@ -100,6 +116,8 @@ class NowPlaying( Channel ):
 
     def on_update_configuration(self):
         pass
+
+## update ui
 
     def update_state(self,data):
         state = self.state
@@ -118,13 +136,6 @@ class NowPlaying( Channel ):
                 #self.play.setSvg(self.svg_path, "play-normal")
                 self.play.setIcon(KIcon("media-playback-start"))
                 self.middle.setIcon(KIcon(self.get_pauseIcon()))
-
-    def get_pauseIcon(self):
-        name = self.get_application_name()
-        app = self.veromix.query_application(str(name))
-        if app == None:
-            return name
-        return app
 
     def update_cover(self,data):
         if QString('Artwork') in data:
@@ -151,8 +162,7 @@ class NowPlaying( Channel ):
                 pos_str = ( '%d:%02d' % (v / 60, v % 60))
                 self.positionLabel.setText(pos_str)
 
-    def createMeter(self):
-        pass
+## initialize ui
 
     def create_next_panel(self):
         self.next_panel = QGraphicsWidget()
@@ -192,9 +202,6 @@ class NowPlaying( Channel ):
         self.middle.setIcon(KIcon(self.get_pauseIcon()))
         self.middle.clicked.connect(self.on_play_cb)
 
-    def createMute(self):
-        pass
-
     def create_next_button(self):
         self.next = MuteButton(self)
         self.next.setAbsSize(20)
@@ -216,6 +223,14 @@ class NowPlaying( Channel ):
         self.play.setIcon(KIcon("media-playback-stop"))
         self.connect(self.play, SIGNAL("clicked()"), self.on_play_cb  )
 
+    def createMute(self):
+        pass
+
+    def createMeter(self):
+        pass
+
+# callbacks
+
     def on_mute_cb(self):
         pass
 
@@ -236,6 +251,14 @@ class NowPlaying( Channel ):
     def on_slider_cb(self, value):
         pass
 
+# dbus
+
+    def connect_mpris2(self):
+        if self.is_mpris2_player() :
+            if self.veromix.pa:
+                self.veromix.pa.connect_mpris2_player(self.on_mpris2_properties_changed, str(self.controller.destination()) )
+                self.get_dbus_info()
+                
     def on_mpris2_properties_changed(self, interface, properties, signature):
         data = {}
         if dbus.String("PlaybackStatus") in properties.keys():
@@ -262,10 +285,19 @@ class NowPlaying( Channel ):
         if not self.veromix.pa:
             return
         properties = {}
-        properties[dbus.String("PlaybackStatus")] =self.veromix.pa.nowplaying_getPlaybackStatus(self.controller.destination())
-        properties[dbus.String("Metadata")] = self.veromix.pa.nowplaying_getMetadata(self.controller.destination())
+        properties[dbus.String("PlaybackStatus")] =self.veromix.pa.mpris2_get_playback_status(self.controller.destination())
+        properties[dbus.String("Metadata")] = self.veromix.pa.mpris2_get_metadata(self.controller.destination())
         self.on_mpris2_properties_changed(None, properties, None)
 
+# helpers
+
+    def get_pauseIcon(self):
+        name = self.get_application_name()
+        app = self.veromix.query_application(str(name))
+        if app == None:
+            return name
+        return app
+        
     def get_application_name(self):
         name = self.controller.destination()
         if name.indexOf("org.mpris.MediaPlayer2.")  == 0:
@@ -273,13 +305,6 @@ class NowPlaying( Channel ):
         if name.indexOf("org.mpris.")  == 0:
             return name[10:]
         return name
-
-    def updateSortOrderIndex(self):
-        sink = self.get_assotiated_sink()
-        if sink != None:
-            new =  sink.sortOrderIndex - 1
-            if self.sortOrderIndex != new:
-                self.sortOrderIndex = new
 
     def matches(self, sink):
         sink = self.get_assotiated_sink()
@@ -289,13 +314,15 @@ class NowPlaying( Channel ):
 
     def get_assotiated_sink(self):
         name = str(self.get_application_name()).lower()
-        for sink in self.veromix.getSinkInputs():
+        for sink in self.veromix.get_sinkinput_widgets():
             if str(sink.text).lower() == name:
                 return sink
-        for sink in self.veromix.getSinkInputs():
+        for sink in self.veromix.get_sinkinput_widgets():
             if str(sink.text).lower().find(name) >= 0 :
                 return sink
         return None
+
+## overrides
 
     def isNowplaying(self):
         return True
@@ -305,3 +332,19 @@ class NowPlaying( Channel ):
 
     def isSinkInput(self):
         return False
+
+    def updateSortOrderIndex(self):
+        sink = self.get_assotiated_sink()
+        if sink != None:
+            new =  sink.sortOrderIndex - 1
+            if self.sortOrderIndex != new:
+                self.sortOrderIndex = new
+
+## testing
+
+    def is_nowplaying_player(self):
+        return not self.is_mpris2_player()
+
+    def is_mpris2_player(self):
+        # FIXME
+        return isinstance(self.controller, Mpris2DummyController)
