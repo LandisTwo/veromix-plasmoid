@@ -259,7 +259,8 @@ class Channel(QGraphicsWidget):
 
     def removeSlider(self):
         # if a slider is not visible, plasmoidviewer crashes if the slider is not removed.. (dont ask me)
-        self.middle_layout.removeItem(self.slider)
+        if self.slider:
+            self.middle_layout.removeItem(self.slider)
         self.slider = None
 
     def isMuted(self):

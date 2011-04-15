@@ -87,6 +87,7 @@ class MediaPlayerUI( Channel ):
         self.create_next_panel()
         self.createPositionLabel()
         self.createLengthLabel()
+        self.create_expander()
 
     def composeArrangement(self):
         self.layout.addItem(self.frame)
@@ -108,12 +109,42 @@ class MediaPlayerUI( Channel ):
         self.panel_layout.addItem(self.next_panel)
         self.panel_layout.addStretch()
 
+    def on_expander_clicked(self):
+        self.middle_layout.removeItem(self.slider)
+        if (self.extended_panel_shown):
+            self.extended_panel_shown = False
+            self.frame_layout.removeItem(self.extended_panel)
+            self.extended_panel = None
+            self.slider= None
+        else:
+            self.extended_panel_shown = True
+            self.create_settings_widget()
+            self.get_dbus_info()
+            self.frame_layout.addItem(self.extended_panel)
+
+    def create_settings_widget(self):
+        self.createLengthLabel()
+        self.createPositionLabel()
+        self.createSlider()
+        self.extended_panel = QGraphicsWidget()
+        self.extended_panel_layout = QGraphicsLinearLayout(Qt.Horizontal)
+        self.extended_panel_layout.setContentsMargins(0,0,0,0)
+        self.extended_panel.setLayout(self.extended_panel_layout)
+
+        self.extended_panel_layout.addStretch()
+        self.extended_panel_layout.addItem(self.position_label)
+        self.extended_panel_layout.addItem(self.slider)
+        self.extended_panel_layout.addItem(self.length_label)
+        self.extended_panel_layout.addStretch()
 ## data input
 
     def update_with_info(self, data):
         self.update_state(data)
         self.update_cover(data)
         self.updateSortOrderIndex()
+        if self.extended_panel_shown:
+            self.update_position(data)
+            self.update_slider()
 
     def on_update_configuration(self):
         pass
@@ -161,8 +192,16 @@ class MediaPlayerUI( Channel ):
             if v != self.length:
                 self.length = v
                 pos_str = ( '%d:%02d' % (v / 60, v % 60))
-                self.positionLabel.setText(pos_str)
+                self.length_label.setText(pos_str)
 
+    def update_slider(self):
+        if self.slider and self.extended_panel_shown:
+            if self.state == MediaPlayerUI.Stopped:
+                self.slider.setValue(0)
+            else:
+                self.slider.setMaximum(self.length)
+                self.slider.setValue(self.position)
+        
 ## initialize ui
 
     def create_next_panel(self):
@@ -172,16 +211,16 @@ class MediaPlayerUI( Channel ):
         self.next_panel.setLayout(self.next_panel_layout)
 
     def createPositionLabel(self):
-        self.positionLabel = Label()
-        self.positionLabel.setContentsMargins(0,0,0,0)
-        self.positionLabel.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding, True))
-        self.positionLabel.setAlignment(Qt.AlignRight)
-
-    def createLengthLabel(self):
         self.position_label = Label()
         self.position_label.setContentsMargins(0,0,0,0)
         self.position_label.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding, True))
-        self.position_label.setAlignment(Qt.AlignLeft)
+        self.position_label.setAlignment(Qt.AlignRight)
+
+    def createLengthLabel(self):
+        self.length_label = Label()
+        self.length_label.setContentsMargins(0,0,0,0)
+        self.length_label.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding, True))
+        self.length_label.setAlignment(Qt.AlignLeft)
 
     def create_prev_panel(self):
         self.prev_panel = Plasma.IconWidget()
@@ -288,17 +327,36 @@ class MediaPlayerUI( Channel ):
                     else:
                         data[QString('Artwork')] = None
                     self.cover_string = val
+            if dbus.String("mpris:length") in metadata.keys():
+                data[QString('Length')] = metadata[dbus.String("mpris:length")] / 1000000
+                 
+        if QString('Position') in properties.keys():
+            data[QString('Position')] = properties[QString('Position')] / 1000000
         self.update_with_info(data)
 
     def get_dbus_info(self):
         ## FIXME fetch info can call on_mpris2_properties_changed
         data = {}
+        if self.is_nowplaying_player():
+            return
         if not self.veromix.pa:
             return
         properties = {}
         properties[dbus.String("PlaybackStatus")] =self.veromix.pa.mpris2_get_playback_status(self.controller.destination())
         properties[dbus.String("Metadata")] = self.veromix.pa.mpris2_get_metadata(self.controller.destination())
+        #print properties[dbus.String("Metadata")]
+        self.length = -1
+        self.position = -1 
+        self.fetch_position()
         self.on_mpris2_properties_changed(None, properties, None)
+
+
+    def fetch_position(self):
+        if self.extended_panel_shown:
+            properties = {}
+            properties[QString('Position')] = self.veromix.pa.mpris2_get_position(self.controller.destination())
+            self.on_mpris2_properties_changed(None, properties, None)
+            QTimer.singleShot(1000, self.fetch_position)
 
 # helpers
 
