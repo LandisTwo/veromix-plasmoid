@@ -71,6 +71,10 @@ class MediaPlayerUI( Channel ):
         self.last_playing_icon = KIcon(self.get_pauseIcon())
         self.layout.setContentsMargins(6,0,6,2)
         self.name = name
+
+        self.last_slider_position = 0
+        self.last_position_change = datetime.datetime.now()
+        self.mpris2_trackid = ""
         self.connect_mpris2()
         self.connect_nowplaying()
         
@@ -186,22 +190,52 @@ class MediaPlayerUI( Channel ):
             if v != self.position:
                 self.position = v
                 pos_str = ( '%d:%02d' % (v / 60, v % 60))
-                self.position_label.setText(pos_str)
+                self.position_label.setBoldText(pos_str)
         if QString('Length') in data:
             v = data[QString('Length')]
             if v != self.length:
                 self.length = v
                 pos_str = ( '%d:%02d' % (v / 60, v % 60))
-                self.length_label.setText(pos_str)
+                self.length_label.setBoldText(pos_str)
+        #self.last_slider_value = 100 * self.position / self.length
 
     def update_slider(self):
         if self.slider and self.extended_panel_shown:
             if self.state == MediaPlayerUI.Stopped:
-                self.slider.setValue(0)
+                self.slider.setValueFromPulse(0)
             else:
-                self.slider.setMaximum(self.length)
-                self.slider.setValue(self.position)
-        
+                if self.length > -1 :
+                    v = self.position * 100 / self.length
+                    #self.slider.setMaximum(self.length)
+                    if self.slider.check_pulse_timestamp():
+                        self.slider.setValue(v)
+
+    def on_slider_action_triggered(self, action):
+        value = self.slider.nativeWidget().sliderPosition()
+        if value > -1 and action == 7:
+            self.schedule_set_mpris2_position(value)
+
+    def schedule_set_mpris2_position(self, value=0):
+        # FIXME should be done nicer
+        slider_pos = value
+        if  slider_pos == 0 and self.last_slider_position > 0:
+            slider_pos = self.last_slider_position
+        elif slider_pos == 0:
+            return
+        now = datetime.datetime.now()
+        time =  (now - self.last_position_change ).microseconds
+        if time > 500000:
+            pos = self.veromix.pa.mpris2_get_position(self.controller.destination()) / 1000000
+            new_pos =  (slider_pos * self.length) / 100
+            diff = new_pos - pos
+            self.veromix.pa.mpris2_set_position(self.controller.destination() , int(diff * 1000000) )
+            self.last_slider_position = 0
+            self.last_position_change = datetime.datetime.now()
+        else:
+            self.last_slider_position = slider_pos
+            QTimer.singleShot(300, self.schedule_set_mpris2_position)
+
+            
 ## initialize ui
 
     def create_next_panel(self):
@@ -288,8 +322,7 @@ class MediaPlayerUI( Channel ):
         else:
             self.controller.startOperationCall(self.controller.operationDescription('play'))
 
-    def on_slider_cb(self, value):
-        pass
+
 
 # nowplaying
 
@@ -319,6 +352,8 @@ class MediaPlayerUI( Channel ):
         
         if dbus.String("Metadata") in properties.keys():
             metadata = properties[dbus.String("Metadata")]
+            self.mpris2_trackid = metadata[dbus.String("mpris:trackid")]
+            
             if dbus.String("mpris:artUrl") in metadata.keys():
                 val = QUrl(str(metadata[dbus.String("mpris:artUrl")])).path()
                 if val != self.cover_string:
@@ -356,7 +391,7 @@ class MediaPlayerUI( Channel ):
             properties = {}
             properties[QString('Position')] = self.veromix.pa.mpris2_get_position(self.controller.destination())
             self.on_mpris2_properties_changed(None, properties, None)
-            QTimer.singleShot(1000, self.fetch_position)
+            QTimer.singleShot(1500, self.fetch_position)
 
 # helpers
 
@@ -409,6 +444,12 @@ class MediaPlayerUI( Channel ):
             if self.sortOrderIndex != new:
                 self.sortOrderIndex = new
 
+    def createSlider(self):
+        Channel.createSlider(self)
+        self.slider.setMaximum(100)
+        self.slider.volumeChanged.disconnect(self.on_slider_cb)
+        self.slider.nativeWidget ().actionTriggered.connect(self.on_slider_action_triggered)
+        
 ## testing
 
     def is_nowplaying_player(self):

@@ -285,6 +285,9 @@ class PulseAudio(QObject):
     def mpris2_get_position(self, destination):
         return self.getNowPlayingProperty( str(destination) , "Position" )
 
+    def mpris2_set_position(self, destination, position):
+        self.getNowPlaying(str(destination)).Seek( long(position))
+
     def mpris2_get_metadata(self, destination):
         return self.getNowPlayingProperty( str(destination) , "Metadata" )
 
