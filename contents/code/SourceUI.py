@@ -40,7 +40,7 @@ class SourceUI( Channel ):
 
     def create_settings_widget(self):
         self.settings_widget = None
-        
+
     def update_label(self):
         text =  ""
         bold = self.pa_sink.name

@@ -26,7 +26,7 @@ class SortedLayout(QGraphicsLinearLayout):
         self.reverse= reverse
         self.channels = {}
         self.sink_pool = []
-     
+
     def getNewInputSink(self, veromix):
         if len(self.sink_pool) == 0:
             return InputSinkUI(veromix)
@@ -35,7 +35,7 @@ class SortedLayout(QGraphicsLinearLayout):
             self.sink_pool.remove(val)
             val.show()
             return val
-        
+
     def getChannels(self):
         return self.channels
 
@@ -45,13 +45,13 @@ class SortedLayout(QGraphicsLinearLayout):
             if self.channels[index].isSinkOutput():
                 toreturn.append(self.channels[index])
         return toreturn
-        
+
     def get_sinkinput_widgets(self):
         toreturn = []
         for index in self.channels.keys() :
             if self.channels[index].isSinkInput():
                 toreturn.append(self.channels[index])
-        return toreturn        
+        return toreturn
 
     def get_mediaplayer_widgets(self):
         toreturn = []
@@ -59,7 +59,7 @@ class SortedLayout(QGraphicsLinearLayout):
             if self.channels[index].isNowplaying():
                 toreturn.append(self.channels[index])
         return toreturn
- 
+
     def getChannel(self, key):
         if key in self.channels.keys():
             return self.channels[key]
@@ -71,7 +71,7 @@ class SortedLayout(QGraphicsLinearLayout):
         if(key not in self.channels.keys()):
             self.channels[key]  = widget
             for i in self.get_mediaplayer_widgets():
-                i.updateSortOrderIndex()                
+                i.updateSortOrderIndex()
             sorting = self.sort(self.channels.values(), 'sortOrderIndex')
             index = sorting.index(widget)
             self.insertItem(index, widget )
@@ -94,7 +94,7 @@ class SortedLayout(QGraphicsLinearLayout):
         sorting = self.sort(self.channels.values(), 'sortOrderIndex')
         #for i in range(0,len(sorting)):
             #print "m",i, self.itemAt(i).graphicsItem().name  ," so" , self.itemAt(i).graphicsItem().sortOrderIndex
-        for i in range(0,len(sorting)):            
+        for i in range(0,len(sorting)):
             if self.itemAt(i).graphicsItem ()  != sorting[i]:
                 item = self.itemAt(i).graphicsItem()
                 index = sorting.index(item)

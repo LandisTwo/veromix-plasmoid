@@ -28,7 +28,7 @@ from PyKDE4.plasma import *
 
 class Label(Plasma.Label):
     volumeChanged = pyqtSignal(int)
-    
+
     def __init__(self, parent=None):
         self.text = ""
         self.bold_text = ""
@@ -52,10 +52,10 @@ class Label(Plasma.Label):
 
     def setMaximum(self, value):
         pass
-    
+
 class LabelSlider(Plasma.Slider):
     volumeChanged = pyqtSignal(int)
-    
+
     def __init__(self):
         self.DELAY=  1
         self.text = ""
@@ -77,18 +77,18 @@ class LabelSlider(Plasma.Slider):
             self.nativeWidget().setTickPosition(QSlider.TicksBothSides)
         else:
             self.nativeWidget().setTickPosition(QSlider.NoTicks)
-            
+
     def _resize_widgets(self):
-        w = self.size().width() 
+        w = self.size().width()
         self.label.setMinimumWidth(w)
         self.label.setMaximumWidth(w)
-        
+
     def setText(self, text):
         self.label.setText(text)
-        
+
     def setBoldText(self,text):
         self.label.setBoldText(text)
-    
+
     def setValueFromPlasma(self, value):
         if self.check_pulse_timestamp():
             self.update_plasma_timestamp()
@@ -96,7 +96,7 @@ class LabelSlider(Plasma.Slider):
 
     def update_with_info(self, info):
         self.setValueFromPulse(info.getVolume())
-        
+
     def setValueFromPulse(self, value):
         if self.check_plasma_timestamp():
             self.update_pulse_timestamp()
@@ -118,7 +118,7 @@ class LabelSlider(Plasma.Slider):
     def check_plasma_timestamp(self):
         now = datetime.datetime.now()
         return  (now - self.plasma_timestamp ).seconds > self.DELAY
-        
+
     def check_pulse_timestamp(self):
         now = datetime.datetime.now()
         return  (now - self.pulse_timestamp ).seconds > self.DELAY

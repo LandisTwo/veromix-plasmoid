@@ -32,7 +32,7 @@ class SinkUI(Channel):
     def __init__(self , parent):
         self.automatically_muted = False
         self.extended_panel = None
-        Channel.__init__(self, parent)        
+        Channel.__init__(self, parent)
         self.setContentsMargins(0,0,0,0)
 
     def updateIcon(self):

@@ -38,7 +38,7 @@ class VeroMix(QGraphicsWidget):
     def __init__(self,parent):
         QGraphicsWidget.__init__(self)
         self.applet = parent
-        self.pa = None            
+        self.pa = None
         self.last_resize_running = datetime.datetime.now()
         self.last_resize_running_timer_running = False
         self.card_infos = {}
@@ -134,7 +134,7 @@ class VeroMix(QGraphicsWidget):
         self.connect(self.pa, SIGNAL("on_sink_input_remove(int)"), self.on_remove_sink_input)
         self.connect(self.pa, SIGNAL("on_source_remove(int)"), self.on_remove_source)
         self.connect(self.pa, SIGNAL("on_source_output_remove(int)"), self.on_remove_source_output)
-        
+
         self.connect(self.pa, SIGNAL("on_volume_meter_sink(int, float )"), self.on_volume_meter_sink)
         self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
@@ -276,7 +276,7 @@ class VeroMix(QGraphicsWidget):
     def on_volume_meter_sink(self, index, level):
         for sink in self.sink_panel_layout.getChannels().values():
             sink.on_update_meter(index,int(level), len(self.sink_panel_layout.getChannels()))
-            
+
     def on_volume_meter_sink_input(self, index, level):
         for sink in self.sink_panel_layout.getChannels().values():
             sink.on_update_meter(index,int(level), len(self.sink_panel_layout.getChannels()))
@@ -361,7 +361,7 @@ class VeroMix(QGraphicsWidget):
 ## helpers
 
     def get_card_info_for(self, sink):
-        card_identifier = dbus.String(u'alsa.long_card_name') #u'sysfs.path'        
+        card_identifier = dbus.String(u'alsa.long_card_name') #u'sysfs.path'
         info = self._get_card_info_for(sink, card_identifier)
         if info:
             return info

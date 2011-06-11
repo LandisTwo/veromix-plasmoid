@@ -71,12 +71,12 @@ def createDirectory(d):
             os.makedirs(d)
         except:
             print "Problem creating directory: "+d
-            print "Unexpected error:", sys.exc_info()[0]        
-            
+            print "Unexpected error:", sys.exc_info()[0]
+
 def pixmapFromSVG( name):
         svg = Plasma.Svg()
         svg.setImagePath("icons/audio")
         if not svg.isValid():
             return KIcon(name).pixmap(22,22)
         svg.setContainsMultipleImages(False)
-        return svg.pixmap(name)            
+        return svg.pixmap(name)

@@ -27,20 +27,19 @@ from PyKDE4.plasma import *
 import sys
 
 class LockableScrollWidget(Plasma.ScrollWidget):
-    
+
     def __init__(self,parent):
         self.locked = True
         Plasma.ScrollWidget.__init__(self,parent)
-    
+
     def sceneEventFilter(self, item, event):
         if self.locked:
             return False
         else:
             return Plasma.ScrollWidget.sceneEventFilter(self, item, event)
- 
+
     def beLocked(self):
         self.locked = True
-    
+
     def beUnLocked(self):
         self.locked = False
-        

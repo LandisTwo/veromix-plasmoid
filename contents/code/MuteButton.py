@@ -20,7 +20,7 @@ from PyKDE4.plasma import Plasma
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
-from Utils import * 
+from Utils import *
 
 
 class MuteButton(Plasma.IconWidget):
@@ -45,10 +45,10 @@ class MuteButton(Plasma.IconWidget):
 
     def setMuted(self, boolean):
         if boolean :
-            self.setSvg("icons/audio", self.muted_Icon)            
+            self.setSvg("icons/audio", self.muted_Icon)
         else:
             self.setSvg("icons/audio", self.play_Icon)
-    
+
     # compatibility with kde 4.4
     def setSvg(self, path, name):
         svg = Plasma.Svg()
@@ -56,8 +56,8 @@ class MuteButton(Plasma.IconWidget):
         if svg.isValid():
             Plasma.IconWidget.setSvg(self,path, name)
         else:
-            self.setIcon(KIcon(name))            
-            
+            self.setIcon(KIcon(name))
+
 class InputMuteButton(MuteButton):
 
     def __init__(self , parent) :
@@ -88,7 +88,7 @@ class InputMuteButton(MuteButton):
             orig =  KIcon(self.big_name).pixmap(size2, size2)
             #over = KIcon(self.status_icon).pixmap(size2,size2)
             over = pixmapFromSVG(self.status_icon)
-            
+
             #over =  KIcon(self.big_name).pixmap(size2,size2)
             #orig = self.status_icon.pixmap(28,28)
 

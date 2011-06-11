@@ -34,8 +34,8 @@ class Channel(QGraphicsWidget):
         self.veromix = parent
         self.index = -1
         self.pa = parent.getPulseAudio()
-        self.app = "output"  
-        self.name = "" 
+        self.app = "output"
+        self.name = ""
         self.sortOrderIndex = 0
         self.deleted = True
         self.pa_sink = None
@@ -64,7 +64,7 @@ class Channel(QGraphicsWidget):
 
     def composeArrangement(self):
         self.layout.addItem(self.frame)
-        self.frame_layout.addItem(self.panel)        
+        self.frame_layout.addItem(self.panel)
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
         if self.veromix.get_meter_visible():
@@ -102,7 +102,7 @@ class Channel(QGraphicsWidget):
         self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.createSlider()
         self.middle_layout.addItem(self.slider)
-        
+
     def createSlider(self):
         self.slider = LabelSlider()
         self.slider.setOrientation(Qt.Horizontal)
@@ -200,13 +200,13 @@ class Channel(QGraphicsWidget):
 
     def on_mute_cb(self ):
         self.pa_sink.toggle_mute()
-        
+
     def sink_input_kill(self):
         self.pa_sink.kill()
-        
+
     def set_channel_volumes(self, values):
         self.pa_sink.set_volume(values)
-        
+
     def on_meter_clicked(self):
         self.pa_sink.toggle_monitor(int(self.getOutputIndex()))
         self.meter.setValue(0)
@@ -253,7 +253,7 @@ class Channel(QGraphicsWidget):
         if self.pa_sink and "isdefault" in self.pa_sink.props:
             return self.pa_sink.props["isdefault"] == "True"
         return False
-        
+
     def startDrag(self,event):
         pass
 

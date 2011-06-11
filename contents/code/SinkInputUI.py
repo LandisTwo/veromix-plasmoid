@@ -37,7 +37,7 @@ class InputSinkUI(SinkUI):
         self.setAcceptDrops(False)
         self.setContentsMargins(0,0,0,0)
         self.layout.setContentsMargins(6,2,6,0)
-        
+
     def createMute(self):
         self.mute = InputMuteButton(self)
         self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed,True) )

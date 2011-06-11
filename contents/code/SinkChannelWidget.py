@@ -112,7 +112,7 @@ class SinkChannelWidget(QGraphicsWidget):
     def setMaximum(self, value):
         for slider in self.sliders:
             slider.setMaximum(value)
- 
+
     def wheelEvent(self, event):
         # dont touch the sliders, they will get the new values
         # via the pa-callback

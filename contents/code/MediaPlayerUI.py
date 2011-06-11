@@ -29,7 +29,7 @@ from Channel import Channel
 from MuteButton  import *
 from MediaPlayer import *
 
-   
+
 class MediaPlayerUI( Channel ):
 
     def __init__(self,name, veromix, controller):
@@ -42,12 +42,12 @@ class MediaPlayerUI( Channel ):
         self._position = 0
         self._length = 0
         self._artwork = ""
-        
+
         self.last_playing_icon = KIcon(self.get_pauseIcon())
         self.layout.setContentsMargins(6,0,6,2)
 
         self.controller.init_connection()
-        
+
     def initArrangement(self):
         self.svg_path = self.veromix.applet.package().filePath('images', 'buttons.svgz')
         self.createMiddle()
@@ -71,7 +71,7 @@ class MediaPlayerUI( Channel ):
         self.next_panel_layout.addStretch()
         self.next_panel_layout.addItem(self.next)
         self.prev_panel.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-        self.next_panel.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))        
+        self.next_panel.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.play.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.middle_layout.addStretch()
         self.middle_layout.addItem(self.play)
@@ -147,7 +147,7 @@ class MediaPlayerUI( Channel ):
             else:
                 self.last_playing_icon = QIcon(QPixmap(self.controller.artwork()))
             self.middle.setIcon(self.last_playing_icon)
-    
+
     def update_position(self):
         v = self.controller.position()
         if v != self._position:
@@ -174,7 +174,7 @@ class MediaPlayerUI( Channel ):
         value = self.slider.nativeWidget().sliderPosition()
         if value > -1 and action == 7:
             self.controller.seek(value)
-            
+
 ## initialize ui
 
     def create_next_panel(self):
@@ -210,7 +210,7 @@ class MediaPlayerUI( Channel ):
         self.CONTROLSBAR_SIZE = 80
         self.setMinimumHeight(self.CONTROLSBAR_SIZE)
         self.setPreferredHeight(self.CONTROLSBAR_SIZE)
-        self.setMaximumHeight(self.CONTROLSBAR_SIZE)        
+        self.setMaximumHeight(self.CONTROLSBAR_SIZE)
         self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.middle.setIcon(KIcon(self.get_pauseIcon()))
         self.middle.clicked.connect(self.on_play_cb)
@@ -263,14 +263,14 @@ class MediaPlayerUI( Channel ):
 
     def controller_name(self):
         return self.controller.name()
-        
+
     def get_pauseIcon(self):
         name = self.get_application_name()
         app = self.veromix.query_application(str(name))
         if app == None:
             return name
         return app
-        
+
     def get_application_name(self):
         return self.controller.get_application_name()
 
@@ -313,7 +313,7 @@ class MediaPlayerUI( Channel ):
         self.slider.setMaximum(100)
         self.slider.volumeChanged.disconnect(self.on_slider_cb)
         self.slider.nativeWidget ().actionTriggered.connect(self.on_slider_action_triggered)
-        
+
 ## testing
 
     def is_nowplaying_player(self):

@@ -102,10 +102,10 @@ class AbstractSink(QObject):
         return name
 
     ## testing
-    
+
     def is_sourceoutput(self):
         return False
-    
+
     def is_sinkoutput(self):
         return False
 
@@ -133,10 +133,10 @@ class SinkInfo(AbstractSink):
         pass
 
 class SinkInputInfo(AbstractSink):
-    
+
     def is_sinkinput(self):
         return True
-        
+
     def set_volume(self, values):
         self.pulse_proxy.set_sink_input_volume(self.index, values)
 

@@ -30,7 +30,7 @@ class MediaPlayer(QObject):
 
     Stopped, Playing, Paused, NA = range(4)
     data_updated = pyqtSignal()
-    
+
     def __init__(self):
         QObject.__init__(self)
         self._state = MediaPlayer.NA
@@ -50,10 +50,10 @@ class MediaPlayer(QObject):
 
     def state(self):
         return self._state
-        
+
     def set_state(self, state):
         self._state = state
-        
+
     def name(self):
         return None
 
@@ -71,7 +71,7 @@ class MediaPlayer(QObject):
 
     def seek(self, position):
         pass
-    
+
     def length(self):
         return self._length
 
@@ -83,7 +83,7 @@ class MediaPlayer(QObject):
 
     def set_position(self, position):
         self._position = position
-        
+
     def artwork(self):
         return self._artwork
 
@@ -111,12 +111,12 @@ class MediaPlayer(QObject):
         return False
 
 class NowPlayingController(MediaPlayer):
-    
+
     def __init__(self, veromix, source):
         MediaPlayer.__init__(self)
         self.veromix = veromix
         self.proxy = source
-        
+
     def init_connection(self):
         self.connect_nowplaying()
 
@@ -151,7 +151,7 @@ class NowPlayingController(MediaPlayer):
             if v != self.length():
                 changed = True
                 self.set_length(v)
-                
+
         if QString('Artwork') in data:
             val = data[QString('Artwork')]
             if self.artwork() !=  val:
@@ -161,7 +161,7 @@ class NowPlayingController(MediaPlayer):
                 else:
                     self.last_playing_icon = QIcon(QPixmap(self.artwork))
         if changed:
-            self.data_updated.emit()                    
+            self.data_updated.emit()
 
     def name(self):
         return self.proxy.destination()
@@ -245,7 +245,7 @@ class Mpris2MediaPlayer(MediaPlayer):
                  self.set_state(MediaPlayer.Paused)
             if old_state != self.state():
                 changed = True
-                
+
         if dbus.String("Metadata") in properties.keys():
             metadata = properties[dbus.String("Metadata")]
             #self.mpris2_trackid = metadata[dbus.String("mpris:trackid")]
@@ -259,7 +259,7 @@ class Mpris2MediaPlayer(MediaPlayer):
                     else:
                         self.set_artwork(None)
                     self._cover_string = val
-                    
+
             if dbus.String("mpris:length") in metadata.keys():
                 length = metadata[dbus.String("mpris:length")] / 1000000
                 if length != self.length():
@@ -301,4 +301,4 @@ class Mpris2MediaPlayer(MediaPlayer):
             self.last_position_change = datetime.datetime.now()
         else:
             self.last_slider_position = slider_pos
-            QTimer.singleShot(300, self.schedule_set_mpris2_position)        
+            QTimer.singleShot(300, self.schedule_set_mpris2_position)

@@ -22,7 +22,7 @@ from PyKDE4.kdecore import *
 from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 
-        
+
 class SinkSettingsWidget(QGraphicsWidget):
 
     def __init__(self, veromix, sink):
@@ -36,7 +36,7 @@ class SinkSettingsWidget(QGraphicsWidget):
         self.create_switcher()
         self.create_profile_switcher()
         self.compose_arrangement()
-        
+
     def compose_arrangement(self):
         self.switcher.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding))
         self.profile_switcher.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed))
@@ -47,12 +47,12 @@ class SinkSettingsWidget(QGraphicsWidget):
         self.layout = QGraphicsLinearLayout(Qt.Horizontal)
         self.layout.setContentsMargins(0,0,0,0)
         self.setLayout(self.layout)
-        #self.layout().setContentsMargins(42,0,42,0)        
+        #self.layout().setContentsMargins(42,0,42,0)
         #self.settings_layout = QGraphicsLinearLayout(Qt.Horizontal)
-        #self.settings_layout.setContentsMargins(0,0,0,0)        
+        #self.settings_layout.setContentsMargins(0,0,0,0)
         #self.settings_widget = QGraphicsWidget()
         #self.settings_widget.setLayout(self.settings_layout)
-        
+
     def create_switcher(self):
         self.switcher = Plasma.CheckBox()
         self.switcher.toggled.connect(self.on_change_switcher)
@@ -64,7 +64,7 @@ class SinkSettingsWidget(QGraphicsWidget):
         self.profile_switcher.activated.connect(self.on_change_profile)
 
     def update_with_info(self, info):
-        self.updateOutputSwitcher()        
+        self.updateOutputSwitcher()
 
     def on_change_profile(self,value):
         for profile in self.profiles:
@@ -91,7 +91,7 @@ class SinkSettingsWidget(QGraphicsWidget):
                     if active == profile.name:
                         active_index = self.profiles.index(profile)
                 self.profile_switcher.nativeWidget().setCurrentIndex(active_index)
-                
+
 class SinkInputSettingsWidget(SinkSettingsWidget):
 
     def __init__(self, veromix, sink):
@@ -121,7 +121,7 @@ class SinkInputSettingsWidget(SinkSettingsWidget):
              return 0
         self.switcher.clear()
         outputs =  self.veromix.get_sinkoutput_widgets()
-            
+
         for output in outputs:
             self.switcher.addItem(output.app)
         self.switcher.addItem(self.kill_text)

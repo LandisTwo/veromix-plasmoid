@@ -22,7 +22,7 @@ from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 
 from LabelSlider import LabelSlider
-        
+
 class SinkInfoWidget(Plasma.TabBar):
 
     def __init__(self, veromix, sink):
@@ -58,19 +58,19 @@ class SinkInfoWidget(Plasma.TabBar):
         #self.layout = QGraphicsLinearLayout(Qt.Vertical)
         #self.layout.setContentsMargins(42,0,42,0)
         self.layout().setContentsMargins(42,0,42,0)
-        
+
         self.settings_layout = QGraphicsLinearLayout(Qt.Horizontal)
         self.settings_layout.setContentsMargins(0,0,0,0)
-        
+
         self.settings_widget = QGraphicsWidget()
         self.settings_widget.setLayout(self.settings_layout)
-        
+
         #self.setLayout(self.layout)
 
     def create_channel_sliders(self):
         self.slider_layout = QGraphicsLinearLayout(Qt.Vertical)
         self.slider_layout.setContentsMargins(0,0,0,0)
-        
+
         self.slider_widget = QGraphicsWidget()
         self.slider_widget.setLayout(self.slider_layout)
         for channel in self.sink.pa_sink.getChannels():
@@ -81,7 +81,7 @@ class SinkInfoWidget(Plasma.TabBar):
             slider.setMaximum(100)
             slider.volumeChanged.connect(self.on_slider_cb)
             self.sliders.append(slider)
-            self.slider_layout.addItem(slider)            
+            self.slider_layout.addItem(slider)
 
     def create_text_area(self):
         self.button = Plasma.PushButton()
@@ -130,7 +130,7 @@ class SinkInfoWidget(Plasma.TabBar):
         vol = []
         for slider in self.sliders:
             vol.append(slider.value())
-        self.sink.pa.set_sink_volume(self.sink.index, vol)         
+        self.sink.pa.set_sink_volume(self.sink.index, vol)
 
 
 
@@ -153,7 +153,7 @@ class SinkInputInfoWidget(SinkInfoWidget):
         self.addTab("Pan", self.slider_widget)
         self.addTab("Settings", self.settings_widget)
         self.addTab("Info", self.textwidget)
-        
+
     def create_switcher(self):
         self.switcher = Plasma.ComboBox()
         self.switcher.activated.connect(self.on_change_switcher)
@@ -202,4 +202,4 @@ class SinkInputInfoWidget(SinkInfoWidget):
         vol = []
         for slider in self.sliders:
             vol.append(slider.value())
-        self.sink.pa.set_sink_input_volume(self.sink.index, vol)  
+        self.sink.pa.set_sink_input_volume(self.sink.index, vol)

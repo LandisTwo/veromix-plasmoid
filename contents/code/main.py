@@ -62,12 +62,12 @@ COMMENT=i18n("Veromix is a mixer for the Pulseaudio sound server. ")
 
 class VeroMixPlasmoid(plasmascript.Applet):
     VERSION="0.11.2"
-    
+
     nowplaying_player_added = pyqtSignal(QString, QObject)
     nowplaying_player_removed = pyqtSignal(QString )
     nowplaying_player_dataUpdated = pyqtSignal(QString, dict)
 
-    def __init__(self,parent,args=None):        
+    def __init__(self,parent,args=None):
         plasmascript.Applet.__init__(self,parent)
         self.engine = None
         self.now_playing_engine = None
@@ -85,7 +85,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             print "Error installing veromix icon:", out
 
         createDbusServiceDescription(self)
-	
+
         KGlobal.locale().insertCatalog("veromix-plasmoid")
 
         self.setHasConfigurationInterface(True)
@@ -118,7 +118,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         #except AttributeError , e:
             #print e
             #updateMetadataDesktop(self)
-            
+
         self.initTooltip()
         self.initShortcuts()
         QTimer.singleShot(1000, self.fixPopupIcon)
@@ -130,23 +130,23 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.louder_action.setText( i18n("Veromix volume up") )
         self.louder_action.setGlobalShortcut(KShortcut())
         self.louder_action.triggered.connect(self.widget.on_step_volume_up)
-        
+
         self.lower_action = self.actionCollection.addAction("VeromixVolumeDown")
         self.lower_action.setText(i18n("Veromix volume down"))
         self.lower_action.setGlobalShortcut(KShortcut())
         self.lower_action.triggered.connect(self.widget.on_step_volume_down)
-        
+
         self.mute_action = self.actionCollection.addAction("VeromixVolumeMute")
         self.mute_action.setText(i18n("Veromix toggle  mute"))
         self.mute_action.setGlobalShortcut(KShortcut())
         self.mute_action.triggered.connect(self.widget.on_toggle_mute)
 
     def initTooltip(self):
-        if (self.formFactor() != Plasma.Planar):   
-            self.tooltip = Plasma.ToolTipContent() 
+        if (self.formFactor() != Plasma.Planar):
+            self.tooltip = Plasma.ToolTipContent()
             self.tooltip.setImage(pixmapFromSVG("audio-volume-high"))
             self.tooltip.setMainText(i18n( "Main Volume") )
-            #self.tooltip.setSubText( "" )    
+            #self.tooltip.setSubText( "" )
             Plasma.ToolTipManager.self().setContent(self.applet, self.tooltip)
             Plasma.ToolTipManager.self().registerWidget(self.applet)
 
@@ -158,29 +158,29 @@ class VeroMixPlasmoid(plasmascript.Applet):
         else:
             if  vol == 0:
                 icon_state = "audio-volume-muted"
-            elif vol < 30: 
+            elif vol < 30:
                 icon_state= "audio-volume-low"
-            elif vol < 70:   
+            elif vol < 70:
                 icon_state= "audio-volume-medium"
             else:
                 icon_state= "audio-volume-high"
         self.setPopupIcon(icon_state)
-        if (self.formFactor() != Plasma.Planar):                  
+        if (self.formFactor() != Plasma.Planar):
             self.tooltip.setImage(pixmapFromSVG(icon_state))
             ## FIXME this should better go to toolTipAboutToShow but is not working:
-            # https://bugs.kde.org/show_bug.cgi?id=254764                   
+            # https://bugs.kde.org/show_bug.cgi?id=254764
             self.tooltip.setMainText( self.widget.getDefaultSink().app)
             self.tooltip.setSubText( str(vol) + "%")
             Plasma.ToolTipManager.self().setContent(self.applet, self.tooltip)
-     
+
     def showTooltip(self):
         if self.get_show_toolip():
             Plasma.ToolTipManager.self().show(self.applet)
-        
+
     @pyqtSlot(name="toolTipAboutToShow")
     def toolTipAboutToShow(self):
-        pass 
-        
+        pass
+
     ## FIXME Looks like a bug in plasma: Only when sending a
     # KIcon instance PopUpApplet acts like a Poppupapplet...
     def fixPopupIcon(self):
@@ -221,43 +221,43 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if event.button() == Qt.MidButton:
             self.widget.on_toggle_mute()
 
-    def createConfigurationInterface(self, parent):        
+    def createConfigurationInterface(self, parent):
         self.config_widget = QWidget(parent)
         self.connect(self.config_widget, SIGNAL('destroyed(QObject*)'), self.configWidgetDestroyed)
-        
-        self.config_ui = uic.loadUi(str(self.package().filePath('ui', 'appearance.ui')), self.config_widget)        
+
+        self.config_ui = uic.loadUi(str(self.package().filePath('ui', 'appearance.ui')), self.config_widget)
         self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background","0").toInt() [0] )
         self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
         self.config_ui.useTabs.setChecked(self.useTabs() )
         self.config_ui.show_tooltip.setChecked(self.get_show_toolip())
         self.config_ui.always_show_sources.setChecked(self.get_always_show_sources())
         self.config_ui.meter_visible.setChecked(self.get_meter_visible())
-        
+
         self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
         parent.addPage(self.config_widget, i18n("Appearance"), "veromix-plasmoid-128" )
-       
+
         self.mediaplayer_settings_widget = QWidget(parent)
         self.mediaplayer_settings_ui = uic.loadUi(str(self.package().filePath('ui', 'nowplaying.ui')), self.mediaplayer_settings_widget)
-        
+
         self.mediaplayer_settings_ui.mediaplayerBlacklist.setPlainText(self.get_mediaplayer_blacklist_string() )
         self.mediaplayer_settings_ui.runningMediaplayers.setPlainText(self.get_running_mediaplayers())
         self.mediaplayer_settings_ui.runningMediaplayers.setReadOnly(True)
-        
+
         self.mediaplayer_settings_ui.use_nowplaying.setChecked(self.is_nowplaying_enabled() )
         self.mediaplayer_settings_ui.use_nowplaying.stateChanged.connect(self.update_mediaplayer_settings_ui)
 
         self.mediaplayer_settings_ui.use_mpris2.setChecked(self.is_mpris2_enabled() )
         self.mediaplayer_settings_ui.use_mpris2.stateChanged.connect(self.update_mediaplayer_settings_ui)
-        
+
         parent.addPage(self.mediaplayer_settings_widget, i18n("Media Player Controls"), "veromix-plasmoid-128" )
-        
+
         #self.about_widget = QWidget(parent)
         #self.about_ui = uic.loadUi(str(self.package().filePath('ui', 'about.ui')), self.about_widget)
         #self.about_ui.version.setText(VeroMixPlasmoid.VERSION)
         #parent.addPage(self.about_widget, "About", "help-about" )
         self.add_audio_settings(parent)
         self.add_global_shortcut_page(parent)
-        
+
         # FIXME KDE 4.6 workaround
         self.connect(parent, SIGNAL("okClicked()"), self.configChanged)
         self.connect(parent, SIGNAL("cancelClicked()"), self.configDenied)
@@ -271,12 +271,12 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.max_volume_spinbox = QSpinBox()
         self.max_volume_spinbox.setRange(1,255)
         self.max_volume_spinbox.setSingleStep(1)
-        self.max_volume_spinbox.setValue(self.get_max_volume_value())        
+        self.max_volume_spinbox.setValue(self.get_max_volume_value())
         layout.addWidget(QLabel(i18n("Max volume value")), 0,0)
         layout.addWidget(self.max_volume_spinbox, 0,1)
 
         self.automute_checkbox = QCheckBox()
-        self.automute_checkbox.setChecked(self.get_auto_mute())        
+        self.automute_checkbox.setChecked(self.get_auto_mute())
         layout.addWidget(QLabel(i18n("Mute if volume reaches zero")), 1,0)
         layout.addWidget(self.automute_checkbox, 1,1)
 
@@ -336,7 +336,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def configChanged(self):
         self.config().writeEntry("background",str(self.config_ui.showBackground.currentIndex()))
-        self.config().writeEntry("popupMode", str(self.config_ui.popupMode.currentIndex()))        
+        self.config().writeEntry("popupMode", str(self.config_ui.popupMode.currentIndex()))
         tabs = self.useTabs()
         self.config().writeEntry("useTabs", bool(self.config_ui.useTabs.isChecked()))
         self.config().writeEntry("show_tooltip", bool(self.config_ui.show_tooltip.isChecked()))
@@ -344,22 +344,22 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
         meter_visible = self.get_meter_visible()
         self.config().writeEntry("meter_visible", bool(self.config_ui.meter_visible.isChecked()))
-        
+
         self.config().writeEntry("use_nowplaying", str(self.mediaplayer_settings_ui.use_nowplaying.isChecked()))
         self.config().writeEntry("use_mpris2", str(self.mediaplayer_settings_ui.use_mpris2.isChecked()))
-        
+
         #self.config().writeEntry("mpris2List",str(self.mediaplayer_settings_ui.mpris2List.toPlainText()).strip() )
         self.config().writeEntry("nowplayingBlacklist",str(self.mediaplayer_settings_ui.mediaplayerBlacklist.toPlainText()).strip())
 
         self.config().writeEntry("max_volume", str(self.max_volume_spinbox.value()))
         self.config().writeEntry("auto_mute", str(self.automute_checkbox.isChecked()))
-        
+
         self.applyConfig()
-        
+
         if tabs != self.useTabs():
             self.widget.switchView()
         self.widget.on_update_configuration()
-        
+
     def update_mediaplayer_settings_ui(self):
         enable = ( self.mediaplayer_settings_ui.use_nowplaying.isChecked() or self.mediaplayer_settings_ui.use_mpris2.isChecked())
         self.mediaplayer_settings_ui.mediaplayerBlacklist.setEnabled(enable)
@@ -367,12 +367,12 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.mediaplayer_settings_ui.runningMediaplayers.setEnabled(enable)
         self.mediaplayer_settings_ui.runningMediaplayersLabel.setEnabled(enable)
         self.mediaplayer_settings_ui.runningMediaplayers.setPlainText(self.get_running_mediaplayers())
-        
+
     def apply_nowplaying(self, enabled):
         self.disable_nowplaying()
         if enabled:
             self.init_nowplaying()
-            
+
     def apply_mpris2(self, enabled):
         self.widget.pa.disable_mpris2()
         self.remove_mpris2_widgets()
@@ -383,7 +383,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def applyConfig(self):
         self.apply_nowplaying(self.is_nowplaying_enabled() )
         self.apply_mpris2(self.is_mpris2_enabled() )
-                
+
         bg = self.config().readEntry("background","0").toInt()[0]
         if  bg == 0:
             self.setBackgroundHints(Plasma.Applet.NoBackground)
@@ -417,15 +417,15 @@ class VeroMixPlasmoid(plasmascript.Applet):
                 card = self.card_settings[combo]
                 for profile in card.profiles:
                     if combo.currentText() == profile.description:
-                        self.widget.pa.set_card_profile(card.index, profile.name)                        
+                        self.widget.pa.set_card_profile(card.index, profile.name)
         self.update()
 
     def configWidgetDestroyed(self):
         self.config_widget = None
         self.config_ui = None
 
-    def useTabs(self):        
-        return self.config().readEntry("useTabs",False ).toBool()    
+    def useTabs(self):
+        return self.config().readEntry("useTabs",False ).toBool()
 
     def get_meter_visible(self):
         return self.config().readEntry("meter_visible",True ).toBool()
@@ -479,11 +479,11 @@ class VeroMixPlasmoid(plasmascript.Applet):
         # get sources and connect
         for source in self.now_playing_engine.sources():
             self.on_nowplaying_player_added(source)
-            
+
     def on_nowplaying_player_added(self, player):
         if player == "players":
             # FIXME 4.6 workaround
-            return 
+            return
         if self.in_mediaplayer_blacklist(player):
             return
         self.now_playing_engine.disconnectSource(player, self)
@@ -512,17 +512,17 @@ class VeroMixPlasmoid(plasmascript.Applet):
             engine = self.dataEngine('nowplaying')
         for source in engine.sources():
             val += source + "\n"
-        val += "\nmpris2:\n"  
+        val += "\nmpris2:\n"
         for controller in self.widget.pa.get_mpris2_players():
             val += controller.name() + "\n"
         return val
-        
+
     def get_mediaplayer_blacklist(self):
         return self.get_mediaplayer_blacklist_string().split("\n")
-    
+
     def get_mediaplayer_blacklist_string(self):
         default =  "org.mpris.bangarang"
-        return self.config().readEntry("nowplayingBlacklist",default ).toString()    
+        return self.config().readEntry("nowplayingBlacklist",default ).toString()
 
     @pyqtSignature('dataUpdated(const QString&, const Plasma::DataEngine::Data&)')
     def dataUpdated(self, sourceName, data):
