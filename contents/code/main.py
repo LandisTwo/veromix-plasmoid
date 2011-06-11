@@ -55,6 +55,7 @@ from PyKDE4.kdeui import KDialog
 from PyKDE4.kdecore import *
 
 from VeroMix import VeroMix
+from MediaPlayer import NowPlayingController
 from Utils import *
 
 COMMENT=i18n("Veromix is a mixer for the Pulseaudio sound server. ")
@@ -102,21 +103,21 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.widget.setPreferredSize(400 ,145)
 
         self.connect(self.widget, SIGNAL("resized()"), self.dialogResized)
-        try:
-            self.setGraphicsWidget(self.widget)
-            self.applet.setPassivePopup(True)
-            ## FIXME: see fixPopupcion
-            self.setPopupIcon(KIcon("audio-volume-high"))
-            #self.setPopupIcon("audio-volume-muted")
-            # dont know why but adding it a second time helps (otherwise it
-            # wont popup when you add it directly to the panel)
-            self.setGraphicsWidget(self.widget)
-            self.connect(self.applet, SIGNAL("appletDestroyed(Plasma::Applet*)"), self.doExit)
-            self.setBackgroundHints(Plasma.Applet.NoBackground)
-            self.applyConfig()
-        except AttributeError , e:
-            print e
-            updateMetadataDesktop(self)
+        #try:
+        self.setGraphicsWidget(self.widget)
+        self.applet.setPassivePopup(True)
+        ## FIXME: see fixPopupcion
+        self.setPopupIcon(KIcon("audio-volume-high"))
+        #self.setPopupIcon("audio-volume-muted")
+        # dont know why but adding it a second time helps (otherwise it
+        # wont popup when you add it directly to the panel)
+        self.setGraphicsWidget(self.widget)
+        self.connect(self.applet, SIGNAL("appletDestroyed(Plasma::Applet*)"), self.doExit)
+        self.setBackgroundHints(Plasma.Applet.NoBackground)
+        self.applyConfig()
+        #except AttributeError , e:
+            #print e
+            #updateMetadataDesktop(self)
             
         self.initTooltip()
         self.initShortcuts()
@@ -453,13 +454,13 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def disable_nowplaying(self):
         for player in self.widget.get_mediaplayer_widgets():
             if player.is_nowplaying_player():
-                self.on_nowplaying_player_removed(player.controller.destination())
+                self.on_nowplaying_player_removed(player.controller_name())
         self.now_playing_engine = None
 
     def remove_mpris2_widgets(self):
         for player in self.widget.get_mediaplayer_widgets():
             if player.is_mpris2_player():
-                self.on_mpris2_removed(player.controller.destination())
+                self.on_mpris2_removed(player.controller_name())
 
     def init_nowplaying(self):
         self.now_playing_engine = self.dataEngine('nowplaying')
@@ -468,10 +469,11 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.connect_to_nowplaying_engine()
 
     def init_running_mpris2(self):
-        for player in self.widget.pa.get_mpris2_players():
-            if self.in_mediaplayer_blacklist(player.destination()) :
+        for controller in self.widget.pa.get_mpris2_players():
+            v= controller.name()
+            if self.in_mediaplayer_blacklist(v):
                 return
-            self.nowplaying_player_added.emit(player.destination(), player )
+            self.nowplaying_player_added.emit(controller.name(), controller )
 
     def connect_to_nowplaying_engine(self):
         # get sources and connect
@@ -482,12 +484,12 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if player == "players":
             # FIXME 4.6 workaround
             return 
-        if self.in_mediaplayer_blacklist(player) :
+        if self.in_mediaplayer_blacklist(player):
             return
         self.now_playing_engine.disconnectSource(player, self)
         self.now_playing_engine.connectSource(player, self, 2000)
         controller = self.now_playing_engine.serviceForSource(player)
-        self.nowplaying_player_added.emit(player, controller )
+        self.nowplaying_player_added.emit(player, NowPlayingController(self.widget,controller) )
 
     def in_mediaplayer_blacklist(self,player):
         for entry in self.get_mediaplayer_blacklist():
@@ -496,8 +498,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
         return False
 
     def on_nowplaying_player_removed(self, player):
-        self.now_playing_engine.disconnectSource(player, self)
-        self.nowplaying_player_removed.emit(player)
+        if self.now_playing_engine:
+            self.now_playing_engine.disconnectSource(player, self)
+            self.nowplaying_player_removed.emit(player)
 
     def on_mpris2_removed(self, player):
         self.nowplaying_player_removed.emit(player)
@@ -510,8 +513,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
         for source in engine.sources():
             val += source + "\n"
         val += "\nmpris2:\n"  
-        for player in self.widget.pa.get_mpris2_players():
-            val += player.name + "\n"
+        for controller in self.widget.pa.get_mpris2_players():
+            val += controller.name() + "\n"
         return val
         
     def get_mediaplayer_blacklist(self):

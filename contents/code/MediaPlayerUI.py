@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# copyright 2009  Nik Lutz
+# copyright 20011  Nik Lutz
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,57 +26,27 @@ from PyKDE4.plasma import Plasma
 from LabelSlider import LabelSlider
 from LabelSlider import Label
 from Channel import Channel
-from PulseAudioProxy import Mpris2DummyController
 from MuteButton  import *
-
-#class ExtensionWidgetQGraphicsWidget):
-
-    #def __init__(controller):
-        #self.controller = controller
-        #self.init()
-        #self.compose_arrangement()
-
-    #def init(self):
-        #self.init_arrangement()
-
-    #def init_arrangement(self):
-        #self.layout = QGraphicsLinearLayout(Qt.Horizontal)
-        #self.layout.setContentsMargins(0,0,0,0)
-        #self.setLayout(self.layout)
-        
-    #def compose_arrangement(self):
-        #pass
-
-    #def update_with_info(self, info):
-        #pass
-
-
-#class NowPlayingExtended(ExtensionWidgetQGraphicsWidget):
-    #pass
+from MediaPlayer import *
 
    
 class MediaPlayerUI( Channel ):
-    Stopped, Playing, Paused, NA = range(4)
 
     def __init__(self,name, veromix, controller):
         self.controller = controller
         Channel.__init__(self, veromix)
+        self.controller.data_updated.connect(self.controller_data_updated)
         self.index = -1
 
-        self.state = MediaPlayerUI.NA
-        self.position = 0
-        self.length = 0
-        self.artwork = ""
-        self.cover_string = ""
+        self._state= None
+        self._position = 0
+        self._length = 0
+        self._artwork = ""
+        
         self.last_playing_icon = KIcon(self.get_pauseIcon())
         self.layout.setContentsMargins(6,0,6,2)
-        self.name = name
 
-        self.last_slider_position = 0
-        self.last_position_change = datetime.datetime.now()
-        self.mpris2_trackid = ""
-        self.connect_mpris2()
-        self.connect_nowplaying()
+        self.controller.init_connection()
         
     def initArrangement(self):
         self.svg_path = self.veromix.applet.package().filePath('images', 'buttons.svgz')
@@ -123,8 +93,8 @@ class MediaPlayerUI( Channel ):
         else:
             self.extended_panel_shown = True
             self.create_settings_widget()
-            self.get_dbus_info()
             self.frame_layout.addItem(self.extended_panel)
+        self.controller.set_fetch_extended_info(self.extended_panel_shown)
 
     def create_settings_widget(self):
         self.createLengthLabel()
@@ -140,14 +110,13 @@ class MediaPlayerUI( Channel ):
         self.extended_panel_layout.addItem(self.slider)
         self.extended_panel_layout.addItem(self.length_label)
         self.extended_panel_layout.addStretch()
-## data input
 
-    def update_with_info(self, data):
-        self.update_state(data)
-        self.update_cover(data)
+    def controller_data_updated(self):
+        self.update_state()
+        self.update_cover()
         self.updateSortOrderIndex()
         if self.extended_panel_shown:
-            self.update_position(data)
+            self.update_position()
             self.update_slider()
 
     def on_update_configuration(self):
@@ -155,16 +124,11 @@ class MediaPlayerUI( Channel ):
 
 ## update ui
 
-    def update_state(self,data):
-        state = self.state
-        if QString('State') in data:
-            if data[QString('State')] == u'playing':
-                state = MediaPlayerUI.Playing
-            else:
-                state = MediaPlayerUI.Paused
-        if self.state != state:
-            self.state = state
-            if self.state == MediaPlayerUI.Playing:
+    def update_state(self):
+        state = self.controller.state()
+        if self._state != state:
+            self._state = state
+            if state == MediaPlayer.Playing:
                 #self.play.setSvg(self.svg_path, "pause-normal")
                 self.play.setIcon(KIcon("media-playback-pause"))
                 self.middle.setIcon(self.last_playing_icon)
@@ -173,68 +137,43 @@ class MediaPlayerUI( Channel ):
                 self.play.setIcon(KIcon("media-playback-start"))
                 self.middle.setIcon(KIcon(self.get_pauseIcon()))
 
-    def update_cover(self,data):
-        if QString('Artwork') in data:
-            val = data[QString('Artwork')]
-            if self.artwork !=  val:
-                self.artwork = val
-                if val == None:
-                    self.last_playing_icon = KIcon(self.get_pauseIcon())
-                else:
-                    self.last_playing_icon = QIcon(QPixmap(self.artwork))
-                self.middle.setIcon(self.last_playing_icon)
-
-    def update_position(self, data):
-        if QString('Position') in data:
-            v = data[QString('Position')]
-            if v != self.position:
-                self.position = v
-                pos_str = ( '%d:%02d' % (v / 60, v % 60))
-                self.position_label.setBoldText(pos_str)
-        if QString('Length') in data:
-            v = data[QString('Length')]
-            if v != self.length:
-                self.length = v
-                pos_str = ( '%d:%02d' % (v / 60, v % 60))
-                self.length_label.setBoldText(pos_str)
-        #self.last_slider_value = 100 * self.position / self.length
+    def update_cover(self):
+        # FIXME
+        val = self.controller._cover_string
+        if self._artwork !=  val:
+            self._artwork = val
+            if val == None:
+                self.last_playing_icon = KIcon(self.get_pauseIcon())
+            else:
+                self.last_playing_icon = QIcon(QPixmap(self.controller.artwork()))
+            self.middle.setIcon(self.last_playing_icon)
+    
+    def update_position(self):
+        v = self.controller.position()
+        if v != self._position:
+            self._position = v
+            pos_str = ( '%d:%02d' % (v / 60, v % 60))
+            self.position_label.setBoldText(pos_str)
+        v = self.controller.length()
+        if v != self._length:
+            self._length = v
+            pos_str = ( '%d:%02d' % (v / 60, v % 60))
+            self.length_label.setBoldText(pos_str)
 
     def update_slider(self):
         if self.slider and self.extended_panel_shown:
-            if self.state == MediaPlayerUI.Stopped:
+            if self.controller.state() == MediaPlayer.Stopped:
                 self.slider.setValueFromPulse(0)
             else:
-                if self.length > -1 :
-                    v = self.position * 100 / self.length
-                    #self.slider.setMaximum(self.length)
+                if self.controller.length() > -1 :
+                    v = self.controller.position() * 100 / self.controller.length()
                     if self.slider.check_pulse_timestamp():
                         self.slider.setValue(v)
 
     def on_slider_action_triggered(self, action):
         value = self.slider.nativeWidget().sliderPosition()
         if value > -1 and action == 7:
-            self.schedule_set_mpris2_position(value)
-
-    def schedule_set_mpris2_position(self, value=0):
-        # FIXME should be done nicer
-        slider_pos = value
-        if  slider_pos == 0 and self.last_slider_position > 0:
-            slider_pos = self.last_slider_position
-        elif slider_pos == 0:
-            return
-        now = datetime.datetime.now()
-        time =  (now - self.last_position_change ).microseconds
-        if time > 500000:
-            pos = self.veromix.pa.mpris2_get_position(self.controller.destination()) / 1000000
-            new_pos =  (slider_pos * self.length) / 100
-            diff = new_pos - pos
-            self.veromix.pa.mpris2_set_position(self.controller.destination() , int(diff * 1000000) )
-            self.last_slider_position = 0
-            self.last_position_change = datetime.datetime.now()
-        else:
-            self.last_slider_position = slider_pos
-            QTimer.singleShot(300, self.schedule_set_mpris2_position)
-
+            self.controller.seek(value)
             
 ## initialize ui
 
@@ -309,92 +248,22 @@ class MediaPlayerUI( Channel ):
         pass
 
     def on_next_cb(self):
-        self.controller.startOperationCall(self.controller.operationDescription('next'))
+        self.controller.next_track()
 
     def on_prev_cb(self):
-        self.controller.startOperationCall(self.controller.operationDescription('previous'))
+        self.controller.prev_track()
 
     def on_play_cb(self):
-        if not self.veromix.pa:
-            return
-        if self.state == MediaPlayerUI.Playing:
-            self.controller.startOperationCall(self.controller.operationDescription('pause'))
+        if self.controller.state() == MediaPlayer.Playing:
+            self.controller.pause()
         else:
-            self.controller.startOperationCall(self.controller.operationDescription('play'))
-
-
-
-# nowplaying
-
-    def connect_nowplaying(self):
-        if self.is_nowplaying_player() :
-            self.veromix.applet.nowplaying_player_dataUpdated.connect(self.on_nowplaying_data_updated)
-        
-    def on_nowplaying_data_updated(self, name, values):
-        if name == self.controller.destination():
-            self.update_with_info(values)
-            
-# dbus
-
-    def connect_mpris2(self):
-        if self.is_mpris2_player() :
-            if self.veromix.pa:
-                self.veromix.pa.connect_mpris2_player(self.on_mpris2_properties_changed, str(self.controller.destination()) )
-                self.get_dbus_info()
-                
-    def on_mpris2_properties_changed(self, interface, properties, signature):
-        data = {}
-        if dbus.String("PlaybackStatus") in properties.keys():
-            status = properties[dbus.String("PlaybackStatus")]
-            data[QString('State')] =  u'paused'
-            if status == 'Playing':
-                data[QString('State')] =  u'playing'
-        
-        if dbus.String("Metadata") in properties.keys():
-            metadata = properties[dbus.String("Metadata")]
-            self.mpris2_trackid = metadata[dbus.String("mpris:trackid")]
-            
-            if dbus.String("mpris:artUrl") in metadata.keys():
-                val = QUrl(str(metadata[dbus.String("mpris:artUrl")])).path()
-                if val != self.cover_string:
-                    if (os.path.isfile(val)):
-                        data[QString('Artwork')] =  QPixmap(val)
-                    else:
-                        data[QString('Artwork')] = None
-                    self.cover_string = val
-            if dbus.String("mpris:length") in metadata.keys():
-                data[QString('Length')] = metadata[dbus.String("mpris:length")] / 1000000
-                 
-        if QString('Position') in properties.keys():
-            data[QString('Position')] = properties[QString('Position')] / 1000000
-        self.update_with_info(data)
-
-    def get_dbus_info(self):
-        ## FIXME fetch info can call on_mpris2_properties_changed
-        data = {}
-        if self.is_nowplaying_player():
-            return
-        if not self.veromix.pa:
-            return
-        properties = {}
-        properties[dbus.String("PlaybackStatus")] =self.veromix.pa.mpris2_get_playback_status(self.controller.destination())
-        properties[dbus.String("Metadata")] = self.veromix.pa.mpris2_get_metadata(self.controller.destination())
-        #print properties[dbus.String("Metadata")]
-        self.length = -1
-        self.position = -1 
-        self.fetch_position()
-        self.on_mpris2_properties_changed(None, properties, None)
-
-
-    def fetch_position(self):
-        if self.extended_panel_shown:
-            properties = {}
-            properties[QString('Position')] = self.veromix.pa.mpris2_get_position(self.controller.destination())
-            self.on_mpris2_properties_changed(None, properties, None)
-            QTimer.singleShot(1500, self.fetch_position)
+            self.controller.play()
 
 # helpers
 
+    def controller_name(self):
+        return self.controller.name()
+        
     def get_pauseIcon(self):
         name = self.get_application_name()
         app = self.veromix.query_application(str(name))
@@ -403,12 +272,7 @@ class MediaPlayerUI( Channel ):
         return app
         
     def get_application_name(self):
-        name = self.controller.destination()
-        if name.indexOf("org.mpris.MediaPlayer2.")  == 0:
-            return name[23:]
-        if name.indexOf("org.mpris.")  == 0:
-            return name[10:]
-        return name
+        return self.controller.get_application_name()
 
     def matches(self, sink):
         sink = self.get_assotiated_sink()
@@ -453,8 +317,7 @@ class MediaPlayerUI( Channel ):
 ## testing
 
     def is_nowplaying_player(self):
-        return not self.is_mpris2_player()
+        return self.controller.is_mpris2_player()
 
     def is_mpris2_player(self):
-        # FIXME
-        return isinstance(self.controller, Mpris2DummyController)
+        return self.controller.is_mpris2_player()

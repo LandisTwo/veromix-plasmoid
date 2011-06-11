@@ -21,30 +21,9 @@ import dbus.mainloop.qt
 from PyQt4.QtCore import *
 
 from PulseProxyObjects import *
-
+from MediaPlayer import Mpris2MediaPlayer
 ##
 
-class Mpris2DummyController(QObject):
-    def __init__(self,name, dbusproxy):
-        QObject.__init__(self)
-        self.name = name
-        self.dbus_proxy = dbusproxy
-
-    def destination(self):
-        return self.name
-
-    def startOperationCall(self, argument):
-        if argument == 'play':
-            self.dbus_proxy.nowplaying_play(self.destination())
-        if argument == 'pause':
-            self.dbus_proxy.nowplaying_pause(self.destination())
-        if argument == 'previous':
-            self.dbus_proxy.nowplaying_prev(self.destination())
-        if argument == 'next':
-            self.dbus_proxy.nowplaying_next(self.destination())        
-
-    def operationDescription(self, name):
-        return name
 
 class PulseAudio(QObject):
     mpris2_properties_changed = pyqtSignal(str,dict)
@@ -131,9 +110,9 @@ class PulseAudio(QObject):
     def on_name_owner_changed(self, val, val1=None, val2=None):
         if "org.mpris.MediaPlayer2" in val:
             if val in self.bus.list_names() :
-                self.emit(SIGNAL("mpris2_player_added(QString, PyQt_PyObject)"), str(val), Mpris2DummyController(QString(val), self))
+                self.emit(SIGNAL("mpris2_player_added(QString, PyQt_PyObject)"), str(val), Mpris2MediaPlayer(QString(val), self))
             else:
-                self.emit(SIGNAL("mpris2_player_removed(QString, PyQt_PyObject)"), str(val), Mpris2DummyController(QString(val), self))
+                self.emit(SIGNAL("mpris2_player_removed(QString, PyQt_PyObject)"), str(val), Mpris2MediaPlayer(QString(val), self))
 
     def connect_mpris2_player(self, callback, name):
         self.bus.add_signal_receiver(callback ,
@@ -154,7 +133,7 @@ class PulseAudio(QObject):
         collection = []
         for val in self.bus.list_names() :
             if "org.mpris.MediaPlayer2" in val:
-                collection.append(Mpris2DummyController(QString(val), self))
+                collection.append(Mpris2MediaPlayer(QString(val), self))
         return collection
 
     def getMixer(self):
