@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 11:35+0000\n"
+"POT-Creation-Date: 2011-06-13 01:43+0200\n"
 "PO-Revision-Date: 2011-03-18 10:35+0300\n"
 "Last-Translator: proDOOMman <prodoomman@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -18,6 +18,152 @@ msgstr ""
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: rc.py:3 rc.py:18 rc.py:72
+msgid "Form"
+msgstr ""
+
+#: rc.py:6 rc.py:66
+msgid "Version"
+msgstr "Версия"
+
+#: rc.py:9 rc.py:60
+msgid "Homepage"
+msgstr "Домашняя страница"
+
+#: rc.py:12 rc.py:63
+msgid ""
+"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+"com/p/veromix-plasmoid/</A>"
+msgstr ""
+"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+"com/p/veromix-plasmoid/</A>"
+
+#: rc.py:15 rc.py:69
+msgid "X.Y"
+msgstr "X.Y"
+
+#: rc.py:21
+msgid "Popup Mode"
+msgstr "Окно микшера"
+
+#: rc.py:24
+msgid "Close when loosing focus"
+msgstr "Закрывать при потере фокуса"
+
+#: rc.py:27
+msgid "Close manually"
+msgstr "Закрывать вручную"
+
+#: rc.py:30
+msgid "Background"
+msgstr "Фон"
+
+#: rc.py:33
+msgid "No background"
+msgstr "Без фона"
+
+#: rc.py:36
+msgid "Translucent background"
+msgstr "Полупрозрачный фон"
+
+#: rc.py:39
+msgid "Standard background"
+msgstr "Стандартный фон"
+
+#: rc.py:42
+msgid "Notification "
+msgstr ""
+
+#: rc.py:45
+msgid "Show toolip"
+msgstr ""
+
+#: rc.py:48
+msgid "Layout"
+msgstr "Размещение"
+
+#: rc.py:51
+msgid "Use tabs"
+msgstr "Использовать вкладки"
+
+#: rc.py:54
+msgid "Always show sources"
+msgstr ""
+
+#: rc.py:57
+#, fuzzy
+msgid "Show meter"
+msgstr "Отображать метки громкости"
+
+#: rc.py:75
+msgid "Enable media player controls"
+msgstr "Включить управление проигрывателями"
+
+#: rc.py:78
+msgid "Use KDE nowplaying dataengine "
+msgstr ""
+
+#: rc.py:81
+msgid "Use mpris2"
+msgstr ""
+
+#: rc.py:84
+msgid "Media player blacklist"
+msgstr "Черный список проигрывателей"
+
+#: rc.py:87
+msgid "Running media players"
+msgstr "Запущенные проигрыватели"
+
+#: contents/code/main.py:61
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr "Veromix - это микшер для звукового сервера Pulseaudio."
+
+#: contents/code/main.py:131 contents/code/main.py:318
+msgid "Veromix volume up"
+msgstr "Veromix - увеличить громкость"
+
+#: contents/code/main.py:136 contents/code/main.py:323
+msgid "Veromix volume down"
+msgstr "Veromix - уменьшить громкость"
+
+#: contents/code/main.py:141 contents/code/main.py:328
+msgid "Veromix toggle  mute"
+msgstr "Veromix - включить или выключить звук"
+
+# Не уверен что это такое
+#: contents/code/main.py:149
+msgid "Main Volume"
+msgstr "Основной канал"
+
+#: contents/code/main.py:238
+msgid "Appearance"
+msgstr "Внешний вид"
+
+#: contents/code/main.py:253
+msgid "Media Player Controls"
+msgstr "Управление проигрывателями"
+
+#: contents/code/main.py:276
+msgid "Max volume value"
+msgstr "Максимальная громкость"
+
+#: contents/code/main.py:281
+msgid "Mute if volume reaches zero"
+msgstr "Выключать звук при уменьшении громкости до нуля"
+
+#: contents/code/main.py:285
+msgid "Sound Card Profiles"
+msgstr "Профили звуковых карт"
+
+#: contents/code/main.py:307
+msgid "Pulseaudio"
+msgstr "Pulseaudio"
+
+#: contents/code/main.py:332
+msgid "Keyboard Shortcuts"
+msgstr "Глобальные комбинации клавиш"
 
 #: contents/code/SettingsWidget.py:59
 msgid "Default Sink"
@@ -30,6 +176,18 @@ msgstr "Отключить/завершить"
 #: contents/code/SettingsWidget.py:115
 msgid "Output"
 msgstr "Вывод"
+
+#: contents/code/SinkInputUI.py:67
+msgid "System Notifications"
+msgstr ""
+
+#: contents/code/SinkInputUI.py:71
+msgid "Flash Player"
+msgstr ""
+
+#: contents/code/SinkInputUI.py:75
+msgid "Chromium Browser"
+msgstr ""
 
 # myself = меня или себя?
 # Где вообще будет юзаться этот текст?
@@ -90,112 +248,8 @@ msgstr ""
 "_VeromixServiceMain.py\">Детали в вики</a> <span style=\"font-size: small;\">"
 "(скопируйте адрес из контекстного меню)</span>."
 
-#: contents/code/main.py:60
-msgid "Veromix is a mixer for the Pulseaudio sound server. "
-msgstr "Veromix - это микшер для звукового сервера Pulseaudio."
-
-#: contents/code/main.py:129 contents/code/main.py:311
-msgid "Veromix volume up"
-msgstr "Veromix - увеличить громкость"
-
-#: contents/code/main.py:134 contents/code/main.py:316
-msgid "Veromix volume down"
-msgstr "Veromix - уменьшить громкость"
-
-#: contents/code/main.py:139 contents/code/main.py:321
-msgid "Veromix toggle  mute"
-msgstr "Veromix - включить или выключить звук"
-
-# Не уверен что это такое
-#: contents/code/main.py:147
-msgid "Main Volume"
-msgstr "Основной канал"
-
-#: contents/code/main.py:233
-msgid "Appearance"
-msgstr "Внешний вид"
-
-#: contents/code/main.py:245
-msgid "Media Player Controls"
-msgstr "Управление проигрывателями"
-
-#: contents/code/main.py:268
-msgid "Max volume value"
-msgstr "Максимальная громкость"
-
-#: contents/code/main.py:273
-msgid "Mute if volume reaches zero"
-msgstr "Выключать звук при уменьшении громкости до нуля"
-
-#: contents/code/main.py:277
-msgid "Sound Card Profiles"
-msgstr "Профили звуковых карт"
-
-#: contents/code/main.py:300
-msgid "Pulseaudio"
-msgstr "Pulseaudio"
-
-#: contents/code/main.py:325
-msgid "Keyboard Shortcuts"
-msgstr "Глобальные комбинации клавиш"
-
-#~ msgid "Version"
-#~ msgstr "Версия"
-
-#~ msgid "Homepage"
-#~ msgstr "Домашняя страница"
-
-#~ msgid ""
-#~ "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
-#~ "com/p/veromix-plasmoid/</A>"
-#~ msgstr ""
-#~ "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
-#~ "com/p/veromix-plasmoid/</A>"
-
-#~ msgid "X.Y"
-#~ msgstr "X.Y"
-
-#~ msgid "Background"
-#~ msgstr "Фон"
-
-#~ msgid "Popup Mode"
-#~ msgstr "Окно микшера"
-
-#~ msgid "Close when loosing focus"
-#~ msgstr "Закрывать при потере фокуса"
-
-#~ msgid "Close manually"
-#~ msgstr "Закрывать вручную"
-
-#~ msgid "No background"
-#~ msgstr "Без фона"
-
-#~ msgid "Translucent background"
-#~ msgstr "Полупрозрачный фон"
-
-#~ msgid "Standard background"
-#~ msgstr "Стандартный фон"
-
-#~ msgid "Use tabs"
-#~ msgstr "Использовать вкладки"
-
-#~ msgid "Layout"
-#~ msgstr "Размещение"
-
-#~ msgid "Show Meter"
-#~ msgstr "Отображать метки громкости"
-
-#~ msgid "Enable media player controls"
-#~ msgstr "Включить управление проигрывателями"
-
 #~ msgid "mpris2 Mediaplayers"
 #~ msgstr "Mpris2 проигрыватели"
-
-#~ msgid "Media player blacklist"
-#~ msgstr "Черный список проигрывателей"
-
-#~ msgid "Running media players"
-#~ msgstr "Запущенные проигрыватели"
 
 #~ msgid "Use tabs (requires plasma restart)"
 #~ msgstr "Использовать табы (нужен перезапуск plasma)"

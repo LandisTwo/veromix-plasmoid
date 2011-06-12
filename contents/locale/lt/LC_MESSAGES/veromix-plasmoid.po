@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-04-18 12:51+0300\n"
+"POT-Creation-Date: 2011-06-13 01:43+0200\n"
 "PO-Revision-Date: 2011-04-18 12:27+0300\n"
 "Last-Translator: Donatas G. <dgvirtual@akl.lt>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -113,52 +113,52 @@ msgstr "Leistuvo valdymo juodasis sąrašas"
 msgid "Running media players"
 msgstr "Veikiantys leistuvai"
 
-#: contents/code/main.py:60
+#: contents/code/main.py:61
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
 msgstr "Veromix yra Pulseaudio serverio maišiklis. "
 
-#: contents/code/main.py:129 contents/code/main.py:316
+#: contents/code/main.py:131 contents/code/main.py:318
 msgid "Veromix volume up"
 msgstr "Veromix - padidinti garsą"
 
-#: contents/code/main.py:134 contents/code/main.py:321
+#: contents/code/main.py:136 contents/code/main.py:323
 msgid "Veromix volume down"
 msgstr "Veromix - sumažinti garsą"
 
-#: contents/code/main.py:139 contents/code/main.py:326
+#: contents/code/main.py:141 contents/code/main.py:328
 msgid "Veromix toggle  mute"
 msgstr "Veromix - sukeisti iš/į begarsį"
 
 # Не уверен что это такое
-#: contents/code/main.py:147
+#: contents/code/main.py:149
 msgid "Main Volume"
 msgstr "Pagrindinis garso reguliuoklis"
 
-#: contents/code/main.py:236
+#: contents/code/main.py:238
 msgid "Appearance"
 msgstr "Išvaizda"
 
-#: contents/code/main.py:251
+#: contents/code/main.py:253
 msgid "Media Player Controls"
 msgstr "Leistuvo valdymas"
 
-#: contents/code/main.py:274
+#: contents/code/main.py:276
 msgid "Max volume value"
 msgstr "Maksimalus  garsas"
 
-#: contents/code/main.py:279
+#: contents/code/main.py:281
 msgid "Mute if volume reaches zero"
 msgstr "Užtildyti garsą valdikliui pasiekus nulį"
 
-#: contents/code/main.py:283
+#: contents/code/main.py:285
 msgid "Sound Card Profiles"
 msgstr "Garso plokštės profiliai"
 
-#: contents/code/main.py:305
+#: contents/code/main.py:307
 msgid "Pulseaudio"
 msgstr "Pulseaudio"
 
-#: contents/code/main.py:330
+#: contents/code/main.py:332
 msgid "Keyboard Shortcuts"
 msgstr "Globalieji spartieji klavišai"
 
@@ -173,6 +173,19 @@ msgstr "Atjungti/nužudyti"
 #: contents/code/SettingsWidget.py:115
 msgid "Output"
 msgstr "Išvestis"
+
+#: contents/code/SinkInputUI.py:67
+#, fuzzy
+msgid "System Notifications"
+msgstr "Perspėjimas "
+
+#: contents/code/SinkInputUI.py:71
+msgid "Flash Player"
+msgstr ""
+
+#: contents/code/SinkInputUI.py:75
+msgid "Chromium Browser"
+msgstr ""
 
 #: contents/code/Utils.py:30
 msgid "Please remove and re-add myself"

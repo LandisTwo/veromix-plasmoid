@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-24 11:35+0000\n"
+"POT-Creation-Date: 2011-06-13 01:43+0200\n"
 "PO-Revision-Date: 2011-03-20 18:56+0100\n"
 "Last-Translator: Gianluca Boiano <morf3089@gmail.com>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -17,6 +17,151 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: rc.py:3 rc.py:18 rc.py:72
+msgid "Form"
+msgstr "Form"
+
+#: rc.py:6 rc.py:66
+msgid "Version"
+msgstr "Versione"
+
+#: rc.py:9 rc.py:60
+msgid "Homepage"
+msgstr "Sito ufficiale"
+
+#: rc.py:12 rc.py:63
+msgid ""
+"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+"com/p/veromix-plasmoid/</A>"
+msgstr ""
+"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+"com/p/veromix-plasmoid/</A>"
+
+#: rc.py:15 rc.py:69
+msgid "X.Y"
+msgstr "X.Y"
+
+#: rc.py:21
+msgid "Popup Mode"
+msgstr "Comportamento Finestra a comparsa"
+
+#: rc.py:24
+msgid "Close when loosing focus"
+msgstr "Scompare in assenza di focus"
+
+#: rc.py:27
+msgid "Close manually"
+msgstr "Da chiudere manualmente"
+
+#: rc.py:30
+msgid "Background"
+msgstr "Sfondo"
+
+#: rc.py:33
+msgid "No background"
+msgstr "Senza sfondo"
+
+#: rc.py:36
+msgid "Translucent background"
+msgstr "Sfondo trasparente"
+
+#: rc.py:39
+msgid "Standard background"
+msgstr "Sfondo predefinito"
+
+#: rc.py:42
+msgid "Notification "
+msgstr ""
+
+#: rc.py:45
+msgid "Show toolip"
+msgstr ""
+
+#: rc.py:48
+msgid "Layout"
+msgstr "Dettagli interfaccia"
+
+#: rc.py:51
+msgid "Use tabs"
+msgstr "Usa schede"
+
+#: rc.py:54
+msgid "Always show sources"
+msgstr ""
+
+#: rc.py:57
+#, fuzzy
+msgid "Show meter"
+msgstr "Mostra VuMeter"
+
+#: rc.py:75
+msgid "Enable media player controls"
+msgstr "Mostra controlli lettore multimediale"
+
+#: rc.py:78
+msgid "Use KDE nowplaying dataengine "
+msgstr ""
+
+#: rc.py:81
+msgid "Use mpris2"
+msgstr ""
+
+#: rc.py:84
+msgid "Media player blacklist"
+msgstr "Media player da ignorare"
+
+#: rc.py:87
+msgid "Running media players"
+msgstr "Media player in esecuzione"
+
+#: contents/code/main.py:61
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr "Veromix è un mixer per il server sonoro Pulseaudio."
+
+#: contents/code/main.py:131 contents/code/main.py:318
+msgid "Veromix volume up"
+msgstr "Aumenta volume Veromix"
+
+#: contents/code/main.py:136 contents/code/main.py:323
+msgid "Veromix volume down"
+msgstr "Diminuisci volume Veromix"
+
+#: contents/code/main.py:141 contents/code/main.py:328
+msgid "Veromix toggle  mute"
+msgstr "Abilita/Disabilita muto per Veromix"
+
+#: contents/code/main.py:149
+msgid "Main Volume"
+msgstr "Volume Principale"
+
+#: contents/code/main.py:238
+msgid "Appearance"
+msgstr "Aspetto"
+
+#: contents/code/main.py:253
+msgid "Media Player Controls"
+msgstr "Controlli Multimediali"
+
+#: contents/code/main.py:276
+msgid "Max volume value"
+msgstr "Valore massimo per volume"
+
+#: contents/code/main.py:281
+msgid "Mute if volume reaches zero"
+msgstr "Abilita muto se il volume è 0"
+
+#: contents/code/main.py:285
+msgid "Sound Card Profiles"
+msgstr "Profili Scheda Audio"
+
+#: contents/code/main.py:307
+msgid "Pulseaudio"
+msgstr "Pulseaudio"
+
+#: contents/code/main.py:332
+msgid "Keyboard Shortcuts"
+msgstr "Scorciatoie Tastiera"
 
 #: contents/code/SettingsWidget.py:59
 msgid "Default Sink"
@@ -29,6 +174,18 @@ msgstr "Disconnetti/termina"
 #: contents/code/SettingsWidget.py:115
 msgid "Output"
 msgstr "Uscita"
+
+#: contents/code/SinkInputUI.py:67
+msgid "System Notifications"
+msgstr ""
+
+#: contents/code/SinkInputUI.py:71
+msgid "Flash Player"
+msgstr ""
+
+#: contents/code/SinkInputUI.py:75
+msgid "Chromium Browser"
+msgstr ""
 
 #: contents/code/Utils.py:30
 msgid "Please remove and re-add myself"
@@ -83,114 +240,8 @@ msgstr ""
 "maggiori informazioni </a> <span style=\"font-size: small;\">(tasto destro e "
 "\"Copia indirizzo di collegamento\")</span>."
 
-#: contents/code/main.py:60
-msgid "Veromix is a mixer for the Pulseaudio sound server. "
-msgstr "Veromix è un mixer per il server sonoro Pulseaudio."
-
-#: contents/code/main.py:129 contents/code/main.py:311
-msgid "Veromix volume up"
-msgstr "Aumenta volume Veromix"
-
-#: contents/code/main.py:134 contents/code/main.py:316
-msgid "Veromix volume down"
-msgstr "Diminuisci volume Veromix"
-
-#: contents/code/main.py:139 contents/code/main.py:321
-msgid "Veromix toggle  mute"
-msgstr "Abilita/Disabilita muto per Veromix"
-
-#: contents/code/main.py:147
-msgid "Main Volume"
-msgstr "Volume Principale"
-
-#: contents/code/main.py:233
-msgid "Appearance"
-msgstr "Aspetto"
-
-#: contents/code/main.py:245
-msgid "Media Player Controls"
-msgstr "Controlli Multimediali"
-
-#: contents/code/main.py:268
-msgid "Max volume value"
-msgstr "Valore massimo per volume"
-
-#: contents/code/main.py:273
-msgid "Mute if volume reaches zero"
-msgstr "Abilita muto se il volume è 0"
-
-#: contents/code/main.py:277
-msgid "Sound Card Profiles"
-msgstr "Profili Scheda Audio"
-
-#: contents/code/main.py:300
-msgid "Pulseaudio"
-msgstr "Pulseaudio"
-
-#: contents/code/main.py:325
-msgid "Keyboard Shortcuts"
-msgstr "Scorciatoie Tastiera"
-
-#~ msgid "Form"
-#~ msgstr "Form"
-
-#~ msgid "Version"
-#~ msgstr "Versione"
-
-#~ msgid "Homepage"
-#~ msgstr "Sito ufficiale"
-
-#~ msgid ""
-#~ "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
-#~ "com/p/veromix-plasmoid/</A>"
-#~ msgstr ""
-#~ "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
-#~ "com/p/veromix-plasmoid/</A>"
-
-#~ msgid "X.Y"
-#~ msgstr "X.Y"
-
-#~ msgid "Background"
-#~ msgstr "Sfondo"
-
-#~ msgid "Popup Mode"
-#~ msgstr "Comportamento Finestra a comparsa"
-
-#~ msgid "Close when loosing focus"
-#~ msgstr "Scompare in assenza di focus"
-
-#~ msgid "Close manually"
-#~ msgstr "Da chiudere manualmente"
-
-#~ msgid "No background"
-#~ msgstr "Senza sfondo"
-
-#~ msgid "Translucent background"
-#~ msgstr "Sfondo trasparente"
-
-#~ msgid "Standard background"
-#~ msgstr "Sfondo predefinito"
-
-#~ msgid "Use tabs"
-#~ msgstr "Usa schede"
-
-#~ msgid "Layout"
-#~ msgstr "Dettagli interfaccia"
-
-#~ msgid "Show Meter"
-#~ msgstr "Mostra VuMeter"
-
-#~ msgid "Enable media player controls"
-#~ msgstr "Mostra controlli lettore multimediale"
-
 #~ msgid "mpris2 Mediaplayers"
 #~ msgstr "Interfaccia multimediale MPRIS2"
-
-#~ msgid "Media player blacklist"
-#~ msgstr "Media player da ignorare"
-
-#~ msgid "Running media players"
-#~ msgstr "Media player in esecuzione"
 
 #~ msgid "Use tabs (requires plasma restart)"
 #~ msgstr "Tabs anzeigen (plasma muss neu gestartet werden)"
