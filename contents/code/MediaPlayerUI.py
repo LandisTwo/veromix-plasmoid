@@ -30,22 +30,18 @@ from MuteButton  import *
 from MediaPlayer import *
 
 
-class MediaPlayerUI( Channel ):
+class MediaPlayerUI(Channel):
 
     def __init__(self,name, veromix, controller):
         self.controller = controller
         Channel.__init__(self, veromix)
         self.controller.data_updated.connect(self.controller_data_updated)
         self.index = -1
-
         self._state= None
         self._position = 0
-        self._length = 0
         self._artwork = ""
-
         self.last_playing_icon = KIcon(self.get_pauseIcon())
         self.layout.setContentsMargins(6,0,6,2)
-
         self.controller.init_connection()
 
     def initArrangement(self):
@@ -87,29 +83,45 @@ class MediaPlayerUI( Channel ):
         self.middle_layout.removeItem(self.slider)
         if (self.extended_panel_shown):
             self.extended_panel_shown = False
-            self.frame_layout.removeItem(self.extended_panel)
+            #self.frame_layout.removeItem(self.extended_panel)
+            self.extended_panel.setParent(None)
+            self.panel_layout.setContentsMargins(6,0,10,6)
             self.extended_panel = None
             self.slider= None
+            self.expander.setSvg("widgets/arrows", "left-arrow")
         else:
             self.extended_panel_shown = True
             self.create_settings_widget()
-            self.frame_layout.addItem(self.extended_panel)
+            #self.frame_layout.addItem(self.extended_panel)
+            self.panel_layout.setContentsMargins(6,0,10,20)
+            self.extended_panel.setPos(0, int(self.frame.size().height() - 15))
+            #self.expander.setSvg("widgets/arrows", "up-arrow")
+            self.expander.setSvg("widgets/arrows", "down-arrow")
         self.controller.set_fetch_extended_info(self.extended_panel_shown)
+        self.veromix.check_geometries()
+
+    def _resize_widgets(self):
+        #self.expander.setPos(int(self.panel.size().width() - self.expander.size().width()) ,self.panel.size().height() - self.expander.size().height())
+        self.expander.setPos(int(self.panel.size().width() - self.expander.size().width()) ,0)
+        if self.extended_panel:
+            self.extended_panel.resize(QSizeF(int(self.frame.size().width()), -1))
+            #self.extended_panel.setPos(0, int(self.frame.size().height() - 12))
 
     def create_settings_widget(self):
         self.createLengthLabel()
         self.createPositionLabel()
         self.createSlider()
-        self.extended_panel = QGraphicsWidget()
+        self.extended_panel = QGraphicsWidget(self.frame)
         self.extended_panel_layout = QGraphicsLinearLayout(Qt.Horizontal)
-        self.extended_panel_layout.setContentsMargins(0,0,0,0)
         self.extended_panel.setLayout(self.extended_panel_layout)
 
-        self.extended_panel_layout.addStretch()
+        self.extended_panel.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
+        self.position_label.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum))
+        self.length_label.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum))
+
         self.extended_panel_layout.addItem(self.position_label)
         self.extended_panel_layout.addItem(self.slider)
         self.extended_panel_layout.addItem(self.length_label)
-        self.extended_panel_layout.addStretch()
 
     def controller_data_updated(self):
         self.update_state()
@@ -155,8 +167,7 @@ class MediaPlayerUI( Channel ):
             pos_str = ( '%d:%02d' % (v / 60, v % 60))
             self.position_label.setBoldText(pos_str)
         v = self.controller.length()
-        if v != self._length:
-            self._length = v
+        if v :
             pos_str = ( '%d:%02d' % (v / 60, v % 60))
             self.length_label.setBoldText(pos_str)
 
@@ -208,9 +219,9 @@ class MediaPlayerUI( Channel ):
         self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setLayout(self.middle_layout)
         self.CONTROLSBAR_SIZE = 80
-        self.setMinimumHeight(self.CONTROLSBAR_SIZE)
-        self.setPreferredHeight(self.CONTROLSBAR_SIZE)
-        self.setMaximumHeight(self.CONTROLSBAR_SIZE)
+        self.middle.setMinimumHeight(self.CONTROLSBAR_SIZE)
+        self.middle.setPreferredHeight(self.CONTROLSBAR_SIZE)
+        self.middle.setMaximumHeight(self.CONTROLSBAR_SIZE)
         self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.middle.setIcon(KIcon(self.get_pauseIcon()))
         self.middle.clicked.connect(self.on_play_cb)
