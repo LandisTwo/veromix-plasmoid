@@ -57,20 +57,34 @@ class InputSinkUI(SinkUI):
     def update_label(self):
         text =  self.pa_sink.name
         bold = self.pa_sink.props["app"]
-        if self.slider:
-            self.slider.setText(text)
-            self.slider.setBoldText(bold)
-            self.text = bold
+
         iconname = None
         if self.pa_sink.props["app_icon"] != "None":
             iconname = self.pa_sink.props["app_icon"]
         if iconname == None and  self.pa_sink.props["app"] != "None":
             iconname = self.veromix.query_application(self.pa_sink.props["app"])
-        if iconname is None and bold == "plugin-container":
+        if bold == "knotify":
+            bold = i18n("System Notifications")
+            text = ""
+            iconname = 'dialog-information'
+        if bold == "npviewer.bin" or bold == "plugin-container":
+            bold = i18n("Flash Player")
+            text = ""
             iconname = 'flash'
+        if bold == "chromium-browser":
+            bold = i18n("Chromium Browser")
+            text = ""
+        if iconname == None:
+            iconname = "mixer-pcm"
+
         if iconname :
             self.mute.setBigIconName(iconname)
             self.updateIcon()
+
+        if self.slider:
+            self.slider.setText(text)
+            self.slider.setBoldText(bold)
+            self.text = bold
 
 ### Drag and Drop
 
