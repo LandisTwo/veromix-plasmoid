@@ -183,7 +183,7 @@ class MediaPlayerUI(Channel):
 
     def on_slider_action_triggered(self, action):
         value = self.slider.nativeWidget().sliderPosition()
-        if value > -1 and action == 7:
+        if value > -1 and (action == 7 or action == 3):
             self.controller.seek(value)
 
 ## initialize ui
