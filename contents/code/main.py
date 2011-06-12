@@ -68,15 +68,16 @@ class VeroMixPlasmoid(plasmascript.Applet):
     nowplaying_player_dataUpdated = pyqtSignal(QString, dict)
 
     def __init__(self,parent,args=None):
-        plasmascript.Applet.__init__(self,parent)
         self.engine = None
         self.now_playing_engine = None
         self.louder_action_editor = None
         self.lower_action_editor = None
         self.mute_action_editor = None
         self.card_settings = None
+        plasmascript.Applet.__init__(self,parent)
 
     def init(self):
+        plasmascript.Applet.init(self)
         out = commands.getstatusoutput("xdg-icon-resource install --size 128 " + unicode(self.package().path()) + "contents/icons/veromix-plasmoid-128.png veromix-plasmoid")
         if out[0] == 0:
             print "veromix icon installed"
@@ -226,30 +227,30 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.connect(self.config_widget, SIGNAL('destroyed(QObject*)'), self.configWidgetDestroyed)
 
         self.config_ui = uic.loadUi(str(self.package().filePath('ui', 'appearance.ui')), self.config_widget)
-        self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background","0").toInt() [0] )
+        self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background","0").toInt() [0])
         self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
-        self.config_ui.useTabs.setChecked(self.useTabs() )
+        self.config_ui.useTabs.setChecked(self.useTabs())
         self.config_ui.show_tooltip.setChecked(self.get_show_toolip())
         self.config_ui.always_show_sources.setChecked(self.get_always_show_sources())
         self.config_ui.meter_visible.setChecked(self.get_meter_visible())
 
         self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
-        parent.addPage(self.config_widget, i18n("Appearance"), "veromix-plasmoid-128" )
+        parent.addPage(self.config_widget, i18n("Appearance"), "veromix-plasmoid-128")
 
         self.mediaplayer_settings_widget = QWidget(parent)
         self.mediaplayer_settings_ui = uic.loadUi(str(self.package().filePath('ui', 'nowplaying.ui')), self.mediaplayer_settings_widget)
 
-        self.mediaplayer_settings_ui.mediaplayerBlacklist.setPlainText(self.get_mediaplayer_blacklist_string() )
+        self.mediaplayer_settings_ui.mediaplayerBlacklist.setPlainText(self.get_mediaplayer_blacklist_string())
         self.mediaplayer_settings_ui.runningMediaplayers.setPlainText(self.get_running_mediaplayers())
         self.mediaplayer_settings_ui.runningMediaplayers.setReadOnly(True)
 
-        self.mediaplayer_settings_ui.use_nowplaying.setChecked(self.is_nowplaying_enabled() )
+        self.mediaplayer_settings_ui.use_nowplaying.setChecked(self.is_nowplaying_enabled())
         self.mediaplayer_settings_ui.use_nowplaying.stateChanged.connect(self.update_mediaplayer_settings_ui)
 
-        self.mediaplayer_settings_ui.use_mpris2.setChecked(self.is_mpris2_enabled() )
+        self.mediaplayer_settings_ui.use_mpris2.setChecked(self.is_mpris2_enabled())
         self.mediaplayer_settings_ui.use_mpris2.stateChanged.connect(self.update_mediaplayer_settings_ui)
 
-        parent.addPage(self.mediaplayer_settings_widget, i18n("Media Player Controls"), "veromix-plasmoid-128" )
+        parent.addPage(self.mediaplayer_settings_widget, i18n("Media Player Controls"), "veromix-plasmoid-128")
 
         #self.about_widget = QWidget(parent)
         #self.about_ui = uic.loadUi(str(self.package().filePath('ui', 'about.ui')), self.about_widget)
@@ -331,8 +332,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
         dialog.addPage(self.kb_settings_page, i18n("Keyboard Shortcuts"), "preferences-desktop-keyboard")
 
     def configDenied(self):
-        self.apply_nowplaying(self.is_nowplaying_enabled() )
-        self.apply_mpris2(self.is_mpris2_enabled() )
+        self.apply_nowplaying(self.is_nowplaying_enabled())
+        self.apply_mpris2(self.is_mpris2_enabled())
 
     def configChanged(self):
         self.config().writeEntry("background",str(self.config_ui.showBackground.currentIndex()))
@@ -348,7 +349,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config().writeEntry("use_nowplaying", str(self.mediaplayer_settings_ui.use_nowplaying.isChecked()))
         self.config().writeEntry("use_mpris2", str(self.mediaplayer_settings_ui.use_mpris2.isChecked()))
 
-        #self.config().writeEntry("mpris2List",str(self.mediaplayer_settings_ui.mpris2List.toPlainText()).strip() )
+        #self.config().writeEntry("mpris2List",str(self.mediaplayer_settings_ui.mpris2List.toPlainText()).strip())
         self.config().writeEntry("nowplayingBlacklist",str(self.mediaplayer_settings_ui.mediaplayerBlacklist.toPlainText()).strip())
 
         self.config().writeEntry("max_volume", str(self.max_volume_spinbox.value()))
@@ -434,7 +435,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         return self.config().readEntry("auto_mute",False ).toBool()
 
     def get_show_toolip(self):
-        return self.config().readEntry("show_toolip",True ).toBool()
+        return self.config().readEntry("show_tooltip",True ).toBool()
 
     def get_always_show_sources(self):
         return self.config().readEntry("always_show_sources",False ).toBool()
