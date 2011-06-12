@@ -192,6 +192,8 @@ class Mpris2MediaPlayer(MediaPlayer):
         MediaPlayer.__init__(self)
         self._name = name
         self._dbus_proxy = dbus_proxy
+        self._seek_position = 0
+        self._timer_running = False
 
     def init_connection(self):
         self.connect_mpris2()
@@ -212,6 +214,7 @@ class Mpris2MediaPlayer(MediaPlayer):
         self._dbus_proxy.nowplaying_prev(self.name())
 
     def seek(self, position):
+        print "schedule_set_mpris2_position", position
         self.schedule_set_mpris2_position(position)
 
     def connect_mpris2(self):
@@ -273,7 +276,7 @@ class Mpris2MediaPlayer(MediaPlayer):
             changed = False
             pos = self._dbus_proxy.mpris2_get_position(self.name())
             position = pos / 1000000
-            if position != self.position():
+            if position != self.position() and position <= self.length():
                 changed = True
                 self.set_position(position)
             if changed:
@@ -283,22 +286,25 @@ class Mpris2MediaPlayer(MediaPlayer):
     def is_mpris2_player(self):
         return True
 
+    # Don't flood players while dragging the slider.
+    # Update the position at most every 500ms
     def schedule_set_mpris2_position(self, value=0):
-        # FIXME should be done nicer
-        slider_pos = value
-        if  slider_pos == 0 and self.last_slider_position > 0:
-            slider_pos = self.last_slider_position
-        elif slider_pos == 0:
-            return
         now = datetime.datetime.now()
         time =  (now - self.last_position_change ).microseconds
-        if time > 500000:
-            pos = self._dbus_proxy.mpris2_get_position(self.name()) / 1000000
-            new_pos =  (slider_pos * self.length()) / 100
-            diff = new_pos - pos
-            self._dbus_proxy.mpris2_set_position(self.name() , int(diff * 1000000) )
-            self.last_slider_position = 0
-            self.last_position_change = datetime.datetime.now()
+        if value > 0:
+            # value is % of current track: Calculate position in seconds
+            new_pos =  (value * self.length()) / 100
+            self._seek_position = int((new_pos - self.position()) * 1000000)
+            self.last_position_change = now
         else:
-            self.last_slider_position = slider_pos
-            QTimer.singleShot(300, self.schedule_set_mpris2_position)
+            # callback from timer
+            self._timer_running = False
+        if time > 500000:
+            self._dbus_proxy.mpris2_set_position(self.name() , self._seek_position)
+            #self.set_position(self._seek_position / 1000000)
+            self.last_position_change = now
+        else:
+            if not self._timer_running:
+                self._timer_running = True
+                QTimer.singleShot(500, self.schedule_set_mpris2_position)
+
