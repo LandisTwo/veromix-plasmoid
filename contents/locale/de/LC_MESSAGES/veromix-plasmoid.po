@@ -1,33 +1,34 @@
-# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Kai Uwe b <privat@kde.broulik.de>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-24 11:35+0000\n"
-"PO-Revision-Date: 2010-12-02 15:47+0100\n"
-"Last-Translator: nik lutz <nik.lutz@gmail.com>\n"
-"Language-Team: de <nik.lutz@gmail.com>\n"
+"PO-Revision-Date: 2011-06-10 18:43+0200\n"
+"Last-Translator: Kai Uwe b <privat@kde.broulik.de>\n"
+"Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: German\n"
+"X-Generator: Lokalize 1.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: contents/code/SettingsWidget.py:59
 msgid "Default Sink"
-msgstr ""
+msgstr "Standardgerät"
 
 #: contents/code/SettingsWidget.py:98
 msgid "Disconnect/kill"
-msgstr ""
+msgstr "Trennen"
 
 #: contents/code/SettingsWidget.py:115
 msgid "Output"
-msgstr ""
+msgstr "Ausgabe"
 
 #: contents/code/Utils.py:30
 msgid "Please remove and re-add myself"
@@ -48,13 +49,13 @@ msgid ""
 msgstr ""
 "<b>Konfiguration aktualisiert</a><br/>Aufgrund eines bekannten Fehlers in "
 "KDE 4.4 konnte Veromix nicht geladen werden.<br/><br/>Die Konfiguration "
-"wurde aktualisiert, so dass beim nächsten Start dieser Fehler nicht mehr "
+"wurde aktualisiert, sodass dieser Fehler beim nächsten Start nicht mehr "
 "auftreten sollte.<br/><br/>Bitte <b>entfernen</b> Sie dieses Plasmoid und "
 "fügen Sie es erneut zu Ihrem Desktop hinzu. Alternativ können Sie Ihren "
 "Computer auch neu starten. <br/><br/><a href=\"http://code.google.com/p/"
 "veromix-plasmoid/wiki/VeromixComponents#KDE_4.4_compatibility\">Mehr "
 "Informationen finden sie im Wiki</a> <span style=\"font-size: small;\">"
-"(rechts click und \"Adresse kopieren\")</span>."
+"(Recktsklick → „Adresse kopieren“)</span>."
 
 #: contents/code/VeroMix.py:100
 msgid "Playback"
@@ -87,19 +88,19 @@ msgstr ""
 
 #: contents/code/main.py:60
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
-msgstr "Veromix ist ein Lautstärkeregler für den Pulseaudio sound server."
+msgstr "Veromix ist ein Lautstärkeregler für den Pulseaudio-Soundserver."
 
 #: contents/code/main.py:129 contents/code/main.py:311
 msgid "Veromix volume up"
-msgstr "Veromix Lautstärke erhöhen"
+msgstr "Veromix-Lautstärke erhöhen"
 
 #: contents/code/main.py:134 contents/code/main.py:316
 msgid "Veromix volume down"
-msgstr "Veromix Lautstärke verringern"
+msgstr "Veromix-Lautstärke verringern"
 
 #: contents/code/main.py:139 contents/code/main.py:321
 msgid "Veromix toggle  mute"
-msgstr "Veromix Stummschaltung ein/aus"
+msgstr "Veromix-Stummschaltung ein/aus"
 
 #: contents/code/main.py:147
 msgid "Main Volume"
@@ -107,33 +108,41 @@ msgstr "Hauptregler"
 
 #: contents/code/main.py:233
 msgid "Appearance"
-msgstr "Aussehen"
+msgstr "Erscheinungsbild"
 
 #: contents/code/main.py:245
-#, fuzzy
 msgid "Media Player Controls"
-msgstr "Medien-Player Steuerung anzeigen"
+msgstr "Medienwiedergabesteuerung anzeigen"
 
 #: contents/code/main.py:268
-#, fuzzy
 msgid "Max volume value"
-msgstr "Veromix Lautstärke erhöhen"
+msgstr "Maximallautstärke"
 
 #: contents/code/main.py:273
 msgid "Mute if volume reaches zero"
-msgstr ""
+msgstr "Stummschalten wenn Lautstärke Null erreicht"
 
 #: contents/code/main.py:277
 msgid "Sound Card Profiles"
-msgstr ""
+msgstr "Soundkartenprofile"
 
 #: contents/code/main.py:300
 msgid "Pulseaudio"
-msgstr ""
+msgstr "Pulse-Audio"
 
 #: contents/code/main.py:325
 msgid "Keyboard Shortcuts"
-msgstr ""
+msgstr "Tastenkürzel"
+
+#: contents/code/SinkInputUI.py:107
+msgid "System Notifications"
+msgstr "Systembenachrichtigungen"
+
+#: contents/code/SinkInputUI.py:110
+msgid "Flash Player"
+msgstr "Flash Player"
+
+#
 
 #~ msgid "Form"
 #~ msgstr "Von"
