@@ -1,6 +1,7 @@
 plasma-widget-veromix (0.12.0-1) unstable; urgency=low
 
     * New upstream release (Closes: #626494).
+    * Updated debian/control Standards-Version to 3.9.2 (no changes).
 
  -- Nik Lutz <nik.lutz@gmail.com>  Thu, 13 Jun 2011 03:17:00 +0100
 
