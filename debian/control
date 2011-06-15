@@ -3,7 +3,7 @@ Section: kde
 Priority: optional
 Maintainer: Nik Lutz <nik.lutz@gmail.com>
 Build-Depends: debhelper (>= 8), gettext, kdelibs-bin, kdesdk-scripts
-Standards-Version: 3.9.1
+Standards-Version: 3.9.2
 Homepage: http://code.google.com/p/veromix-plasmoid/
 Vcs-Browser: http://code.google.com/p/veromix-plasmoid/source/browse/
 Vcs-Svn: http://veromix-plasmoid.googlecode.com/svn/trunk/
