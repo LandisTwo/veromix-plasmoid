@@ -25,5 +25,7 @@ pwd
 tar -xzf ${TMPDIR}/$TAR_NAME
 cd ${CUR}
 cp -r debian ${BUILDDIR}
+cd  ${BUILDDIR}
 find debian/ -type d -name '.svn' | xargs rm -rf
+cd ${CUR}
 pwd
