@@ -12,9 +12,9 @@ echo $NAME
 ORIG=$(pwd)
 
 TMPDIR=/tmp/debian
-rm -rf ${TMPDIR}
+rm -rf "${TMPDIR}"
 mkdir ${TMPDIR}
-tar zcvf ${TMPDIR}/$TAR_NAME --exclude=.svn  --exclude="contrib" --exclude=debian --exclude="reload_plasma.sh"  --exclude="kill_service.sh" --exclude="create_package.sh"  --exclude="metadata.desktop.kde4.4" --exclude="*.mo" .
+tar zcvf ${TMPDIR}/$TAR_NAME --exclude=.svn --exclude="*~^" --exclude="contrib" --exclude=debian --exclude="reload_plasma.sh"  --exclude="kill_service.sh" --exclude="create_package.sh"  --exclude="metadata.desktop.kde4.4" --exclude="*.mo" .
 
 BUILDDIR=${TMPDIR}/plasma-widget-veromix
 mkdir ${BUILDDIR}
@@ -25,4 +25,5 @@ pwd
 tar -xzf ${TMPDIR}/$TAR_NAME
 cd ${CUR}
 cp -r debian ${BUILDDIR}
+find debian/ -type d -name '.svn' | xargs rm -rf
 pwd

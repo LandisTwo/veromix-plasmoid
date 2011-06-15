@@ -33,5 +33,6 @@ for d in contents/locale/*; do
     msgfmt "$d/LC_MESSAGES/$NAME.po" -o "$d/LC_MESSAGES/$NAME.mo"
 done
 
+find . -name '*~' | xargs rm -f
 rm -f rc.py
 rm -f $NAME.pot
