@@ -72,11 +72,11 @@ msgstr "Sfondo predefinito"
 
 #: rc.py:42
 msgid "Notification "
-msgstr ""
+msgstr "Notifiche"
 
 #: rc.py:45
 msgid "Show toolip"
-msgstr ""
+msgstr "Mostra suggerimenti"
 
 #: rc.py:48
 msgid "Layout"
@@ -88,7 +88,7 @@ msgstr "Usa schede"
 
 #: rc.py:54
 msgid "Always show sources"
-msgstr ""
+msgstr "Mostra sempre sorgenti "
 
 #: rc.py:57
 #, fuzzy
@@ -101,11 +101,11 @@ msgstr "Mostra controlli lettore multimediale"
 
 #: rc.py:78
 msgid "Use KDE nowplaying dataengine "
-msgstr ""
+msgstr "Usa nowplaying nativo di KDE"
 
 #: rc.py:81
 msgid "Use mpris2"
-msgstr ""
+msgstr "Usa mpris2"
 
 #: rc.py:84
 msgid "Media player blacklist"
@@ -177,15 +177,15 @@ msgstr "Uscita"
 
 #: contents/code/SinkInputUI.py:67
 msgid "System Notifications"
-msgstr ""
+msgstr "Notifiche di sistema"
 
 #: contents/code/SinkInputUI.py:71
 msgid "Flash Player"
-msgstr ""
+msgstr "Flash Player"
 
 #: contents/code/SinkInputUI.py:75
 msgid "Chromium Browser"
-msgstr ""
+msgstr "Chromium Browser"
 
 #: contents/code/Utils.py:30
 msgid "Please remove and re-add myself"
