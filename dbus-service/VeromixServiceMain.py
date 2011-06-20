@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+import sys
+if sys.version_info[0] > 2:
+        import os
+        os.execvp("python2", ["python2"] + sys.argv)
+# ... chain-load Python 2 code without using syntax that Python 3 will choke on
+# This is from: <https://lwn.net/Articles/427309/>.
+
 # -*- coding: utf-8 -*-
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,6 +34,7 @@ from PyQt4 import QtCore
 from pulseaudio.PulseAudio import *
 from VeromixDbus import *
 from Pa2dBus import *
+
 
 if __name__ == '__main__':
     app=QtCore.QCoreApplication(sys.argv)
