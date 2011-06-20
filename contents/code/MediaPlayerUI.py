@@ -176,7 +176,7 @@ class MediaPlayerUI(Channel):
             if self.controller.state() == MediaPlayer.Stopped:
                 self.slider.setValueFromPulse(0)
             else:
-                if self.controller.length() > -1 :
+                if self.controller.length() > 0 :
                     v = self.controller.position() * 100 / self.controller.length()
                     if self.slider.check_pulse_timestamp():
                         self.slider.setValue(v)
@@ -294,10 +294,10 @@ class MediaPlayerUI(Channel):
     def get_assotiated_sink(self):
         name = str(self.get_application_name()).lower()
         for sink in self.veromix.get_sinkinput_widgets():
-            if str(sink.text).lower() == name:
+            if str(sink.name()).lower() == name:
                 return sink
         for sink in self.veromix.get_sinkinput_widgets():
-            if str(sink.text).lower().find(name) >= 0 :
+            if str(sink.name()).lower().find(name) >= 0 :
                 return sink
         return None
 

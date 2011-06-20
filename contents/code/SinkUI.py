@@ -50,11 +50,12 @@ class SinkUI(Channel):
     def update_label(self):
         text = ""
         try:
-            self.app = self.pa_sink.props["device_name"]
+            text = self.pa_sink.props["device_name"]
         except:
             pass
         if self.slider:
-            self.slider.setBoldText(self.app)
+            self.slider.setBoldText(text)
+            self.set_name(self.name())
 
     def create_settings_widget(self):
         self.settings_widget = SinkSettingsWidget(self.veromix, self)

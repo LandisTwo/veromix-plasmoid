@@ -27,6 +27,7 @@ from InfoWidget import SinkInfoWidget
 from MuteButton  import MuteButton
 from ClickableMeter import ClickableMeter
 from SinkChannelWidget import SinkChannelWidget
+from Utils import *
 
 class Channel(QGraphicsWidget):
     def __init__(self , parent):
@@ -35,7 +36,7 @@ class Channel(QGraphicsWidget):
         self.index = -1
         self.pa = parent.getPulseAudio()
         self.app = "output"
-        self.name = ""
+        self.set_name("")
         self.sortOrderIndex = 0
         self.deleted = True
         self.pa_sink = None
@@ -216,7 +217,7 @@ class Channel(QGraphicsWidget):
             self.meter.setValue(int(value))
 
     def update_essentials(self,info):
-        self.name = info.name
+        self.set_name(info.name)
         self.pa_sink = info
         self.index = info.index
         self.updateSortOrderIndex()
@@ -282,3 +283,8 @@ class Channel(QGraphicsWidget):
         if self.slider:
             self.slider.wheelEvent(event)
 
+    def set_name(self, string):
+        self._name = in_unicode(string)
+
+    def name(self):
+        return self._name

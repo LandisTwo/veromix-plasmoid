@@ -49,7 +49,8 @@ class SourceUI( Channel ):
             text = self.pa_sink.name
         if self.slider:
             self.slider.setText(text )
-            self.slider.setBoldText(bold )
+            self.slider.setBoldText(bold)
+        self.set_name(bold)
 
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:

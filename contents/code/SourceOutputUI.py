@@ -59,9 +59,10 @@ class SourceOutputUI( Channel ):
             bold = self.pa_sink.props["description"]
             text = self.pa_sink.name
 
-        if self.name.find("ALSA") == 0 and "application.process.binary" in self.pa_sink.props.keys():
+        if self.name().find("ALSA") == 0 and "application.process.binary" in self.pa_sink.props.keys():
             bold = self.pa_sink.props[ "application.process.binary"]
             text =  self.pa_sink.props[ "application.name"]
+        self.set_text(bold)
 
         if self.slider:
             self.slider.setText(text)
