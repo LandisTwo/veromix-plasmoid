@@ -239,6 +239,9 @@ class Mpris2MediaPlayer(MediaPlayer):
 
     def on_mpris2_properties_changed(self, interface, properties, signature):
         changed = False
+
+        if type(properties) == type(dbus.String("")):
+            return
         if dbus.String("PlaybackStatus") in properties.keys():
             status = properties[dbus.String("PlaybackStatus")]
             old_state = self.state()
@@ -251,8 +254,9 @@ class Mpris2MediaPlayer(MediaPlayer):
 
         if dbus.String("Metadata") in properties.keys():
             metadata = properties[dbus.String("Metadata")]
+            if type(metadata) == type(dbus.String("")):
+                return
             #self.mpris2_trackid = metadata[dbus.String("mpris:trackid")]
-
             if dbus.String("mpris:artUrl") in metadata.keys():
                 val = QUrl(str(metadata[dbus.String("mpris:artUrl")])).path()
                 if val != self._cover_string:
