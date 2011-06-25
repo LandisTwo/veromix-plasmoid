@@ -94,6 +94,8 @@ encodings = [ "ascii", "utf_8", "big5", "big5hkscs", "cp037", "cp424", "cp437", 
 
 def in_unicode(string):
     '''make unicode'''
+    if isinstance(string, unicode):
+        return string
     for enc in encodings:
         try:
             utf8 = unicode(string, enc)
