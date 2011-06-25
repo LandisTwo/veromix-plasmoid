@@ -271,6 +271,8 @@ class MediaPlayerUI(Channel):
             self.controller.play()
 
 # helpers
+    def name(self):
+        return self.controller_name()
 
     def controller_name(self):
         return self.controller.name()
@@ -294,7 +296,7 @@ class MediaPlayerUI(Channel):
     def get_assotiated_sink(self):
         name = str(self.get_application_name()).lower()
         for sink in self.veromix.get_sinkinput_widgets():
-            if str(sink.name()).lower() == name:
+            if str(name).lower().find(sink.name()) >= 0:
                 return sink
         for sink in self.veromix.get_sinkinput_widgets():
             if str(sink.name()).lower().find(name) >= 0 :
