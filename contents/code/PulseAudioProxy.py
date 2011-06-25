@@ -27,7 +27,7 @@ from MediaPlayer import Mpris2MediaPlayer
 
 class PulseAudio(QObject):
     mpris2_properties_changed = pyqtSignal(str,dict)
-    
+
     def __init__(self, parent ):
         QObject.__init__(self)
         REQUIRED_SERVICE_VERSION = 7
@@ -89,15 +89,15 @@ class PulseAudio(QObject):
         self.bus.add_signal_receiver(self.on_volume_meter_sink,
                 dbus_interface="org.veromix.notification",
                 signal_name="volume_meter_sink")
-                
+
         self.bus.add_signal_receiver(self.on_card_info,
                 dbus_interface="org.veromix.notification",
                 signal_name="card_info")
-                
+
         self.bus.add_signal_receiver(self.on_card_remove,
                 dbus_interface="org.veromix.notification",
                 signal_name="card_remove")
-                
+
 
     def enable_mpris2(self):
         self.bus.add_signal_receiver(self.on_name_owner_changed,
@@ -109,7 +109,7 @@ class PulseAudio(QObject):
 
     def on_name_owner_changed(self, val, val1=None, val2=None):
         if "org.mpris.MediaPlayer2" in val:
-            if val in self.bus.list_names() :
+            if val in self.bus.list_names():
                 self.emit(SIGNAL("mpris2_player_added(QString, PyQt_PyObject)"), str(val), Mpris2MediaPlayer(QString(val), self))
             else:
                 self.emit(SIGNAL("mpris2_player_removed(QString, PyQt_PyObject)"), str(val), Mpris2MediaPlayer(QString(val), self))
@@ -124,7 +124,7 @@ class PulseAudio(QObject):
         self.bus.remove_signal_receiver(callback ,
                 dbus_interface="org.freedesktop.DBus.Properties",
                 signal_name="PropertiesChanged",
-                bus_name=name)        
+                bus_name=name)
 
     def on_mpris2_properties_changed(self, interface, properties, signature):
         self.mpris2_properties_changed.emit(str(interface), properties)
@@ -147,7 +147,7 @@ class PulseAudio(QObject):
         pa_obj = self.get_mpris2_object(destination)
         #pa_obj  = self.bus.get_object("org.mpris.amarok","/Player")
         return dbus.Interface(pa_obj, 'org.mpris.MediaPlayer2.Player')
-        
+
     def getNowPlayingProperty(self, destination, name):
         pa_obj = self.get_mpris2_object(destination)
         props = dbus.Interface(pa_obj, 'org.freedesktop.DBus.Properties')
@@ -184,7 +184,7 @@ class PulseAudio(QObject):
 
     def on_volume_meter_sink_input(self, index, value):
         self.emit(SIGNAL("on_volume_meter_sink_input(int,float)"), index ,value)
-        
+
     def on_volume_meter_sink(self, index, value):
         self.emit(SIGNAL("on_volume_meter_sink(int,float)"), index ,value)
 
@@ -201,7 +201,7 @@ class PulseAudio(QObject):
 
     def set_card_profile(self, index, value):
         self.getMixer().set_card_profile(index, value)
-        
+
     def set_sink_input_volume(self, index, vol):
         try:
             self.getMixer().sink_input_volume(index,vol)
@@ -254,12 +254,12 @@ class PulseAudio(QObject):
 
     def nowplaying_prev(self, destination):
         self.getNowPlaying(str(destination)).Previous()
-        
+
     def nowplaying_pause(self, destination):
-        self.getNowPlaying(str(destination)).Pause()        
-    
+        self.getNowPlaying(str(destination)).Pause()
+
     def nowplaying_play(self, destination):
-        self.getNowPlaying(str(destination)).Play()        
+        self.getNowPlaying(str(destination)).Play()
 
     def mpris2_get_position(self, destination):
         return self.getNowPlayingProperty( str(destination) , "Position" )
@@ -272,7 +272,7 @@ class PulseAudio(QObject):
 
     def mpris2_get_playback_status(self, destination):
         return self.getNowPlayingProperty( str(destination) , "PlaybackStatus" )
-        
+
     def requestInfo(self):
         try:
             self.getMixer().requestInfo()
