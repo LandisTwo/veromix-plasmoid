@@ -214,7 +214,6 @@ class Mpris2MediaPlayer(MediaPlayer):
         self._dbus_proxy.nowplaying_prev(self.name())
 
     def seek(self, position):
-        print "schedule_set_mpris2_position", position
         self.schedule_set_mpris2_position(position)
 
     def connect_mpris2(self):
