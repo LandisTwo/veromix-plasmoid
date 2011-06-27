@@ -46,6 +46,13 @@ class SortedLayout(QGraphicsLinearLayout):
                 toreturn.append(self.channels[index])
         return toreturn
 
+    def get_sink_widgets(self):
+        toreturn = []
+        for index in self.channels.keys() :
+            if self.channels[index].isSink():
+                toreturn.append(self.channels[index])
+        return toreturn
+
     def get_sinkinput_widgets(self):
         toreturn = []
         for index in self.channels.keys() :

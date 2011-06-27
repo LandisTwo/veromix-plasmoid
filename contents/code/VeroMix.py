@@ -358,6 +358,8 @@ class VeroMix(QGraphicsWidget):
         for sink in self.sink_panel_layout.getChannels().values():
             if sink.isDefaultSink():
                 return sink
+        if self.sink_panel_layout.get_sink_widgets().values() > 0:
+                return self.sink_panel_layout.get_sink_widgets().values()[0]
         if self.sink_panel_layout.getChannels().values() > 0:
             return self.sink_panel_layout.getChannels().values()[0]
 ## helpers
