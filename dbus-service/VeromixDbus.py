@@ -36,7 +36,7 @@ class VeromixDbus(dbus.service.Object):
     def __init__(self, pulseaudio, conn , object_path='/org/veromix/pulseaudio'):
         dbus.service.Object.__init__(self, conn, object_path)
         self.pulse = pulseaudio
-        self.VERSION = 7
+        self.VERSION = 8
 
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='')
     def veromix_startup(self):
@@ -79,7 +79,7 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.method("org.veromix.pulseaudio", in_signature='ii', out_signature='')
     def  move_source_output(self, index, output):
         self.pulse.pulse_move_source_output( index, output)
-        
+
     @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
     def toggle_monitor_of_source(self, source_index, named ):
         self.pulse.pulse_toggle_monitor_of_source( source_index, named)
@@ -95,7 +95,8 @@ class VeromixDbus(dbus.service.Object):
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='ib', out_signature='')
     def sink_mute(self, index, mute):
-        self.pulse.pulse_sink_mute(long(index), int(mute))
+        #self.pulse.pulse_sink_mute(long(index), int(mute))
+        self.pulse.pulse_start_equalizer()
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def sink_volume(self, index, vol):
@@ -160,6 +161,17 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
     def set_card_profile(self, index, value):
         self.pulse.pulse_set_card_profile(index, value)
+
+## ----------------------------- Modules -----------------------------------------
+
+    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='issss')
+    def module_info(self, index, name, argument, n_used, auto_unload):
+        pass
+
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='isss', out_signature='')
+    def set_ladspa_effect(self, sink_index, name, label, controls):
+        self.pulse.set_ladspa_effect(sink_index, name, label, controls)
+
 ## ----------------------------- generic -----------------------------------------
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='', out_signature='')

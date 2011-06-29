@@ -250,7 +250,7 @@ class PulseAudio(QObject):
         if  not self.IS_READY :
             # this method is also called when a new client starts  up that starts this service..
             return
-        o = pa_context_get_module_info_list(self._context, self._pa_module_info_cb, False)
+        o = pa_context_get_module_info_list(self._context, self._pa_module_info_cb, None)
         pa_operation_unref(o)
 
         o = pa_context_get_client_info_list(self._context, self._pa_client_info_list_cb, None)
@@ -288,21 +288,21 @@ class PulseAudio(QObject):
 
             if et == PA_SUBSCRIPTION_EVENT_CARD:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
-                    self.emit(SIGNAL("card_remove(int)"),int(index) )
+                    self.emit(SIGNAL("card_remove(int)"),int(index))
                 else:
                     o = pa_context_get_card_info_list(self._context, self._pa_card_info_cb, None)
                     pa_operation_unref(o)
 
             if et == PA_SUBSCRIPTION_EVENT_CLIENT:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
-                    self.emit(SIGNAL("client_remove(int)"),int(index) )
+                    self.emit(SIGNAL("client_remove(int)"),int(index))
                 else:
                     o = pa_context_get_client_info(self._context, index, self._pa_client_info_list_cb, None)
                     pa_operation_unref(o)
 
             if et == PA_SUBSCRIPTION_EVENT_SINK_INPUT:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
-                    self.emit(SIGNAL("sink_input_remove(int)"),  int(index) )
+                    self.emit(SIGNAL("sink_input_remove(int)"),  int(index))
                     if float(index) in self.monitor_sinks.keys():
                         del self.monitor_sinks[float(index)]
                 else:
@@ -311,7 +311,7 @@ class PulseAudio(QObject):
 
             if et == PA_SUBSCRIPTION_EVENT_SINK:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
-                    self.emit(SIGNAL("sink_remove(int)"),int(index) )
+                    self.emit(SIGNAL("sink_remove(int)"),int(index))
                 else:
                     ## TODO: check other event-types
                     o = pa_context_get_sink_info_list(self._context, self._pa_sink_info_cb, None)
@@ -320,7 +320,7 @@ class PulseAudio(QObject):
 
             if et == PA_SUBSCRIPTION_EVENT_SOURCE:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
-                    self.emit(SIGNAL("source_remove(int)"),int(index) )
+                    self.emit(SIGNAL("source_remove(int)"),int(index))
                     if float(index) in self.monitor_sources.keys():
                         del self.monitor_sources[float(index)]
                 else:
@@ -330,7 +330,7 @@ class PulseAudio(QObject):
 
             if et == PA_SUBSCRIPTION_EVENT_SOURCE_OUTPUT:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
-                    self.emit(SIGNAL("source_output_remove(int)"),int(index) )
+                    self.emit(SIGNAL("source_output_remove(int)"),int(index))
                 else:
                     o = pa_context_get_source_output_info_list(self._context, self._pa_source_output_info_cb, None)
                     #o = pa_context_get_source_info_by_index(self._context,int(index), self._pa_source_output_info_cb, None)
@@ -338,16 +338,13 @@ class PulseAudio(QObject):
 
             if et == PA_SUBSCRIPTION_EVENT_MODULE:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
-                    print "\n\nremove ", int(index) , "from ", self.loaded_modules
                     if int(index) in self.loaded_modules.keys():
-                        print "found"
                         del self.loaded_modules[int(index)]
-                    print "remove ", int(index) , "from ", self.loaded_modules
                 else:
-                    #o = pa_context_get_module_info(self._context, int(index), self._pa_module_info_cb, None)
-                    #pa_operation_unref(o)
-                    o = pa_context_get_module_info_list(self._context, self._pa_module_info_cb, False)
+                    o = pa_context_get_module_info(self._context, int(index), self._pa_module_info_cb, None)
                     pa_operation_unref(o)
+                    #o = pa_context_get_module_info_list(self._context, self._pa_module_info_cb, False)
+                    #pa_operation_unref(o)
 
         except Exception, text:
             self.__print("pa :: ERROR pa_context_subscribe_cb %s" % text)
@@ -438,8 +435,12 @@ class PulseAudio(QObject):
         self.emit(SIGNAL("volume_meter_sink(int, float )"),int(index), float(v))
 
     def pa_module_info_cb(self, context, pa_module_info, index, user_data):
+        #print "pa_module_info", pa_module_info, index
         if pa_module_info:
             self.loaded_modules[int(pa_module_info.contents.index)] = pa_module_info.contents.name
+            #print "pa_module_info", pa_module_info, index, user_data
+            if pa_module_info.contents.name == "module-ladspa-sink":
+                self.emit(SIGNAL("module_info(int, PyQt_PyObject, PyQt_PyObject, PyQt_PyObject, PyQt_PyObject)"),int(pa_module_info.contents.index), str(pa_module_info.contents.name), str(pa_module_info.contents.argument), str(pa_module_info.contents.n_used), str(pa_module_info.contents.auto_unload))
         return
 
 ################### misc
@@ -539,6 +540,35 @@ class PulseAudio(QObject):
         pa_operation_unref(operation)
         #self.pa_create_monitor_stream_for_source(int(index), self.sink_inputs[float(target)], "", True)
         return
+
+    def set_ladspa_effect(self, sink_index, name, label, controls):
+        # Unload & reload stream-restore module with restore_device option disabled (to ensure that previously cached per-client sinks are not used)
+        try:
+            for key in self.loaded_modules.keys():
+                if self.loaded_modules[key] == "module-stream-restore":
+                    o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
+                    pa_operation_unref(o)
+            o = pa_context_load_module(self._context, "module-stream-restore", "restore_device=false", self._pa_context_index_cb, None)
+            pa_operation_unref(o)
+
+            for key in self.loaded_modules.keys():
+                if self.loaded_modules[key] == "module-ladspa-sink":
+                    o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
+                    pa_operation_unref(o)
+
+            sink_name="sink_name=ladspa_output.mbeq_1197.mbeq"
+            master_name = "master=alsa_output.pci-0000_00_1b.0.analog-stereo"
+            plugin = "plugin=mbeq_1197"
+            label = "label=mbeq"
+            control = "control=-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-21.0,-21.0,-27.0"
+            control = "control="+str(controls)
+            print control
+            #val = "sink_name=ladspa_output.mbeq_1197.mbeq master=alsa_output.pci-0000_00_1b.0.analog-stereo plugin=mbeq_1197 label=mbeq control=-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-21.0,-21.0,-27.0"
+            val = sink_name + " " + master_name + " "+  plugin + " "+ label + " "+ control
+            o = pa_context_load_module(self._context, "module-ladspa-sink",val, self._pa_context_index_cb, None)
+            pa_operation_unref(o)
+        except Exception ,e :
+            print e
 
     eq_loaded = False
     def pulse_start_equalizer(self):

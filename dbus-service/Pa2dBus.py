@@ -29,7 +29,7 @@ from VeromixUtils import *
 # Pass info/signals from PA to DBUS
 ###
 class Pa2dBus(QObject):
-    
+
     def __init__(self, veromixdbus, pulseaudio):
         QObject.__init__(self )
         self.dbus = veromixdbus
@@ -53,9 +53,11 @@ class Pa2dBus(QObject):
         self.connect(self.pulse, SIGNAL("volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
         self.connect(self.pulse, SIGNAL("volume_meter_sink(int, float )"), self.on_volume_meter_sink)
         self.connect(self.pulse, SIGNAL("volume_meter_source(int, float )"), self.on_volume_meter_source)
-        
+
         self.connect(self.pulse, SIGNAL("card_info(PyQt_PyObject)"), self.on_card_info)
         self.connect(self.pulse, SIGNAL("card_remove(int)"), self.on_remove_card)
+
+        self.connect(self.pulse, SIGNAL("module_info(int, PyQt_PyObject, PyQt_PyObject, PyQt_PyObject, PyQt_PyObject)"), self.on_module_info)
 
     def on_source_info(self, sink):
         index =   int(sink.index)
@@ -73,7 +75,7 @@ class Pa2dBus(QObject):
     def on_sink_input_info(self, sink):
         index =   int(sink.index)
         name = in_unicode(sink.name)
-        muted = (sink.mute == 1)     
+        muted = (sink.mute == 1)
         volume = sink.volume.getVolumes()
         self.dbus.sink_input_info(  index,   name,  muted  , volume ,  sink.propDict() )
 
@@ -83,13 +85,13 @@ class Pa2dBus(QObject):
         muted = (sink.mute == 1)
         volume = sink.volume.getVolumes()
         self.dbus.sink_info( index,   name,  muted  , volume ,  sink.propDict() )
-        
+
     def on_card_info(self, card_info):
         self.dbus.card_info(card_info.index,  card_info.name , card_info.properties(), card_info.active_profile_name() , card_info.profiles_dict())
 
     def on_remove_card(self, index):
         self.dbus.card_remove(index)
-        
+
     def on_remove_sink(self, index):
         self.dbus.sink_remove(index)
 
@@ -130,7 +132,11 @@ class Pa2dBus(QObject):
                 now = datetime.datetime.now()
                 # FIXME limit dbus spam but this solution could always prevent the same source  from transmitting
                 if (now - self.last_source_meter_send).microseconds > self.METER_SEND_MSECS :
-                    self.last_source_meter_send = now       
+                    self.last_source_meter_send = now
                     self.dbus.volume_meter_source(int(index),level)
             else:
                 self.dbus.volume_meter_source(int(index),level)
+
+    def on_module_info(self, index, name, argument, n_used, auto_unload):
+        self.dbus.module_info( index, name, argument, n_used, auto_unload)
+

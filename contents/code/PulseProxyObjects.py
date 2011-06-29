@@ -112,6 +112,9 @@ class AbstractSink(QObject):
     def is_sinkinput(self):
         return False
 
+    def properties(self):
+        return self.props
+
 class SinkInfo(AbstractSink):
 
     def is_sinkoutput(self):
@@ -131,6 +134,13 @@ class SinkInfo(AbstractSink):
 
     def kill(self):
         pass
+
+    # FIXME
+    def set_ladspa_effect(self,values):
+        control = ""
+        for val in values:
+            control = control +  str(val) + ","
+        self.pulse_proxy.set_ladspa_effect(self.index, "mbeq1197", "mbeq", control[:-1])
 
 class SinkInputInfo(AbstractSink):
 

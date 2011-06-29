@@ -288,3 +288,7 @@ class Channel(QGraphicsWidget):
 
     def name(self):
         return self._name
+
+
+    def update_module_info(self, index, name, argument, n_used, auto_unload):
+        print "update_module_info"

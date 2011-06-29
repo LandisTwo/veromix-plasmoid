@@ -30,7 +30,7 @@ class PulseAudio(QObject):
 
     def __init__(self, parent ):
         QObject.__init__(self)
-        REQUIRED_SERVICE_VERSION = 7
+        REQUIRED_SERVICE_VERSION = 8
         if not dbus.get_default_main_loop():
             mainloop=dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
         else:
@@ -98,6 +98,9 @@ class PulseAudio(QObject):
                 dbus_interface="org.veromix.notification",
                 signal_name="card_remove")
 
+        self.bus.add_signal_receiver(self.on_module_info,
+                dbus_interface="org.veromix.notification",
+                signal_name="module_info")
 
     def enable_mpris2(self):
         self.bus.add_signal_receiver(self.on_name_owner_changed,
@@ -246,6 +249,12 @@ class PulseAudio(QObject):
 
     def toggle_monitor_of_source(self,  source_index, named):
         self.getMixer().toggle_monitor_of_source( source_index, named)
+
+    def set_ladspa_effect(self, sink_index, name, label, controls):
+        self.getMixer().set_ladspa_effect(sink_index, name, label, controls)
+
+    def on_module_info(self, index, name, argument, n_used, auto_unload):
+        self.emit(SIGNAL("on_module_info(int,PyQt_PyObject,PyQt_PyObject,PyQt_PyObject,PyQt_PyObject)"),index, name, argument, n_used, auto_unload)
 
     # FIXME
 
