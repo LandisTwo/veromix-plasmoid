@@ -250,8 +250,11 @@ class PulseAudio(QObject):
     def toggle_monitor_of_source(self,  source_index, named):
         self.getMixer().toggle_monitor_of_source( source_index, named)
 
-    def set_ladspa_effect(self, sink_index, name, label, controls):
-        self.getMixer().set_ladspa_effect(sink_index, name, label, controls)
+    def set_ladspa_sink(self, sink_index, name, label, controls):
+        self.getMixer().set_ladspa_sink(sink_index, name, label, controls)
+
+    def remove_ladspa_sink(self, sink_index):
+        self.getMixer().remove_ladspa_sink(sink_index)
 
     def on_module_info(self, index, name, argument, n_used, auto_unload):
         self.emit(SIGNAL("on_module_info(int,PyQt_PyObject,PyQt_PyObject,PyQt_PyObject,PyQt_PyObject)"),index, name, argument, n_used, auto_unload)

@@ -136,11 +136,15 @@ class SinkInfo(AbstractSink):
         pass
 
     # FIXME
-    def set_ladspa_effect(self,values):
+    def set_ladspa_sink(self,values):
         control = ""
         for val in values:
             control = control +  str(val) + ","
-        self.pulse_proxy.set_ladspa_effect(self.index, "mbeq1197", "mbeq", control[:-1])
+        self.pulse_proxy.set_ladspa_sink(int(self.props["owner_module"]), "mbeq1197", "mbeq", control[:-1])
+
+    def remove_ladspa_sink(self):
+        self.pulse_proxy.remove_ladspa_sink(int(self.props["owner_module"]))
+
 
 class SinkInputInfo(AbstractSink):
 

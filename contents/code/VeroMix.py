@@ -64,6 +64,12 @@ class VeroMix(QGraphicsWidget):
         self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
 
+        self.effects_button = Plasma.PushButton()
+        self.effects_button.setText(i18n("Effects"))
+        self.effects_button.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed))
+        self.effects_button.clicked.connect(self.on_effects_button_clicked)
+        self.layout.addItem(self.effects_button)
+
         self.showsTabs =  not self.applet.useTabs()
         self.switchView(True)
 
@@ -176,8 +182,8 @@ class VeroMix(QGraphicsWidget):
         now = datetime.datetime.now()
         if  (now - self.last_resize_running).seconds > 1:
             self.adjustSize()
-            self.setMinimumHeight(self.scrolled_panel.preferredSize().height())
-            self.setMaximumHeight(self.scrolled_panel.preferredSize().height())
+            self.setMinimumHeight(self.scrolled_panel.preferredSize().height() + self.effects_button.preferredSize().height())
+            self.setMaximumHeight(self.scrolled_panel.preferredSize().height() + self.effects_button.preferredSize().height())
             self.last_resize_running = datetime.datetime.now()
         else:
             self.trigger_schedule_timer()
@@ -335,6 +341,9 @@ class VeroMix(QGraphicsWidget):
 
     def on_mediaplayer_removed(self, name):
         self.remove_channel(name,self.sink_panel_layout)
+
+    def on_effects_button_clicked(self):
+        self.getPulseAudio().set_ladspa_sink(-1, "mbeq","mpeq_1197", "0,0,0,0,0,0,0,-12,0,0,0,0,0,0,0")
 
 ### panel icons
 

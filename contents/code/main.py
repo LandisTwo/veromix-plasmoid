@@ -101,7 +101,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if (size != defaultSize) :
             self.widget.setPreferredSize(size.width(), size.height())
         else:
-            self.widget.setPreferredSize(400 ,145)
+            self.widget.setPreferredSize(470 ,145)
 
         self.connect(self.widget, SIGNAL("resized()"), self.dialogResized)
         #try:

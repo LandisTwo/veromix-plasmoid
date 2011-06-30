@@ -541,7 +541,7 @@ class PulseAudio(QObject):
         #self.pa_create_monitor_stream_for_source(int(index), self.sink_inputs[float(target)], "", True)
         return
 
-    def set_ladspa_effect(self, sink_index, name, label, controls):
+    def set_ladspa_sink(self, sink_index, name, label, controls):
         # Unload & reload stream-restore module with restore_device option disabled (to ensure that previously cached per-client sinks are not used)
         try:
             for key in self.loaded_modules.keys():
@@ -551,12 +551,14 @@ class PulseAudio(QObject):
             o = pa_context_load_module(self._context, "module-stream-restore", "restore_device=false", self._pa_context_index_cb, None)
             pa_operation_unref(o)
 
-            for key in self.loaded_modules.keys():
-                if self.loaded_modules[key] == "module-ladspa-sink":
-                    o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
-                    pa_operation_unref(o)
+            if sink_index > -1:
+                self.remove_ladspa_sink(sink_index)
+            #for key in self.loaded_modules.keys():
+                #if self.loaded_modules[key] == "module-ladspa-sink":
+                    #o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
+                    #pa_operation_unref(o)
 
-            sink_name="sink_name=ladspa_output.mbeq_1197.mbeq"
+            sink_name="sink_name=ladspa_output.mbeq_1197.mbeq1"
             master_name = "master=alsa_output.pci-0000_00_1b.0.analog-stereo"
             plugin = "plugin=mbeq_1197"
             label = "label=mbeq"
@@ -569,6 +571,15 @@ class PulseAudio(QObject):
             pa_operation_unref(o)
         except Exception ,e :
             print e
+
+    def remove_ladspa_sink(self, index):
+        print "do unload", index
+        for key in self.loaded_modules.keys():
+            if self.loaded_modules[key] == "module-ladspa-sink" and int(key) == index:
+                print "unloading ", index
+                o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
+                pa_operation_unref(o)
+
 
     eq_loaded = False
     def pulse_start_equalizer(self):

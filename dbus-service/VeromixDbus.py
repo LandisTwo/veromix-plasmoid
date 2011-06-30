@@ -95,8 +95,7 @@ class VeromixDbus(dbus.service.Object):
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='ib', out_signature='')
     def sink_mute(self, index, mute):
-        #self.pulse.pulse_sink_mute(long(index), int(mute))
-        self.pulse.pulse_start_equalizer()
+        self.pulse.pulse_sink_mute(long(index), int(mute))
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def sink_volume(self, index, vol):
@@ -169,8 +168,12 @@ class VeromixDbus(dbus.service.Object):
         pass
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='isss', out_signature='')
-    def set_ladspa_effect(self, sink_index, name, label, controls):
-        self.pulse.set_ladspa_effect(sink_index, name, label, controls)
+    def set_ladspa_sink(self, sink_index, name, label, controls):
+        self.pulse.set_ladspa_sink(sink_index, name, label, controls)
+
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='i', out_signature='')
+    def remove_ladspa_sink(self, sink_index):
+        self.pulse.remove_ladspa_sink(sink_index)
 
 ## ----------------------------- generic -----------------------------------------
 

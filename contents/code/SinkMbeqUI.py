@@ -57,7 +57,6 @@ class SinkMbeqUI(SinkUI):
         self.settings_widget = SinkSettingsWidget(self.veromix, self)
         self.settings_widget.update_with_info(self.pa_sink)
 
-
     def create_sliders(self):
         self.equalizer_widget = QGraphicsWidget()
         self.equalizer_layout = QGraphicsLinearLayout(Qt.Horizontal)
@@ -75,7 +74,6 @@ class SinkMbeqUI(SinkUI):
     def composeArrangement(self):
         SinkUI.composeArrangement(self)
         self.middle_layout.addItem(self.equalizer_widget)
-
 
     def createMiddle(self):
         self.middle = QGraphicsWidget()
@@ -115,4 +113,7 @@ class SinkMbeqUI(SinkUI):
             values.append(self.sliders[i].value())
             self.sliders[i].update_plasma_timestamp()
         print values
-        self.pa_sink.set_ladspa_effect(values)
+        self.pa_sink.set_ladspa_sink(values)
+
+    def on_expander_clicked(self):
+        self.pa_sink.remove_ladspa_sink()
