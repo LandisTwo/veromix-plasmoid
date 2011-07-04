@@ -112,12 +112,15 @@ class AbstractSink(QObject):
     def is_sinkinput(self):
         return False
 
+    def is_sink(self):
+        return False
+
     def properties(self):
         return self.props
 
 class SinkInfo(AbstractSink):
 
-    def is_sinkoutput(self):
+    def is_sink(self):
         return True
 
     def set_volume(self, values):

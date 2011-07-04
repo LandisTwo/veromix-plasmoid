@@ -268,16 +268,27 @@ class Channel(QGraphicsWidget):
         return self.pa_sink.isMuted()
 
     def isSinkOutput(self):
-        return self.pa_sink.is_sinkoutput()
+        if self.pa_sink:
+            return self.pa_sink.is_sinkoutput()
+        return False
 
     def isSinkInput(self):
-        return self.pa_sink.is_sinkinput()
+        if self.pa_sink:
+            return self.pa_sink.is_sinkinput()
+        return False
+
+    def isSink(self):
+        if self.pa_sink:
+            return self.pa_sink.is_sink()
+        return False
 
     def isNowplaying(self):
         return False
 
     def isSourceOutput(self):
-        return self.pa_sink.is_sourceoutput()
+        if self.pa_sink:
+            return self.pa_sink.is_sourceoutput()
+        return False
 
     def wheelEvent(self, event):
         if self.slider:
@@ -288,7 +299,6 @@ class Channel(QGraphicsWidget):
 
     def name(self):
         return self._name
-
 
     def update_module_info(self, index, name, argument, n_used, auto_unload):
         print "update_module_info"
