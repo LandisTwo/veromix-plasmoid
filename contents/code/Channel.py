@@ -302,3 +302,6 @@ class Channel(QGraphicsWidget):
 
     def update_module_info(self, index, name, argument, n_used, auto_unload):
         print "update_module_info"
+
+    def get_ladspa_type(self):
+        return str(type(self))

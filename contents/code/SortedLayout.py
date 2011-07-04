@@ -18,6 +18,8 @@
 
 from PyQt4.QtGui import *
 from SinkInputUI import InputSinkUI
+from SinkInputUI import SinkUI
+from SinkMbeqUI import SinkMbeqUI
 
 class SortedLayout(QGraphicsLinearLayout):
 
@@ -26,10 +28,42 @@ class SortedLayout(QGraphicsLinearLayout):
         self.reverse= reverse
         self.channels = {}
         self.sink_pool = []
+        self.sink_input_pool = []
 
-    def getNewInputSink(self, veromix):
-        if len(self.sink_pool) == 0:
+    def get_new_sink_input(self, veromix):
+        if len(self.sink_input_pool) == 0:
             return InputSinkUI(veromix)
+        else:
+            val = self.sink_input_pool[0]
+            self.sink_input_pool.remove(val)
+            val.show()
+            return val
+
+    def get_new_sink(self, veromix, sink):
+        sink_type = None
+        if "device.ladspa.module" in sink.properties().keys(): # and
+            sink_type = sink.properties()["device.ladspa.module"]         #"device.ladspa.module"
+            print sink_type
+            return self._get_new_ladspa_sink(veromix, str(sink_type))
+        else:
+            return self._get_new_sink(veromix)
+
+    def _get_new_ladspa_sink(self, veromix, sink_type):
+        pool =  []
+        for sink in self.sink_pool:
+            if sink.get_ladspa_type() == sink_type:
+                pool.append(sink)
+        if len(pool) == 0:
+            return SinkMbeqUI(veromix)
+        else:
+            val = pool[0]
+            self.sink_pool.remove(val)
+            val.show()
+            return val
+
+    def _get_new_sink(self, veromix):
+        if len(self.sink_pool) == 0:
+            return SinkUI(veromix)
         else:
             val = self.sink_pool[0]
             self.sink_pool.remove(val)
@@ -89,6 +123,8 @@ class SortedLayout(QGraphicsLinearLayout):
             self.channels[key].hide()
             self.removeItem(self.channels[key])
             if self.channels[key].isSinkInput():
+                self.sink_input_pool.append(self.channels[key])
+            if self.channels[key].isSink():
                 self.sink_pool.append(self.channels[key])
             #self.channels[key].deleteLater()
             del self.channels[key]

@@ -292,6 +292,7 @@ class Mpris2MediaPlayer(MediaPlayer):
     # Don't flood players while dragging the slider.
     # Update the position at most every 500ms
     def schedule_set_mpris2_position(self, value=0):
+        # FIXME
         now = datetime.datetime.now()
         time =  (now - self.last_position_change ).microseconds
         if value > 0:

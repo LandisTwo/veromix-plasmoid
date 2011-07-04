@@ -27,7 +27,6 @@ from PulseAudioProxy import PulseAudio
 from SortedLayout import SortedLayout
 from LockableScrollWidget import LockableScrollWidget
 from SinkUI import SinkUI
-from SinkMbeqUI import SinkMbeqUI
 from SinkInputUI import InputSinkUI
 from SourceUI import SourceUI
 from SourceOutputUI import SourceOutputUI
@@ -248,13 +247,9 @@ class VeroMix(QGraphicsWidget):
 
     def on_sink_info(self,sink):
         key = "sink" + str(sink.index)
-        if not self.update_channel(key ,sink, self.sink_panel_layout ):
-            widget = None
-            if "device.ladspa.module" in sink.properties().keys(): # and
-                widget = SinkMbeqUI(self)
-            else:
-                widget =  SinkUI(self)
-            self.add_channel(key, widget , sink, self.sink_panel_layout )
+        if not self.update_channel(key ,sink, self.sink_panel_layout):
+            widget = self.sink_panel_layout.get_new_sink(self,sink)
+            self.add_channel(key, widget, sink , self.sink_panel_layout)
             widget.muteInfo.connect(self.updateIcon)
             self.sinkOutputChanged.emit()
         #sink.printDebug()
@@ -269,7 +264,6 @@ class VeroMix(QGraphicsWidget):
                         widget.update_module_info(index, name, argument, n_used, auto_unload)
 
     def on_remove_sink(self, index):
-        print "remove sink", index
         self.remove_channel("sink" + str(index), self.sink_panel_layout )
         self.sinkOutputChanged.emit()
 
@@ -278,7 +272,7 @@ class VeroMix(QGraphicsWidget):
     def on_sink_input_info(self,  sink):
         key = "sinkinput" + str(sink.index)
         if not self.update_channel(key ,sink, self.sink_panel_layout ):
-            self.add_channel(key, self.sink_panel_layout.getNewInputSink(self), sink , self.sink_panel_layout)
+            self.add_channel(key, self.sink_panel_layout.get_new_sink_input(self), sink , self.sink_panel_layout)
 
     def on_remove_sink_input(self, index):
         self.remove_channel("sinkinput" + str(index), self.sink_panel_layout)

@@ -16,7 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-import datetime
+import signal, os, datetime
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -35,6 +35,9 @@ class SinkMbeqUI(SinkUI):
         self.extended_panel = None
         self.sliders = {}
         self.number_of_siders = 15
+        self.ladspa_sink_update = datetime.datetime.now()
+        self.ladspa_values = None
+        self.ladspa_timer_running = False
         SinkUI.__init__(self, parent)
         self.setContentsMargins(0,0,0,0)
 
@@ -112,8 +115,28 @@ class SinkMbeqUI(SinkUI):
         for i in range(0,self.number_of_siders):
             values.append(self.sliders[i].value())
             self.sliders[i].update_plasma_timestamp()
-        print values
-        self.pa_sink.set_ladspa_sink(values)
+        self._schedule_set_ladspa_sink(values)
+
+    def _schedule_set_ladspa_sink(self, value = 0):
+        # FIXME
+        now = datetime.datetime.now()
+        if value == 0:  # case timer-callback
+            self.ladspa_timer_running = False
+        else:
+            self.ladspa_values = value
+            self.ladspa_sink_update = now
+        time =  (now - self.ladspa_sink_update).microseconds
+        if time > 500000 and not self.ladspa_timer_running:
+            self.pa_sink.set_ladspa_sink(self.ladspa_values)
+            self.ladspa_sink_update = now
+        else:
+            if not self.ladspa_timer_running:
+                self.ladspa_timer_running = True
+                QTimer.singleShot(500, self._schedule_set_ladspa_sink)
+
 
     def on_expander_clicked(self):
         self.pa_sink.remove_ladspa_sink()
+
+    def get_ladspa_type(self):
+        return "mbeq_1197"
