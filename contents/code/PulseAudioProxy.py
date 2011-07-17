@@ -250,8 +250,8 @@ class PulseAudio(QObject):
     def toggle_monitor_of_source(self,  source_index, named):
         self.getMixer().toggle_monitor_of_source( source_index, named)
 
-    def set_ladspa_sink(self, sink_index, name, label, controls):
-        self.getMixer().set_ladspa_sink(sink_index, name, label, controls)
+    def set_ladspa_sink(self, sink_index, module_index, parameters):
+        self.getMixer().set_ladspa_sink(sink_index, module_index, parameters)
 
     def remove_ladspa_sink(self, sink_index):
         self.getMixer().remove_ladspa_sink(sink_index)

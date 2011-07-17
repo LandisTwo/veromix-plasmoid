@@ -43,7 +43,6 @@ class SortedLayout(QGraphicsLinearLayout):
         sink_type = None
         if "device.ladspa.module" in sink.properties().keys(): # and
             sink_type = sink.properties()["device.ladspa.module"]         #"device.ladspa.module"
-            print sink_type
             return self._get_new_ladspa_sink(veromix, str(sink_type))
         else:
             return self._get_new_sink(veromix)

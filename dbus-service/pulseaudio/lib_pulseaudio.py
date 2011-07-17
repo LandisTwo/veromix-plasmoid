@@ -1082,6 +1082,7 @@ class struct_pa_module_info(Structure):
         'argument',
         'n_used',
         'auto_unload',
+        'proplist',
     ]
 struct_pa_module_info._fields_ = [
     ('index', c_uint32),
@@ -1089,6 +1090,7 @@ struct_pa_module_info._fields_ = [
     ('argument', c_char_p),
     ('n_used', c_uint32),
     ('auto_unload', c_int),
+    ('proplist',        POINTER(c_int)),
 ]
 
 pa_module_info = struct_pa_module_info  # /usr/include/pulse/introspect.h:292
@@ -1986,3 +1988,23 @@ pa_context_set_card_profile_by_index.argtypes = [POINTER(pa_context), c_uint32, 
 pa_context_set_card_profile_by_name = _lib.pa_context_set_card_profile_by_name
 pa_context_set_card_profile_by_name.restype = POINTER(pa_operation)
 pa_context_set_card_profile_by_name.argtypes = [POINTER(pa_context), c_char_p, c_char_p, pa_context_success_cb_t, c_void_p]
+
+
+# Proplist update
+class pa_proplist(Structure):
+    pass
+
+
+pa_proplist_from_string = _lib.pa_proplist_from_string
+pa_proplist_from_string.restype = POINTER(pa_proplist)
+pa_proplist_from_string.argtypes = [c_char_p]
+
+# values for enumeration 'pa_update_mode'
+PA_UPDATE_SET = 0
+PA_UPDATE_MERGE = 1
+PA_UPDATE_REPLACE = 2
+pa_update_mode = c_int # enum
+pa_update_mode_t = pa_update_mode
+pa_proplist_update = _lib.pa_proplist_update
+pa_proplist_update.restype = None
+pa_proplist_update.argtypes = [POINTER(pa_proplist), pa_update_mode_t, POINTER(pa_proplist)]

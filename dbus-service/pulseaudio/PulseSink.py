@@ -98,8 +98,7 @@ class PulseSinkInfo(PulseSink):
                                  PulseClient("Selected Sink"))
         self.description         = pa_sink_info.description
         self.sample_spec         = pa_sink_info.sample_spec
-        self.channel_map         = pa_sink_info.channel_map      
-            
+        self.channel_map         = pa_sink_info.channel_map
         self.owner_module        = pa_sink_info.owner_module
         self.monitor_source      = pa_sink_info.monitor_source
         self.monitor_source_name = pa_sink_info.monitor_source_name

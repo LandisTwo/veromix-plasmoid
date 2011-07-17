@@ -38,6 +38,7 @@ class SinkMbeqUI(SinkUI):
         self.ladspa_sink_update = datetime.datetime.now()
         self.ladspa_values = None
         self.ladspa_timer_running = False
+        self.module_info = None
         SinkUI.__init__(self, parent)
         self.setContentsMargins(0,0,0,0)
 
@@ -49,7 +50,7 @@ class SinkMbeqUI(SinkUI):
         text = ""
         try:
             # FIXME
-            text = "Equalizer ny" #self.pa_sink.props["device_name"]
+            text = "Equalizer" #self.pa_sink.props["device_name"]
         except:
             pass
         if self.slider:
@@ -103,12 +104,22 @@ class SinkMbeqUI(SinkUI):
             #self.meter.hide()
 
     def update_module_info(self, index, name, argument, n_used, auto_unload):
+        self.module_info = self.parse_module_info(argument)
+
         start = argument.find("control=") + 8
         if start:
             val = argument[start:]
             args=val.split(',')
             for i in range(0,self.number_of_siders):
                 self.sliders[i].setValueFromPulse(int(args[i]))
+
+    def parse_module_info(self, string):
+        args = {}
+        for entry in string.split(" "):
+            s = entry.split("=")
+            if len(s) == 2:
+                args[s[0]]=s[1]
+        return args
 
     def on_sliders_cb(self, value):
         values = []
@@ -127,13 +138,23 @@ class SinkMbeqUI(SinkUI):
             self.ladspa_sink_update = now
         time =  (now - self.ladspa_sink_update).microseconds
         if time > 500000 and not self.ladspa_timer_running:
-            self.pa_sink.set_ladspa_sink(self.ladspa_values)
+            # FIXME
+            self._set_ladspa_sink(self.ladspa_values)
             self.ladspa_sink_update = now
         else:
             if not self.ladspa_timer_running:
                 self.ladspa_timer_running = True
                 QTimer.singleShot(500, self._schedule_set_ladspa_sink)
 
+    def _set_ladspa_sink(self, values):
+        if self.module_info == None:
+            return
+        control = ""
+        for val in values:
+            control = control +  str(val) + ","
+        self.module_info["control"] = control[:-1]
+        parameters = "sink_name=%(sink_name)s master=%(master)s plugin=%(plugin)s  label=%(label)s control=%(control)s" % self.module_info
+        self.pa_sink.set_ladspa_sink(parameters)
 
     def on_expander_clicked(self):
         self.pa_sink.remove_ladspa_sink()

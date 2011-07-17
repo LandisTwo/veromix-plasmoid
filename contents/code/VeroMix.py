@@ -337,7 +337,15 @@ class VeroMix(QGraphicsWidget):
         self.remove_channel(name,self.sink_panel_layout)
 
     def on_effects_button_clicked(self):
-        self.getPulseAudio().set_ladspa_sink(-1, "mbeq","mpeq_1197", "0,0,0,0,0,0,0,-12,0,0,0,0,0,0,0")
+        sink = self.getDefaultSink()
+        master_name = "master=" + str(sink.get_pasink_name())   # "master=alsa_output.pci-0000_00_1b.0.analog-stereo"
+
+        sink_name="sink_name=ladspa_output.mbeq_1197.mbeq1"
+        plugin = "plugin=mbeq_1197"
+        label = "label=mbeq"
+        control = "control=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
+        parameters = sink_name + " " + master_name + " "+  plugin + " "+ label + " "+ control
+        self.getPulseAudio().set_ladspa_sink(-1, -1, parameters)
 
 ### panel icons
 
@@ -378,9 +386,9 @@ class VeroMix(QGraphicsWidget):
         for sink in self.sink_panel_layout.getChannels().values():
             if sink.isDefaultSink():
                 return sink
-        if self.sink_panel_layout.get_sink_widgets().values() > 0:
-                return self.sink_panel_layout.get_sink_widgets().values()[0]
-        if self.sink_panel_layout.getChannels().values() > 0:
+        if len(self.sink_panel_layout.get_sink_widgets()) > 0:
+                return self.sink_panel_layout.get_sink_widgets()[0]
+        if len(self.sink_panel_layout.getChannels().values()) > 0:
             return self.sink_panel_layout.getChannels().values()[0]
 ## helpers
 

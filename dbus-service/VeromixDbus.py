@@ -167,9 +167,9 @@ class VeromixDbus(dbus.service.Object):
     def module_info(self, index, name, argument, n_used, auto_unload):
         pass
 
-    @dbus.service.method("org.veromix.pulseaudio", in_signature='isss', out_signature='')
-    def set_ladspa_sink(self, sink_index, name, label, controls):
-        self.pulse.set_ladspa_sink(sink_index, name, label, controls)
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='iis', out_signature='')
+    def set_ladspa_sink(self, sink_index, module_index, parameters):
+        self.pulse.set_ladspa_sink(sink_index, module_index, parameters)
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='i', out_signature='')
     def remove_ladspa_sink(self, sink_index):

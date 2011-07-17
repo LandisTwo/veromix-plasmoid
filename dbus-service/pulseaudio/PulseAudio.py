@@ -250,8 +250,6 @@ class PulseAudio(QObject):
         if  not self.IS_READY :
             # this method is also called when a new client starts  up that starts this service..
             return
-        o = pa_context_get_module_info_list(self._context, self._pa_module_info_cb, None)
-        pa_operation_unref(o)
 
         o = pa_context_get_client_info_list(self._context, self._pa_client_info_list_cb, None)
         pa_operation_unref(o)
@@ -274,6 +272,8 @@ class PulseAudio(QObject):
         o = pa_context_get_card_info_list(self._context, self._pa_card_info_cb, None)
         pa_operation_unref(o)
 
+        o = pa_context_get_module_info_list(self._context, self._pa_module_info_cb, None)
+        pa_operation_unref(o)
 
     def pa_context_subscribe_cb(self, context, event_type, index, user_data):
         try:
@@ -305,6 +305,8 @@ class PulseAudio(QObject):
                     self.emit(SIGNAL("sink_input_remove(int)"),  int(index))
                     if float(index) in self.monitor_sinks.keys():
                         del self.monitor_sinks[float(index)]
+                    if int(index) in self.sink_inputs.keys():
+                        del self.sink_inputs[int(index)]
                 else:
                     o = pa_context_get_sink_input_info(self._context, int(index), self._pa_sink_input_info_list_cb, True)
                     pa_operation_unref(o)
@@ -360,7 +362,7 @@ class PulseAudio(QObject):
                 #self.pa_create_monitor_stream_for_sink_input(int(struct.contents.index), self.sink_inputs[float(struct.contents.sink)], struct.contents.name)
             sink = PulseSinkInputInfo(struct[0])
             #print ( pa_proplist_to_string(struct.contents.proplist))
-            #self.sink_inputs[ float(sink.index) ] = sink
+            self.sink_inputs[ int(sink.index) ] = sink
             self.emit(SIGNAL("sink_input_info(PyQt_PyObject)"), sink )
 
     def pa_sink_info_cb(self, context, struct, index, data):
@@ -438,7 +440,6 @@ class PulseAudio(QObject):
         #print "pa_module_info", pa_module_info, index
         if pa_module_info:
             self.loaded_modules[int(pa_module_info.contents.index)] = pa_module_info.contents.name
-            #print "pa_module_info", pa_module_info, index, user_data
             if pa_module_info.contents.name == "module-ladspa-sink":
                 self.emit(SIGNAL("module_info(int, PyQt_PyObject, PyQt_PyObject, PyQt_PyObject, PyQt_PyObject)"),int(pa_module_info.contents.index), str(pa_module_info.contents.name), str(pa_module_info.contents.argument), str(pa_module_info.contents.n_used), str(pa_module_info.contents.auto_unload))
         return
@@ -541,88 +542,32 @@ class PulseAudio(QObject):
         #self.pa_create_monitor_stream_for_source(int(index), self.sink_inputs[float(target)], "", True)
         return
 
-    def set_ladspa_sink(self, sink_index, name, label, controls):
-        # Unload & reload stream-restore module with restore_device option disabled (to ensure that previously cached per-client sinks are not used)
+    def set_ladspa_sink(self, sink_index, module_index, parameters):
         try:
-            for key in self.loaded_modules.keys():
-                if self.loaded_modules[key] == "module-stream-restore":
-                    o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
-                    pa_operation_unref(o)
-            o = pa_context_load_module(self._context, "module-stream-restore", "restore_device=false", self._pa_context_index_cb, None)
-            pa_operation_unref(o)
+            sink_inputs = []
+            if sink_index > -1 and int(module_index) in self.loaded_modules.keys():
+                # collect connected sink_inputs
+                for sinkinput in self.sink_inputs.values():
+                    if int(sinkinput.sink) == int(module_index):
+                        sink_inputs.append(sinkinput)
+                self.remove_ladspa_sink(module_index)
 
-            if sink_index > -1:
-                self.remove_ladspa_sink(sink_index)
-            #for key in self.loaded_modules.keys():
-                #if self.loaded_modules[key] == "module-ladspa-sink":
-                    #o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
-                    #pa_operation_unref(o)
-
-            sink_name="sink_name=ladspa_output.mbeq_1197.mbeq1"
-            master_name = "master=alsa_output.pci-0000_00_1b.0.analog-stereo"
-            plugin = "plugin=mbeq_1197"
-            label = "label=mbeq"
-            control = "control=-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-21.0,-21.0,-27.0"
-            control = "control="+str(controls)
-            print control
-            #val = "sink_name=ladspa_output.mbeq_1197.mbeq master=alsa_output.pci-0000_00_1b.0.analog-stereo plugin=mbeq_1197 label=mbeq control=-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-21.0,-21.0,-27.0"
-            val = sink_name + " " + master_name + " "+  plugin + " "+ label + " "+ control
-            o = pa_context_load_module(self._context, "module-ladspa-sink",val, self._pa_context_index_cb, None)
+            o = pa_context_load_module(self._context, "module-ladspa-sink",parameters, self._pa_context_index_cb, None)
             pa_operation_unref(o)
+            # FIXME
+            target_index = max(self.loaded_modules.keys()) + 1
+            # Reconnect sink_inputs
+            for s in sink_inputs:
+                self.pulse_move_sink_input(s.index, int(target_index))
+
         except Exception ,e :
             print e
 
     def remove_ladspa_sink(self, index):
-        print "do unload", index
         for key in self.loaded_modules.keys():
             if self.loaded_modules[key] == "module-ladspa-sink" and int(key) == index:
-                print "unloading ", index
                 o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
                 pa_operation_unref(o)
-
-
-    eq_loaded = False
-    def pulse_start_equalizer(self):
-        # Unload & reload stream-restore module with restore_device option disabled (to ensure that previously cached per-client sinks are not used)
-
-        for key in self.loaded_modules.keys():
-            if self.loaded_modules[key] == "module-stream-restore":
-                o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
-                pa_operation_unref(o)
-        o = pa_context_load_module(self._context, "module-stream-restore", "restore_device=false", self._pa_context_index_cb, None)
-        pa_operation_unref(o)
-
-        if self.eq_loaded:
-            for key in self.loaded_modules.keys():
-                if self.loaded_modules[key] == "module-ladspa-sink":
-                    o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
-                    pa_operation_unref(o)
-                    self.eq_loaded = False
-        else:
-            self.eq_loaded = True
-            sink_name="sink_name=ladspa_output.mbeq_1197.mbeq"
-            master_name = "master=alsa_output.pci-0000_00_1b.0.analog-stereo"
-            plugin = "plugin=mbeq_1197"
-            label = "label=mbeq"
-            control = "control=-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-21.0,-21.0,-27.0"
-            #val = "sink_name=ladspa_output.mbeq_1197.mbeq master=alsa_output.pci-0000_00_1b.0.analog-stereo plugin=mbeq_1197 label=mbeq control=-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-0.2,-21.0,-21.0,-27.0"
-            val = sink_name + " " + master_name + " "+  plugin + " "+ label + " "+ control
-            o = pa_context_load_module(self._context, "module-ladspa-sink",val, self._pa_context_index_cb, None)
-            pa_operation_unref(o)
-            #TODO
-            #Transferring current mute ($PA_CURRENT_MUTE) & volume ($PA_CURRENT_VOLUME%) to LADSPA sink
-            # Unmute & set preamp level on ALSA sink (as LADSPA sink will act as primary volume control)
-            # Set the LADSPA sink as the default
-            # Move currently active client sinks to LADSPA sink
-            #print self.sinks
-            #for sink in self.sinks.values():
-                #print sink.printDebug()
-            #set-sink-volume ladspa_output.mbeq_1197.mbeq 38010
-            #set-sink-mute ladspa_output.mbeq_1197.mbeq 0
-            #set-sink-mute alsa_output.pci-0000_00_1b.0.analog-stereo 0
-
-            #set-default-sink ladspa_output.mbeq_1197.mbeq
-
 
     def __print(self, text):
         #print text
@@ -630,3 +575,13 @@ class PulseAudio(QObject):
 
 #if __name__ == '__main__':
     #c = PulseAudio()
+
+
+    # Unload & reload stream-restore module with restore_device option disabled (to ensure that previously cached per-client sinks are not used)
+    #for key in self.loaded_modules.keys():
+        #if self.loaded_modules[key] == "module-stream-restore":
+            #o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
+            #pa_operation_unref(o)
+    #o = pa_context_load_module(self._context, "module-stream-restore", "restore_device=false", self._pa_context_index_cb, None)
+    #pa_operation_unref(o)
+    #print "sink_index", sink_index, self.sinks.keys()
