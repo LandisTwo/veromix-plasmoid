@@ -66,7 +66,6 @@ class SourceOutputUI( Channel ):
 
         if self.slider:
             self.slider.setText(text)
-            #self.slider.setBoldText(bold+" "+str(self.index) + " "+  str(self.sortOrderIndex) + " "+str( self.sinkIndexFor(self.getOutputIndex())) + " "+str(self.getOutputIndex()))
             self.slider.setBoldText(bold)
         iconname = None
         if "application.icon_name" in self.pa_sink.props.keys():
@@ -86,10 +85,6 @@ class SourceOutputUI( Channel ):
             return int(str(self.pa_sink.props["source"]))
         except:
             return 0
-
-    def updateSortOrderIndex(self):
-        if self.pa_sink:
-            self.sortOrderIndex =  self.sinkIndexFor(int(self.getOutputIndex())) + self.index
 
     def on_slider_cb(self, value):
         pass

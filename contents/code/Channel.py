@@ -37,7 +37,6 @@ class Channel(QGraphicsWidget):
         self.pa = parent.getPulseAudio()
         self.app = "output"
         self.set_name("")
-        self.sortOrderIndex = 0
         self.deleted = True
         self.pa_sink = None
         self.extended_panel_shown = False
@@ -220,7 +219,6 @@ class Channel(QGraphicsWidget):
         self.set_name(info.name)
         self.pa_sink = info
         self.index = info.index
-        self.updateSortOrderIndex()
 
     def update_with_info(self,info):
         self.update_essentials(info)
@@ -231,9 +229,6 @@ class Channel(QGraphicsWidget):
             self.extended_panel.update_with_info(info)
         if self.settings_widget:
             self.settings_widget.update_with_info(info)
-
-    def updateSortOrderIndex(self):
-        self.sortOrderIndex =  self.sinkIndexFor(self.index)
 
     def update_label(self):
         pass

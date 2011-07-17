@@ -42,6 +42,7 @@ class VeroMix(QGraphicsWidget):
         self.last_resize_running = datetime.datetime.now()
         self.last_resize_running_timer_running = False
         self.card_infos = {}
+        self.ladspa_index = 1
 
     def init(self):
         self.setAcceptsHoverEvents (True)
@@ -339,8 +340,8 @@ class VeroMix(QGraphicsWidget):
     def on_effects_button_clicked(self):
         sink = self.getDefaultSink()
         master_name = "master=" + str(sink.get_pasink_name())   # "master=alsa_output.pci-0000_00_1b.0.analog-stereo"
-
-        sink_name="sink_name=ladspa_output.mbeq_1197.mbeq1"
+        sink_name="sink_name=ladspa_output.mbeq_1197.mbeq."+str(self.ladspa_index)
+        self.ladspa_index = self.ladspa_index + 1
         plugin = "plugin=mbeq_1197"
         label = "label=mbeq"
         control = "control=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"

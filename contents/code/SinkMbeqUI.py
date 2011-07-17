@@ -50,7 +50,7 @@ class SinkMbeqUI(SinkUI):
         text = ""
         try:
             # FIXME
-            text = "Equalizer" #self.pa_sink.props["device_name"]
+            text = self.name() #self.pa_sink.props["device_name"]
         except:
             pass
         if self.slider:
@@ -106,6 +106,7 @@ class SinkMbeqUI(SinkUI):
     def update_module_info(self, index, name, argument, n_used, auto_unload):
         self.module_info = self.parse_module_info(argument)
 
+        self.set_name(self.module_info["sink_name"])
         start = argument.find("control=") + 8
         if start:
             val = argument[start:]

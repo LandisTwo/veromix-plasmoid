@@ -47,10 +47,6 @@ class InputSinkUI(SinkUI):
         self.settings_widget = SinkInputSettingsWidget(self.veromix, self)
         self.settings_widget.update_with_info(self.pa_sink)
 
-    def updateSortOrderIndex(self):
-        if self.pa_sink:
-            self.sortOrderIndex =  self.sinkIndexFor(int(self.getOutputIndex())) - (self.index * 10 )
-
     def getOutputIndex(self):
         return self.pa_sink.props["sink"]
 

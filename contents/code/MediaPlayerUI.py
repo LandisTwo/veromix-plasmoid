@@ -126,7 +126,6 @@ class MediaPlayerUI(Channel):
     def controller_data_updated(self):
         self.update_state()
         self.update_cover()
-        self.updateSortOrderIndex()
         if self.extended_panel_shown:
             self.update_position()
             self.update_slider()
@@ -288,12 +287,12 @@ class MediaPlayerUI(Channel):
         return self.controller.get_application_name()
 
     def matches(self, sink):
-        sink = self.get_assotiated_sink()
+        sink = self.get_assotiated_sink_input()
         if sink == None:
             return False
         return True
 
-    def get_assotiated_sink(self):
+    def get_assotiated_sink_input(self):
         name = str(self.get_application_name()).lower()
         for sink in self.veromix.get_sinkinput_widgets():
             if str(name).lower().find(sink.name()) >= 0:
@@ -313,13 +312,6 @@ class MediaPlayerUI(Channel):
 
     def isSinkInput(self):
         return False
-
-    def updateSortOrderIndex(self):
-        sink = self.get_assotiated_sink()
-        if sink != None:
-            new =  sink.sortOrderIndex - 1
-            if self.sortOrderIndex != new:
-                self.sortOrderIndex = new
 
     def createSlider(self):
         Channel.createSlider(self)

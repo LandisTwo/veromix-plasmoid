@@ -72,25 +72,44 @@ class SortedLayout(QGraphicsLinearLayout):
     def getChannels(self):
         return self.channels
 
-    def get_sinkoutput_widgets(self):
+    def get_source_widgets(self):
+        return self._get_source_widgets(self.channels.values())
+
+    def _get_source_widgets(self, objects):
         toreturn = []
-        for index in self.channels.keys() :
-            if self.channels[index].isSinkOutput():
-                toreturn.append(self.channels[index])
+        for obj in objects :
+            if obj.isSourceOutput():
+                toreturn.append(obj)
+        return toreturn
+
+    def get_sinkoutput_widgets(self):
+        return self._get_sinkoutput_widgets(self.channels.values())
+
+    def _get_sinkoutput_widgets(self, objects):
+        toreturn = []
+        for obj in objects :
+            if obj.isSinkOutput():
+                toreturn.append(obj)
         return toreturn
 
     def get_sink_widgets(self):
+        return self._get_sink_widgets(self.channels.values())
+
+    def _get_sink_widgets(self, objects):
         toreturn = []
-        for index in self.channels.keys() :
-            if self.channels[index].isSink():
-                toreturn.append(self.channels[index])
+        for obj in objects :
+            if obj.isSink():
+                toreturn.append(obj)
         return toreturn
 
     def get_sinkinput_widgets(self):
+        return self._get_sinkinput_widgets(self.channels.values())
+
+    def _get_sinkinput_widgets(self, objects):
         toreturn = []
-        for index in self.channels.keys() :
-            if self.channels[index].isSinkInput():
-                toreturn.append(self.channels[index])
+        for obj in objects :
+            if obj.isSinkInput():
+                toreturn.append(obj)
         return toreturn
 
     def get_mediaplayer_widgets(self):
@@ -98,6 +117,13 @@ class SortedLayout(QGraphicsLinearLayout):
         for index in self.channels.keys() :
             if self.channels[index].isNowplaying():
                 toreturn.append(self.channels[index])
+        return self._get_mediaplayer_widgets(self.channels.values())
+
+    def _get_mediaplayer_widgets(self, objects):
+        toreturn = []
+        for obj in objects :
+            if obj.isNowplaying():
+                toreturn.append(obj)
         return toreturn
 
     def getChannel(self, key):
@@ -106,16 +132,11 @@ class SortedLayout(QGraphicsLinearLayout):
         return None
 
     def addChannel(self, key, widget):
-        #for i in range(0,len(self.channels.keys())):
-            #print "a",i, self.itemAt(i).graphicsItem().name  ," so" , self.itemAt(i).graphicsItem().sortOrderIndex
         if(key not in self.channels.keys()):
             self.channels[key]  = widget
-            for i in self.get_mediaplayer_widgets():
-                i.updateSortOrderIndex()
-            sorting = self.sort(self.channels.values(), 'sortOrderIndex')
+            sorting = self.sort(self.channels.values())
             index = sorting.index(widget)
             self.insertItem(index, widget )
-            #print "inserting at",  index, key, widget.sortOrderIndex
 
     def removeChannel(self, key):
         if(key  in self.channels.keys()):
@@ -133,27 +154,50 @@ class SortedLayout(QGraphicsLinearLayout):
             self.order_items()
 
     def order_items(self):
-        sorting = self.sort(self.channels.values(), 'sortOrderIndex')
-        #for i in range(0,len(sorting)):
-            #print "m",i, self.itemAt(i).graphicsItem().name  ," so" , self.itemAt(i).graphicsItem().sortOrderIndex
+        sorting = self.sort(self.channels.values())
         for i in range(0,len(sorting)):
             if self.itemAt(i).graphicsItem ()  != sorting[i]:
                 item = self.itemAt(i).graphicsItem()
                 index = sorting.index(item)
                 self.insertItem(index , item )
-                #print "order item from",  i, "to", index, item.name,item.sortOrderIndex
                 return
 
     def needs_ordering(self):
-        for c in self.channels.values():
-            c.updateSortOrderIndex()
-        sorting = self.sort(self.channels.values(), 'sortOrderIndex')
+        sorting = self.sort(self.channels.values())
         for i in range(0,len(sorting)):
             if self.itemAt(i).graphicsItem ()  != sorting[i]:
                 return True
         return False
 
-    def sort(self, objects,sortAttrib):
+    def sort(self,objects):
+        sources = self._sort_by_attribute(self._get_source_widgets(objects), 'name')
+        sourceoutputs = self._sort_by_attribute(self._get_sinkoutput_widgets(objects), 'name')
+        sinks = self._sort_by_attribute(self._get_sink_widgets(objects), 'name')
+        sink_inputs = self._sort_by_attribute(self._get_sinkinput_widgets(objects), 'name')
+        mediaplayers = self._sort_by_attribute(self._get_mediaplayer_widgets(objects), 'name')
+        sorting = []
+        for s in sources:
+            sorting.append(s)
+            for so in sourceoutputs:
+                if int(s.index) == int(so.getOutputIndex()):
+                    sorting.append(so)
+        for s in sinks:
+            if s.isDefaultSink():
+                sorting.insert(0,s)
+            else:
+                sorting.append(s)
+            for i in sink_inputs:
+                if int(s.index) == int(i.getOutputIndex()):
+                    sorting.append(i)
+                    for m in mediaplayers:
+                        assoc = m.get_assotiated_sink_input()
+                        if assoc != None and int(i.index) == assoc.index:
+                            sorting.append(m)
+        for i in set(objects).difference(set(sorting)):
+            sorting.append(i)
+        return sorting
+
+    def _sort_by_attribute(self, objects,sortAttrib):
         nlist = map(lambda object, sortAttrib=sortAttrib: (getattr(object, sortAttrib),object), objects)
         nlist.sort(reverse=self.reverse)
         return map(lambda (key, object): object, nlist)

@@ -56,9 +56,6 @@ class SourceUI( Channel ):
         if self.index == index:
             self.meter.setValue(value)
 
-    def updateSortOrderIndex(self):
-        self.sortOrderIndex =  self.sinkIndexFor(self.index)
-
     def updateIcon(self):
         if self.isMuted():
             self.mute.setMuted(True)
