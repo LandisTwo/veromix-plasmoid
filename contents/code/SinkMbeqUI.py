@@ -66,18 +66,23 @@ class SinkMbeqUI(SinkUI):
         self.equalizer_layout = QGraphicsLinearLayout(Qt.Horizontal)
         self.equalizer_layout.setContentsMargins(0,0,0,0)
         self.equalizer_widget.setLayout(self.equalizer_layout)
+        self.equalizer_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
         for i in range(0,self.number_of_siders):
             self.sliders[i] = LabelSlider()
             self.sliders[i].setMinimum(-70)
             self.sliders[i].setMaximum(30)
             self.sliders[i].setOrientation(Qt.Vertical)
             self.sliders[i].volumeChanged.connect(self.on_sliders_cb)
-            #self.sliders[i].setTickPosition(QSlider.TicksBothSides)
             self.equalizer_layout.addItem(self.sliders[i])
+            self.equalizer_layout.addStretch()
 
     def composeArrangement(self):
-        SinkUI.composeArrangement(self)
         self.middle_layout.addItem(self.equalizer_widget)
+        self.layout.addItem(self.frame)
+        self.frame_layout.addItem(self.panel)
+        self.panel_layout.addItem(self.mute)
+        self.panel_layout.addItem(self.middle)
+        self.show_meter = False
 
     def createMiddle(self):
         self.middle = QGraphicsWidget()
@@ -88,20 +93,6 @@ class SinkMbeqUI(SinkUI):
         self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.createSlider()
         #self.middle_layout.addItem(self.slider)
-
-
-    #def composeArrangement(self):
-        #self.layout.addItem(self.frame)
-        #self.frame_layout.addItem(self.panel)
-        #self.panel_layout.addItem(self.mute)
-        #self.panel_layout.addItem(self.middle)
-        #if self.veromix.get_meter_visible():
-            #self.show_meter = True
-            #self.panel_layout.addItem(self.meter)
-            #self.meter.show()
-        #else:
-            #self.show_meter = False
-            #self.meter.hide()
 
     def update_module_info(self, index, name, argument, n_used, auto_unload):
         self.module_info = self.parse_module_info(argument)
@@ -159,6 +150,10 @@ class SinkMbeqUI(SinkUI):
 
     def on_expander_clicked(self):
         self.pa_sink.remove_ladspa_sink()
+
+    def create_expander(self):
+        SinkUI.create_expander(self)
+        self.expander.setSvg("widgets/configuration-icons", "close")
 
     def get_ladspa_type(self):
         return "mbeq_1197"
