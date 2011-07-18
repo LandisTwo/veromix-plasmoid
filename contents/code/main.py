@@ -138,7 +138,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.lower_action.triggered.connect(self.widget.on_step_volume_down)
 
         self.mute_action = self.actionCollection.addAction("VeromixVolumeMute")
-        self.mute_action.setText(i18n("Veromix toggle  mute"))
+        self.mute_action.setText(i18n("Veromix toggle mute"))
         self.mute_action.setGlobalShortcut(KShortcut())
         self.mute_action.triggered.connect(self.widget.on_toggle_mute)
 
@@ -329,7 +329,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         layout.addWidget(self.mute_action_editor, 2, 1)
 
         layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding ), 3,0)
-        dialog.addPage(self.kb_settings_page, i18n("Keyboard Shortcuts"), "preferences-desktop-keyboard")
+        dialog.addPage(self.kb_settings_page, i18n("Volume Keyboard Shortcuts"), "preferences-desktop-keyboard")
 
     def configDenied(self):
         self.apply_nowplaying(self.is_nowplaying_enabled())

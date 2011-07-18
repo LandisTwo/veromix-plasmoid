@@ -12,23 +12,10 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
-
-    <item>
-       <widget class="QLabel">
-        <property name="text">
-         <string>Enable media player controls</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-        </property>
-       </widget>
-      </item>
-
-      
     <item>
      <widget class="QCheckBox" name="use_nowplaying">
       <property name="text">
-       <string>Use KDE nowplaying dataengine </string>
+       <string>Use KDE nowplaying dataengine</string>
       </property>
      </widget>
     </item>
@@ -42,7 +29,7 @@
     <item>
        <widget class="QLabel" name="mediaplayerBlacklistLabel">
         <property name="text">
-         <string>Media player blacklist</string>
+         <string>Media player blacklist:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -55,7 +42,7 @@
     <item>
         <widget class="QLabel" name="runningMediaplayersLabel">
         <property name="text">
-         <string>Running media players</string>
+         <string>Running media players:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

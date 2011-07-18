@@ -60,7 +60,7 @@ class InputSinkUI(SinkUI):
         if iconname == None and  self.pa_sink.props["app"] != "None":
             iconname = self.veromix.query_application(self.pa_sink.props["app"])
         if bold == "knotify":
-            bold = i18n("System Notifications")
+            bold = i18n("Event Sounds")
             text = ""
             iconname = 'dialog-information'
         if bold == "npviewer.bin" or bold == "plugin-container":
@@ -70,6 +70,11 @@ class InputSinkUI(SinkUI):
         if bold == "chromium-browser":
             bold = i18n("Chromium Browser")
             text = ""
+        if bold == "Skype":
+            if text == "Event Sound":
+                text = i18n("Event Sound")
+            if text == "Output":
+                text = i18n("Voice Output")
         if iconname == None:
             iconname = "mixer-pcm"
 

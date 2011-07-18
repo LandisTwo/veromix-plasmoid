@@ -45,15 +45,15 @@ msgstr "X.Y"
 
 #: rc.py:21
 msgid "Popup Mode"
-msgstr "Popup Verhalten"
+msgstr "Popup-Verhalten"
 
 #: rc.py:24
 msgid "Close when loosing focus"
-msgstr "Automatisch schliessen"
+msgstr "Automatisch schließen"
 
 #: rc.py:27
 msgid "Close manually"
-msgstr "Clicken zum schliessen"
+msgstr "Klicken zum Schließen"
 
 #: rc.py:30
 msgid "Background"
@@ -65,11 +65,11 @@ msgstr "Kein Hintergrund"
 
 #: rc.py:36
 msgid "Translucent background"
-msgstr "Druchscheinender Hintergrund"
+msgstr "Durchsichtiger Hintergrund"
 
 #: rc.py:39
 msgid "Standard background"
-msgstr "Vorgabe Hintergrund"
+msgstr "Standard-Hintergrund"
 
 #: rc.py:42
 #, fuzzy
@@ -78,7 +78,7 @@ msgstr "Systembenachrichtigungen"
 
 #: rc.py:45
 msgid "Show toolip"
-msgstr ""
+msgstr "Popup zeigen"
 
 #: rc.py:48
 msgid "Layout"
@@ -86,35 +86,35 @@ msgstr "Layout"
 
 #: rc.py:51
 msgid "Use tabs"
-msgstr ""
+msgstr "Registerkarten verwenden"
 
 #: rc.py:54
 msgid "Always show sources"
-msgstr ""
+msgstr "Eingabegeräte immer anzeigen"
 
 #: rc.py:57
 msgid "Show meter"
-msgstr ""
+msgstr "Lautstärke anzeigen"
 
 #: rc.py:75
 msgid "Enable media player controls"
-msgstr "Medien-Player Steuerung anzeigen"
+msgstr "Medienwiedergabesteuerung anzeigen"
 
 #: rc.py:78
-msgid "Use KDE nowplaying dataengine "
-msgstr ""
+msgid "Use KDE nowplaying dataengine"
+msgstr "KDE-Wiedergabe-Engine verwenden"
 
 #: rc.py:81
 msgid "Use mpris2"
-msgstr ""
+msgstr "MPris2 verwenden"
 
 #: rc.py:84
-msgid "Media player blacklist"
-msgstr "Medien-Player ignorieren"
+msgid "Media player blacklist:"
+msgstr "Die folgenden Medienspieler ignorieren:"
 
 #: rc.py:87
-msgid "Running media players"
-msgstr "Aktuell laufende Medien-Player "
+msgid "Running media players:"
+msgstr "Aktuell laufende Medienwiedergabeprogramme:"
 
 #: contents/code/main.py:61
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
@@ -129,7 +129,7 @@ msgid "Veromix volume down"
 msgstr "Veromix-Lautstärke verringern"
 
 #: contents/code/main.py:141 contents/code/main.py:328
-msgid "Veromix toggle  mute"
+msgid "Veromix toggle mute"
 msgstr "Veromix-Stummschaltung ein/aus"
 
 #: contents/code/main.py:149
@@ -142,11 +142,11 @@ msgstr "Erscheinungsbild"
 
 #: contents/code/main.py:253
 msgid "Media Player Controls"
-msgstr "Medienwiedergabesteuerung anzeigen"
+msgstr "Medienwiedergabesteuerung"
 
 #: contents/code/main.py:276
 msgid "Max volume value"
-msgstr "Maximallautstärke"
+msgstr "Maximal-Lautstärke"
 
 #: contents/code/main.py:281
 msgid "Mute if volume reaches zero"
@@ -154,15 +154,15 @@ msgstr "Stummschalten wenn Lautstärke Null erreicht"
 
 #: contents/code/main.py:285
 msgid "Sound Card Profiles"
-msgstr "Soundkartenprofile"
+msgstr "Soundkarten-Profile"
 
 #: contents/code/main.py:307
 msgid "Pulseaudio"
-msgstr "Pulse-Audio"
+msgstr "Pulseaudio"
 
 #: contents/code/main.py:332
-msgid "Keyboard Shortcuts"
-msgstr "Tastenkürzel"
+msgid "Volume Keyboard Shortcuts"
+msgstr "Lautstärke-Tastenkürzel"
 
 #: contents/code/SettingsWidget.py:59
 msgid "Default Sink"
@@ -177,8 +177,16 @@ msgid "Output"
 msgstr "Ausgabe"
 
 #: contents/code/SinkInputUI.py:67
-msgid "System Notifications"
-msgstr "Systembenachrichtigungen"
+msgid "Event Sounds"
+msgstr "Ereignist&ouml;ne"
+
+#: contents/code/SinkInputUI.py:79
+msgid "Event Sound"
+msgstr "Ereigniston"
+
+#: contents/code/SinkInputUI.py:81
+msgid "Voice Output"
+msgstr "Sprachausgabe"
 
 #: contents/code/SinkInputUI.py:71
 msgid "Flash Player"
@@ -186,7 +194,7 @@ msgstr "Flash Player"
 
 #: contents/code/SinkInputUI.py:75
 msgid "Chromium Browser"
-msgstr ""
+msgstr "Chromium Browser"
 
 #: contents/code/Utils.py:30
 msgid "Please remove and re-add myself"
