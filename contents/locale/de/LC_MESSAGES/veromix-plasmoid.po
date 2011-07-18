@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-13 01:43+0200\n"
+"POT-Creation-Date: 2011-07-18 09:27+0200\n"
 "PO-Revision-Date: 2011-06-10 18:43+0200\n"
 "Last-Translator: Kai Uwe b <privat@kde.broulik.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -97,22 +97,18 @@ msgid "Show meter"
 msgstr "Lautstärke anzeigen"
 
 #: rc.py:75
-msgid "Enable media player controls"
-msgstr "Medienwiedergabesteuerung anzeigen"
-
-#: rc.py:78
 msgid "Use KDE nowplaying dataengine"
 msgstr "KDE-Wiedergabe-Engine verwenden"
 
-#: rc.py:81
+#: rc.py:78
 msgid "Use mpris2"
 msgstr "MPris2 verwenden"
 
-#: rc.py:84
+#: rc.py:81
 msgid "Media player blacklist:"
 msgstr "Die folgenden Medienspieler ignorieren:"
 
-#: rc.py:87
+#: rc.py:84
 msgid "Running media players:"
 msgstr "Aktuell laufende Medienwiedergabeprogramme:"
 
@@ -128,7 +124,7 @@ msgstr "Veromix-Lautstärke erhöhen"
 msgid "Veromix volume down"
 msgstr "Veromix-Lautstärke verringern"
 
-#: contents/code/main.py:141 contents/code/main.py:328
+#: contents/code/main.py:141
 msgid "Veromix toggle mute"
 msgstr "Veromix-Stummschaltung ein/aus"
 
@@ -160,6 +156,11 @@ msgstr "Soundkarten-Profile"
 msgid "Pulseaudio"
 msgstr "Pulseaudio"
 
+#: contents/code/main.py:328
+#, fuzzy
+msgid "Veromix toggle  mute"
+msgstr "Veromix-Stummschaltung ein/aus"
+
 #: contents/code/main.py:332
 msgid "Volume Keyboard Shortcuts"
 msgstr "Lautstärke-Tastenkürzel"
@@ -176,25 +177,25 @@ msgstr "Trennen"
 msgid "Output"
 msgstr "Ausgabe"
 
-#: contents/code/SinkInputUI.py:67
+#: contents/code/SinkInputUI.py:63
 msgid "Event Sounds"
 msgstr "Ereignist&ouml;ne"
 
-#: contents/code/SinkInputUI.py:79
-msgid "Event Sound"
-msgstr "Ereigniston"
-
-#: contents/code/SinkInputUI.py:81
-msgid "Voice Output"
-msgstr "Sprachausgabe"
-
-#: contents/code/SinkInputUI.py:71
+#: contents/code/SinkInputUI.py:67
 msgid "Flash Player"
 msgstr "Flash Player"
 
-#: contents/code/SinkInputUI.py:75
+#: contents/code/SinkInputUI.py:71
 msgid "Chromium Browser"
 msgstr "Chromium Browser"
+
+#: contents/code/SinkInputUI.py:75
+msgid "Event Sound"
+msgstr "Ereigniston"
+
+#: contents/code/SinkInputUI.py:77
+msgid "Voice Output"
+msgstr "Sprachausgabe"
 
 #: contents/code/Utils.py:30
 msgid "Please remove and re-add myself"
@@ -223,15 +224,19 @@ msgstr ""
 "Informationen finden sie im Wiki</a> <span style=\"font-size: small;\">"
 "(Recktsklick → „Adresse kopieren“)</span>."
 
-#: contents/code/VeroMix.py:100
+#: contents/code/VeroMix.py:68
+msgid "Effects"
+msgstr ""
+
+#: contents/code/VeroMix.py:107
 msgid "Playback"
 msgstr "Wiedergabe"
 
-#: contents/code/VeroMix.py:101
+#: contents/code/VeroMix.py:108
 msgid "Record"
 msgstr "Aufnahme"
 
-#: contents/code/VeroMix.py:121
+#: contents/code/VeroMix.py:128
 msgid ""
 "There is a problem with the backgroud-"
 "service.                                                         "
@@ -251,6 +256,9 @@ msgstr ""
 "google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
 "_VeromixServiceMain.py\">Mehr Informationen finden sie im Wiki</a> <span "
 "style=\"font-size: small;\">(rechts click und \"Adresse kopieren\")</span>."
+
+#~ msgid "Enable media player controls"
+#~ msgstr "Medienwiedergabesteuerung anzeigen"
 
 #~ msgid "mpris2 Mediaplayers"
 #~ msgstr "mpris2 Medien-Player "

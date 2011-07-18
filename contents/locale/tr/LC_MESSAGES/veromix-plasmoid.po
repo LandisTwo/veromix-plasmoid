@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-13 01:43+0200\n"
+"POT-Creation-Date: 2011-07-18 09:27+0200\n"
 "PO-Revision-Date: 2010-12-16 03:41+0200\n"
 "Last-Translator: Anıl Özbek <ozbekanil@gmail.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
@@ -96,23 +96,21 @@ msgid "Show meter"
 msgstr ""
 
 #: rc.py:75
-msgid "Enable media player controls"
-msgstr "Medya oynatıcı kontrollerini aktifleştir"
-
-#: rc.py:78
-msgid "Use KDE nowplaying dataengine "
+msgid "Use KDE nowplaying dataengine"
 msgstr ""
 
-#: rc.py:81
+#: rc.py:78
 msgid "Use mpris2"
 msgstr ""
 
-#: rc.py:84
-msgid "Media player blacklist"
+#: rc.py:81
+#, fuzzy
+msgid "Media player blacklist:"
 msgstr "Medya oynatıcı karalistesi"
 
-#: rc.py:87
-msgid "Running media players"
+#: rc.py:84
+#, fuzzy
+msgid "Running media players:"
 msgstr "Şu an çalışan medya oynatıcılarlayÖ"
 
 #: contents/code/main.py:61
@@ -127,8 +125,9 @@ msgstr "Veromix ses yükselt"
 msgid "Veromix volume down"
 msgstr "Veromix ses kıs"
 
-#: contents/code/main.py:141 contents/code/main.py:328
-msgid "Veromix toggle  mute"
+#: contents/code/main.py:141
+#, fuzzy
+msgid "Veromix toggle mute"
 msgstr "Veromix sessiz"
 
 #: contents/code/main.py:149
@@ -160,8 +159,12 @@ msgstr ""
 msgid "Pulseaudio"
 msgstr ""
 
+#: contents/code/main.py:328
+msgid "Veromix toggle  mute"
+msgstr "Veromix sessiz"
+
 #: contents/code/main.py:332
-msgid "Keyboard Shortcuts"
+msgid "Volume Keyboard Shortcuts"
 msgstr ""
 
 #: contents/code/SettingsWidget.py:59
@@ -176,16 +179,24 @@ msgstr ""
 msgid "Output"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:67
-msgid "System Notifications"
+#: contents/code/SinkInputUI.py:63
+msgid "Event Sounds"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:71
+#: contents/code/SinkInputUI.py:67
 msgid "Flash Player"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:75
+#: contents/code/SinkInputUI.py:71
 msgid "Chromium Browser"
+msgstr ""
+
+#: contents/code/SinkInputUI.py:75
+msgid "Event Sound"
+msgstr ""
+
+#: contents/code/SinkInputUI.py:77
+msgid "Voice Output"
 msgstr ""
 
 #: contents/code/Utils.py:30
@@ -214,15 +225,19 @@ msgstr ""
 "bakabilirsiniz</a> <span style=\"font-size: small;\">(sağ tıklayın ve "
 "bağlantıyı kopyalayın)</span>. "
 
-#: contents/code/VeroMix.py:100
+#: contents/code/VeroMix.py:68
+msgid "Effects"
+msgstr ""
+
+#: contents/code/VeroMix.py:107
 msgid "Playback"
 msgstr "Oynatma"
 
-#: contents/code/VeroMix.py:101
+#: contents/code/VeroMix.py:108
 msgid "Record"
 msgstr "Kaydetme"
 
-#: contents/code/VeroMix.py:121
+#: contents/code/VeroMix.py:128
 msgid ""
 "There is a problem with the backgroud-"
 "service.                                                         "
@@ -246,6 +261,9 @@ msgstr ""
 "code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
 "_VeromixServiceMain.py\">detaylar için vikiye bakınız</a> <span style=\"font-"
 "size: small;\">(sağ tıklayın ve bağlantıyı kopyalayın)</span>."
+
+#~ msgid "Enable media player controls"
+#~ msgstr "Medya oynatıcı kontrollerini aktifleştir"
 
 #~ msgid "mpris2 Mediaplayers"
 #~ msgstr "mpris2 Medya oynatıcıları"

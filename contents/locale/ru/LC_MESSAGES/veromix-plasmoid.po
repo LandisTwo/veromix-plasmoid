@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-13 01:43+0200\n"
+"POT-Creation-Date: 2011-07-18 09:27+0200\n"
 "PO-Revision-Date: 2011-03-18 10:35+0300\n"
 "Last-Translator: proDOOMman <prodoomman@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -97,23 +97,21 @@ msgid "Show meter"
 msgstr "Отображать метки громкости"
 
 #: rc.py:75
-msgid "Enable media player controls"
-msgstr "Включить управление проигрывателями"
-
-#: rc.py:78
-msgid "Use KDE nowplaying dataengine "
+msgid "Use KDE nowplaying dataengine"
 msgstr ""
 
-#: rc.py:81
+#: rc.py:78
 msgid "Use mpris2"
 msgstr ""
 
-#: rc.py:84
-msgid "Media player blacklist"
+#: rc.py:81
+#, fuzzy
+msgid "Media player blacklist:"
 msgstr "Черный список проигрывателей"
 
-#: rc.py:87
-msgid "Running media players"
+#: rc.py:84
+#, fuzzy
+msgid "Running media players:"
 msgstr "Запущенные проигрыватели"
 
 #: contents/code/main.py:61
@@ -128,8 +126,9 @@ msgstr "Veromix - увеличить громкость"
 msgid "Veromix volume down"
 msgstr "Veromix - уменьшить громкость"
 
-#: contents/code/main.py:141 contents/code/main.py:328
-msgid "Veromix toggle  mute"
+#: contents/code/main.py:141
+#, fuzzy
+msgid "Veromix toggle mute"
 msgstr "Veromix - включить или выключить звук"
 
 # Не уверен что это такое
@@ -161,8 +160,13 @@ msgstr "Профили звуковых карт"
 msgid "Pulseaudio"
 msgstr "Pulseaudio"
 
+#: contents/code/main.py:328
+msgid "Veromix toggle  mute"
+msgstr "Veromix - включить или выключить звук"
+
 #: contents/code/main.py:332
-msgid "Keyboard Shortcuts"
+#, fuzzy
+msgid "Volume Keyboard Shortcuts"
 msgstr "Глобальные комбинации клавиш"
 
 #: contents/code/SettingsWidget.py:59
@@ -177,17 +181,26 @@ msgstr "Отключить/завершить"
 msgid "Output"
 msgstr "Вывод"
 
-#: contents/code/SinkInputUI.py:67
-msgid "System Notifications"
+#: contents/code/SinkInputUI.py:63
+msgid "Event Sounds"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:71
+#: contents/code/SinkInputUI.py:67
 msgid "Flash Player"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:75
+#: contents/code/SinkInputUI.py:71
 msgid "Chromium Browser"
 msgstr ""
+
+#: contents/code/SinkInputUI.py:75
+msgid "Event Sound"
+msgstr ""
+
+#: contents/code/SinkInputUI.py:77
+#, fuzzy
+msgid "Voice Output"
+msgstr "Вывод"
 
 # myself = меня или себя?
 # Где вообще будет юзаться этот текст?
@@ -215,15 +228,19 @@ msgstr ""
 "wiki/VeromixComponents#KDE_4.4_compatibility\">Детали в вики</a> <span style="
 "\"font-size: small;\">(скопируйте адрес из контекстного меню)</span>. "
 
-#: contents/code/VeroMix.py:100
+#: contents/code/VeroMix.py:68
+msgid "Effects"
+msgstr ""
+
+#: contents/code/VeroMix.py:107
 msgid "Playback"
 msgstr "Воспроизведение"
 
-#: contents/code/VeroMix.py:101
+#: contents/code/VeroMix.py:108
 msgid "Record"
 msgstr "Запись"
 
-#: contents/code/VeroMix.py:121
+#: contents/code/VeroMix.py:128
 msgid ""
 "There is a problem with the backgroud-"
 "service.                                                         "
@@ -247,6 +264,9 @@ msgstr ""
 "code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
 "_VeromixServiceMain.py\">Детали в вики</a> <span style=\"font-size: small;\">"
 "(скопируйте адрес из контекстного меню)</span>."
+
+#~ msgid "Enable media player controls"
+#~ msgstr "Включить управление проигрывателями"
 
 #~ msgid "mpris2 Mediaplayers"
 #~ msgstr "Mpris2 проигрыватели"

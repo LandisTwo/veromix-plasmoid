@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-13 01:43+0200\n"
+"POT-Creation-Date: 2011-07-18 09:27+0200\n"
 "PO-Revision-Date: 2011-04-18 12:27+0300\n"
 "Last-Translator: Donatas G. <dgvirtual@akl.lt>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -94,23 +94,21 @@ msgstr "Rodyti metrą"
 
 #: rc.py:75
 #, fuzzy
-msgid "Enable media player controls"
-msgstr "Įgalinti leistuvo valdymą"
-
-#: rc.py:78
-msgid "Use KDE nowplaying dataengine "
+msgid "Use KDE nowplaying dataengine"
 msgstr "Naudoti KDE „dabar groja“ duomenų variklį"
 
-#: rc.py:81
+#: rc.py:78
 msgid "Use mpris2"
 msgstr "Naudoti mpris2"
 
-#: rc.py:84
-msgid "Media player blacklist"
+#: rc.py:81
+#, fuzzy
+msgid "Media player blacklist:"
 msgstr "Leistuvo valdymo juodasis sąrašas"
 
-#: rc.py:87
-msgid "Running media players"
+#: rc.py:84
+#, fuzzy
+msgid "Running media players:"
 msgstr "Veikiantys leistuvai"
 
 #: contents/code/main.py:61
@@ -125,8 +123,9 @@ msgstr "Veromix - padidinti garsą"
 msgid "Veromix volume down"
 msgstr "Veromix - sumažinti garsą"
 
-#: contents/code/main.py:141 contents/code/main.py:328
-msgid "Veromix toggle  mute"
+#: contents/code/main.py:141
+#, fuzzy
+msgid "Veromix toggle mute"
 msgstr "Veromix - sukeisti iš/į begarsį"
 
 # Не уверен что это такое
@@ -158,8 +157,13 @@ msgstr "Garso plokštės profiliai"
 msgid "Pulseaudio"
 msgstr "Pulseaudio"
 
+#: contents/code/main.py:328
+msgid "Veromix toggle  mute"
+msgstr "Veromix - sukeisti iš/į begarsį"
+
 #: contents/code/main.py:332
-msgid "Keyboard Shortcuts"
+#, fuzzy
+msgid "Volume Keyboard Shortcuts"
 msgstr "Globalieji spartieji klavišai"
 
 #: contents/code/SettingsWidget.py:59
@@ -174,18 +178,26 @@ msgstr "Atjungti/nužudyti"
 msgid "Output"
 msgstr "Išvestis"
 
-#: contents/code/SinkInputUI.py:67
-#, fuzzy
-msgid "System Notifications"
-msgstr "Perspėjimas "
+#: contents/code/SinkInputUI.py:63
+msgid "Event Sounds"
+msgstr ""
 
-#: contents/code/SinkInputUI.py:71
+#: contents/code/SinkInputUI.py:67
 msgid "Flash Player"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:75
+#: contents/code/SinkInputUI.py:71
 msgid "Chromium Browser"
 msgstr ""
+
+#: contents/code/SinkInputUI.py:75
+msgid "Event Sound"
+msgstr ""
+
+#: contents/code/SinkInputUI.py:77
+#, fuzzy
+msgid "Voice Output"
+msgstr "Išvestis"
 
 #: contents/code/Utils.py:30
 msgid "Please remove and re-add myself"
@@ -203,15 +215,19 @@ msgid ""
 "<span style=\"font-size: small;\">(right click and copy url)</span>. "
 msgstr ""
 
-#: contents/code/VeroMix.py:100
+#: contents/code/VeroMix.py:68
+msgid "Effects"
+msgstr ""
+
+#: contents/code/VeroMix.py:107
 msgid "Playback"
 msgstr "Grojimas"
 
-#: contents/code/VeroMix.py:101
+#: contents/code/VeroMix.py:108
 msgid "Record"
 msgstr "Įrašymas"
 
-#: contents/code/VeroMix.py:121
+#: contents/code/VeroMix.py:128
 msgid ""
 "There is a problem with the backgroud-"
 "service.                                                         "
@@ -224,3 +240,11 @@ msgid ""
 "_VeromixServiceMain.py\">See wiki for more details</a> <span style=\"font-"
 "size: small;\">(right click and copy url)</span>."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Enable media player controls"
+#~ msgstr "Įgalinti leistuvo valdymą"
+
+#, fuzzy
+#~ msgid "System Notifications"
+#~ msgstr "Perspėjimas "
