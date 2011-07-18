@@ -153,8 +153,12 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def updateIcon(self):
         icon_state = "audio-volume-muted"
-        vol = self.widget.getDefaultSink().getVolume()
-        if self.widget.getDefaultSink().isMuted() :
+	sink = self.widget.getDefaultSink()
+	if sink == None:
+		QTimer.singleShot(2000, self.fixPopupIcon)		
+		return
+        vol = sink.getVolume()
+        if sink.isMuted() :
             icon_state= "audio-volume-muted"
         else:
             if  vol == 0:
@@ -170,7 +174,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.tooltip.setImage(pixmapFromSVG(icon_state))
             ## FIXME this should better go to toolTipAboutToShow but is not working:
             # https://bugs.kde.org/show_bug.cgi?id=254764
-            self.tooltip.setMainText( self.widget.getDefaultSink().app)
+            self.tooltip.setMainText(sink.app)
             self.tooltip.setSubText( str(vol) + "%")
             Plasma.ToolTipManager.self().setContent(self.applet, self.tooltip)
 
