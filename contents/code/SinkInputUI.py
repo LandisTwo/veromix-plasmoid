@@ -83,9 +83,9 @@ class InputSinkUI(SinkUI):
             self.updateIcon()
 
         if self.slider:
+            self.set_name(bold)
             self.slider.setText(text)
             self.slider.setBoldText(bold)
-            self.set_name(bold)
 
 ### Drag and Drop
 

@@ -55,7 +55,7 @@ class SinkMbeqUI(SinkUI):
             pass
         if self.slider:
             self.slider.setBoldText(text)
-            self.set_name(self.name())
+            self.set_name(text)
 
     def create_settings_widget(self):
         self.settings_widget = SinkSettingsWidget(self.veromix, self)

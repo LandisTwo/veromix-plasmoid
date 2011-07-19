@@ -170,11 +170,11 @@ class SortedLayout(QGraphicsLinearLayout):
         return False
 
     def sort(self,objects):
-        sources = self._sort_by_attribute(self._get_source_widgets(objects), 'name')
-        sourceoutputs = self._sort_by_attribute(self._get_sinkoutput_widgets(objects), 'name')
-        sinks = self._sort_by_attribute(self._get_sink_widgets(objects), 'name')
-        sink_inputs = self._sort_by_attribute(self._get_sinkinput_widgets(objects), 'name')
-        mediaplayers = self._sort_by_attribute(self._get_mediaplayer_widgets(objects), 'name')
+        sources = self._sort_by_attribute(self._get_source_widgets(objects), '_name')
+        sourceoutputs = self._sort_by_attribute(self._get_sinkoutput_widgets(objects), '_name')
+        sinks = self._sort_by_attribute(self._get_sink_widgets(objects), '_name')
+        sink_inputs = self._sort_by_attribute(self._get_sinkinput_widgets(objects), '_name')
+        mediaplayers = self._sort_by_attribute(self._get_mediaplayer_widgets(objects), '_name')
         sorting = []
         for s in sources:
             sorting.append(s)

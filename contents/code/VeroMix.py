@@ -80,7 +80,7 @@ class VeroMix(QGraphicsWidget):
         if self.showsTabs:
             self.source_panel_layout.addStretch()
 
-        self.sink_panel_layout = SortedLayout(Qt.Vertical, True)
+        self.sink_panel_layout = SortedLayout(Qt.Vertical, False)
         self.sink_panel_layout.setSpacing(0)
 
         self.sink_panel.setLayout(self.sink_panel_layout)
