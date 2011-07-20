@@ -50,7 +50,8 @@ class SortedLayout(QGraphicsLinearLayout):
     def _get_new_ladspa_sink(self, veromix, sink_type):
         pool =  []
         for sink in self.sink_pool:
-            if sink.get_ladspa_type() == sink_type:
+            # FIXME
+            if sink.get_ladspa_type() == "ladspa":
                 pool.append(sink)
         if len(pool) == 0:
             return SinkMbeqUI(veromix)

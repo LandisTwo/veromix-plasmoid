@@ -341,11 +341,98 @@ class VeroMix(QGraphicsWidget):
         sink = self.getDefaultSink()
         master_name = "master=" + str(sink.get_pasink_name())   # "master=alsa_output.pci-0000_00_1b.0.analog-stereo"
         sink_name="sink_name=ladspa_output.mbeq_1197.mbeq."+str(self.ladspa_index)
-        self.ladspa_index = self.ladspa_index + 1
         plugin = "plugin=mbeq_1197"
         label = "label=mbeq"
         control = "control=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
+
+        ## GOOD
+        #sink_name="sink_name=ladspa_output.dj_eq_1901.dj_eq."+str(self.ladspa_index)
+        #plugin = "plugin=dj_eq_1901"
+        #label = "label=dj_eq_mono"
+        #control = "control=0,0,0"
+
+        # fun!
+        sink_name="sink_name=ladspa_output.multivoice_chorus_1201.multivoiceChorus."+str(self.ladspa_index)
+        plugin = "plugin=multivoice_chorus_1201"
+        label = "label=multivoiceChorus"
+        control = "control=0,0,0,0,0,0"
+
+        ## fun
+        #sink_name="sink_name=ladspa_output.pitch_scale_1193.pitchScale."+str(self.ladspa_index)
+        #plugin = "plugin=pitch_scale_1193"
+        #label = "label=pitchScale"
+        #control = "control=1.9"
+
+        ##works but ..
+        #sink_name="sink_name=ladspa_output.flanger_1191.flanger."+str(self.ladspa_index)
+        #plugin = "plugin=flanger_1191"
+        #label = "label=flanger"
+        #control = "control=0,0,0,0"
+
+        ## not working?
+        #sink_name="sink_name=ladspa_output.df_flanger_1438.djFlanger."+str(self.ladspa_index)
+        #plugin = "plugin=dj_flanger_1438"
+        #label = "label=djFlanger"
+        #control = "control=0,0,0,0"
+
+        ## ..
+        #sink_name="sink_name=ladspa_output.phasers_1217.autoPhaser."+str(self.ladspa_index)
+        #plugin = "plugin=phasers_1217"
+        #label = "label=autoPhaser"
+        #control = "control=0,0,0,0,0"
+
+        ## does not work
+        #sink_name="sink_name=ladspa_output.dj_eq_1901.dj_eq."+str(self.ladspa_index)
+        #plugin = "plugin=dj_eq_1901"
+        #label = "label=dj_eq"
+        #control = "control=0,0,0"
+
+        ## no
+        #sink_name="sink_name=ladspa_output.decay_1886.decay."+str(self.ladspa_index)
+        #plugin = "plugin=decay_1886"
+        #label = "label=decay"
+        #control = "control=0"
+
+        ## i dont hear it
+        #sink_name="sink_name=ladspa_output.delay_1898.delay_n."+str(self.ladspa_index)
+        #plugin = "plugin=delay_1898"
+        #label = "label=delay_n"
+        #control = "control=0,0"
+
+        ## i dont hear it
+        #sink_name="sink_name=ladspa_output.delay_1898.delay_l."+str(self.ladspa_index)
+        #plugin = "plugin=delay_1898"
+        #label = "label=delay_l"
+        #control = "control=0,0"
+
+        ## i dont hear it
+        #sink_name="sink_name=ladspa_output.delay_1898.delay_c."+str(self.ladspa_index)
+        #plugin = "plugin=delay_1898"
+        #label = "label=delay_c"
+        #control = "control=0,0"
+
+        ## does not work (stereo)
+        #sink_name="sink_name=ladspa_output.karaoke_1409.karaoke."+str(self.ladspa_index)
+        #plugin = "plugin=karaoke_1409"
+        #label = "label=karaoke"
+        #control = "control=-50"
+
+        ## not work (stereo)
+        #sink_name="sink_name=ladspa_output.plate_1423.plate."+str(self.ladspa_index)
+        #plugin = "plugin=plate_1423"
+        #label = "label=plate"
+        #control = "control=0,0,0"
+
+        ## less fun
+        #sink_name="sink_name=ladspa_output.pitch_scale_1194.pitchScaleHQ."+str(self.ladspa_index)
+        #plugin = "plugin=pitch_scale_1194"
+        #label = "label=pitchScaleHQ"
+        #control = "control=1.9"
+
+
         parameters = sink_name + " " + master_name + " "+  plugin + " "+ label + " "+ control
+
+        self.ladspa_index = self.ladspa_index + 1
         self.getPulseAudio().set_ladspa_sink(-1, -1, parameters)
 
 ### panel icons
