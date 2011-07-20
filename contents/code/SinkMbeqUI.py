@@ -39,6 +39,8 @@ class SinkMbeqUI(SinkUI):
         self.ladspa_values = None
         self.ladspa_timer_running = False
         self.module_info = None
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.on_timer)
         SinkUI.__init__(self, parent)
         self.setContentsMargins(0,0,0,0)
 
@@ -174,23 +176,15 @@ class SinkMbeqUI(SinkUI):
             self.sliders[i].update_plasma_timestamp()
         self._schedule_set_ladspa_sink(values)
 
-    def _schedule_set_ladspa_sink(self, value = 0):
-        # FIXME
-        now = datetime.datetime.now()
-        if value == 0:  # case timer-callback
-            self.ladspa_timer_running = False
-        else:
-            self.ladspa_values = value
-            self.ladspa_sink_update = now
-        time =  (now - self.ladspa_sink_update).microseconds
-        if time > 500000 and not self.ladspa_timer_running:
-            # FIXME
-            self._set_ladspa_sink(self.ladspa_values)
-            self.ladspa_sink_update = now
-        else:
-            if not self.ladspa_timer_running:
-                self.ladspa_timer_running = True
-                QTimer.singleShot(500, self._schedule_set_ladspa_sink)
+    def on_timer(self):
+        self.timer.stop()
+        self._set_ladspa_sink(self.ladspa_values)
+
+    def _schedule_set_ladspa_sink(self,values):
+        if self.timer.isActive():
+            self.timer.stop()
+        self.ladspa_values = values
+        self.timer.start(1000)
 
     def _set_ladspa_sink(self, values):
         if self.module_info == None:
