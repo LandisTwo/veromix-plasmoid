@@ -212,3 +212,6 @@ class SinkMbeqUI(SinkUI):
     def get_ladspa_type(self):
         # FIXME
         return "ladspa"
+
+    def wheelEvent(self, event):
+        pass
