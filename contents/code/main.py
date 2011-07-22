@@ -74,6 +74,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.lower_action_editor = None
         self.mute_action_editor = None
         self.card_settings = None
+        self.messageDialog = None
+        self.messageOverlay = None
         plasmascript.Applet.__init__(self,parent)
 
     def init(self):
@@ -155,7 +157,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         icon_state = "audio-volume-muted"
 	sink = self.widget.getDefaultSink()
 	if sink == None:
-		QTimer.singleShot(2000, self.fixPopupIcon)		
+		QTimer.singleShot(2000, self.fixPopupIcon)
 		return
         vol = sink.getVolume()
         if sink.isMuted() :
@@ -174,7 +176,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.tooltip.setImage(pixmapFromSVG(icon_state))
             ## FIXME this should better go to toolTipAboutToShow but is not working:
             # https://bugs.kde.org/show_bug.cgi?id=254764
-            self.tooltip.setMainText(sink.app)
+            self.tooltip.setMainText(sink.name())
             self.tooltip.setSubText( str(vol) + "%")
             Plasma.ToolTipManager.self().setContent(self.applet, self.tooltip)
 
@@ -533,6 +535,81 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def dataUpdated(self, sourceName, data):
         self.nowplaying_player_dataUpdated.emit(sourceName, data)
 
+## Modal Widget
+
+    def showModalWidget(self,mainWidget):
+        #mainWidget.widgetClose.connect(self.destroyMessageOverlay)
+        if self.messageOverlay:
+            return
+        if self.messageDialog:
+            return
+
+        corona = self.scene()
+        mainWidget.adjustSize()
+        hint = mainWidget.preferredSize()
+        if (hint.height() > self.widget.size().height()) or (hint.width() > self.widget.size().width()):
+            ## either a collapsed popup in h/v form factor or just too small,
+            ## so show it in a dialog associated with ourselves
+            #pass
+            if (corona):
+                corona.addOffscreenWidget(mainWidget)
+
+            if (self.messageDialog):
+                pass
+            else:
+                self.messageDialog = Plasma.Dialog()
+
+            self.messageDialog.setGraphicsWidget(mainWidget)
+            mainWidget.setParentItem(self.messageDialog.graphicsWidget ())
+        else:
+            self.messageOverlay = self.createMessageOverlay()
+            self.formatOverlay()
+            self.messageOverlay.opacity = 0.8
+            mainWidget.setParentItem(self.messageOverlay)
+            l = QGraphicsLinearLayout(self.messageOverlay)
+            l.addItem(mainWidget)
+
+        if self.messageDialog:
+            pos = self.geometry().topLeft().toPoint()
+            if (corona):
+                pos = corona.popupPosition(self.applet, self.messageDialog.size())
+
+            self.messageDialog.move(pos)
+            #self.locationToDirection(self.location())
+            self.messageDialog.animatedShow(Plasma.Direction(0))
+            self.hidePopup()
+        else:
+            self.messageOverlay.show()
+
+    def createMessageOverlay(self):
+        if self.messageOverlay == None:
+            messageOverlay = QGraphicsWidget(self.widget)
+            return messageOverlay
+
+    def formatOverlay(self):
+        self.messageOverlay.resize(self.widget.contentsRect().size())
+        self.messageOverlay.setPos(self.widget.contentsRect().topLeft())
+
+        zValue = 100
+        for child in  self.widget.children():
+            if (child.zValue() > zValue):
+                zValue = child.zValue() + 1
+        self.messageOverlay.setZValue(zValue)
+
+    def destroyMessageOverlay(self):
+        if self.messageDialog != None:
+            #Plasma::locationToInverseDirection(q->location())
+            self.messageDialog.animatedHide(Plasma.Direction(0))
+            self.messageDialog.deleteLater()
+            self.messageDialog.hide()
+            self.messageDialog = None
+            self.showPopup(0)
+
+        if self.messageOverlay == None:
+            return
+
+        self.messageOverlay.hide()
+        self.messageOverlay = None
 
 def CreateApplet(parent):
     # Veromix is dedicated to my girlfriend Vero.

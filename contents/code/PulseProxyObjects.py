@@ -76,7 +76,7 @@ class AbstractSink(QObject):
         return vol
 
     def printDebug(self):
-        print "<sink>"
+        print "<sink type=" +str(type(self))+ ">"
         print  "  <index>", self.index,  "</index>"
         print "  <name>", self.name,  "</name>"
         print "  <mute>", self.mute,  "</mute>"

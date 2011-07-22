@@ -75,6 +75,22 @@ class InputSinkUI(SinkUI):
                 text = i18n("Event Sound")
             if text == "Output":
                 text = i18n("Voice Output")
+
+        if text == "LADSPA Stream" or (self.pa_sink.props["media.name"] == "LADSPA Stream"):
+            for sink in self.veromix.get_sink_widgets():
+                if sink.pa_sink.props["owner_module"] == self.pa_sink.props["owner_module"]:
+                    bold = sink.pa_sink.props["device.ladspa.name"]
+                    text = ""
+                    iconname = sink.pa_sink.props["device.icon_name"]
+
+        # FIXME
+        if bold in ["", "None", None]:
+            bold = text
+            text = ""
+
+        if text in ["None", None]:
+            text = ""
+
         if iconname == None:
             iconname = "mixer-pcm"
 

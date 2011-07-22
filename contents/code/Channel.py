@@ -35,7 +35,6 @@ class Channel(QGraphicsWidget):
         self.veromix = parent
         self.index = -1
         self.pa = parent.getPulseAudio()
-        self.app = "output"
         self.set_name("")
         self.deleted = True
         self.pa_sink = None

@@ -35,13 +35,11 @@ class Label(Plasma.Label):
         Plasma.Label.__init__(self, parent)
 
     def setText(self, text):
-        if text and text != "None":
-            self.text = text
+        self.text = text
         self._set_text()
 
     def setBoldText(self,text):
-        if text and text != "None":
-            self.bold_text = text
+        self.bold_text = text
         self._set_text()
 
     def _set_text(self):

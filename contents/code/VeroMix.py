@@ -461,6 +461,9 @@ class VeroMix(QGraphicsWidget):
         target_layout.removeChannel(key)
         self.check_geometries()
 
+    def get_sink_widgets(self):
+        return self.sink_panel_layout.get_sink_widgets()
+
     def get_sinkoutput_widgets(self):
         return self.sink_panel_layout.get_sinkoutput_widgets()
 
