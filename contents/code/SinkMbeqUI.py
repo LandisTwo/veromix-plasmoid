@@ -30,6 +30,27 @@ from SettingsWidget import SinkSettingsWidget
 class SinkMbeqUI(SinkUI):
     muteInfo = pyqtSignal(bool)
 
+    effects = { "dj_eq_mono" : {    "name" : "DJ Equalizer",
+                                    "plugin": "dj_eq_1901",
+                                    "control": "0,0,0",
+                                    "range" : [[-70, 6],[-70, 6],[-70, 6]],
+                                    "scale" : [1,1,1] },
+                "flanger" :    {    "name" : "Flanger",
+                                    "plugin": "flanger_1191",
+                                    "control": "6.325,2.5,0.33437,0",
+                                    "range" : [[0.1, 25],[0, 10],[0, 100],[-1, 1]],
+                                    "scale" : [100,10,10, 10] },
+                "pitchScale" :    {    "name" : "Pitch Scaler",
+                                    "plugin": "pitch_scale_1193",
+                                    "control": "1",
+                                    "range" : [[0.5, 2]],
+                                    "scale" : [100] },
+                "multivoiceChorus" : {"name" : "Multivoice Chorus",
+                                    "plugin": "multivoice_chorus_1201",
+                                    "control": "1,10,0.5,1,9,0",
+                                    "range" : [[1, 8], [10, 40], [0, 2], [0, 5], [2, 30], [-20, 0]],
+                                    "scale" : [1,10,10,10, 10, 10 ] }}
+
     def __init__(self , parent):
         self.automatically_muted = False
         self.extended_panel = None
@@ -47,56 +68,22 @@ class SinkMbeqUI(SinkUI):
     def initArrangement(self):
         SinkUI.initArrangement(self)
         self.create_sliders()
+        self.create_header()
 
     def update_label(self):
         text = ""
         try:
             # FIXME
-            text = self.name() #self.pa_sink.props["device_name"]
+            text = self.pa_sink.props["device.ladspa.name"] #self.name() #self.pa_sink.props["device_name"]
         except:
             pass
         if self.slider:
-            self.slider.setBoldText(text)
+            self.label.setBoldText(text)
             self.set_name(text)
 
     def create_settings_widget(self):
         self.settings_widget = SinkSettingsWidget(self.veromix, self)
         self.settings_widget.update_with_info(self.pa_sink)
-
-    effects = { "dj_eq_mono" : {"plugin": "dj_eq_1901",
-                               "control": "0,0,0",
-                               "range" : [[-70, 6],[-70, 6],[-70, 6]] },
-                "flanger" :    {"plugin": "flanger_1191",
-                               "control": "0,0,0",
-                               "range" : [[0.1, 25],[0, 10],[0, 100],[-1, 1]] },
-                "multivoiceChorus" :    {"plugin": "multivoice_chorus_1201",
-                               "control": "0,0,0,0,0,0",
-                               "range" : [[1, 8], [10, 40], [0, 2], [0, 5], [2, 30], [-20, 0]] }}
-        ## GOOD
-        #sink_name="sink_name=ladspa_output.dj_eq_1901.dj_eq."+str(self.ladspa_index)
-        #plugin = "plugin=dj_eq_1901"
-        #label = "label=dj_eq_mono"
-        #control = "control=0,0,0"
-
-        ##works but ..
-        #sink_name="sink_name=ladspa_output.flanger_1191.flanger."+str(self.ladspa_index)
-        #plugin = "plugin=flanger_1191"
-        #label = "label=flanger"
-        #control = "control=0,0,0,0"
-
-        ## fun!
-        #sink_name="sink_name=ladspa_output.multivoice_chorus_1201.multivoiceChorus."+str(self.ladspa_index)
-        #plugin = "plugin=multivoice_chorus_1201"
-        #label = "label=multivoiceChorus"
-        #control = "control=0,0,0,0,0,0"
-
-        ## fun
-        #sink_name="sink_name=ladspa_output.pitch_scale_1193.pitchScale."+str(self.ladspa_index)
-        #plugin = "plugin=pitch_scale_1193"
-        #label = "label=pitchScale"
-        #control = "control=1.9"
-
-
 
     def create_sliders(self):
         self.sliders = {}
@@ -109,17 +96,8 @@ class SinkMbeqUI(SinkUI):
             return
         for i in range(0,self.number_of_siders):
             self.sliders[i] = LabelSlider()
-            label = self.module_info["label"]
-            if label  in self.effects.keys():
-                val = self.effects[label]
-                self.sliders[i].setMinimum(val["range"][i][0])
-                self.sliders[i].setMaximum(val["range"][i][1])
-            else:
-                self.sliders[i].setMinimum(-70)
-                self.sliders[i].setMaximum(30)
             self.sliders[i].setOrientation(Qt.Vertical)
-
-            self.sliders[i].volumeChanged.connect(self.on_sliders_cb)
+            self.sliders[i].nativeWidget().actionTriggered.connect(self.on_sliders_cb)
             self.equalizer_layout.addItem(self.sliders[i])
             self.equalizer_layout.addStretch()
 
@@ -130,12 +108,44 @@ class SinkMbeqUI(SinkUI):
         self.middle_layout.addItem(self.equalizer_widget)
 
     def composeArrangement(self):
+        self.middle_layout.addItem(self.header_widget)
         self.add_equalizer_widget()
         self.layout.addItem(self.frame)
         self.frame_layout.addItem(self.panel)
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
         self.show_meter = False
+
+    def create_header(self):
+        self.header_widget = QGraphicsWidget()
+        self.header_layout = QGraphicsLinearLayout(Qt.Horizontal)
+        #self.header_layout.setContentsMargins(6,8,6,0)
+        self.header_layout.setContentsMargins(0,0,0,0)
+        self.header_widget.setLayout(self.header_layout)
+        self.header_widget.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
+
+        self.label = Label()
+        self.label.setContentsMargins(0,0,0,0)
+        self.label.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed))
+        self.header_layout.addItem(self.label)
+
+        self.effect_switcher = Plasma.ComboBox()
+        self.header_layout.addItem(self.effect_switcher)
+        self.effect_switcher.activated.connect(self.on_change_effect)
+
+        for effect in self.effects.values():
+            self.effect_switcher.addItem(effect["name"])
+
+    def on_change_effect(self, value):
+        for key in self.effects.keys():
+            if self.effects[key]["name"] == value:
+                #"sink_name=ladspa_output.dj_eq_1901.dj_eq."+str(self.ladspa_index)
+                parameters = "sink_name=ladspa_output."+self.effects[key]["plugin"]+"."+key
+                parameters =  parameters + " master=%(master)s " % self.module_info
+                parameters =  parameters + " plugin=" + self.effects[key]["plugin"]
+                parameters =  parameters + " label=" + key
+                parameters =  parameters + " control=" + self.effects[key]["control"]
+                self.pa_sink.set_ladspa_sink(parameters)
 
     def createMiddle(self):
         self.middle = QGraphicsWidget()
@@ -158,7 +168,23 @@ class SinkMbeqUI(SinkUI):
             self.add_equalizer_widget()
         self.set_name(self.module_info["sink_name"])
         for i in range(0,self.number_of_siders):
-            self.sliders[i].setValueFromPulse(int(controls[i]))
+            label = self.module_info["label"]
+            scale = self.effects[label]["scale"][i]
+            self.sliders[i].setMinimum(self.effects[label]["range"][i][0] * scale)
+            self.sliders[i].setMaximum(self.effects[label]["range"][i][1] * scale)
+            value = float(controls[i]) * scale
+            self.sliders[i].setValue(int(value))
+
+    def update_with_info(self, info):
+        SinkUI.update_with_info(self,info)
+        active_index = 0
+        index = 0
+        for key in self.effects.keys():
+            effect = self.effects[key]
+            if self.name() == effect["name"]:
+                active_index = index
+            index = index + 1
+        self.effect_switcher.nativeWidget().setCurrentIndex(active_index)
 
     def parse_module_info(self, string):
         args = {}
@@ -169,12 +195,13 @@ class SinkMbeqUI(SinkUI):
                 args[s[0]]=s[1]
         return args
 
-    def on_sliders_cb(self, value):
-        values = []
-        for i in range(0,self.number_of_siders):
-            values.append(self.sliders[i].value())
-            self.sliders[i].update_plasma_timestamp()
-        self._schedule_set_ladspa_sink(values)
+    def on_sliders_cb(self, action):
+        if action == 7 or action == 3:
+            values = []
+            for i in range(0,self.number_of_siders):
+                values.append(self.sliders[i].value())
+                self.sliders[i].update_plasma_timestamp()
+            self._schedule_set_ladspa_sink(values)
 
     def on_timer(self):
         self.timer.stop()
@@ -190,8 +217,12 @@ class SinkMbeqUI(SinkUI):
         if self.module_info == None:
             return
         control = ""
+        effect = self.effects[self.module_info["label"]]
+        i = 0
         for val in values:
-            control = control +  str(val) + ","
+            scale = effect["scale"][i]
+            control = control +  str(float(val)/float(scale)) + ","
+            i = i + 1
         self.module_info["control"] = control[:-1]
         parameters = "sink_name=%(sink_name)s master=%(master)s plugin=%(plugin)s  label=%(label)s control=%(control)s" % self.module_info
         self.pa_sink.set_ladspa_sink(parameters)
