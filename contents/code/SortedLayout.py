@@ -177,16 +177,18 @@ class SortedLayout(QGraphicsLinearLayout):
         sink_inputs = self._sort_by_attribute(self._get_sinkinput_widgets(objects), '_name')
         mediaplayers = self._sort_by_attribute(self._get_mediaplayer_widgets(objects), '_name')
         sorting = []
+        for s in sinks:
+            if s.isDefaultSink():
+                sinks.remove(s)
+                sinks.insert(0,s)
+
         for s in sources:
             sorting.append(s)
             for so in sourceoutputs:
                 if int(s.index) == int(so.getOutputIndex()):
                     sorting.append(so)
         for s in sinks:
-            if s.isDefaultSink():
-                sorting.insert(0,s)
-            else:
-                sorting.append(s)
+            sorting.append(s)
             for i in sink_inputs:
                 if int(s.index) == int(i.getOutputIndex()):
                     sorting.append(i)
