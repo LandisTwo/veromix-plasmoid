@@ -161,7 +161,9 @@ class Channel(QGraphicsWidget):
         self.set_channel_volumes(vol)
 
     def getVolume(self):
-        return self.pa_sink.getVolume()
+        if self.pa_sink:
+            return self.pa_sink.getVolume()
+        return [0]
 
     def on_expander_clicked(self):
         self.middle_layout.removeItem(self.slider)
@@ -259,7 +261,9 @@ class Channel(QGraphicsWidget):
         self.slider = None
 
     def isMuted(self):
-        return self.pa_sink.isMuted()
+        if self.pa_sink:
+            return self.pa_sink.isMuted()
+        return False
 
     def isSinkOutput(self):
         if self.pa_sink:
