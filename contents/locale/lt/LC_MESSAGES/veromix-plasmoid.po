@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-18 09:27+0200\n"
+"POT-Creation-Date: 2011-07-26 00:50+0200\n"
 "PO-Revision-Date: 2011-04-18 12:27+0300\n"
 "Last-Translator: Donatas G. <dgvirtual@akl.lt>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -115,53 +115,53 @@ msgstr "Veikiantys leistuvai"
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
 msgstr "Veromix yra Pulseaudio serverio maišiklis. "
 
-#: contents/code/main.py:131 contents/code/main.py:318
+#: contents/code/main.py:133 contents/code/main.py:324
 msgid "Veromix volume up"
 msgstr "Veromix - padidinti garsą"
 
-#: contents/code/main.py:136 contents/code/main.py:323
+#: contents/code/main.py:138 contents/code/main.py:329
 msgid "Veromix volume down"
 msgstr "Veromix - sumažinti garsą"
 
-#: contents/code/main.py:141
+#: contents/code/main.py:143
 #, fuzzy
 msgid "Veromix toggle mute"
 msgstr "Veromix - sukeisti iš/į begarsį"
 
 # Не уверен что это такое
-#: contents/code/main.py:149
+#: contents/code/main.py:151
 msgid "Main Volume"
 msgstr "Pagrindinis garso reguliuoklis"
 
-#: contents/code/main.py:238
+#: contents/code/main.py:244
 msgid "Appearance"
 msgstr "Išvaizda"
 
-#: contents/code/main.py:253
+#: contents/code/main.py:259
 msgid "Media Player Controls"
 msgstr "Leistuvo valdymas"
 
-#: contents/code/main.py:276
+#: contents/code/main.py:282
 msgid "Max volume value"
 msgstr "Maksimalus  garsas"
 
-#: contents/code/main.py:281
+#: contents/code/main.py:287
 msgid "Mute if volume reaches zero"
 msgstr "Užtildyti garsą valdikliui pasiekus nulį"
 
-#: contents/code/main.py:285
+#: contents/code/main.py:291
 msgid "Sound Card Profiles"
 msgstr "Garso plokštės profiliai"
 
-#: contents/code/main.py:307
+#: contents/code/main.py:313
 msgid "Pulseaudio"
 msgstr "Pulseaudio"
 
-#: contents/code/main.py:328
+#: contents/code/main.py:334
 msgid "Veromix toggle  mute"
 msgstr "Veromix - sukeisti iš/į begarsį"
 
-#: contents/code/main.py:332
+#: contents/code/main.py:338
 #, fuzzy
 msgid "Volume Keyboard Shortcuts"
 msgstr "Globalieji spartieji klavišai"
@@ -215,19 +215,19 @@ msgid ""
 "<span style=\"font-size: small;\">(right click and copy url)</span>. "
 msgstr ""
 
-#: contents/code/VeroMix.py:68
-msgid "Effects"
+#: contents/code/VeroMix.py:77
+msgid "Add equalizer"
 msgstr ""
 
-#: contents/code/VeroMix.py:107
+#: contents/code/VeroMix.py:117
 msgid "Playback"
 msgstr "Grojimas"
 
-#: contents/code/VeroMix.py:108
+#: contents/code/VeroMix.py:118
 msgid "Record"
 msgstr "Įrašymas"
 
-#: contents/code/VeroMix.py:128
+#: contents/code/VeroMix.py:138
 msgid ""
 "There is a problem with the backgroud-"
 "service.                                                         "
