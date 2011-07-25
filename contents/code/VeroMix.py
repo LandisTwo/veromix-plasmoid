@@ -65,6 +65,7 @@ class VeroMix(QGraphicsWidget):
         self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
 
         self.effects_button = Plasma.IconWidget(self.sink_panel)
+        self.effects_button.setZValue(10)
         self.effects_button.setSvg("widgets/action-overlays","add-normal")
         #self.effects_button.setText(i18n("Effects"))
         self.effects_button.setMaximumIconSize(QSizeF(12,12))

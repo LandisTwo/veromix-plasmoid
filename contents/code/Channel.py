@@ -118,6 +118,7 @@ class Channel(QGraphicsWidget):
 
     def create_expander(self):
         self.expander = Plasma.IconWidget(self.panel)
+        self.expander.setZValue(10)
         self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
         self.expander.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed))
         self.expander.clicked.connect(self.on_expander_clicked)
