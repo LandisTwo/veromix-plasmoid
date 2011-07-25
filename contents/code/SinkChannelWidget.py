@@ -66,6 +66,8 @@ class SinkChannelWidget(QGraphicsWidget):
         self.slider_widget = QGraphicsWidget()
         self.slider_widget.setLayout(self.slider_layout)
         self.slider_widget.setContentsMargins(0,0,0,0)
+
+    def create_sliders(self):
         for channel in self.sink.pa_sink.getChannels():
             slider = LabelSlider()
             slider.setOrientation(Qt.Horizontal)
@@ -75,6 +77,13 @@ class SinkChannelWidget(QGraphicsWidget):
             slider.volumeChanged.connect(self.on_slider_cb)
             self.sliders.append(slider)
             self.slider_layout.addItem(slider)
+
+    def remove_sliders(self):
+        for slider in self.sliders:
+            self.slider_layout.removeItem(slider)
+            del slider
+        del self.sliders
+        self.sliders = []
 
     def create_settings_widget(self):
         pass
@@ -95,6 +104,9 @@ class SinkChannelWidget(QGraphicsWidget):
 
     def set_slider_values(self):
         channels = self.sink.pa_sink.getChannels()
+        if len(channels) != len(self.sliders):
+            self.remove_sliders()
+            self.create_sliders()
         for i in range(0,len(channels)):
             name = channels[i].getName()
             if name != "None":
