@@ -68,9 +68,9 @@ class LabelSlider(Plasma.Slider):
         self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
         self.valueChanged.connect( self.on_slider_cb)
 
-    def setMaximum(self, value):
+    def setMaximum(self, value, showticks=True):
         Plasma.Slider.setMaximum(self,value)
-        if value > 100:
+        if value > 100 and showticks:
             self.nativeWidget().setTickInterval(100)
             self.nativeWidget().setTickPosition(QSlider.TicksBothSides)
         else:
@@ -120,3 +120,17 @@ class LabelSlider(Plasma.Slider):
     def check_pulse_timestamp(self):
         now = datetime.datetime.now()
         return  (now - self.pulse_timestamp ).seconds > self.DELAY
+
+class VerticalSlider(LabelSlider):
+    volumeChanged = pyqtSignal(int)
+
+    def __init__(self):
+        LabelSlider.__init__(self)
+        self.label.setRotation(-90)
+
+    def _resize_widgets(self):
+        h = self.size().height()
+        self.label.setPos(-6, h)
+        w = self.size().height()
+        self.label.setMinimumWidth(w)
+        self.label.setMaximumWidth(w)

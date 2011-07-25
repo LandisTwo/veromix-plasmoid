@@ -64,11 +64,20 @@ class VeroMix(QGraphicsWidget):
         self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
 
-        self.effects_button = Plasma.PushButton()
-        self.effects_button.setText(i18n("Effects"))
-        self.effects_button.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed))
+        self.effects_button = Plasma.IconWidget(self.sink_panel)
+        self.effects_button.setSvg("widgets/action-overlays","add-normal")
+        #self.effects_button.setText(i18n("Effects"))
+        self.effects_button.setMaximumIconSize(QSizeF(12,12))
+        self.effects_button.setOrientation(Qt.Horizontal)
+        self.effects_button.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum))
         self.effects_button.clicked.connect(self.on_effects_button_clicked)
-        self.layout.addItem(self.effects_button)
+        tooltip = Plasma.ToolTipContent()
+        #tooltip.setImage(pixmapFromSVG("audio-volume-high"))
+        tooltip.setMainText(i18n("Add equalizer"))
+        #tooltip.setSubText(controls[i])
+        Plasma.ToolTipManager.self().setContent(self.effects_button, tooltip)
+        Plasma.ToolTipManager.self().registerWidget(self.effects_button)
+        self.sink_panel.geometryChanged.connect(self._update_effects_button_position)
 
         self.showsTabs =  not self.applet.useTabs()
         self.switchView(True)
@@ -182,8 +191,8 @@ class VeroMix(QGraphicsWidget):
         now = datetime.datetime.now()
         if  (now - self.last_resize_running).seconds > 1:
             self.adjustSize()
-            self.setMinimumHeight(self.scrolled_panel.preferredSize().height() + self.effects_button.preferredSize().height())
-            self.setMaximumHeight(self.scrolled_panel.preferredSize().height() + self.effects_button.preferredSize().height())
+            self.setMinimumHeight(self.scrolled_panel.preferredSize().height())
+            self.setMaximumHeight(self.scrolled_panel.preferredSize().height())
             self.last_resize_running = datetime.datetime.now()
         else:
             self.trigger_schedule_timer()
@@ -305,7 +314,13 @@ class VeroMix(QGraphicsWidget):
             source.on_update_meter(index,int(level), len(sources))
 
     def resizeEvent(self, e):
+        self._update_effects_button_position()
         self.emit(SIGNAL("resized()"))
+
+    def _update_effects_button_position(self):
+        x = self.sink_panel.size().width() - self.effects_button.size().width()
+        y = self.sink_panel.size().height() - self.effects_button.size().height()
+        self.effects_button.setPos(x,y)
 
 ### panel-icon callbacks
 
@@ -344,94 +359,7 @@ class VeroMix(QGraphicsWidget):
         plugin = "plugin=mbeq_1197"
         label = "label=mbeq"
         control = "control=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
-
-        ## GOOD
-        #sink_name="sink_name=ladspa_output.dj_eq_1901.dj_eq."+str(self.ladspa_index)
-        #plugin = "plugin=dj_eq_1901"
-        #label = "label=dj_eq_mono"
-        #control = "control=0,0,0"
-
-        # fun!
-        sink_name="sink_name=ladspa_output.multivoice_chorus_1201.multivoiceChorus."+str(self.ladspa_index)
-        plugin = "plugin=multivoice_chorus_1201"
-        label = "label=multivoiceChorus"
-        control = "control=0,0,0,0,0,0"
-
-        ## fun
-        #sink_name="sink_name=ladspa_output.pitch_scale_1193.pitchScale."+str(self.ladspa_index)
-        #plugin = "plugin=pitch_scale_1193"
-        #label = "label=pitchScale"
-        #control = "control=1.9"
-
-        ##works but ..
-        #sink_name="sink_name=ladspa_output.flanger_1191.flanger."+str(self.ladspa_index)
-        #plugin = "plugin=flanger_1191"
-        #label = "label=flanger"
-        #control = "control=0,0,0,0"
-
-        ## not working?
-        #sink_name="sink_name=ladspa_output.df_flanger_1438.djFlanger."+str(self.ladspa_index)
-        #plugin = "plugin=dj_flanger_1438"
-        #label = "label=djFlanger"
-        #control = "control=0,0,0,0"
-
-        ## ..
-        #sink_name="sink_name=ladspa_output.phasers_1217.autoPhaser."+str(self.ladspa_index)
-        #plugin = "plugin=phasers_1217"
-        #label = "label=autoPhaser"
-        #control = "control=0,0,0,0,0"
-
-        ## does not work
-        #sink_name="sink_name=ladspa_output.dj_eq_1901.dj_eq."+str(self.ladspa_index)
-        #plugin = "plugin=dj_eq_1901"
-        #label = "label=dj_eq"
-        #control = "control=0,0,0"
-
-        ## no
-        #sink_name="sink_name=ladspa_output.decay_1886.decay."+str(self.ladspa_index)
-        #plugin = "plugin=decay_1886"
-        #label = "label=decay"
-        #control = "control=0"
-
-        ## i dont hear it
-        #sink_name="sink_name=ladspa_output.delay_1898.delay_n."+str(self.ladspa_index)
-        #plugin = "plugin=delay_1898"
-        #label = "label=delay_n"
-        #control = "control=0,0"
-
-        ## i dont hear it
-        #sink_name="sink_name=ladspa_output.delay_1898.delay_l."+str(self.ladspa_index)
-        #plugin = "plugin=delay_1898"
-        #label = "label=delay_l"
-        #control = "control=0,0"
-
-        ## i dont hear it
-        #sink_name="sink_name=ladspa_output.delay_1898.delay_c."+str(self.ladspa_index)
-        #plugin = "plugin=delay_1898"
-        #label = "label=delay_c"
-        #control = "control=0,0"
-
-        ## does not work (stereo)
-        #sink_name="sink_name=ladspa_output.karaoke_1409.karaoke."+str(self.ladspa_index)
-        #plugin = "plugin=karaoke_1409"
-        #label = "label=karaoke"
-        #control = "control=-50"
-
-        ## not work (stereo)
-        #sink_name="sink_name=ladspa_output.plate_1423.plate."+str(self.ladspa_index)
-        #plugin = "plugin=plate_1423"
-        #label = "label=plate"
-        #control = "control=0,0,0"
-
-        ## less fun
-        #sink_name="sink_name=ladspa_output.pitch_scale_1194.pitchScaleHQ."+str(self.ladspa_index)
-        #plugin = "plugin=pitch_scale_1194"
-        #label = "label=pitchScaleHQ"
-        #control = "control=1.9"
-
-
         parameters = sink_name + " " + master_name + " "+  plugin + " "+ label + " "+ control
-
         self.ladspa_index = self.ladspa_index + 1
         self.getPulseAudio().set_ladspa_sink(-1, -1, parameters)
 

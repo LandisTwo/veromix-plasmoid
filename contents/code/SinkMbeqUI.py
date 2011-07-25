@@ -26,36 +26,17 @@ from PyKDE4.plasma import Plasma
 from SinkUI import SinkUI
 from LabelSlider import *
 from SettingsWidget import SinkSettingsWidget
+from LADSPAEffects import *
 
 class SinkMbeqUI(SinkUI):
     muteInfo = pyqtSignal(bool)
 
-    effects = { "dj_eq_mono" : {    "name" : "DJ Equalizer",
-                                    "plugin": "dj_eq_1901",
-                                    "control": "0,0,0",
-                                    "range" : [[-70, 6],[-70, 6],[-70, 6]],
-                                    "scale" : [1,1,1] },
-                "flanger" :    {    "name" : "Flanger",
-                                    "plugin": "flanger_1191",
-                                    "control": "6.325,2.5,0.33437,0",
-                                    "range" : [[0.1, 25],[0, 10],[0, 100],[-1, 1]],
-                                    "scale" : [100,10,10, 10] },
-                "pitchScale" :    {    "name" : "Pitch Scaler",
-                                    "plugin": "pitch_scale_1193",
-                                    "control": "1",
-                                    "range" : [[0.5, 2]],
-                                    "scale" : [100] },
-                "multivoiceChorus" : {"name" : "Multivoice Chorus",
-                                    "plugin": "multivoice_chorus_1201",
-                                    "control": "1,10,0.5,1,9,0",
-                                    "range" : [[1, 8], [10, 40], [0, 2], [0, 5], [2, 30], [-20, 0]],
-                                    "scale" : [1,10,10,10, 10, 10 ] }}
-
     def __init__(self , parent):
+        self.effects = LADSPAEffects.effects
         self.automatically_muted = False
         self.extended_panel = None
         self.sliders = {}
-        self.number_of_siders = 15
+        self.number_of_siders = 0
         self.ladspa_sink_update = datetime.datetime.now()
         self.ladspa_values = None
         self.ladspa_timer_running = False
@@ -95,7 +76,7 @@ class SinkMbeqUI(SinkUI):
         if self.module_info == None:
             return
         for i in range(0,self.number_of_siders):
-            self.sliders[i] = LabelSlider()
+            self.sliders[i] = VerticalSlider()
             self.sliders[i].setOrientation(Qt.Vertical)
             self.sliders[i].nativeWidget().actionTriggered.connect(self.on_sliders_cb)
             self.equalizer_layout.addItem(self.sliders[i])
@@ -136,6 +117,10 @@ class SinkMbeqUI(SinkUI):
         for effect in self.effects.values():
             self.effect_switcher.addItem(effect["name"])
 
+    def _get_effect_settings(self):
+         label = self.module_info["label"]
+         return self.effects[label]
+
     def on_change_effect(self, value):
         for key in self.effects.keys():
             if self.effects[key]["name"] == value:
@@ -168,10 +153,21 @@ class SinkMbeqUI(SinkUI):
             self.add_equalizer_widget()
         self.set_name(self.module_info["sink_name"])
         for i in range(0,self.number_of_siders):
-            label = self.module_info["label"]
-            scale = self.effects[label]["scale"][i]
-            self.sliders[i].setMinimum(self.effects[label]["range"][i][0] * scale)
-            self.sliders[i].setMaximum(self.effects[label]["range"][i][1] * scale)
+            effect = self._get_effect_settings()
+            scale = effect["scale"][i]
+            minmax = effect["range"][i]
+            self.sliders[i].setMinimum(minmax[0] * scale)
+            self.sliders[i].setMaximum(minmax[1] * scale, False)
+            self.sliders[i].setText(effect["labels"][i])
+            #self.sliders[i].setBoldText(str(controls[i]))
+
+            tooltip = Plasma.ToolTipContent()
+            #tooltip.setImage(pixmapFromSVG("audio-volume-high"))
+            tooltip.setMainText(effect["name"] + " - " + effect["labels"][i] )
+            tooltip.setSubText(controls[i])
+            Plasma.ToolTipManager.self().setContent(self.sliders[i], tooltip)
+            Plasma.ToolTipManager.self().registerWidget(self.sliders[i])
+
             value = float(controls[i]) * scale
             self.sliders[i].setValue(int(value))
 

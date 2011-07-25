@@ -31,11 +31,11 @@
 # Pulseaudio will (one day) provide their own dbus-interface:
 # http://pulseaudio.org/wiki/DBusInterface
 #
-# The python-interface to pulseaudio is a mix of these two projects:
+# The python-interface to pulseaudio is a mix of these two projects (extended by myself):
 # https://launchpad.net/earcandy
 # https://fedorahosted.org/pulsecaster/
 # Thank you guys!
-###### December 2009 & July 2010
+###### 2009 - 2011
 
 
 import commands,dbus
