@@ -101,7 +101,7 @@ class SinkMbeqUI(SinkUI):
         self.header_widget = QGraphicsWidget()
         self.header_layout = QGraphicsLinearLayout(Qt.Horizontal)
         #self.header_layout.setContentsMargins(6,8,6,0)
-        self.header_layout.setContentsMargins(0,0,0,0)
+        self.header_layout.setContentsMargins(0,0,12,0)
         self.header_widget.setLayout(self.header_layout)
         self.header_widget.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
 
@@ -111,6 +111,7 @@ class SinkMbeqUI(SinkUI):
         self.header_layout.addItem(self.label)
 
         self.effect_switcher = Plasma.ComboBox()
+        self.effect_switcher.setContentsMargins(0,0,0,0)
         self.header_layout.addItem(self.effect_switcher)
         self.effect_switcher.activated.connect(self.on_change_effect)
 
