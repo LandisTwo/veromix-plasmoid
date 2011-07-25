@@ -1,9 +1,17 @@
-0.12.1
+0.13.0 - 26.7.2011
+- adding support for ladspa effects (equalizer an others)
+- changed sorting of sinks (alphabetically)
+- fix regression: Default sink not detected (no monochrom icons)
+- fix sink inputs having the wrong stream or application name
+- fix expander button below meter
+- setting better titles for some known applications (patch by Kai Uwe Broulik)
+
+0.12.1 - 25.6.2011
 - fix zerodevision in media player controls
 - updating italian translations
 - installed a workaround to fallback on python2 where python3 is default.
 
-0.12.0
+0.12.0 - 13.6.2011
 - better settings-ui for mediaplayer controls
 - adding position, length and seek to mediaplayer controls
 - workaround title for "knotify" and "npviewer.bin" (patch by Bajk...@googlemail.com)
