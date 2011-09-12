@@ -181,11 +181,10 @@ class SortedLayout(QGraphicsLinearLayout):
             if s.isDefaultSink():
                 sinks.remove(s)
                 sinks.insert(0,s)
-
-        for s in sources:
+        for s in sourceoutputs:
             sorting.append(s)
-            for so in sourceoutputs:
-                if int(s.index) == int(so.getOutputIndex()):
+            for so in sources:
+                if int(s.index) == int(so.get_assotiated_source()):
                     sorting.append(so)
 
         #sinks.reverse()

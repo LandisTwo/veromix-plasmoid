@@ -46,6 +46,7 @@ class SourceOutputUI( Channel ):
     def update_with_info(self,info):
         self.update_essentials(info)
         self._set_values(info)
+        self.update()
         if self.extended_panel:
             self.extended_panel.update_with_info(info)
 
@@ -62,7 +63,7 @@ class SourceOutputUI( Channel ):
         if self.name().find("ALSA") == 0 and "application.process.binary" in self.pa_sink.props.keys():
             bold = self.pa_sink.props[ "application.process.binary"]
             text =  self.pa_sink.props[ "application.name"]
-        self.set_text(bold)
+        self.set_name(bold)
 
         if self.slider:
             self.slider.setText(text)
@@ -80,9 +81,9 @@ class SourceOutputUI( Channel ):
             self.mute.setBigIconName(iconname)
             self.updateIcon()
 
-    def getOutputIndex(self):
+    def get_assotiated_source(self):
         try:
-            return int(str(self.pa_sink.props["source"]))
+            return self.pa_sink.props["source"]
         except:
             return 0
 

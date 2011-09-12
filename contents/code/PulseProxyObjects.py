@@ -167,6 +167,9 @@ class SinkInputInfo(AbstractSink):
 
 class SourceInfo(AbstractSink):
 
+    def is_sinkoutput(self):
+        return True
+
     def set_volume(self, values):
         self.pulse_proxy.set_source_volume(self.index, values)
 
