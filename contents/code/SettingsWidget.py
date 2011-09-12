@@ -120,15 +120,14 @@ class SinkInputSettingsWidget(SinkSettingsWidget):
         if self.switcher == None or self.sink.pa_sink == None:
              return 0
         self.switcher.clear()
-        outputs =  self.veromix.get_sinkoutput_widgets()
-
+        outputs = self.veromix.get_sink_widgets()
         for output in outputs:
-            self.switcher.addItem(output.app)
+            self.switcher.addItem(output.name())
         self.switcher.addItem(self.kill_text)
         ## set current selection
         for output in outputs:
             if int(output.index) == int(self.sink.getOutputIndex()) :
-                self.switcher.nativeWidget().setCurrentIndex(self.veromix.get_sinkoutput_widgets().index(output))
+                self.switcher.nativeWidget().setCurrentIndex(outputs.index(output))
         self.switcher.setMinimumSize(self.switcher.preferredSize())
 
     def on_change_switcher(self,event):
