@@ -200,7 +200,7 @@ class Channel(QGraphicsWidget):
                 self.meter.hide()
         self.slider.setMaximum(self.veromix.get_max_volume_value())
 
-    def on_mute_cb(self ):
+    def on_mute_cb(self):
         self.pa_sink.toggle_mute()
 
     def sink_input_kill(self):
