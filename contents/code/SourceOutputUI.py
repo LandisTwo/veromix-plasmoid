@@ -43,13 +43,6 @@ class SourceOutputUI( Channel ):
     def createSlider(self):
         self.slider = Label()
 
-    def update_with_info(self,info):
-        self.update_essentials(info)
-        self._set_values(info)
-        self.update()
-        if self.extended_panel:
-            self.extended_panel.update_with_info(info)
-
     def create_expander(self):
         pass
 

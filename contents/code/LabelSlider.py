@@ -51,6 +51,9 @@ class Label(Plasma.Label):
     def setMaximum(self, value):
         pass
 
+    def update_with_info(self, info):
+        pass
+
 class LabelSlider(Plasma.Slider):
     volumeChanged = pyqtSignal(int)
 

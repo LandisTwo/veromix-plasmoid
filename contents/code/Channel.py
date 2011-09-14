@@ -130,10 +130,6 @@ class Channel(QGraphicsWidget):
     def _resize_widgets(self):
         self.expander.setPos(int(self.panel.size().width() - self.expander.size().width()) ,0)
 
-    def _set_values(self, info):
-        self.updateIcon()
-        self.update_label()
-
     def on_step_volume(self, up):
         vol = self.pa_sink.getVolume()
         STEP = 5
@@ -217,23 +213,21 @@ class Channel(QGraphicsWidget):
         if self.index == index:
             self.meter.setValue(int(value))
 
-    def update_essentials(self,info):
-        self.set_name(info.name)
+    def update_with_info(self,info):
         self.pa_sink = info
         self.index = info.index
-
-    def update_with_info(self,info):
-        self.update_essentials(info)
-        self.slider.update_with_info(info)
-        self._set_values(info)
-        self.update()
+        self.update_label()
+        self.updateIcon()
+        if self.slider:
+            self.slider.update_with_info(info)
         if self.extended_panel:
             self.extended_panel.update_with_info(info)
         if self.settings_widget:
             self.settings_widget.update_with_info(info)
+        self.update()
 
     def update_label(self):
-        pass
+        self.set_name(info.name)
 
     def getOutputIndex(self):
         return self.index
