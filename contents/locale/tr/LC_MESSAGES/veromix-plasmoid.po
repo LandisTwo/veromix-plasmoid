@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-26 00:50+0200\n"
+"POT-Creation-Date: 2011-09-15 00:31+0200\n"
 "PO-Revision-Date: 2010-12-16 03:41+0200\n"
 "Last-Translator: Anıl Özbek <ozbekanil@gmail.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
@@ -225,19 +225,19 @@ msgstr ""
 "bakabilirsiniz</a> <span style=\"font-size: small;\">(sağ tıklayın ve "
 "bağlantıyı kopyalayın)</span>. "
 
-#: contents/code/VeroMix.py:77
+#: contents/code/VeroMix.py:80
 msgid "Add equalizer"
 msgstr ""
 
-#: contents/code/VeroMix.py:117
+#: contents/code/VeroMix.py:120
 msgid "Playback"
 msgstr "Oynatma"
 
-#: contents/code/VeroMix.py:118
+#: contents/code/VeroMix.py:121
 msgid "Record"
 msgstr "Kaydetme"
 
-#: contents/code/VeroMix.py:138
+#: contents/code/VeroMix.py:141
 msgid ""
 "There is a problem with the backgroud-"
 "service.                                                         "
