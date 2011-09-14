@@ -1,6 +1,8 @@
 0.13.1
 - fix sorting of sources
 - fix sink-output selection in combobox
+- fix label of tooltip
+- improve label position for bigger fonts
 
 0.13.0 - 26.7.2011
 - adding support for ladspa effects (equalizer an others)
