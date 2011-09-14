@@ -83,6 +83,11 @@ class LabelSlider(Plasma.Slider):
         w = self.size().width()
         self.label.setMinimumWidth(w)
         self.label.setMaximumWidth(w)
+        # set abs position of label, respect fonts-size
+        h = self.size().height()
+        s = Plasma.Theme.defaultTheme().fontMetrics().height() + 2
+        v = int ((h/2) - s)
+        self.label.setPos(0,v)
 
     def setText(self, text):
         self.label.setText(text)
