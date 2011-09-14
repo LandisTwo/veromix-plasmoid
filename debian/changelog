@@ -1,3 +1,12 @@
+plasma-widget-veromix (0.13.1-1) unstable; urgency=low
+
+    * New upstream release.
+    * Add python to build-depends and use dh_python2 to calculate
+      python dependencies. Patch by Scott Kitterman
+      <scott@kitterman.com> (Closes: #637472).
+
+-- Nik Lutz <nik.lutz@gmail.com>  Thu, 14 Sep 2011 23:55:00 +0100
+
 plasma-widget-veromix (0.13.0-1) unstable; urgency=low
 
     * New upstream release.
