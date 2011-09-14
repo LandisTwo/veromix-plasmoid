@@ -68,7 +68,10 @@ class VeroMix(QGraphicsWidget):
         self.effects_button.setZValue(10)
         self.effects_button.setSvg("widgets/action-overlays","add-normal")
         #self.effects_button.setText(i18n("Effects"))
-        self.effects_button.setMaximumIconSize(QSizeF(12,12))
+
+        # Backward compatibility
+        if self.effects_button.setMaximumIconSize:
+            self.effects_button.setMaximumIconSize(QSizeF(12,12))
         self.effects_button.setOrientation(Qt.Horizontal)
         self.effects_button.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum))
         self.effects_button.clicked.connect(self.on_effects_button_clicked)
