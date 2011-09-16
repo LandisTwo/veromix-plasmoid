@@ -2,7 +2,7 @@ Source: plasma-widget-veromix
 Section: kde
 Priority: optional
 Maintainer: Nik Lutz <nik.lutz@gmail.com>
-Build-Depends: debhelper (>= 8), gettext, kdelibs-bin, kdesdk-scripts, python (>= 2.6.6-3~)
+Build-Depends: debhelper (>= 8), gettext, kdelibs-bin, kdesdk-scripts, python
 Standards-Version: 3.9.2
 Homepage: http://code.google.com/p/veromix-plasmoid/
 Vcs-Browser: http://code.google.com/p/veromix-plasmoid/source/browse/
