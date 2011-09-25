@@ -4,7 +4,7 @@ veromix (0.13.1-2) unstable; urgency=low
 
  -- Nik Lutz <nik.lutz@gmail.com>  Thu, 25 Sep 2011 18:05:00 +0100
 
-plasma-widget-veromix (0.13.1-1) unstable; urgency=low
+veromix (0.13.1-1) unstable; urgency=low
 
   * New upstream release.
   * Add python to build-depends and use dh_python2 to calculate
@@ -13,32 +13,32 @@ plasma-widget-veromix (0.13.1-1) unstable; urgency=low
 
  -- Nik Lutz <nik.lutz@gmail.com>  Thu, 14 Sep 2011 23:55:00 +0100
 
-plasma-widget-veromix (0.13.0-1) unstable; urgency=low
+veromix (0.13.0-1) unstable; urgency=low
 
   * New upstream release.
   * Adding swh-plugins as depends to debian/control.
 
  -- Nik Lutz <nik.lutz@gmail.com>  Thu, 25 Jul 2011 00:55:00 +0100
 
-plasma-widget-veromix (0.12.0-1) unstable; urgency=low
+veromix (0.12.0-1) unstable; urgency=low
 
   * New upstream release (Closes: #626494).
   * Updated debian/control Standards-Version to 3.9.2 (no changes).
 
  -- Nik Lutz <nik.lutz@gmail.com>  Thu, 13 Jun 2011 03:17:00 +0100
 
-plasma-widget-veromix (0.11.1-1) unstable; urgency=low
+veromix (0.11.1-1) unstable; urgency=low
 
   * New upstream release.
   * Changed debian/rules to use the new upstream Makefile.
-  * Removed debian/plasma-widget-veromix.links.
-  * Removed debian/plasma-widget-veromix.install.
+  * Removed debian/veromix.links.
+  * Removed debian/veromix.install.
   * Updated Description in debian/control.
   * Updated Build-Depends in debian/control.
 
  -- Nik Lutz <nik.lutz@gmail.com>  Thu, 07 Apr 2011 22:00:23 +0100
 
-plasma-widget-veromix (0.9.1-1) unstable; urgency=low
+veromix (0.9.1-1) unstable; urgency=low
 
   * Initial release.
 
