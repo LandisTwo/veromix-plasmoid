@@ -2,7 +2,7 @@
 VERSION=$(cat metadata.desktop | grep X-KDE-PluginInfo-Version | awk 'BEGIN {FS= "="} ; { print $2 }')
 NAME=$(date +'%Y-%m-%d')
 NAME="${NAME}_${VERSION}_veromix.plasmoid"
-TAR_NAME="plasma-widget-veromix_$VERSION.orig.tar.gz"
+TAR_NAME="veromix_$VERSION.orig.tar.gz"
 
 find ./ -name '*~' | xargs rm
 find ./ -name '*.pyc' | xargs rm
@@ -16,7 +16,7 @@ rm -rf "${TMPDIR}"
 mkdir ${TMPDIR}
 tar zcvf ${TMPDIR}/$TAR_NAME --exclude=.svn --exclude="*~^" --exclude="contrib" --exclude=debian --exclude="reload_plasma.sh"  --exclude="kill_service.sh" --exclude="create_package.sh"  --exclude="metadata.desktop.kde4.4" --exclude="*.mo" .
 
-BUILDDIR=${TMPDIR}/plasma-widget-veromix
+BUILDDIR=${TMPDIR}/veromix
 mkdir ${BUILDDIR}
 
 CUR=$(pwd)
