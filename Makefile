@@ -37,4 +37,4 @@ clean:
 distclean:	clean
 
 dist:	clean
-	tar cfzv ../veromix_$(VERSION).orig.tar.gz --exclude=.svn --exclude=debian --exclude="contrib" ../$(shell basename $(CURDIR))
+	tar cfzv ../plasma-widget-veromix_$(VERSION).orig.tar.gz --exclude=.svn --exclude=debian --exclude="contrib" ../$(shell basename $(CURDIR))
