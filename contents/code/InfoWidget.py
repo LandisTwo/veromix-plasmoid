@@ -46,6 +46,13 @@ class SinkInfoWidget(Plasma.TabBar):
 
     def compose_arrangement(self):
         self.settings_layout.addItem(self.switcher)
+        # This is necessary until QTBUG-2368 is fixed
+        # this does not work:
+        #self.switcher.setZValue(110)
+        # but that helps:
+        self.switcher.parentItem().setZValue(110)
+
+
         self.settings_layout.addStretch()
         self.settings_layout.addItem(self.button)
         #self.layout.addItem(self.settings_widget)
@@ -90,6 +97,8 @@ class SinkInfoWidget(Plasma.TabBar):
 
     def create_switcher(self):
         self.switcher = Plasma.CheckBox()
+        self.switcher.nativeWidget().setMaxVisibleItems(4)
+
         self.switcher.toggled.connect(self.on_change_switcher)
         self.switcher.setText("Default")
         self.switcher.setMinimumSize(self.switcher.preferredSize())
@@ -147,6 +156,12 @@ class SinkInputInfoWidget(SinkInfoWidget):
     def compose_arrangement(self):
         self.settings_layout.addStretch()
         self.settings_layout.addItem(self.switcher)
+        # This is necessary until QTBUG-2368 is fixed
+        # this does not work:
+        #self.switcher.setZValue(110)
+        # but that helps:
+        self.switcher.parentItem().setZValue(110)
+
         self.settings_layout.addItem(self.button)
         #self.layout.addItem(self.settings_widget)
         #self.layout.addItem(self.slider_widget)
@@ -156,6 +171,7 @@ class SinkInputInfoWidget(SinkInfoWidget):
 
     def create_switcher(self):
         self.switcher = Plasma.ComboBox()
+        self.switcher.nativeWidget().setMaxVisibleItems(4)
         self.switcher.activated.connect(self.on_change_switcher)
 
     def keys_for_string(self,  string, values, props):

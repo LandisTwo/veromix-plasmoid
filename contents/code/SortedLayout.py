@@ -170,6 +170,9 @@ class SortedLayout(QGraphicsLinearLayout):
                 return True
         return False
 
+    def order_index(self, widget):
+        return self.sort(self.channels.values()).index(widget)
+
     def sort(self,objects):
         sources = self._sort_by_attribute(self._get_source_widgets(objects), '_name')
         sourceoutputs = self._sort_by_attribute(self._get_sinkoutput_widgets(objects), '_name')

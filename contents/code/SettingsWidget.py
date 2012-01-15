@@ -61,6 +61,7 @@ class SinkSettingsWidget(QGraphicsWidget):
 
     def create_profile_switcher(self):
         self.profile_switcher = Plasma.ComboBox()
+        self.profile_switcher.nativeWidget().setMaxVisibleItems(4)
         self.profile_switcher.activated.connect(self.on_change_profile)
 
     def update_with_info(self, info):
@@ -114,6 +115,7 @@ class SinkInputSettingsWidget(SinkSettingsWidget):
         #self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True) )
         self.label.setText(i18n("Output"))
         self.switcher = Plasma.ComboBox()
+        self.switcher.nativeWidget().setMaxVisibleItems(4)
         self.switcher.activated.connect(self.on_change_switcher)
 
     def updateOutputSwitcher(self):

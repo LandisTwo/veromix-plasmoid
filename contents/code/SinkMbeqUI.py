@@ -113,6 +113,14 @@ class SinkMbeqUI(SinkUI):
         self.effect_switcher = Plasma.ComboBox()
         self.effect_switcher.setContentsMargins(0,0,0,0)
         self.header_layout.addItem(self.effect_switcher)
+        # Workaround for bug 219873
+        self.effect_switcher.nativeWidget().setMaxVisibleItems(4)
+        # This is necessary until QTBUG-2368 is fixed
+        # this does not work:
+        #self.effect_switcher.setZValue(110)
+        # but that helps:
+        self.effect_switcher.parentItem().setZValue(110)
+
         self.effect_switcher.activated.connect(self.on_change_effect)
 
         for effect in self.effects.values():
