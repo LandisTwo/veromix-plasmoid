@@ -34,8 +34,7 @@
 # The python-interface to pulseaudio is a mix of these two projects (extended by myself):
 # https://launchpad.net/earcandy
 # https://fedorahosted.org/pulsecaster/
-# Thank you guys!
-###### 2009 - 2011
+###### 2009 - 2012
 
 
 import commands,dbus
@@ -61,7 +60,7 @@ from Utils import *
 COMMENT=i18n("Veromix is a mixer for the Pulseaudio sound server. ")
 
 class VeroMixPlasmoid(plasmascript.Applet):
-    VERSION="0.13.1"
+    VERSION="0.13.2"
 
     nowplaying_player_added = pyqtSignal(QString, QObject)
     nowplaying_player_removed = pyqtSignal(QString )
