@@ -5,7 +5,7 @@
   <property name="minimumSize">
    <size>
     <width>400</width>
-    <height>320</height>
+    <height>340</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -54,7 +54,14 @@
        <widget class="QPlainTextEdit" name="runningMediaplayers"/>
    </item>
 
-    
+    <item>
+     <widget class="QCheckBox" name="show_albumart">
+      <property name="text">
+       <string>Show album art</string>
+      </property>
+     </widget>
+    </item>
+
   </layout>
  </widget>
  <resources/>
