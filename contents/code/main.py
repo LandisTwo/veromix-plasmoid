@@ -229,16 +229,28 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.widget.on_toggle_mute()
 
     def createConfigurationInterface(self, parent):
+        self.pp = parent
         self.config_widget = QWidget(parent)
         self.connect(self.config_widget, SIGNAL('destroyed(QObject*)'), self.configWidgetDestroyed)
 
         self.config_ui = uic.loadUi(str(self.package().filePath('ui', 'appearance.ui')), self.config_widget)
         self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background","0").toInt() [0])
+        self.config_ui.showBackground.currentIndexChanged.connect(parent.settingsModified)
+
         self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
+        self.config_ui.popupMode.currentIndexChanged.connect(parent.settingsModified)
+
         self.config_ui.useTabs.setChecked(self.useTabs())
+        self.config_ui.useTabs.stateChanged.connect(parent.settingsModified)
+
         self.config_ui.show_tooltip.setChecked(self.get_show_toolip())
+        self.config_ui.show_tooltip.stateChanged.connect(parent.settingsModified)
+
         self.config_ui.always_show_sources.setChecked(self.get_always_show_sources())
+        self.config_ui.always_show_sources.stateChanged.connect(parent.settingsModified)
+
         self.config_ui.meter_visible.setChecked(self.get_meter_visible())
+        self.config_ui.meter_visible.stateChanged.connect(parent.settingsModified)
 
         self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
         parent.addPage(self.config_widget, i18n("Appearance"), "veromix-plasmoid-128")
@@ -252,9 +264,11 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
         self.mediaplayer_settings_ui.use_nowplaying.setChecked(self.is_nowplaying_enabled())
         self.mediaplayer_settings_ui.use_nowplaying.stateChanged.connect(self.update_mediaplayer_settings_ui)
+        self.mediaplayer_settings_ui.use_nowplaying.stateChanged.connect(parent.settingsModified)
 
         self.mediaplayer_settings_ui.use_mpris2.setChecked(self.is_mpris2_enabled())
         self.mediaplayer_settings_ui.use_mpris2.stateChanged.connect(self.update_mediaplayer_settings_ui)
+        self.mediaplayer_settings_ui.use_mpris2.stateChanged.connect(parent.settingsModified)
 
         parent.addPage(self.mediaplayer_settings_widget, i18n("Media Player Controls"), "veromix-plasmoid-128")
 
@@ -267,6 +281,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
         # FIXME KDE 4.6 workaround
         self.connect(parent, SIGNAL("okClicked()"), self.configChanged)
+        self.connect(parent, SIGNAL("applyClicked()"), self.configChanged)
         self.connect(parent, SIGNAL("cancelClicked()"), self.configDenied)
         return self.config_widget
 
@@ -279,11 +294,13 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.max_volume_spinbox.setRange(1,255)
         self.max_volume_spinbox.setSingleStep(1)
         self.max_volume_spinbox.setValue(self.get_max_volume_value())
+        self.max_volume_spinbox.valueChanged.connect(dialog.settingsModified)
         layout.addWidget(QLabel(i18n("Max volume value")), 0,0)
         layout.addWidget(self.max_volume_spinbox, 0,1)
 
         self.automute_checkbox = QCheckBox()
         self.automute_checkbox.setChecked(self.get_auto_mute())
+        self.automute_checkbox.stateChanged.connect(dialog.settingsModified)
         layout.addWidget(QLabel(i18n("Mute if volume reaches zero")), 1,0)
         layout.addWidget(self.automute_checkbox, 1,1)
 

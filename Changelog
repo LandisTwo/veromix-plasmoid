@@ -1,3 +1,7 @@
+0.13.2
+- fix: Dropdownbox of audiooutput lies not on top of the sliders (Issue 37).
+- enable "apply" button when the user changes settings in the settings dialog.
+
 0.13.1
 - fix sorting of sources
 - fix sink-output selection in combobox
