@@ -131,7 +131,10 @@ class MediaPlayerUI(Channel):
             self.update_slider()
 
     def on_update_configuration(self):
-        pass
+        self.set_middle_size()
+        if self.veromix.is_albumart_enabled():
+            self.middle.setIcon(KIcon())
+
 
 ## update ui
 
@@ -142,13 +145,18 @@ class MediaPlayerUI(Channel):
             if state == MediaPlayer.Playing:
                 #self.play.setSvg(self.svg_path, "pause-normal")
                 self.play.setIcon(KIcon("media-playback-pause"))
-                self.middle.setIcon(self.last_playing_icon)
+                if self.veromix.is_albumart_enabled():
+                    self.middle.setIcon(self.last_playing_icon)
             else:
                 #self.play.setSvg(self.svg_path, "play-normal")
                 self.play.setIcon(KIcon("media-playback-start"))
-                self.middle.setIcon(KIcon(self.get_pauseIcon()))
+                if self.veromix.is_albumart_enabled():
+                    self.middle.setIcon(KIcon(self.get_pauseIcon()))
 
     def update_cover(self):
+        if not self.veromix.is_albumart_enabled():
+            self.middle.setIcon(KIcon())
+            return True
         # FIXME
         val = self.controller._cover_string
         if self._artwork !=  val:
@@ -217,13 +225,20 @@ class MediaPlayerUI(Channel):
         self.middle_layout = QGraphicsLinearLayout(Qt.Vertical)
         self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setLayout(self.middle_layout)
-        self.CONTROLSBAR_SIZE = 80
+        self.set_middle_size()
+        self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
+        if self.veromix.is_albumart_enabled():
+            self.middle.setIcon(KIcon(self.get_pauseIcon()))
+
+
+    def set_middle_size(self):
+        if self.veromix.is_albumart_enabled():
+            self.CONTROLSBAR_SIZE = 80
+        else:
+            self.CONTROLSBAR_SIZE = 30
         self.middle.setMinimumHeight(self.CONTROLSBAR_SIZE)
         self.middle.setPreferredHeight(self.CONTROLSBAR_SIZE)
         self.middle.setMaximumHeight(self.CONTROLSBAR_SIZE)
-        self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-        self.middle.setIcon(KIcon(self.get_pauseIcon()))
-        self.middle.clicked.connect(self.on_play_cb)
 
     def create_next_button(self):
         self.next = MuteButton(self)

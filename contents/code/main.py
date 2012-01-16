@@ -270,6 +270,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.mediaplayer_settings_ui.use_mpris2.stateChanged.connect(self.update_mediaplayer_settings_ui)
         self.mediaplayer_settings_ui.use_mpris2.stateChanged.connect(parent.settingsModified)
 
+        self.mediaplayer_settings_ui.show_albumart.setChecked(self.is_albumart_enabled())
+        self.mediaplayer_settings_ui.show_albumart.stateChanged.connect(parent.settingsModified)
+
         parent.addPage(self.mediaplayer_settings_widget, i18n("Media Player Controls"), "veromix-plasmoid-128")
 
         #self.about_widget = QWidget(parent)
@@ -371,6 +374,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
         self.config().writeEntry("use_nowplaying", str(self.mediaplayer_settings_ui.use_nowplaying.isChecked()))
         self.config().writeEntry("use_mpris2", str(self.mediaplayer_settings_ui.use_mpris2.isChecked()))
+        self.config().writeEntry("show_albumart", str(self.mediaplayer_settings_ui.show_albumart.isChecked()))
 
         #self.config().writeEntry("mpris2List",str(self.mediaplayer_settings_ui.mpris2List.toPlainText()).strip())
         self.config().writeEntry("nowplayingBlacklist",str(self.mediaplayer_settings_ui.mediaplayerBlacklist.toPlainText()).strip())
@@ -391,6 +395,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.mediaplayer_settings_ui.runningMediaplayers.setEnabled(enable)
         self.mediaplayer_settings_ui.runningMediaplayersLabel.setEnabled(enable)
         self.mediaplayer_settings_ui.runningMediaplayers.setPlainText(self.get_running_mediaplayers())
+        self.mediaplayer_settings_ui.show_albumart.setEnabled(enable)
 
     def apply_nowplaying(self, enabled):
         self.disable_nowplaying()
@@ -474,6 +479,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def is_mpris2_enabled(self):
         return self.config().readEntry("use_mpris2",True).toBool()
+
+    def is_albumart_enabled(self):
+        return self.config().readEntry("show_albumart",True).toBool()
 
     def disable_nowplaying(self):
         for player in self.widget.get_mediaplayer_widgets():
