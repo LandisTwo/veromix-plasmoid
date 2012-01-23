@@ -255,6 +255,9 @@ class Mpris2MediaPlayer(MediaPlayer):
             metadata = properties[dbus.String("Metadata")]
             if type(metadata) == type(dbus.String("")):
                 return
+            if type(metadata) == type(dbus.Struct([""])):
+		#deadbeef fallback
+		metadata = metadata[0]
             #self.mpris2_trackid = metadata[dbus.String("mpris:trackid")]
             if dbus.String("mpris:artUrl") in metadata.keys():
                 val = QUrl(str(metadata[dbus.String("mpris:artUrl")])).path()
