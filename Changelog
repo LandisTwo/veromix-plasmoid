@@ -1,3 +1,5 @@
+- Adding a fallback for the brooken mpris support in deadbeef.
+
 0.13.2
 - fix: Dropdownbox of audiooutput lies not on top of the sliders (Issue 37).
 - enable "apply" button when the user changes settings in the settings dialog.
