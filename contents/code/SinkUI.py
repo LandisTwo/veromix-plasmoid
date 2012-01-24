@@ -22,6 +22,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 from PyKDE4.plasma import Plasma
+from Utils import i18n
 
 from Channel import Channel
 from SettingsWidget import SinkSettingsWidget
@@ -34,6 +35,36 @@ class SinkUI(Channel):
         self.extended_panel = None
         Channel.__init__(self, parent)
         self.setContentsMargins(0,0,0,0)
+
+
+    def contextMenuEvent(self,event):
+        self.popup_menu = QMenu()
+        profiles_menu = QAction(i18n("Sound Card Profiles"), self.popup_menu)
+        self.popup_menu.addAction(profiles_menu)
+        self.popup_menu.triggered.connect(self.on_contextmenu_clicked)
+        info = self.veromix.card_infos.values()
+
+        self.card_settings = {}
+        for card in self.veromix.card_infos.values():
+            card_menu = QMenu(card.properties["device.description"], self.popup_menu)
+            self.popup_menu.addMenu(card_menu)
+            active_profile_name = card.get_active_profile_name()
+            self.profiles = card.get_profiles()
+            for profile in self.profiles:
+                action = QAction(str(profile.description), card_menu)
+                self.card_settings[action] = card
+                if profile.name == active_profile_name:
+                    action.setCheckable(True)
+                    action.setChecked(True)
+                card_menu.addAction(action)
+
+        self.popup_menu.exec_(event.screenPos())
+
+    def on_contextmenu_clicked(self, action):
+        card = self.card_settings[action]
+        for profile in card.get_profiles():
+            if action.text() == profile.description:
+                self.veromix.pa.set_card_profile(card.index, profile.name)
 
     def updateIcon(self):
         if self.isMuted():
