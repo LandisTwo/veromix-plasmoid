@@ -42,7 +42,7 @@ class Channel(QGraphicsWidget):
         self.extended_panel= None
         self.show_meter = True
         self.init()
-        self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True) )
+        self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True))
 
     def init(self):
         self.layout = QGraphicsLinearLayout(Qt.Vertical)
@@ -127,6 +127,63 @@ class Channel(QGraphicsWidget):
     def create_settings_widget(self):
         self.settings_widget = None
 
+    def create_context_menu(self, event):
+        self.popup_menu = QMenu()
+        self.popup_menu.triggered.connect(self.on_contextmenu_clicked)
+        self.context_menu_create_mute_unlock()
+        self.context_menu_create_custom()
+        self.context_menu_create_settings()
+        if event:
+            self.popup_menu.exec_(event.screenPos())
+        else:
+            self.popup_menu.exec_(QCursor.pos())
+
+    def context_menu_create_mute_unlock(self):
+        action_mute = QAction(i18n("Muted"), self.popup_menu)
+        self.popup_menu.addAction(action_mute)
+        action_mute.setCheckable(True)
+        action_mute.setChecked(self.isMuted())
+        action_mute.triggered.connect(self.on_mute_cb)
+
+        action_unlock = QAction(i18n("Unlock channels"), self.popup_menu)
+        self.popup_menu.addAction(action_unlock)
+        action_unlock.setCheckable(True)
+        action_unlock.setChecked(self.extended_panel_shown)
+        action_unlock.triggered.connect(self.toggle_channel_lock)
+
+    def context_menu_create_sounddevices(self):
+        self.card_settings = {}
+        menus = []
+        for card in self.veromix.card_infos.values():
+            card_menu = QMenu(card.get_description(), self.popup_menu)
+            current = self.veromix.get_card_info_for(self)
+            if current != None and  current.get_description() == card.get_description():
+               self.popup_menu.addMenu(card_menu)
+            else:
+                menus.append(card_menu)
+            active_profile_name = card.get_active_profile_name()
+            self.profiles = card.get_profiles()
+            for profile in self.profiles:
+                action = QAction(str(profile.description), card_menu)
+                self.card_settings[action] = card
+                if profile.name == active_profile_name:
+                    action.setCheckable(True)
+                    action.setChecked(True)
+                card_menu.addAction(action)
+        if len(menus) > 0:
+            self.popup_menu.addSeparator()
+            for each in menus:
+                self.popup_menu.addMenu(each)
+
+    def context_menu_create_custom(self):
+        pass
+
+    def context_menu_create_settings(self):
+        self.popup_menu.addSeparator()
+        action_settings = QAction(i18n("Settings"), self.popup_menu)
+        self.popup_menu.addAction(action_settings)
+        action_settings.triggered.connect(self.veromix.applet.showConfigurationInterface)
+
     def _resize_widgets(self):
         self.expander.setPos(int(self.panel.size().width() - self.expander.size().width()) ,0)
 
@@ -163,12 +220,15 @@ class Channel(QGraphicsWidget):
         return [0]
 
     def on_expander_clicked(self):
+        self.contextMenuEvent(None)
+
+    def toggle_channel_lock(self):
         self.middle_layout.removeItem(self.slider)
         self.slider = None
         if (self.extended_panel_shown):
             self.extended_panel_shown = False
             self.expander.setSvg("widgets/arrows", "left-arrow")
-            self.middle_layout.removeItem(self.settings_widget)
+            #self.middle_layout.removeItem(self.settings_widget)
             self.createSlider()
             self.middle_layout.addItem(self.slider)
             self.settings_widget=None
@@ -178,7 +238,7 @@ class Channel(QGraphicsWidget):
             self.slider = SinkChannelWidget(self.veromix, self)
             self.middle_layout.addItem(self.slider)
             self.create_settings_widget()
-            self.middle_layout.addItem(self.settings_widget)
+            #self.middle_layout.addItem(self.settings_widget)
         self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setContentsMargins(0,0,0,0)
         self.update_with_info(self.pa_sink)
@@ -195,6 +255,12 @@ class Channel(QGraphicsWidget):
                 self.panel_layout.removeItem(self.meter)
                 self.meter.hide()
         self.slider.setMaximum(self.veromix.get_max_volume_value())
+
+    def on_contextmenu_clicked(self, action):
+        pass
+
+    def contextMenuEvent(self,event):
+        self.create_context_menu(event)
 
     def on_mute_cb(self):
         self.pa_sink.toggle_mute()
