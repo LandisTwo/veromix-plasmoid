@@ -41,6 +41,9 @@ class SourceUI( Channel ):
     def create_settings_widget(self):
         self.settings_widget = None
 
+    def context_menu_create_custom(self):
+        self.context_menu_create_sounddevices()
+
     def update_label(self):
         text =  ""
         bold = self.pa_sink.name
