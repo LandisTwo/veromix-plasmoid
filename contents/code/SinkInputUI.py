@@ -47,6 +47,9 @@ class InputSinkUI(SinkUI):
         self.settings_widget = SinkInputSettingsWidget(self.veromix, self)
         self.settings_widget.update_with_info(self.pa_sink)
 
+    def context_menu_create_custom(self):
+        pass
+
     def getOutputIndex(self):
         return self.pa_sink.props["sink"]
 
