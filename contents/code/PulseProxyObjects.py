@@ -230,6 +230,16 @@ class CardInfo:
          for key in self.profiles_dict.keys():
              self.profiles.append(CardProfile(key, self.profiles_dict[key] ))
 
+    def get_property(self,key):
+        if self.properties == None:
+            return ""
+        if key in self.properties.keys():
+            return self.properties[key]
+        return ""
+
+    def get_description(self):
+        return self.get_property("device.description")
+
     def get_profiles(self):
         return self.profiles
 
