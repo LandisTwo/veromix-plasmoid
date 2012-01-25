@@ -51,12 +51,6 @@ class SinkUI(Channel):
         if boolean:
             self.pa.set_default_sink(self.index )
 
-    def on_contextmenu_clicked(self, action):
-        card = self.card_settings[action]
-        for profile in card.get_profiles():
-            if action.text() == profile.description:
-                self.veromix.pa.set_card_profile(card.index, profile.name)
-
     def updateIcon(self):
         if self.isMuted():
             self.updateMutedInfo(True)

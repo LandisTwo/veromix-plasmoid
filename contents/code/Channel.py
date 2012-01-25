@@ -257,7 +257,10 @@ class Channel(QGraphicsWidget):
         self.slider.setMaximum(self.veromix.get_max_volume_value())
 
     def on_contextmenu_clicked(self, action):
-        pass
+        card = self.card_settings[action]
+        for profile in card.get_profiles():
+            if action.text() == profile.description:
+                self.veromix.pa.set_card_profile(card.index, profile.name)
 
     def contextMenuEvent(self,event):
         self.create_context_menu(event)
