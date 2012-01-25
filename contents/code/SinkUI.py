@@ -36,29 +36,20 @@ class SinkUI(Channel):
         Channel.__init__(self, parent)
         self.setContentsMargins(0,0,0,0)
 
+    def context_menu_create_custom(self):
+        action_device = QAction(i18n("Default Sink"), self.popup_menu)
+        self.popup_menu.addAction(action_device)
+        action_device.setCheckable(True)
+        if self.isDefaultSink():
+            action_device.setChecked(True)
+            action_device.setEnabled(False)
+        else:
+            action_device.triggered.connect(self.on_set_default_sink_triggered)
+        self.context_menu_create_sounddevices()
 
-    def contextMenuEvent(self,event):
-        self.popup_menu = QMenu()
-        profiles_menu = QAction(i18n("Sound Card Profiles"), self.popup_menu)
-        self.popup_menu.addAction(profiles_menu)
-        self.popup_menu.triggered.connect(self.on_contextmenu_clicked)
-        info = self.veromix.card_infos.values()
-
-        self.card_settings = {}
-        for card in self.veromix.card_infos.values():
-            card_menu = QMenu(card.properties["device.description"], self.popup_menu)
-            self.popup_menu.addMenu(card_menu)
-            active_profile_name = card.get_active_profile_name()
-            self.profiles = card.get_profiles()
-            for profile in self.profiles:
-                action = QAction(str(profile.description), card_menu)
-                self.card_settings[action] = card
-                if profile.name == active_profile_name:
-                    action.setCheckable(True)
-                    action.setChecked(True)
-                card_menu.addAction(action)
-
-        self.popup_menu.exec_(event.screenPos())
+    def on_set_default_sink_triggered(self, action):
+        if boolean:
+            self.pa.set_default_sink(self.index )
 
     def on_contextmenu_clicked(self, action):
         card = self.card_settings[action]
