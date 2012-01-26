@@ -25,7 +25,6 @@ from PyKDE4.plasma import Plasma
 
 from SinkUI import SinkUI
 from LabelSlider import *
-from SettingsWidget import SinkSettingsWidget
 from LADSPAEffects import *
 
 class SinkMbeqUI(SinkUI):

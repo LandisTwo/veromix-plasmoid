@@ -27,7 +27,6 @@ from LabelSlider import *
 from SinkUI import *
 from Channel import *
 from MuteButton  import InputMuteButton
-from SettingsWidget import SinkInputSettingsWidget
 
 class InputSinkUI(SinkUI):
 

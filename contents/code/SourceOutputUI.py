@@ -23,7 +23,6 @@ from PyKDE4.plasma import Plasma
 
 import signal, os, datetime
 from LabelSlider import *
-from InfoWidget import *
 from Channel import *
 from MuteButton  import *
 from ClickableMeter import *

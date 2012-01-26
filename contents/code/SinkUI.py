@@ -25,7 +25,6 @@ from PyKDE4.plasma import Plasma
 from Utils import i18n
 
 from Channel import Channel
-from SettingsWidget import SinkSettingsWidget
 
 class SinkUI(Channel):
     muteInfo = pyqtSignal(bool)
