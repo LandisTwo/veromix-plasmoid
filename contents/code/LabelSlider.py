@@ -142,3 +142,66 @@ class VerticalSlider(LabelSlider):
         w = self.size().height()
         self.label.setMinimumWidth(w)
         self.label.setMaximumWidth(w)
+
+class MeterSlider(QGraphicsWidget):
+    volumeChanged = pyqtSignal(int)
+
+    def __init__(self):
+        QGraphicsWidget.__init__(self)
+        self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True) )
+        #LabelSlider.__init__(self)
+        self.slider = LabelSlider()
+        self.slider.setParent(self)
+        self.meter = Plasma.Meter(self)
+
+        self.layout = QGraphicsLinearLayout(Qt.Vertical)
+        self.layout.setContentsMargins(2,2,2,0)
+        self.setLayout(self.layout)
+        self.layout.addItem(self.slider)
+        ##self.meter.setMeterType(Plasma.Meter.AnalogMeter)
+        self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
+        self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed, True))
+        self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
+        self.slider.volumeChanged.connect(self.on_volume_changed)
+
+    def on_volume_changed(self,val):
+        self.volumeChanged.emit(val)
+    def setOrientation(self, orient):
+        self.slider.setOrientation(orient)
+    def setMaximum(self, orient):
+        self.slider.setMaximum(orient)
+    def setMinimum(self, orient):
+        self.slider.setMinimum(orient)
+    def setText(self, text):
+        self.slider.setText(text)
+    def setBoldText(self,text):
+        self.slider.setBoldText(text)
+    def setValueFromPlasma(self, value):
+        self.slider.setValueFromPlasma(value)
+    def update_with_info(self, info):
+        self.slider.update_with_info(info)
+    def setValueFromPulse(self, value):
+        self.slider.setValueFromPulse(value)
+    def nativeWidget(self):
+        return self.slider.nativeWidget()
+
+    def _resize_widgets(self):
+        #LabelSlider._resize_widgets(self)
+
+        w = self.size().width()
+        self.meter.setMinimumWidth(w)
+        self.meter.setMaximumWidth(w)
+
+        h = self.size().height()
+        margin = 0  #int(h/2)
+
+        ##meter_height = (Plasma.Theme.defaultTheme().fontMetrics().height())
+        meter_height = int(self.slider.label.size().height())
+        self.meter.setMinimumHeight(meter_height)
+        self.meter.setMaximumHeight(meter_height)
+        s = Plasma.Theme.defaultTheme().fontMetrics().height()
+        v = int ((h - meter_height - margin))
+        self.meter.setPos(0,v)
+
+    def set_meter_value(self, value):
+        self.meter.setValue(int(value))
