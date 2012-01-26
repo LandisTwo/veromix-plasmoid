@@ -224,16 +224,13 @@ class Channel(QGraphicsWidget):
         if (self.extended_panel_shown):
             self.extended_panel_shown = False
             self.expander.setSvg("widgets/arrows", "left-arrow")
-            #self.middle_layout.removeItem(self.settings_widget)
             self.createSlider()
             self.middle_layout.addItem(self.slider)
-            self.settings_widget=None
         else:
             self.extended_panel_shown = True
             self.expander.setSvg("widgets/arrows", "down-arrow")
             self.slider = SinkChannelWidget(self.veromix, self)
             self.middle_layout.addItem(self.slider)
-            #self.middle_layout.addItem(self.settings_widget)
         self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setContentsMargins(0,0,0,0)
         self.update_with_info(self.pa_sink)
@@ -252,10 +249,11 @@ class Channel(QGraphicsWidget):
         self.slider.setMaximum(self.veromix.get_max_volume_value())
 
     def on_contextmenu_clicked(self, action):
-        card = self.card_settings[action]
-        for profile in card.get_profiles():
-            if action.text() == profile.description:
-                self.veromix.pa.set_card_profile(card.index, profile.name)
+        if action in self.card_settings.keys():
+            card = self.card_settings[action]
+            for profile in card.get_profiles():
+                if action.text() == profile.description:
+                    self.veromix.pa.set_card_profile(card.index, profile.name)
 
     def contextMenuEvent(self,event):
         self.create_context_menu(event)
@@ -286,8 +284,6 @@ class Channel(QGraphicsWidget):
             self.slider.update_with_info(info)
         if self.extended_panel:
             self.extended_panel.update_with_info(info)
-        if self.settings_widget:
-            self.settings_widget.update_with_info(info)
         self.update()
 
     def update_label(self):
