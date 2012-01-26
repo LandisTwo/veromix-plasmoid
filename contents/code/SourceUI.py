@@ -38,9 +38,6 @@ class SourceUI( Channel ):
         self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
         self.mute.setBigIconName("audio-input-microphone.png")
 
-    def create_settings_widget(self):
-        self.settings_widget = None
-
     def context_menu_create_custom(self):
         self.context_menu_create_sounddevices()
 

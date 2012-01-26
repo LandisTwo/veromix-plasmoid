@@ -59,7 +59,6 @@ class Channel(QGraphicsWidget):
         self.createMiddle()
         self.createMeter()
         self.create_expander()
-        self.create_settings_widget()
 
     def composeArrangement(self):
         self.layout.addItem(self.frame)
@@ -123,9 +122,6 @@ class Channel(QGraphicsWidget):
         self.expander.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed))
         self.expander.clicked.connect(self.on_expander_clicked)
         self.expander.setSvg("widgets/arrows", "left-arrow")
-
-    def create_settings_widget(self):
-        self.settings_widget = None
 
     def create_context_menu(self, event):
         self.popup_menu = QMenu()
@@ -237,7 +233,6 @@ class Channel(QGraphicsWidget):
             self.expander.setSvg("widgets/arrows", "down-arrow")
             self.slider = SinkChannelWidget(self.veromix, self)
             self.middle_layout.addItem(self.slider)
-            self.create_settings_widget()
             #self.middle_layout.addItem(self.settings_widget)
         self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setContentsMargins(0,0,0,0)

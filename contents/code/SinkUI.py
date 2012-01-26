@@ -73,10 +73,6 @@ class SinkUI(Channel):
             self.slider.setBoldText(text)
             self.set_name(text)
 
-    def create_settings_widget(self):
-        self.settings_widget = SinkSettingsWidget(self.veromix, self)
-        self.settings_widget.update_with_info(self.pa_sink)
-
 ## Drag and Drop Support
 
     def dropEvent(self, dropEvent):

@@ -37,7 +37,6 @@ class SinkChannelWidget(QGraphicsWidget):
     def init(self):
         self.init_arrangement()
         self.create_channel_sliders()
-        self.create_settings_widget()
         self.compose_arrangement()
 
     def compose_arrangement(self):
@@ -84,9 +83,6 @@ class SinkChannelWidget(QGraphicsWidget):
             del slider
         del self.sliders
         self.sliders = []
-
-    def create_settings_widget(self):
-        pass
 
 ## FIXME
     def setText(self, text):

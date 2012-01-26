@@ -62,10 +62,6 @@ class SinkMbeqUI(SinkUI):
             self.label.setBoldText(text)
             self.set_name(text)
 
-    def create_settings_widget(self):
-        self.settings_widget = SinkSettingsWidget(self.veromix, self)
-        self.settings_widget.update_with_info(self.pa_sink)
-
     def create_sliders(self):
         self.sliders = {}
         self.equalizer_widget = QGraphicsWidget()

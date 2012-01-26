@@ -43,10 +43,6 @@ class InputSinkUI(SinkUI):
         self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed,True) )
         self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb )
 
-    def create_settings_widget(self):
-        self.settings_widget = SinkInputSettingsWidget(self.veromix, self)
-        self.settings_widget.update_with_info(self.pa_sink)
-
     def context_menu_create_custom(self):
         pass
 
