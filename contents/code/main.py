@@ -75,6 +75,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.card_settings = None
         self.messageDialog = None
         self.messageOverlay = None
+        self.config_ui = None
         plasmascript.Applet.__init__(self,parent)
 
     def init(self):
@@ -361,30 +362,30 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.apply_mpris2(self.is_mpris2_enabled())
 
     def configChanged(self):
-        self.config().writeEntry("background",str(self.config_ui.showBackground.currentIndex()))
-        self.config().writeEntry("popupMode", str(self.config_ui.popupMode.currentIndex()))
-        tabs = self.useTabs()
-        self.config().writeEntry("useTabs", bool(self.config_ui.useTabs.isChecked()))
-        self.config().writeEntry("show_tooltip", bool(self.config_ui.show_tooltip.isChecked()))
-        self.config().writeEntry("always_show_sources", bool(self.config_ui.always_show_sources.isChecked()))
+        if self.config_ui:
+            self.config().writeEntry("background",str(self.config_ui.showBackground.currentIndex()))
+            self.config().writeEntry("popupMode", str(self.config_ui.popupMode.currentIndex()))
+            tabs = self.useTabs()
+            self.config().writeEntry("useTabs", bool(self.config_ui.useTabs.isChecked()))
+            self.config().writeEntry("show_tooltip", bool(self.config_ui.show_tooltip.isChecked()))
+            self.config().writeEntry("always_show_sources", bool(self.config_ui.always_show_sources.isChecked()))
 
-        meter_visible = self.get_meter_visible()
-        self.config().writeEntry("meter_visible", bool(self.config_ui.meter_visible.isChecked()))
+            meter_visible = self.get_meter_visible()
+            self.config().writeEntry("meter_visible", bool(self.config_ui.meter_visible.isChecked()))
 
-        self.config().writeEntry("use_nowplaying", str(self.mediaplayer_settings_ui.use_nowplaying.isChecked()))
-        self.config().writeEntry("use_mpris2", str(self.mediaplayer_settings_ui.use_mpris2.isChecked()))
-        self.config().writeEntry("show_albumart", str(self.mediaplayer_settings_ui.show_albumart.isChecked()))
+            self.config().writeEntry("use_nowplaying", str(self.mediaplayer_settings_ui.use_nowplaying.isChecked()))
+            self.config().writeEntry("use_mpris2", str(self.mediaplayer_settings_ui.use_mpris2.isChecked()))
+            self.config().writeEntry("show_albumart", str(self.mediaplayer_settings_ui.show_albumart.isChecked()))
 
-        #self.config().writeEntry("mpris2List",str(self.mediaplayer_settings_ui.mpris2List.toPlainText()).strip())
-        self.config().writeEntry("nowplayingBlacklist",str(self.mediaplayer_settings_ui.mediaplayerBlacklist.toPlainText()).strip())
+            #self.config().writeEntry("mpris2List",str(self.mediaplayer_settings_ui.mpris2List.toPlainText()).strip())
+            self.config().writeEntry("nowplayingBlacklist",str(self.mediaplayer_settings_ui.mediaplayerBlacklist.toPlainText()).strip())
 
-        self.config().writeEntry("max_volume", str(self.max_volume_spinbox.value()))
-        self.config().writeEntry("auto_mute", str(self.automute_checkbox.isChecked()))
+            self.config().writeEntry("max_volume", str(self.max_volume_spinbox.value()))
+            self.config().writeEntry("auto_mute", str(self.automute_checkbox.isChecked()))
+            if tabs != self.useTabs():
+                self.widget.switchView()
 
         self.applyConfig()
-
-        if tabs != self.useTabs():
-            self.widget.switchView()
         self.widget.on_update_configuration()
 
     def update_mediaplayer_settings_ui(self):
