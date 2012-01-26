@@ -195,6 +195,16 @@ class MediaPlayerUI(Channel):
 
 ## initialize ui
 
+    def context_menu_create_mute(self):
+        pass
+
+    def context_menu_create_unlock_channels(self):
+        action_unlock = QAction(i18n("Show position"), self.popup_menu)
+        self.popup_menu.addAction(action_unlock)
+        action_unlock.setCheckable(True)
+        action_unlock.setChecked(self.extended_panel_shown)
+        action_unlock.triggered.connect(self.toggle_channel_lock)
+
     def create_next_panel(self):
         self.next_panel = QGraphicsWidget()
         self.next_panel_layout = QGraphicsLinearLayout(Qt.Vertical)

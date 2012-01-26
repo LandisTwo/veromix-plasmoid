@@ -125,7 +125,8 @@ class Channel(QGraphicsWidget):
     def create_context_menu(self, event):
         self.popup_menu = QMenu()
         self.popup_menu.triggered.connect(self.on_contextmenu_clicked)
-        self.context_menu_create_mute_unlock()
+        self.context_menu_create_mute()
+        self.context_menu_create_unlock_channels()
         self.context_menu_create_custom()
         self.context_menu_create_settings()
         if event:
@@ -133,13 +134,14 @@ class Channel(QGraphicsWidget):
         else:
             self.popup_menu.exec_(QCursor.pos())
 
-    def context_menu_create_mute_unlock(self):
+    def context_menu_create_mute(self):
         action_mute = QAction(i18n("Muted"), self.popup_menu)
         self.popup_menu.addAction(action_mute)
         action_mute.setCheckable(True)
         action_mute.setChecked(self.isMuted())
         action_mute.triggered.connect(self.on_mute_cb)
 
+    def context_menu_create_unlock_channels(self):
         action_unlock = QAction(i18n("Unlock channels"), self.popup_menu)
         self.popup_menu.addAction(action_unlock)
         action_unlock.setCheckable(True)
