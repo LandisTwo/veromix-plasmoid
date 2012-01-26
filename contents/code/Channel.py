@@ -23,7 +23,6 @@ from PyKDE4.kdeui import *
 from PyKDE4.plasma import Plasma
 
 from LabelSlider import LabelSlider
-from InfoWidget import SinkInfoWidget
 from MuteButton  import MuteButton
 from ClickableMeter import ClickableMeter
 from SinkChannelWidget import SinkChannelWidget
