@@ -43,12 +43,14 @@ class SinkUI(Channel):
             action_device.setChecked(True)
             action_device.setEnabled(False)
         else:
+            action_device.setChecked(False)
+            action_device.setEnabled(True)
             action_device.triggered.connect(self.on_set_default_sink_triggered)
         self.context_menu_create_sounddevices()
 
     def on_set_default_sink_triggered(self, action):
-        if boolean:
-            self.pa.set_default_sink(self.index )
+        if action:
+            self.pa.set_default_sink(self.index)
 
     def updateIcon(self):
         if self.isMuted():
