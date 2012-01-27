@@ -252,6 +252,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_ui.meter_visible.setChecked(self.get_meter_visible())
         self.config_ui.meter_visible.stateChanged.connect(parent.settingsModified)
 
+        self.config_ui.expander_enabled.setChecked(self.is_expander_enabled())
+        self.config_ui.expander_enabled.stateChanged.connect(parent.settingsModified)
+
         self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
         parent.addPage(self.config_widget, i18n("Appearance"), "veromix-plasmoid-128")
 
@@ -370,8 +373,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.config().writeEntry("show_tooltip", bool(self.config_ui.show_tooltip.isChecked()))
             self.config().writeEntry("always_show_sources", bool(self.config_ui.always_show_sources.isChecked()))
 
-            meter_visible = self.get_meter_visible()
             self.config().writeEntry("meter_visible", bool(self.config_ui.meter_visible.isChecked()))
+            self.config().writeEntry("expander_enabled", bool(self.config_ui.expander_enabled.isChecked()))
 
             self.config().writeEntry("use_nowplaying", str(self.mediaplayer_settings_ui.use_nowplaying.isChecked()))
             self.config().writeEntry("use_mpris2", str(self.mediaplayer_settings_ui.use_mpris2.isChecked()))
@@ -482,6 +485,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def is_albumart_enabled(self):
         return self.config().readEntry("show_albumart",True).toBool()
+
+    def is_expander_enabled(self):
+        return self.config().readEntry("expander_enabled",True).toBool()
 
     def disable_nowplaying(self):
         for player in self.widget.get_mediaplayer_widgets():

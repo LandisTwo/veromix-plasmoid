@@ -50,6 +50,7 @@ class Channel(QGraphicsWidget):
         self.initArrangement()
         self.composeArrangement()
         self.setAcceptDrops(True)
+        self._on_upate_expander_enabled()
 
     def initArrangement(self):
         self.create_frame()
@@ -248,6 +249,13 @@ class Channel(QGraphicsWidget):
                 self.panel_layout.removeItem(self.meter)
                 self.meter.hide()
         self.slider.setMaximum(self.veromix.get_max_volume_value())
+        self._on_upate_expander_enabled()
+
+    def _on_upate_expander_enabled(self):
+        if self.veromix.is_expander_enabled():
+            self.expander.show()
+        else:
+            self.expander.hide()
 
     def on_contextmenu_clicked(self, action):
         if action in self.card_settings.keys():

@@ -467,6 +467,9 @@ class VeroMix(QGraphicsWidget):
     def get_meter_visible(self):
         return self.applet.get_meter_visible()
 
+    def is_expander_enabled(self):
+        return self.applet.is_expander_enabled()
+
     def get_max_volume_value(self):
         return self.applet.get_max_volume_value()
 

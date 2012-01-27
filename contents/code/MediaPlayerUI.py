@@ -134,6 +134,7 @@ class MediaPlayerUI(Channel):
         self.set_middle_size()
         if self.veromix.is_albumart_enabled():
             self.middle.setIcon(KIcon())
+        self._on_upate_expander_enabled()
 
     def update_with_info(self, info):
         pass
