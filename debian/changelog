@@ -1,3 +1,9 @@
+plasma-widget-veromix (0.14.0-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Nik Lutz <nik.lutz@gmail.com>  Sat, 28 Jan 2012 00:14:00 +0100
+
 veromix (0.13.1-2) unstable; urgency=low
 
   * Changing source package name to veromix.
