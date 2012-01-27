@@ -123,7 +123,7 @@ class PulseAudio(QObject):
             pa_stream_set_read_callback(pa_stream, self._pa_stream_request_cb, index)
             pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
 
-            pa_stream_connect_record(pa_stream, str(sink_index), None, PA_STREAM_PEAK_DETECT)
+            pa_stream_connect_record(pa_stream, str(self.sinks[float(sink_index)].monitor_source), None, PA_STREAM_PEAK_DETECT)
             self.monitor_sinks[float(index)] =  pa_stream
 
 ###########
@@ -409,6 +409,7 @@ class PulseAudio(QObject):
         pa_stream_drop(stream)
         if index:
             self.emit(SIGNAL("volume_meter_sink_input(int, float )"),int(index), float(v))
+            #print "volume_meter_sink_input(int, float )",index, v
 
     def pa_source_stream_request_cb(self, stream, length, index):
         # This isnt quite right... maybe not a float.. ?
@@ -434,6 +435,7 @@ class PulseAudio(QObject):
         if (v > 100):
             v=99
         pa_stream_drop(stream)
+        #print "volume_meter_sink(int, float )", v
         self.emit(SIGNAL("volume_meter_sink(int, float )"),int(index), float(v))
 
     def pa_module_info_cb(self, context, pa_module_info, index, user_data):
