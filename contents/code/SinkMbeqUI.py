@@ -105,22 +105,6 @@ class SinkMbeqUI(SinkUI):
         self.label.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed))
         self.header_layout.addItem(self.label)
 
-        self.effect_switcher = Plasma.ComboBox()
-        self.effect_switcher.setContentsMargins(0,0,0,0)
-        self.header_layout.addItem(self.effect_switcher)
-        # Workaround for bug 219873
-        self.effect_switcher.nativeWidget().setMaxVisibleItems(4)
-        # This is necessary until QTBUG-2368 is fixed
-        # this does not work:
-        #self.effect_switcher.setZValue(110)
-        # but that helps:
-        self.effect_switcher.parentItem().setZValue(110)
-
-        self.effect_switcher.activated.connect(self.on_change_effect)
-
-        for effect in self.effects.values():
-            self.effect_switcher.addItem(effect["name"])
-
     def _get_effect_settings(self):
          label = self.module_info["label"]
          return self.effects[label]
@@ -145,6 +129,28 @@ class SinkMbeqUI(SinkUI):
         self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.createSlider()
         #self.middle_layout.addItem(self.slider)
+
+    def context_menu_create_custom(self):
+        self.create_menu_switch_effect()
+        self.action_kill = QAction(i18n("Disconnect/kill"), self.popup_menu)
+        self.popup_menu.addAction(self.action_kill)
+        self.action_kill.triggered.connect(self.on_menu_kill_clicked)
+
+    def create_menu_switch_effect(self):
+        effect_menu = QMenu(i18n("Effect"), self.popup_menu)
+        sinks = self.veromix.get_sink_widgets()
+        for key in self.effects.keys():
+            effect = self.effects[key]
+            action = QAction(effect["name"],effect_menu)
+            effect_menu.addAction(action)
+            if self.module_info["label"] == key:
+                action.setCheckable(True)
+                action.setChecked(True)
+                action.setEnabled(False)
+        self.popup_menu.addMenu(effect_menu)
+
+    def on_contextmenu_clicked(self, action):
+        self.on_change_effect(action.text())
 
     def update_module_info(self, index, name, argument, n_used, auto_unload):
         self.module_info = self.parse_module_info(argument)
@@ -174,17 +180,6 @@ class SinkMbeqUI(SinkUI):
 
             value = float(controls[i]) * scale
             self.sliders[i].setValue(int(value))
-
-    def update_with_info(self, info):
-        SinkUI.update_with_info(self,info)
-        active_index = 0
-        index = 0
-        for key in self.effects.keys():
-            effect = self.effects[key]
-            if self.name() == effect["name"]:
-                active_index = index
-            index = index + 1
-        self.effect_switcher.nativeWidget().setCurrentIndex(active_index)
 
     def parse_module_info(self, string):
         args = {}
@@ -227,12 +222,8 @@ class SinkMbeqUI(SinkUI):
         parameters = "sink_name=%(sink_name)s master=%(master)s plugin=%(plugin)s  label=%(label)s control=%(control)s" % self.module_info
         self.pa_sink.set_ladspa_sink(parameters)
 
-    def on_expander_clicked(self):
+    def on_menu_kill_clicked(self):
         self.pa_sink.remove_ladspa_sink()
-
-    def create_expander(self):
-        SinkUI.create_expander(self)
-        self.expander.setSvg("widgets/configuration-icons", "close")
 
     def get_ladspa_type(self):
         # FIXME
