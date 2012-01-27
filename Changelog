@@ -1,11 +1,16 @@
+0.14.0 - 28.1.2012
+- Adding right click context menu.
+- The button on the right opens the context menu.
+- Moving all channel related settings to the context menu (dropping in channel checkbox and/or comboboxes).
+- Adding a configuration option to hide the context menu button.
 - Adding a fallback for the brooken mpris support in deadbeef.
 
-0.13.2
+0.13.2 - 13.1.2012
 - fix: Dropdownbox of audiooutput lies not on top of the sliders (Issue 37).
 - enable "apply" button when the user changes settings in the settings dialog.
 - add an option to disable album art (fixes issue 75).
 
-0.13.1
+0.13.1 - 14.9.2012
 - fix sorting of sources
 - fix sink-output selection in combobox
 - fix label of tooltip
