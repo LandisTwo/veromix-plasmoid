@@ -43,7 +43,29 @@ class InputSinkUI(SinkUI):
         self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb )
 
     def context_menu_create_custom(self):
-        pass
+        self.create_menu_switch_sink()
+
+        self.action_kill = QAction(i18n("Disconnect/kill"), self.popup_menu)
+        self.popup_menu.addAction(self.action_kill)
+        self.action_kill.triggered.connect(self.on_contextmenu_clicked)
+
+    def create_menu_switch_sink(self):
+        sink_menu = QMenu(i18n("Output"), self.popup_menu)
+        sinks = self.veromix.get_sink_widgets()
+        for sink in sinks:
+            action = QAction(sink.name(), self.popup_menu)
+            sink_menu.addAction(action)
+        self.popup_menu.addMenu(sink_menu)
+
+    def on_contextmenu_clicked(self, action):
+        if action.text() == self.action_kill.text():
+            self.sink_input_kill()
+            return 0
+        # search ouputs for text, and move sink_input
+        for sink in self.veromix.get_sink_widgets():
+            if action.text() == sink.name():
+                self.pa.move_sink_input(self.index, int(sink.index))
+                return 0
 
     def getOutputIndex(self):
         return self.pa_sink.props["sink"]

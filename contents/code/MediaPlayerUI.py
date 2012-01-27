@@ -135,6 +135,8 @@ class MediaPlayerUI(Channel):
         if self.veromix.is_albumart_enabled():
             self.middle.setIcon(KIcon())
 
+    def update_with_info(self, info):
+        pass
 
 ## update ui
 
@@ -198,12 +200,15 @@ class MediaPlayerUI(Channel):
     def context_menu_create_mute(self):
         pass
 
+    def on_contextmenu_clicked(self, action):
+        pass
+
     def context_menu_create_unlock_channels(self):
         action_unlock = QAction(i18n("Show position"), self.popup_menu)
         self.popup_menu.addAction(action_unlock)
         action_unlock.setCheckable(True)
         action_unlock.setChecked(self.extended_panel_shown)
-        action_unlock.triggered.connect(self.toggle_channel_lock)
+        action_unlock.triggered.connect(self.on_expander_clicked)
 
     def create_next_panel(self):
         self.next_panel = QGraphicsWidget()
