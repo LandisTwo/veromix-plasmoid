@@ -1,3 +1,9 @@
+0.14.1 - 28.1.2012
+- Fix: Record streams no longer showing up in veromix.
+- Rearranging context menu items.
+- Fixing a typo.
+- Updating translation files.
+
 0.14.0 - 28.1.2012
 - Adding right click context menu.
 - The button on the right opens the context menu.
