@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-15 00:31+0200\n"
+"POT-Creation-Date: 2012-01-28 17:45+0100\n"
 "PO-Revision-Date: 2011-04-18 12:27+0300\n"
 "Last-Translator: Donatas G. <dgvirtual@akl.lt>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -18,25 +18,25 @@ msgstr ""
 "%10>=2 && (n%100<10 || n%100>=20) ? 2 : 3);\n"
 "X-Generator: Lokalize 1.2\n"
 
-#: rc.py:3 rc.py:18 rc.py:72
+#: rc.py:3 rc.py:18 rc.py:75
 msgid "Form"
 msgstr "Iš"
 
-#: rc.py:6 rc.py:66
+#: rc.py:6 rc.py:69
 msgid "Version"
 msgstr "Versija"
 
-#: rc.py:9 rc.py:60
+#: rc.py:9 rc.py:63
 msgid "Homepage"
 msgstr "Namų puslapis"
 
-#: rc.py:12 rc.py:63
+#: rc.py:12 rc.py:66
 msgid ""
 "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
 "com/p/veromix-plasmoid/</A>"
 msgstr ""
 
-#: rc.py:15 rc.py:69
+#: rc.py:15 rc.py:72
 msgid "X.Y"
 msgstr "X.Y"
 
@@ -45,7 +45,8 @@ msgid "Popup Mode"
 msgstr "Iššokančio lango veiksena"
 
 #: rc.py:24
-msgid "Close when loosing focus"
+#, fuzzy
+msgid "Close when losing focus"
 msgstr "Užverti praradus fokusą"
 
 #: rc.py:27
@@ -92,112 +93,89 @@ msgstr "Visuomet rodyti šaltinius"
 msgid "Show meter"
 msgstr "Rodyti metrą"
 
-#: rc.py:75
+#: rc.py:60
+msgid "Show context menu button"
+msgstr ""
+
+#: rc.py:78
 #, fuzzy
 msgid "Use KDE nowplaying dataengine"
 msgstr "Naudoti KDE „dabar groja“ duomenų variklį"
 
-#: rc.py:78
+#: rc.py:81
 msgid "Use mpris2"
 msgstr "Naudoti mpris2"
 
-#: rc.py:81
+#: rc.py:84
 #, fuzzy
 msgid "Media player blacklist:"
 msgstr "Leistuvo valdymo juodasis sąrašas"
 
-#: rc.py:84
+#: rc.py:87
 #, fuzzy
 msgid "Running media players:"
 msgstr "Veikiantys leistuvai"
 
-#: contents/code/main.py:61
-msgid "Veromix is a mixer for the Pulseaudio sound server. "
-msgstr "Veromix yra Pulseaudio serverio maišiklis. "
+#: rc.py:90
+msgid "Show album art"
+msgstr ""
 
-#: contents/code/main.py:133 contents/code/main.py:324
-msgid "Veromix volume up"
-msgstr "Veromix - padidinti garsą"
+#: contents/code/Channel.py:141
+msgid "Muted"
+msgstr ""
 
-#: contents/code/main.py:138 contents/code/main.py:329
-msgid "Veromix volume down"
-msgstr "Veromix - sumažinti garsą"
+#: contents/code/Channel.py:148
+msgid "Unlock channels"
+msgstr ""
 
-#: contents/code/main.py:143
-#, fuzzy
-msgid "Veromix toggle mute"
-msgstr "Veromix - sukeisti iš/į begarsį"
+#: contents/code/Channel.py:163
+msgid "Profile"
+msgstr ""
 
-# Не уверен что это такое
-#: contents/code/main.py:151
-msgid "Main Volume"
-msgstr "Pagrindinis garso reguliuoklis"
+#: contents/code/Channel.py:189
+msgid "Veromix Settings"
+msgstr ""
 
-#: contents/code/main.py:244
-msgid "Appearance"
-msgstr "Išvaizda"
+#: contents/code/MediaPlayerUI.py:208
+msgid "Show position"
+msgstr ""
 
-#: contents/code/main.py:259
-msgid "Media Player Controls"
-msgstr "Leistuvo valdymas"
-
-#: contents/code/main.py:282
-msgid "Max volume value"
-msgstr "Maksimalus  garsas"
-
-#: contents/code/main.py:287
-msgid "Mute if volume reaches zero"
-msgstr "Užtildyti garsą valdikliui pasiekus nulį"
-
-#: contents/code/main.py:291
-msgid "Sound Card Profiles"
-msgstr "Garso plokštės profiliai"
-
-#: contents/code/main.py:313
-msgid "Pulseaudio"
-msgstr "Pulseaudio"
-
-#: contents/code/main.py:334
-msgid "Veromix toggle  mute"
-msgstr "Veromix - sukeisti iš/į begarsį"
-
-#: contents/code/main.py:338
-#, fuzzy
-msgid "Volume Keyboard Shortcuts"
-msgstr "Globalieji spartieji klavišai"
-
-#: contents/code/SettingsWidget.py:59
-msgid "Default Sink"
-msgstr "Numatytoji audio išvestis"
-
-#: contents/code/SettingsWidget.py:98
+#: contents/code/SinkInputUI.py:49 contents/code/SinkMbeqUI.py:135
 msgid "Disconnect/kill"
 msgstr "Atjungti/nužudyti"
 
-#: contents/code/SettingsWidget.py:115
-msgid "Output"
-msgstr "Išvestis"
+#: contents/code/SinkInputUI.py:57 contents/code/SourceOutputUI.py:52
+msgid "Move To"
+msgstr ""
 
-#: contents/code/SinkInputUI.py:63
+#: contents/code/SinkInputUI.py:87
 msgid "Event Sounds"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:67
+#: contents/code/SinkInputUI.py:91
 msgid "Flash Player"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:71
+#: contents/code/SinkInputUI.py:95
 msgid "Chromium Browser"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:75
+#: contents/code/SinkInputUI.py:99
 msgid "Event Sound"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:77
+#: contents/code/SinkInputUI.py:101
 #, fuzzy
 msgid "Voice Output"
 msgstr "Išvestis"
+
+#: contents/code/SinkMbeqUI.py:140
+msgid "Effect"
+msgstr ""
+
+#: contents/code/SinkUI.py:40
+msgid "Default Sink"
+msgstr "Numatytoji audio išvestis"
 
 #: contents/code/Utils.py:30
 msgid "Please remove and re-add myself"
@@ -240,6 +218,64 @@ msgid ""
 "_VeromixServiceMain.py\">See wiki for more details</a> <span style=\"font-"
 "size: small;\">(right click and copy url)</span>."
 msgstr ""
+
+#: contents/code/main.py:60
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr "Veromix yra Pulseaudio serverio maišiklis. "
+
+#: contents/code/main.py:133 contents/code/main.py:347
+msgid "Veromix volume up"
+msgstr "Veromix - padidinti garsą"
+
+#: contents/code/main.py:138 contents/code/main.py:352
+msgid "Veromix volume down"
+msgstr "Veromix - sumažinti garsą"
+
+#: contents/code/main.py:143
+#, fuzzy
+msgid "Veromix toggle mute"
+msgstr "Veromix - sukeisti iš/į begarsį"
+
+# Не уверен что это такое
+#: contents/code/main.py:151
+msgid "Main Volume"
+msgstr "Pagrindinis garso reguliuoklis"
+
+#: contents/code/main.py:259
+msgid "Appearance"
+msgstr "Išvaizda"
+
+#: contents/code/main.py:279
+msgid "Media Player Controls"
+msgstr "Leistuvo valdymas"
+
+#: contents/code/main.py:304
+msgid "Max volume value"
+msgstr "Maksimalus  garsas"
+
+#: contents/code/main.py:310
+msgid "Mute if volume reaches zero"
+msgstr "Užtildyti garsą valdikliui pasiekus nulį"
+
+#: contents/code/main.py:314
+msgid "Sound Card Profiles"
+msgstr "Garso plokštės profiliai"
+
+#: contents/code/main.py:336
+msgid "Pulseaudio"
+msgstr "Pulseaudio"
+
+#: contents/code/main.py:357
+msgid "Veromix toggle  mute"
+msgstr "Veromix - sukeisti iš/į begarsį"
+
+#: contents/code/main.py:361
+#, fuzzy
+msgid "Volume Keyboard Shortcuts"
+msgstr "Globalieji spartieji klavišai"
+
+#~ msgid "Output"
+#~ msgstr "Išvestis"
 
 #, fuzzy
 #~ msgid "Enable media player controls"
