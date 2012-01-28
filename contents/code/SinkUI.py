@@ -36,6 +36,7 @@ class SinkUI(Channel):
         self.setContentsMargins(0,0,0,0)
 
     def context_menu_create_custom(self):
+        self.context_menu_create_sounddevices()
         action_device = QAction(i18n("Default Sink"), self.popup_menu)
         self.popup_menu.addAction(action_device)
         action_device.setCheckable(True)
@@ -46,7 +47,10 @@ class SinkUI(Channel):
             action_device.setChecked(False)
             action_device.setEnabled(True)
             action_device.triggered.connect(self.on_set_default_sink_triggered)
-        self.context_menu_create_sounddevices()
+
+    def create_menu_kill_sink(self):
+        Channel.create_menu_kill_sink(self)
+        self.context_menu_create_sounddevices_other()
 
     def on_set_default_sink_triggered(self, action):
         if action:
