@@ -32,7 +32,7 @@
       </property>
       <item>
        <property name="text">
-        <string>Close when loosing focus</string>
+        <string>Close when losing focus</string>
        </property>
       </item>
       <item>
