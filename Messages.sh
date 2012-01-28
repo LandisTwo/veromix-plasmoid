@@ -14,7 +14,7 @@ fi
 
 $EXTRACTRC contents/ui/*.ui contents/config/*.xml > ./rc.py
 $XGETTEXT rc.py contents/code/*.py -o "$NAME.pot"
-sed -e 's/charset=CHARSET/charset=UTF-8/g' -i "contents/$NAME.pot"
+sed -e 's/charset=CHARSET/charset=UTF-8/g' -i "$NAME.pot"
 
 for d in contents/locale/*; do
     if [ -d "$d" ]; then
