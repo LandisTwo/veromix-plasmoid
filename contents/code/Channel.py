@@ -40,6 +40,7 @@ class Channel(QGraphicsWidget):
         self.extended_panel_shown = False
         self.extended_panel= None
         self.show_meter = True
+        self.expander = None
         self.init()
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True))
 
@@ -126,9 +127,10 @@ class Channel(QGraphicsWidget):
     def create_context_menu(self, event):
         self.popup_menu = QMenu()
         self.popup_menu.triggered.connect(self.on_contextmenu_clicked)
+        self.context_menu_create_custom()
         self.context_menu_create_mute()
         self.context_menu_create_unlock_channels()
-        self.context_menu_create_custom()
+        self.create_menu_kill_sink()
         self.context_menu_create_settings()
         if event:
             self.popup_menu.exec_(event.screenPos())
@@ -149,16 +151,20 @@ class Channel(QGraphicsWidget):
         action_unlock.setChecked(self.extended_panel_shown)
         action_unlock.triggered.connect(self.toggle_channel_lock)
 
+    def create_menu_kill_sink(self):
+        pass
+
     def context_menu_create_sounddevices(self):
         self.card_settings = {}
-        menus = []
+        self.menus = []
         for card in self.veromix.card_infos.values():
-            card_menu = QMenu(card.get_description(), self.popup_menu)
             current = self.veromix.get_card_info_for(self)
             if current != None and  current.get_description() == card.get_description():
-               self.popup_menu.addMenu(card_menu)
+                card_menu = QMenu(i18n("Profile"), self.popup_menu)
+                self.popup_menu.addMenu(card_menu)
             else:
-                menus.append(card_menu)
+                card_menu = QMenu(card.get_description(), self.popup_menu)
+                self.menus.append(card_menu)
             active_profile_name = card.get_active_profile_name()
             self.profiles = card.get_profiles()
             for profile in self.profiles:
@@ -168,9 +174,11 @@ class Channel(QGraphicsWidget):
                     action.setCheckable(True)
                     action.setChecked(True)
                 card_menu.addAction(action)
-        if len(menus) > 0:
+
+    def context_menu_create_sounddevices_other(self):
+        if len(self.menus) > 0:
             self.popup_menu.addSeparator()
-            for each in menus:
+            for each in self.menus:
                 self.popup_menu.addMenu(each)
 
     def context_menu_create_custom(self):
@@ -178,7 +186,7 @@ class Channel(QGraphicsWidget):
 
     def context_menu_create_settings(self):
         self.popup_menu.addSeparator()
-        action_settings = QAction(i18n("Settings"), self.popup_menu)
+        action_settings = QAction(i18n("Veromix Settings"), self.popup_menu)
         self.popup_menu.addAction(action_settings)
         action_settings.triggered.connect(self.veromix.applet.showConfigurationInterface)
 
