@@ -42,8 +42,23 @@ class SourceOutputUI( Channel ):
     def createSlider(self):
         self.slider = Label()
 
-    def create_expander(self):
+    def context_menu_create_unlock_channels(self):
         pass
+
+    def context_menu_create_mute(self):
+        pass
+
+    def context_menu_create_custom(self):
+        move_to = QMenu(i18n("Move To"), self.popup_menu)
+        for widget in self.veromix.get_sinkoutput_widgets():
+            action = QAction(widget.name(), self.popup_menu)
+            move_to.addAction(action)
+        self.popup_menu.addMenu(move_to)
+
+    def on_contextmenu_clicked(self, action):
+        for widget in self.veromix.get_sinkoutput_widgets():
+            if widget.name() == action.text():
+                self.veromix.pa.move_source_output(self.index, widget.index)
 
     def update_label(self):
         text =  ""
