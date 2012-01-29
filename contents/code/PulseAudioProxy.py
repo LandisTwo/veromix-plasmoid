@@ -222,6 +222,9 @@ class PulseAudio(QObject):
 
     def set_sink_mute(self, index, mute):
         self.getMixer().sink_mute(index,mute)
+        
+    def set_source_port(self, index, portstr):
+        self.getMixer().sink_port(index,portstr)
 
     def set_default_sink(self, index):
         self.getMixer().set_default_sink(index)
@@ -231,6 +234,9 @@ class PulseAudio(QObject):
 
     def set_source_mute(self, index, mute):
         self.getMixer().source_mute(index,mute)
+        
+    def set_source_port(self, index, portstr):
+        self.getMixer().source_port(index,portstr)
 
     def set_default_source(self, index):
         self.getMixer().set_default_source(index)
