@@ -71,6 +71,10 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.method("org.veromix.pulseaudio", in_signature='ib', out_signature='')
     def source_mute(self, index, mute):
         self.pulse.pulse_source_mute(long(index), int(mute))
+        
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
+    def source_port(self, index, portstr):
+        self.pulse.pulse_souce_mute(long(index), portstr)
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def source_volume(self, index, vol):
@@ -96,6 +100,10 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.method("org.veromix.pulseaudio", in_signature='ib', out_signature='')
     def sink_mute(self, index, mute):
         self.pulse.pulse_sink_mute(long(index), int(mute))
+
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
+    def sink_port(self, index, portstr):
+        self.pulse.pulse_sink_mute(long(index), portstr)
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def sink_volume(self, index, vol):
@@ -188,4 +196,3 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.method("org.veromix.pulseaudio", in_signature='', out_signature='')
     def  veromix_service_quit(self):
         sys.exit(0)
-
