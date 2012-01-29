@@ -979,7 +979,7 @@ struct_pa_sink_info._fields_ = [
     ('driver', c_char_p),
     ('flags', pa_sink_flags_t),
     ("proplist",        POINTER(c_int)),
-    ('n_ports', uint32_t),
+    ('n_ports', c_uint32),
     ('ports', POINTER(POINTER(pa_sink_port_info))),
     ('active_port', POINTER(pa_sink_port_info)),
 
@@ -1039,7 +1039,7 @@ struct_pa_source_info._fields_ = [
     ('driver', c_char_p),
     ('flags', pa_source_flags_t),
     ("proplist",        POINTER(c_int)),
-    ('n_ports', uint32_t),
+    ('n_ports', c_uint32),
     ('ports', POINTER(POINTER(pa_source_port_info))),
     ('active_port', POINTER(pa_source_port_info))
 ]
@@ -1050,15 +1050,15 @@ PA_PORT_AVAILABLE_YES = 2
 pa_port_available = c_int # enum
 pa_port_available_t = pa_port_available
 pa_sink_port_info._fields_ = [
-    ('name', STRING),
-    ('description', STRING),
-    ('priority', uint32_t),
+    ('name', c_char_p),
+    ('description', c_char_p),
+    ('priority', c_uint32),
     ('available', pa_port_available_t),
 ]
 pa_source_port_info._fields_ = [
-    ('name', STRING),
-    ('description', STRING),
-    ('priority', uint32_t),
+    ('name', c_char_p),
+    ('description', c_char_p),
+    ('priority', c_uint32),
     ('available', pa_port_available_t),
 ]
 
@@ -1081,19 +1081,19 @@ pa_context_get_source_info_list.argtypes = [POINTER(pa_context), pa_source_info_
 
 pa_context_set_source_port_by_name = _lib.pa_context_set_source_port_by_name
 pa_context_set_source_port_by_name.restype = POINTER(pa_operation)
-pa_context_set_source_port_by_name.argtypes = [POINTER(pa_context), STRING, STRING, pa_context_success_cb_t, c_void_p]
+pa_context_set_source_port_by_name.argtypes = [POINTER(pa_context), c_char_p, c_char_p, pa_context_success_cb_t, c_void_p]
 
 pa_context_set_source_port_by_index = _lib.pa_context_set_source_port_by_index
 pa_context_set_source_port_by_index.restype = POINTER(pa_operation)
-pa_context_set_source_port_by_index.argtypes = [POINTER(pa_context), uint32_t, STRING, pa_context_success_cb_t, c_void_p]
+pa_context_set_source_port_by_index.argtypes = [POINTER(pa_context), c_uint32, c_char_p, pa_context_success_cb_t, c_void_p]
 
 pa_context_set_sink_port_by_index = _lib.pa_context_set_sink_port_by_index
 pa_context_set_sink_port_by_index.restype = POINTER(pa_operation)
-pa_context_set_sink_port_by_index.argtypes = [POINTER(pa_context), uint32_t, STRING, pa_context_success_cb_t, c_void_p]
+pa_context_set_sink_port_by_index.argtypes = [POINTER(pa_context), c_uint32, c_char_p, pa_context_success_cb_t, c_void_p]
 
 pa_context_set_sink_port_by_name = _lib.pa_context_set_sink_port_by_name
 pa_context_set_sink_port_by_name.restype = POINTER(pa_operation)
-pa_context_set_sink_port_by_name.argtypes = [POINTER(pa_context), STRING, STRING, pa_context_success_cb_t, c_void_p]
+pa_context_set_sink_port_by_name.argtypes = [POINTER(pa_context), c_char_p, c_char_p, pa_context_success_cb_t, c_void_p]
 
 class struct_pa_server_info(Structure):
     __slots__ = [
