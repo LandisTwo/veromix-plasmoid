@@ -132,7 +132,7 @@ class SinkInfo(AbstractSink):
         else:
             self.pulse_proxy.set_sink_mute(self.index, True)
             
-    def set_port(self,portstr)
+    def set_port(self,portstr):
          self.pulse_proxy.set_sink_port(self.index,portstr)
 
     def toggle_monitor(self,parent):
@@ -182,7 +182,7 @@ class SourceInfo(AbstractSink):
         else:
             self.pulse_proxy.set_source_mute(self.index, True)
             
-    def set_port(self,portstr)
+    def set_port(self,portstr):
          self.pulse_proxy.set_source_port(self.index,portstr)
          
     def toggle_monitor(self,parent):
