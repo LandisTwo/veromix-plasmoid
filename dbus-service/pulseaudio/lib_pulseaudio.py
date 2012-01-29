@@ -942,7 +942,8 @@ pa_stream_set_buffer_attr.argtypes = [POINTER(pa_stream), POINTER(pa_buffer_attr
 pa_stream_update_sample_rate = _lib.pa_stream_update_sample_rate
 pa_stream_update_sample_rate.restype = POINTER(pa_operation)
 pa_stream_update_sample_rate.argtypes = [POINTER(pa_stream), c_uint32, pa_stream_success_cb_t, POINTER(None)]
-
+class pa_sink_port_info(Structure):
+    pass
 class struct_pa_sink_info(Structure):
     __slots__ = [
         'name',
@@ -958,7 +959,10 @@ class struct_pa_sink_info(Structure):
         'latency',
         'driver',
         'flags',
-        'proplist'
+        'proplist',
+        'n_ports',
+        'ports'
+        'active_port'
     ]
 struct_pa_sink_info._fields_ = [
     ('name', c_char_p),
@@ -975,6 +979,9 @@ struct_pa_sink_info._fields_ = [
     ('driver', c_char_p),
     ('flags', pa_sink_flags_t),
     ("proplist",        POINTER(c_int)),
+    ('n_ports', uint32_t),
+    ('ports', POINTER(POINTER(pa_sink_port_info))),
+    ('active_port', POINTER(pa_sink_port_info)),
 
 ]
 
@@ -995,6 +1002,8 @@ pa_context_get_sink_info_list = _lib.pa_context_get_sink_info_list
 pa_context_get_sink_info_list.restype = POINTER(pa_operation)
 pa_context_get_sink_info_list.argtypes = [POINTER(pa_context), pa_sink_info_cb_t, POINTER(None)]
 
+class pa_source_port_info(Structure):
+    pass
 class struct_pa_source_info(Structure):
     __slots__ = [
         'name',
@@ -1011,6 +1020,9 @@ class struct_pa_source_info(Structure):
         'driver',
         'flags',
         "proplist",
+        'n_ports',
+        'ports',
+        'active_port',
     ]
 struct_pa_source_info._fields_ = [
     ('name', c_char_p),
@@ -1026,7 +1038,28 @@ struct_pa_source_info._fields_ = [
     ('latency', pa_usec_t),
     ('driver', c_char_p),
     ('flags', pa_source_flags_t),
-     ("proplist",        POINTER(c_int)),
+    ("proplist",        POINTER(c_int)),
+    ('n_ports', uint32_t),
+    ('ports', POINTER(POINTER(pa_source_port_info))),
+    ('active_port', POINTER(pa_source_port_info))
+]
+# values for enumeration 'pa_port_available'
+PA_PORT_AVAILABLE_UNKNOWN = 0
+PA_PORT_AVAILABLE_NO = 1
+PA_PORT_AVAILABLE_YES = 2
+pa_port_available = c_int # enum
+pa_port_available_t = pa_port_available
+pa_sink_port_info._fields_ = [
+    ('name', STRING),
+    ('description', STRING),
+    ('priority', uint32_t),
+    ('available', pa_port_available_t),
+]
+pa_source_port_info._fields_ = [
+    ('name', STRING),
+    ('description', STRING),
+    ('priority', uint32_t),
+    ('available', pa_port_available_t),
 ]
 
 pa_source_info = struct_pa_source_info  # /usr/include/pulse/introspect.h:253
@@ -1045,6 +1078,22 @@ pa_context_get_source_info_by_index.argtypes = [POINTER(pa_context), c_uint32, p
 pa_context_get_source_info_list = _lib.pa_context_get_source_info_list
 pa_context_get_source_info_list.restype = POINTER(pa_operation)
 pa_context_get_source_info_list.argtypes = [POINTER(pa_context), pa_source_info_cb_t, POINTER(None)]
+
+pa_context_set_source_port_by_name = _lib.pa_context_set_source_port_by_name
+pa_context_set_source_port_by_name.restype = POINTER(pa_operation)
+pa_context_set_source_port_by_name.argtypes = [POINTER(pa_context), STRING, STRING, pa_context_success_cb_t, c_void_p]
+
+pa_context_set_source_port_by_index = _lib.pa_context_set_source_port_by_index
+pa_context_set_source_port_by_index.restype = POINTER(pa_operation)
+pa_context_set_source_port_by_index.argtypes = [POINTER(pa_context), uint32_t, STRING, pa_context_success_cb_t, c_void_p]
+
+pa_context_set_sink_port_by_index = _lib.pa_context_set_sink_port_by_index
+pa_context_set_sink_port_by_index.restype = POINTER(pa_operation)
+pa_context_set_sink_port_by_index.argtypes = [POINTER(pa_context), uint32_t, STRING, pa_context_success_cb_t, c_void_p]
+
+pa_context_set_sink_port_by_name = _lib.pa_context_set_sink_port_by_name
+pa_context_set_sink_port_by_name.restype = POINTER(pa_operation)
+pa_context_set_sink_port_by_name.argtypes = [POINTER(pa_context), STRING, STRING, pa_context_success_cb_t, c_void_p]
 
 class struct_pa_server_info(Structure):
     __slots__ = [
