@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-28 17:45+0100\n"
+"POT-Creation-Date: 2012-01-29 01:13+0100\n"
 "PO-Revision-Date: 2012-01-28 20:33+0100\n"
 "Last-Translator: \n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -134,6 +134,58 @@ msgstr "Profilo"
 msgid "Veromix Settings"
 msgstr "Impostazioni di Veromix"
 
+#: contents/code/main.py:60
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr "Veromix è un mixer per il server sonoro Pulseaudio."
+
+#: contents/code/main.py:133 contents/code/main.py:347
+msgid "Veromix volume up"
+msgstr "Aumenta volume"
+
+#: contents/code/main.py:138 contents/code/main.py:352
+msgid "Veromix volume down"
+msgstr "Diminuisci volume"
+
+#: contents/code/main.py:143
+msgid "Veromix toggle mute"
+msgstr "Muto per Veromix"
+
+#: contents/code/main.py:151
+msgid "Main Volume"
+msgstr "Volume Principale"
+
+#: contents/code/main.py:259
+msgid "Appearance"
+msgstr "Aspetto"
+
+#: contents/code/main.py:279
+msgid "Media Player Controls"
+msgstr "Controlli Multimediali"
+
+#: contents/code/main.py:304
+msgid "Max volume value"
+msgstr "Valore massimo per volume"
+
+#: contents/code/main.py:310
+msgid "Mute if volume reaches zero"
+msgstr "Abilita muto se il volume è 0"
+
+#: contents/code/main.py:314
+msgid "Sound Card Profiles"
+msgstr "Profili Scheda Audio"
+
+#: contents/code/main.py:336
+msgid "Pulseaudio"
+msgstr "Pulseaudio"
+
+#: contents/code/main.py:357
+msgid "Veromix toggle  mute"
+msgstr "Muto"
+
+#: contents/code/main.py:361
+msgid "Volume Keyboard Shortcuts"
+msgstr "Tasti rapidi per Volume"
+
 #: contents/code/MediaPlayerUI.py:208
 msgid "Show position"
 msgstr "Mostra posizione"
@@ -230,58 +282,6 @@ msgstr ""
 "VeromixComponents#The_service:_VeromixServiceMain.py\">Consulta il wiki per "
 "maggiori informazioni </a> <span style=\"font-size: small;\">(tasto destro e "
 "\"Copia indirizzo di collegamento\")</span>."
-
-#: contents/code/main.py:60
-msgid "Veromix is a mixer for the Pulseaudio sound server. "
-msgstr "Veromix è un mixer per il server sonoro Pulseaudio."
-
-#: contents/code/main.py:133 contents/code/main.py:347
-msgid "Veromix volume up"
-msgstr "Aumenta volume"
-
-#: contents/code/main.py:138 contents/code/main.py:352
-msgid "Veromix volume down"
-msgstr "Diminuisci volume"
-
-#: contents/code/main.py:143
-msgid "Veromix toggle mute"
-msgstr "Muto per Veromix"
-
-#: contents/code/main.py:151
-msgid "Main Volume"
-msgstr "Volume Principale"
-
-#: contents/code/main.py:259
-msgid "Appearance"
-msgstr "Aspetto"
-
-#: contents/code/main.py:279
-msgid "Media Player Controls"
-msgstr "Controlli Multimediali"
-
-#: contents/code/main.py:304
-msgid "Max volume value"
-msgstr "Valore massimo per volume"
-
-#: contents/code/main.py:310
-msgid "Mute if volume reaches zero"
-msgstr "Abilita muto se il volume è 0"
-
-#: contents/code/main.py:314
-msgid "Sound Card Profiles"
-msgstr "Profili Scheda Audio"
-
-#: contents/code/main.py:336
-msgid "Pulseaudio"
-msgstr "Pulseaudio"
-
-#: contents/code/main.py:357
-msgid "Veromix toggle  mute"
-msgstr "Muto"
-
-#: contents/code/main.py:361
-msgid "Volume Keyboard Shortcuts"
-msgstr "Tasti rapidi per Volume"
 
 #~ msgid "Output"
 #~ msgstr "Uscita"
