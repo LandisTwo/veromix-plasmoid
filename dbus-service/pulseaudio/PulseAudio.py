@@ -500,6 +500,12 @@ class PulseAudio(QObject):
         operation = pa_context_set_sink_mute_by_index(self._context, index,mute,self._null_cb,None)
         pa_operation_unref(operation)
         return
+                
+    def pulse_set_sink_port(self,index,portstr):
+        "Switch ports by index and port string"
+        operation = pa_context_set_sink_port_by_index(self._context,index,portstr,self._null_cb,None)
+        pa_operation_unref(operation)
+        return
 
     def pulse_set_default_sink(self, index):
         operation = pa_context_set_default_sink(self._context, str(index),self._null_cb,None)
@@ -509,6 +515,12 @@ class PulseAudio(QObject):
     def pulse_source_mute(self, index, mute):
         "Mute sink by index"
         operation = pa_context_set_source_mute_by_index(self._context, index,mute,self._null_cb,None)
+        pa_operation_unref(operation)
+        return
+                
+    def pulse_set_source_port(self,index,portstr):
+        "Switch ports by index and port string"
+        operation = pa_context_set_source_port_by_index(self._context,index,portstr,self._null_cb,None)
         pa_operation_unref(operation)
         return
 
