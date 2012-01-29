@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-28 17:45+0100\n"
+"POT-Creation-Date: 2012-01-29 01:13+0100\n"
 "PO-Revision-Date: 2010-12-16 03:41+0200\n"
 "Last-Translator: Anıl Özbek <ozbekanil@gmail.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
@@ -138,6 +138,60 @@ msgstr ""
 msgid "Veromix Settings"
 msgstr ""
 
+#: contents/code/main.py:60
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr "Veromix, PulseAudio ses sunucusu için bir karıştırıcıdır. "
+
+#: contents/code/main.py:133 contents/code/main.py:347
+msgid "Veromix volume up"
+msgstr "Veromix ses yükselt"
+
+#: contents/code/main.py:138 contents/code/main.py:352
+msgid "Veromix volume down"
+msgstr "Veromix ses kıs"
+
+#: contents/code/main.py:143
+#, fuzzy
+msgid "Veromix toggle mute"
+msgstr "Veromix sessiz"
+
+#: contents/code/main.py:151
+msgid "Main Volume"
+msgstr "Ana Ses"
+
+#: contents/code/main.py:259
+msgid "Appearance"
+msgstr "Görünüm"
+
+#: contents/code/main.py:279
+msgid "Media Player Controls"
+msgstr "Medya Oynatıcı Kontrolleri"
+
+#: contents/code/main.py:304
+#, fuzzy
+msgid "Max volume value"
+msgstr "Veromix ses yükselt"
+
+#: contents/code/main.py:310
+msgid "Mute if volume reaches zero"
+msgstr ""
+
+#: contents/code/main.py:314
+msgid "Sound Card Profiles"
+msgstr ""
+
+#: contents/code/main.py:336
+msgid "Pulseaudio"
+msgstr ""
+
+#: contents/code/main.py:357
+msgid "Veromix toggle  mute"
+msgstr "Veromix sessiz"
+
+#: contents/code/main.py:361
+msgid "Volume Keyboard Shortcuts"
+msgstr ""
+
 #: contents/code/MediaPlayerUI.py:208
 msgid "Show position"
 msgstr ""
@@ -240,60 +294,6 @@ msgstr ""
 "code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
 "_VeromixServiceMain.py\">detaylar için vikiye bakınız</a> <span style=\"font-"
 "size: small;\">(sağ tıklayın ve bağlantıyı kopyalayın)</span>."
-
-#: contents/code/main.py:60
-msgid "Veromix is a mixer for the Pulseaudio sound server. "
-msgstr "Veromix, PulseAudio ses sunucusu için bir karıştırıcıdır. "
-
-#: contents/code/main.py:133 contents/code/main.py:347
-msgid "Veromix volume up"
-msgstr "Veromix ses yükselt"
-
-#: contents/code/main.py:138 contents/code/main.py:352
-msgid "Veromix volume down"
-msgstr "Veromix ses kıs"
-
-#: contents/code/main.py:143
-#, fuzzy
-msgid "Veromix toggle mute"
-msgstr "Veromix sessiz"
-
-#: contents/code/main.py:151
-msgid "Main Volume"
-msgstr "Ana Ses"
-
-#: contents/code/main.py:259
-msgid "Appearance"
-msgstr "Görünüm"
-
-#: contents/code/main.py:279
-msgid "Media Player Controls"
-msgstr "Medya Oynatıcı Kontrolleri"
-
-#: contents/code/main.py:304
-#, fuzzy
-msgid "Max volume value"
-msgstr "Veromix ses yükselt"
-
-#: contents/code/main.py:310
-msgid "Mute if volume reaches zero"
-msgstr ""
-
-#: contents/code/main.py:314
-msgid "Sound Card Profiles"
-msgstr ""
-
-#: contents/code/main.py:336
-msgid "Pulseaudio"
-msgstr ""
-
-#: contents/code/main.py:357
-msgid "Veromix toggle  mute"
-msgstr "Veromix sessiz"
-
-#: contents/code/main.py:361
-msgid "Volume Keyboard Shortcuts"
-msgstr ""
 
 #~ msgid "Enable media player controls"
 #~ msgstr "Medya oynatıcı kontrollerini aktifleştir"

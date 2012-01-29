@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-28 17:45+0100\n"
+"POT-Creation-Date: 2012-01-29 01:13+0100\n"
 "PO-Revision-Date: 2011-06-10 18:43+0200\n"
 "Last-Translator: Kai Uwe b <privat@kde.broulik.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -137,6 +137,59 @@ msgstr ""
 msgid "Veromix Settings"
 msgstr ""
 
+#: contents/code/main.py:60
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr "Veromix ist ein Lautstärkeregler für den Pulseaudio-Soundserver."
+
+#: contents/code/main.py:133 contents/code/main.py:347
+msgid "Veromix volume up"
+msgstr "Veromix-Lautstärke erhöhen"
+
+#: contents/code/main.py:138 contents/code/main.py:352
+msgid "Veromix volume down"
+msgstr "Veromix-Lautstärke verringern"
+
+#: contents/code/main.py:143
+msgid "Veromix toggle mute"
+msgstr "Veromix-Stummschaltung ein/aus"
+
+#: contents/code/main.py:151
+msgid "Main Volume"
+msgstr "Hauptregler"
+
+#: contents/code/main.py:259
+msgid "Appearance"
+msgstr "Erscheinungsbild"
+
+#: contents/code/main.py:279
+msgid "Media Player Controls"
+msgstr "Medienwiedergabesteuerung"
+
+#: contents/code/main.py:304
+msgid "Max volume value"
+msgstr "Maximal-Lautstärke"
+
+#: contents/code/main.py:310
+msgid "Mute if volume reaches zero"
+msgstr "Stummschalten wenn Lautstärke Null erreicht"
+
+#: contents/code/main.py:314
+msgid "Sound Card Profiles"
+msgstr "Soundkarten-Profile"
+
+#: contents/code/main.py:336
+msgid "Pulseaudio"
+msgstr "Pulseaudio"
+
+#: contents/code/main.py:357
+#, fuzzy
+msgid "Veromix toggle  mute"
+msgstr "Veromix-Stummschaltung ein/aus"
+
+#: contents/code/main.py:361
+msgid "Volume Keyboard Shortcuts"
+msgstr "Lautstärke-Tastenkürzel"
+
 #: contents/code/MediaPlayerUI.py:208
 msgid "Show position"
 msgstr ""
@@ -236,59 +289,6 @@ msgstr ""
 "google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
 "_VeromixServiceMain.py\">Mehr Informationen finden sie im Wiki</a> <span "
 "style=\"font-size: small;\">(rechts click und \"Adresse kopieren\")</span>."
-
-#: contents/code/main.py:60
-msgid "Veromix is a mixer for the Pulseaudio sound server. "
-msgstr "Veromix ist ein Lautstärkeregler für den Pulseaudio-Soundserver."
-
-#: contents/code/main.py:133 contents/code/main.py:347
-msgid "Veromix volume up"
-msgstr "Veromix-Lautstärke erhöhen"
-
-#: contents/code/main.py:138 contents/code/main.py:352
-msgid "Veromix volume down"
-msgstr "Veromix-Lautstärke verringern"
-
-#: contents/code/main.py:143
-msgid "Veromix toggle mute"
-msgstr "Veromix-Stummschaltung ein/aus"
-
-#: contents/code/main.py:151
-msgid "Main Volume"
-msgstr "Hauptregler"
-
-#: contents/code/main.py:259
-msgid "Appearance"
-msgstr "Erscheinungsbild"
-
-#: contents/code/main.py:279
-msgid "Media Player Controls"
-msgstr "Medienwiedergabesteuerung"
-
-#: contents/code/main.py:304
-msgid "Max volume value"
-msgstr "Maximal-Lautstärke"
-
-#: contents/code/main.py:310
-msgid "Mute if volume reaches zero"
-msgstr "Stummschalten wenn Lautstärke Null erreicht"
-
-#: contents/code/main.py:314
-msgid "Sound Card Profiles"
-msgstr "Soundkarten-Profile"
-
-#: contents/code/main.py:336
-msgid "Pulseaudio"
-msgstr "Pulseaudio"
-
-#: contents/code/main.py:357
-#, fuzzy
-msgid "Veromix toggle  mute"
-msgstr "Veromix-Stummschaltung ein/aus"
-
-#: contents/code/main.py:361
-msgid "Volume Keyboard Shortcuts"
-msgstr "Lautstärke-Tastenkürzel"
 
 #~ msgid "Output"
 #~ msgstr "Ausgabe"
