@@ -64,7 +64,9 @@ class Pa2dBus(QObject):
         name = in_unicode(sink.name)
         muted = (sink.mute == 1)
         volume = sink.volume.getVolumes()
-        self.dbus.source_info(  index,   name,  muted  , volume ,  sink.propDict() )
+        active_port = sink.active_port
+        ports = sink.ports
+        self.dbus.source_info(  index,   name,  muted  , volume ,  sink.propDict() , ports , active_port)
 
     def on_source_output_info(self, sink):
         index =  int(sink.index)
@@ -84,7 +86,9 @@ class Pa2dBus(QObject):
         name = in_unicode(sink.name)
         muted = (sink.mute == 1)
         volume = sink.volume.getVolumes()
-        self.dbus.sink_info( index,   name,  muted  , volume ,  sink.propDict() )
+        active_port = sink.active_port
+        ports = sink.ports
+        self.dbus.sink_info( index,   name,  muted  , volume ,  sink.propDict() , ports , active_port)
 
     def on_card_info(self, card_info):
         self.dbus.card_info(card_info.index,  card_info.name , card_info.properties(), card_info.active_profile_name() , card_info.profiles_dict())
@@ -139,4 +143,3 @@ class Pa2dBus(QObject):
 
     def on_module_info(self, index, name, argument, n_used, auto_unload):
         self.dbus.module_info( index, name, argument, n_used, auto_unload)
-
