@@ -1,8 +1,8 @@
-veromix (0.14.1-1) unstable; urgency=low
+veromix (0.15.0-1) unstable; urgency=low
 
   * New upstream release.
 
- -- Nik Lutz <nik.lutz@gmail.com>  Sun, 29 Jan 2012 01:14:00 +0100
+ -- Nik Lutz <nik.lutz@gmail.com>  Tue, 31 Jan 2012 00:07:40 +0100
 
 veromix (0.13.1-2) unstable; urgency=low
 
