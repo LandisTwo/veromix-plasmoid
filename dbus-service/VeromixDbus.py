@@ -43,8 +43,8 @@ class VeromixDbus(dbus.service.Object):
         pass
 
 ## ----------------------------- source -----------------------------------------
-    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{ia{si}}a{ss}')
-    def source_info(self, index,  name , mute, volume , dictProperties):
+    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{ia{si}}a{ss}a{ss}s')
+    def source_info(self, index,  name , mute, volume , dictProperties, ports, active_port):
         pass
 
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='d')
@@ -74,7 +74,7 @@ class VeromixDbus(dbus.service.Object):
         
     @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
     def source_port(self, index, portstr):
-        self.pulse.pulse_souce_mute(long(index), portstr)
+        self.pulse.pulse_set_source_port(long(index), portstr)
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def source_volume(self, index, vol):
@@ -89,8 +89,8 @@ class VeromixDbus(dbus.service.Object):
         self.pulse.pulse_toggle_monitor_of_source( source_index, named)
 
 ## -----------------------------sink -----------------------------------------
-    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{ia{si}}a{ss}')
-    def sink_info(self, index,  name , mute, volume , dictProperties):
+    @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{ia{si}}a{ss}a{ss}s')
+    def sink_info(self, index,  name , mute, volume , dictProperties, ports, active_port):
         pass
 
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='i')
@@ -103,7 +103,7 @@ class VeromixDbus(dbus.service.Object):
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
     def sink_port(self, index, portstr):
-        self.pulse.pulse_sink_mute(long(index), portstr)
+        self.pulse.pulse_set_sink_port(long(index), portstr)
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def sink_volume(self, index, vol):
