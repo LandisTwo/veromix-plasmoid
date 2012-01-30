@@ -30,7 +30,7 @@ class PulseAudio(QObject):
 
     def __init__(self, parent ):
         QObject.__init__(self)
-        REQUIRED_SERVICE_VERSION = 8
+        REQUIRED_SERVICE_VERSION = 9
         if not dbus.get_default_main_loop():
             mainloop=dbus.mainloop.qt.DBusQtMainLoop(set_as_default=True)
         else:
@@ -222,7 +222,7 @@ class PulseAudio(QObject):
 
     def set_sink_mute(self, index, mute):
         self.getMixer().sink_mute(index,mute)
-        
+
     def set_sink_port(self, index, portstr):
         self.getMixer().sink_port(index,portstr)
 
@@ -234,7 +234,7 @@ class PulseAudio(QObject):
 
     def set_source_mute(self, index, mute):
         self.getMixer().source_mute(index,mute)
-        
+
     def set_source_port(self, index, portstr):
         self.getMixer().source_port(index,portstr)
 

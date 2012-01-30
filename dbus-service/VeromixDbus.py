@@ -36,7 +36,7 @@ class VeromixDbus(dbus.service.Object):
     def __init__(self, pulseaudio, conn , object_path='/org/veromix/pulseaudio'):
         dbus.service.Object.__init__(self, conn, object_path)
         self.pulse = pulseaudio
-        self.VERSION = 8
+        self.VERSION = 9
 
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='')
     def veromix_startup(self):
@@ -71,7 +71,7 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.method("org.veromix.pulseaudio", in_signature='ib', out_signature='')
     def source_mute(self, index, mute):
         self.pulse.pulse_source_mute(long(index), int(mute))
-        
+
     @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
     def source_port(self, index, portstr):
         self.pulse.pulse_set_source_port(long(index), portstr)
