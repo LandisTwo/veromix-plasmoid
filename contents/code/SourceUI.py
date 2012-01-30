@@ -38,6 +38,7 @@ class SourceUI( Channel ):
         self.mute.setBigIconName("audio-input-microphone.png")
 
     def context_menu_create_custom(self):
+        self.context_menu_create_ports()
         self.context_menu_create_sounddevices()
 
     def update_label(self):

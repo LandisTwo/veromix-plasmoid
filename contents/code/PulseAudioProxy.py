@@ -161,16 +161,16 @@ class PulseAudio(QObject):
         sink =SinkInputInfo(self, index,   name,  muted  , volume ,  props)
         self.emit(SIGNAL("on_sink_input_info(PyQt_PyObject)"), sink )
 
-    def on_sink_info(self,  index,   name,  muted  , volume ,  props):
-        sink = SinkInfo( self,  index,   name,  muted  , volume,  props)
+    def on_sink_info(self,  index,   name,  muted  , volume ,  props , ports , active_port):
+        sink = SinkInfo( self,  index,   name,  muted  , volume,  props , ports , active_port)
         self.emit(SIGNAL("on_sink_info(PyQt_PyObject)"), sink )
 
     def on_source_output_info(self,  index,   name, props):
         sink = SourceOutputInfo( self,  index,   name, True, {"left":0, "right":0},  props)
         self.emit(SIGNAL("on_source_output_info(PyQt_PyObject)"), sink )
 
-    def on_source_info(self,  index,   name,  muted  , volume ,  props):
-        sink = SourceInfo( self,  index,   name,  muted  , volume , props)
+    def on_source_info(self,  index,   name,  muted  , volume ,  props , ports , active_port):
+        sink = SourceInfo( self,  index,   name,  muted  , volume , props, ports, active_port)
         self.emit(SIGNAL("on_source_info(PyQt_PyObject)"), sink )
 
     def on_sink_input_remove(self, index):
@@ -223,7 +223,7 @@ class PulseAudio(QObject):
     def set_sink_mute(self, index, mute):
         self.getMixer().sink_mute(index,mute)
         
-    def set_source_port(self, index, portstr):
+    def set_sink_port(self, index, portstr):
         self.getMixer().sink_port(index,portstr)
 
     def set_default_sink(self, index):

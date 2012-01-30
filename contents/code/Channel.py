@@ -151,12 +151,29 @@ class Channel(QGraphicsWidget):
         action_unlock.setChecked(self.extended_panel_shown)
         action_unlock.triggered.connect(self.toggle_channel_lock)
 
+    def context_menu_create_ports(self):
+        if len(self.pa_sink.ports.keys())>1:
+	    ports_menu = QMenu(i18n("Ports"), self.popup_menu)
+	    ports = self.pa_sink.ports
+	    self.port_actions={}
+	    for port in ports.keys():
+		action = QAction(ports[port], self.popup_menu)
+		self.port_actions[action]=port
+		if port == self.pa_sink.active_port:
+		  action.setCheckable(True)
+		  action.setChecked(True)
+		else:
+		  action.setChecked(False) 
+		  action.setCheckable(False)
+		ports_menu.addAction(action)
+	    self.popup_menu.addMenu(ports_menu)
+        
     def create_menu_kill_sink(self):
         pass
 
     def context_menu_create_sounddevices(self):
         self.card_settings = {}
-        self.menus = []
+        self.menus = []	
         for card in self.veromix.card_infos.values():
             current = self.veromix.get_card_info_for(self)
             if current != None and  current.get_description() == card.get_description():
@@ -174,6 +191,7 @@ class Channel(QGraphicsWidget):
                     action.setCheckable(True)
                     action.setChecked(True)
                 card_menu.addAction(action)
+         
 
     def context_menu_create_sounddevices_other(self):
         if len(self.menus) > 0:
@@ -271,6 +289,8 @@ class Channel(QGraphicsWidget):
             for profile in card.get_profiles():
                 if action.text() == profile.description:
                     self.veromix.pa.set_card_profile(card.index, profile.name)
+        if action in self.port_actions.keys():
+	    self.pa_sink.set_port(self.port_actions[action])
 
     def contextMenuEvent(self,event):
         self.create_context_menu(event)

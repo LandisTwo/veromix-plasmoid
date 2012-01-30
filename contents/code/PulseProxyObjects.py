@@ -120,6 +120,11 @@ class AbstractSink(QObject):
 
 class SinkInfo(AbstractSink):
 
+    def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props, ports, active_port):
+        AbstractSink.__init__(self, pulseaudio, index,   name,  muted  , volume ,  props)
+        self.ports=ports
+        self.active_port=active_port
+
     def is_sink(self):
         return True
 
@@ -134,7 +139,9 @@ class SinkInfo(AbstractSink):
             
     def set_port(self,portstr):
          self.pulse_proxy.set_sink_port(self.index,portstr)
-
+    
+    
+    
     def toggle_monitor(self,parent):
         self.pulse_proxy.toggle_monitor_of_sink(self.index, self.get_monitor_name())
 
@@ -169,6 +176,11 @@ class SinkInputInfo(AbstractSink):
         self.pulse_proxy.sink_input_kill(self.index)
 
 class SourceInfo(AbstractSink):
+
+    def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props, ports, active_port):
+        AbstractSink.__init__(self, pulseaudio, index,   name,  muted  , volume ,  props)
+        self.ports=ports
+        self.active_port=active_port
 
     def is_sinkoutput(self):
         return True

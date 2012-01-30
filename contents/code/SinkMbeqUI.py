@@ -136,9 +136,6 @@ class SinkMbeqUI(SinkUI):
         self.popup_menu.addAction(self.action_kill)
         self.action_kill.triggered.connect(self.on_menu_kill_clicked)
 
-    def context_menu_create_sounddevices_other(self):
-      pass
-        
     def create_menu_switch_effect(self):
         effect_menu = QMenu(i18n("Effect"), self.popup_menu)
         sinks = self.veromix.get_sink_widgets()
