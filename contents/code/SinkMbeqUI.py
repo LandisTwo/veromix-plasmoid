@@ -152,6 +152,12 @@ class SinkMbeqUI(SinkUI):
     def on_contextmenu_clicked(self, action):
         self.on_change_effect(action.text())
 
+    def context_menu_create_unlock_channels(self):
+        pass
+
+    def context_menu_create_sounddevices_other(self):
+        pass
+
     def update_module_info(self, index, name, argument, n_used, auto_unload):
         self.module_info = self.parse_module_info(argument)
         controls = self.module_info["control"].split(",")
