@@ -109,8 +109,8 @@ class PulseSinkInfo(PulseSink):
         self.active_port              = ""
         self.ports = {}
         for x in range(pa_sink_info.n_ports):
-	    self.ports[pa_sink_info.ports[x].contents.name] = pa_sink_info.ports[x].contents.description
-	if(pa_sink_info.active_port):
+            self.ports[pa_sink_info.ports[x].contents.name] = pa_sink_info.ports[x].contents.description
+        if(pa_sink_info.active_port):
             self.active_port         = pa_sink_info.active_port.contents.name
         #self.configured_latency  = pa_sink_info.configured_latency
         self.device_name = pa_proplist_gets(pa_sink_info.proplist, "device.description")
