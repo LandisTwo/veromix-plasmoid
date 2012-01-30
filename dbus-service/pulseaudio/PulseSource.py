@@ -89,6 +89,14 @@ class PulseSourceInfo(PulseSource):
         self.driver               = pa_source_info.driver
         self.flags                = pa_source_info.flags
         self.proplist             = pa_source_info.proplist
+        self.n_ports              = pa_source_info.n_ports
+	self.ports = {}
+	for x in range(self.n_ports):
+	    self.ports[pa_source_info.ports[x].contents.name] = pa_source_info.ports[x].contents.description
+	self.active_port               = ""
+	if pa_source_info.active_port:
+          self.active_port         = pa_source_info.active_port.contents.name
+	
         #self.configured_latency   = pa_source_info.configured_latency
         self.proplist_string =  ( pa_proplist_to_string(pa_source_info.proplist))
         self.proplist_dict = proplist_to_dict(self.proplist_string )
