@@ -942,27 +942,41 @@ pa_stream_set_buffer_attr.argtypes = [POINTER(pa_stream), POINTER(pa_buffer_attr
 pa_stream_update_sample_rate = _lib.pa_stream_update_sample_rate
 pa_stream_update_sample_rate.restype = POINTER(pa_operation)
 pa_stream_update_sample_rate.argtypes = [POINTER(pa_stream), c_uint32, pa_stream_success_cb_t, POINTER(None)]
+
+
 class pa_sink_port_info(Structure):
-    pass
+    __slots__ = [
+    'name',
+    'description',
+    'priority',
+    'available'
+    ]
 class struct_pa_sink_info(Structure):
     __slots__ = [
-        'name',
-        'index',
-        'description',
-        'sample_spec',
-        'channel_map',
-        'owner_module',
-        'volume',
-        'mute',
-        'monitor_source',
-        'monitor_source_name',
-        'latency',
-        'driver',
-        'flags',
-        'proplist',
-        'n_ports',
-        'ports'
-        'active_port'
+    'name',
+    'index',
+    'description',
+    'sample_spec',
+    'channel_map',
+    'owner_module',
+    'volume',
+    'mute',
+    'monitor_source',
+    'monitor_source_name',
+    'latency',
+    'driver',
+    'flags',
+    'proplist',
+    'configured_latency',
+    'base_volume',
+    'state',
+    'n_volume_steps',
+    'card',
+    'n_ports',
+    'ports',
+    'active_port',
+    'n_formats',
+    'formats'
     ]
 struct_pa_sink_info._fields_ = [
     ('name', c_char_p),
@@ -978,11 +992,15 @@ struct_pa_sink_info._fields_ = [
     ('latency', pa_usec_t),
     ('driver', c_char_p),
     ('flags', pa_sink_flags_t),
-    ("proplist",        POINTER(c_int)),
+    ('proplist', POINTER(c_int)),
+    ('configured_latency', pa_usec_t),
+    ('base_volume', pa_volume_t),
+    ('state', c_int),
+    ('n_volume_steps', c_uint32),
+    ('card', c_uint32),
     ('n_ports', c_uint32),
     ('ports', POINTER(POINTER(pa_sink_port_info))),
-    ('active_port', POINTER(pa_sink_port_info)),
-
+    ('active_port', POINTER(pa_sink_port_info))
 ]
 
 pa_sink_info = struct_pa_sink_info      # /usr/include/pulse/introspect.h:224
@@ -1003,7 +1021,12 @@ pa_context_get_sink_info_list.restype = POINTER(pa_operation)
 pa_context_get_sink_info_list.argtypes = [POINTER(pa_context), pa_sink_info_cb_t, POINTER(None)]
 
 class pa_source_port_info(Structure):
-    pass
+    __slots__ = [
+    'name',
+    'description',
+    'priority',
+    'available'
+    ]
 class struct_pa_source_info(Structure):
     __slots__ = [
         'name',
@@ -1020,6 +1043,9 @@ class struct_pa_source_info(Structure):
         'driver',
         'flags',
         "proplist",
+        'configured_latency',
+        'base_volume',
+        'state',
         'n_ports',
         'ports',
         'active_port',
@@ -1038,12 +1064,17 @@ struct_pa_source_info._fields_ = [
     ('latency', pa_usec_t),
     ('driver', c_char_p),
     ('flags', pa_source_flags_t),
-    ("proplist",        POINTER(c_int)),
+    ('proplist', POINTER(c_int)),
+    ('configured_latency', pa_usec_t),
+    ('base_volume', pa_volume_t),
+    ('state', c_int),
+    ('n_volume_steps', c_uint32),
+    ('card', c_uint32),
     ('n_ports', c_uint32),
     ('ports', POINTER(POINTER(pa_source_port_info))),
-    ('active_port', POINTER(pa_source_port_info))
+    ('active_port', POINTER(pa_source_port_info)),
 ]
-# values for enumeration 'pa_port_available'
+# values for enumeration 'pa_hashport_available'
 PA_PORT_AVAILABLE_UNKNOWN = 0
 PA_PORT_AVAILABLE_NO = 1
 PA_PORT_AVAILABLE_YES = 2
