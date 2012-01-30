@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-29 01:13+0100\n"
+"POT-Creation-Date: 2012-01-31 00:09+0100\n"
 "PO-Revision-Date: 2011-06-10 18:43+0200\n"
 "Last-Translator: Kai Uwe b <privat@kde.broulik.de>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -121,19 +121,23 @@ msgstr "Aktuell laufende Medienwiedergabeprogramme:"
 msgid "Show album art"
 msgstr ""
 
-#: contents/code/Channel.py:141
+#: contents/code/Channel.py:145
 msgid "Muted"
 msgstr ""
 
-#: contents/code/Channel.py:148
+#: contents/code/Channel.py:152
 msgid "Unlock channels"
 msgstr ""
 
-#: contents/code/Channel.py:163
+#: contents/code/Channel.py:161
+msgid "Ports"
+msgstr ""
+
+#: contents/code/Channel.py:185
 msgid "Profile"
 msgstr ""
 
-#: contents/code/Channel.py:189
+#: contents/code/Channel.py:211
 msgid "Veromix Settings"
 msgstr ""
 
@@ -226,7 +230,7 @@ msgstr "Sprachausgabe"
 msgid "Effect"
 msgstr ""
 
-#: contents/code/SinkUI.py:40
+#: contents/code/SinkUI.py:41
 msgid "Default Sink"
 msgstr "Standardgerät"
 

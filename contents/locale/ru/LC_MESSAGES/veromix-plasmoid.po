@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-29 01:13+0100\n"
+"POT-Creation-Date: 2012-01-31 00:09+0100\n"
 "PO-Revision-Date: 2011-03-18 10:35+0300\n"
 "Last-Translator: proDOOMman <prodoomman@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -123,19 +123,23 @@ msgstr "Запущенные проигрыватели"
 msgid "Show album art"
 msgstr ""
 
-#: contents/code/Channel.py:141
+#: contents/code/Channel.py:145
 msgid "Muted"
 msgstr ""
 
-#: contents/code/Channel.py:148
+#: contents/code/Channel.py:152
 msgid "Unlock channels"
 msgstr ""
 
-#: contents/code/Channel.py:163
+#: contents/code/Channel.py:161
+msgid "Ports"
+msgstr ""
+
+#: contents/code/Channel.py:185
 msgid "Profile"
 msgstr ""
 
-#: contents/code/Channel.py:189
+#: contents/code/Channel.py:211
 msgid "Veromix Settings"
 msgstr ""
 
@@ -231,7 +235,7 @@ msgstr "Вывод"
 msgid "Effect"
 msgstr ""
 
-#: contents/code/SinkUI.py:40
+#: contents/code/SinkUI.py:41
 msgid "Default Sink"
 msgstr "Аудиовыход по умолчанию"
 

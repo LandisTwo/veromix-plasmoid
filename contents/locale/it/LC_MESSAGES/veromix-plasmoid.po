@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-29 01:13+0100\n"
+"POT-Creation-Date: 2012-01-31 00:09+0100\n"
 "PO-Revision-Date: 2012-01-28 20:33+0100\n"
 "Last-Translator: \n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -118,19 +118,23 @@ msgstr "Media player in esecuzione:"
 msgid "Show album art"
 msgstr "Mostra copertine"
 
-#: contents/code/Channel.py:141
+#: contents/code/Channel.py:145
 msgid "Muted"
 msgstr "Muto"
 
-#: contents/code/Channel.py:148
+#: contents/code/Channel.py:152
 msgid "Unlock channels"
 msgstr "Dividi canali"
 
-#: contents/code/Channel.py:163
+#: contents/code/Channel.py:161
+msgid "Ports"
+msgstr ""
+
+#: contents/code/Channel.py:185
 msgid "Profile"
 msgstr "Profilo"
 
-#: contents/code/Channel.py:189
+#: contents/code/Channel.py:211
 msgid "Veromix Settings"
 msgstr "Impostazioni di Veromix"
 
@@ -222,7 +226,7 @@ msgstr "Uscita"
 msgid "Effect"
 msgstr "Effetto"
 
-#: contents/code/SinkUI.py:40
+#: contents/code/SinkUI.py:41
 msgid "Default Sink"
 msgstr "Audio Interno"
 
