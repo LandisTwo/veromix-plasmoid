@@ -141,6 +141,7 @@ class InputSinkUI(SinkUI):
 
     def startDrag(self,event):
         drag = QDrag(event.widget())
+        drag.setPixmap(self.mute.icon().pixmap(self.size().height(),self.size().height()))
         mimedata = QMimeData()
         liste = []
         liste.append(QUrl( "veromix://sink_input_index:"+str(int(self.index)) ))

@@ -53,10 +53,8 @@ class SinkChannelWidget(QGraphicsWidget):
         self.setLayout(self.layout)
 
         self.label = Plasma.Label()
-        self.label.setAlignment(Qt.AlignTop)
-        self.label.setPreferredHeight(12)
+        self.label.setPreferredHeight(self.sink.mute.size().height())
         self.label.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed, True))
-        self.label.setContentsMargins(0,0,0,0)
 
     def create_channel_sliders(self):
         self.slider_layout = QGraphicsLinearLayout(Qt.Vertical)
