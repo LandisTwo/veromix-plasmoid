@@ -12,9 +12,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this library; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
-# USA
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt4.QtCore import *
 
@@ -136,12 +134,10 @@ class SinkInfo(AbstractSink):
             self.pulse_proxy.set_sink_mute(self.index, False)
         else:
             self.pulse_proxy.set_sink_mute(self.index, True)
-            
+
     def set_port(self,portstr):
          self.pulse_proxy.set_sink_port(self.index,portstr)
-    
-    
-    
+
     def toggle_monitor(self,parent):
         self.pulse_proxy.toggle_monitor_of_sink(self.index, self.get_monitor_name())
 
@@ -193,10 +189,10 @@ class SourceInfo(AbstractSink):
             self.pulse_proxy.set_source_mute(self.index, False)
         else:
             self.pulse_proxy.set_source_mute(self.index, True)
-            
+
     def set_port(self,portstr):
          self.pulse_proxy.set_source_port(self.index,portstr)
-         
+
     def toggle_monitor(self,parent):
         self.pulse_proxy.toggle_monitor_of_source(self.index, self.get_monitor_name())
 

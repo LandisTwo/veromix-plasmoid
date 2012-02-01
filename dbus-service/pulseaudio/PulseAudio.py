@@ -10,9 +10,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this library; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
-# USA
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 
 ## this version is a mix from earcandy and pulsecaster
@@ -500,7 +498,7 @@ class PulseAudio(QObject):
         operation = pa_context_set_sink_mute_by_index(self._context, index,mute,self._null_cb,None)
         pa_operation_unref(operation)
         return
-                
+
     def pulse_set_sink_port(self,index,portstr):
         "Switch ports by index and port string"
         operation = pa_context_set_sink_port_by_index(self._context,index,portstr,self._null_cb,None)
@@ -517,7 +515,7 @@ class PulseAudio(QObject):
         operation = pa_context_set_source_mute_by_index(self._context, index,mute,self._null_cb,None)
         pa_operation_unref(operation)
         return
-                
+
     def pulse_set_source_port(self,index,portstr):
         "Switch ports by index and port string"
         operation = pa_context_set_source_port_by_index(self._context,index,portstr,self._null_cb,None)

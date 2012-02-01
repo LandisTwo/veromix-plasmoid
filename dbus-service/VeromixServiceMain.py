@@ -7,6 +7,8 @@ if sys.version_info[0] > 2:
 # This is from: <https://lwn.net/Articles/427309/>.
 
 # -*- coding: utf-8 -*-
+# copyright 2012  Nik Lutz
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 3 of the License, or
@@ -18,9 +20,7 @@ if sys.version_info[0] > 2:
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this library; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
-# USA
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import signal
 import sys
