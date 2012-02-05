@@ -78,7 +78,7 @@ class LabelSlider(Plasma.Slider):
         Plasma.Slider.setMaximum(self,value)
         if value > 100 and showticks:
             self.nativeWidget().setTickInterval(100)
-            self.nativeWidget().setTickPosition(QSlider.TicksBothSides)
+            self.nativeWidget().setTickPosition(QSlider.TicksBelow)
         else:
             self.nativeWidget().setTickPosition(QSlider.NoTicks)
 
