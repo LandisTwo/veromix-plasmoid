@@ -160,7 +160,7 @@ class Channel(QGraphicsWidget):
             ports = self.pa_sink.ports
 
             for port in ports.keys():
-                action = QAction(ports[port], self.popup_menu)
+                action = QAction(in_unicode(ports[port]), self.popup_menu)
                 self.port_actions[action]=port
                 if port == self.pa_sink.active_port:
                     action.setCheckable(True)
@@ -188,7 +188,7 @@ class Channel(QGraphicsWidget):
             active_profile_name = card.get_active_profile_name()
             self.profiles = card.get_profiles()
             for profile in self.profiles:
-                action = QAction(str(profile.description), card_menu)
+                action = QAction(in_unicode(profile.description), card_menu)
                 self.card_settings[action] = card
                 if profile.name == active_profile_name:
                     action.setCheckable(True)
