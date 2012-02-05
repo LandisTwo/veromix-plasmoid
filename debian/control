@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 8), gettext, kdelibs-bin, kdesdk-scripts, python
 Standards-Version: 3.9.2
 Homepage: http://code.google.com/p/veromix-plasmoid/
 Vcs-Browser: http://code.google.com/p/veromix-plasmoid/source/browse/
-Vcs-Svn: http://veromix-plasmoid.googlecode.com/svn/trunk/
+Vcs-Git: https://code.google.com/p/veromix-plasmoid/
 
 Package: plasma-widget-veromix
 Architecture: all
