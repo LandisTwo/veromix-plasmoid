@@ -1,0 +1,296 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Slobodan Terzić <githzerai06@gmail.com>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-02-05 16:41+0100\n"
+"PO-Revision-Date: 2012-02-05 17:14+0100\n"
+"Last-Translator: Slobodan Terzić <githzerai06@gmail.com>\n"
+"Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
+"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 1.4\n"
+
+#: rc.py:3 rc.py:18 rc.py:75
+msgid "Form"
+msgstr "Облик"
+
+#: rc.py:6 rc.py:69
+msgid "Version"
+msgstr "Верзија"
+
+#: rc.py:9 rc.py:63
+msgid "Homepage"
+msgstr "Домаћа страница"
+
+#: rc.py:12 rc.py:66
+msgid ""
+"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+"com/p/veromix-plasmoid/</A>"
+msgstr ""
+"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+"com/p/veromix-plasmoid/</A>"
+
+#: rc.py:15 rc.py:72
+msgid "X.Y"
+msgstr "X.Y"
+
+#: rc.py:21
+msgid "Popup Mode"
+msgstr "Режим искакања"
+
+#: rc.py:24
+msgid "Close when losing focus"
+msgstr "затварај при губитку фокуса"
+
+#: rc.py:27
+msgid "Close manually"
+msgstr "ручно затварање"
+
+#: rc.py:30
+msgid "Background"
+msgstr "Позадина"
+
+#: rc.py:33
+msgid "No background"
+msgstr "без позадине"
+
+#: rc.py:36
+msgid "Translucent background"
+msgstr "провидна позадина"
+
+#: rc.py:39
+msgid "Standard background"
+msgstr "уобичајена позадина"
+
+#: rc.py:42
+msgid "Notification "
+msgstr "Обавештење"
+
+#: rc.py:45
+msgid "Show toolip"
+msgstr "Прикажи савете"
+
+#: rc.py:48
+msgid "Layout"
+msgstr "Распоред"
+
+#: rc.py:51
+msgid "Use tabs"
+msgstr "Језичци"
+
+#: rc.py:54
+msgid "Always show sources"
+msgstr "Увек прикажи изворе"
+
+#: rc.py:57
+msgid "Show meter"
+msgstr "Прикажи мерач"
+
+#: rc.py:60
+msgid "Show context menu button"
+msgstr "Дугме контекстног менија"
+
+#: rc.py:78
+msgid "Use KDE nowplaying dataengine"
+msgstr "КДЕ-ов датамотор тренутне свирке"
+
+#: rc.py:81
+msgid "Use mpris2"
+msgstr "МПРИС2"
+
+#: rc.py:84
+msgid "Media player blacklist:"
+msgstr "Забрањени плејери:"
+
+#: rc.py:87
+msgid "Running media players:"
+msgstr "Покренути плејери:"
+
+#: rc.py:90
+msgid "Show album art"
+msgstr "Омоти албума"
+
+#: contents/code/Channel.py:143
+msgid "Muted"
+msgstr "Утишано"
+
+#: contents/code/Channel.py:150
+msgid "Unlock channels"
+msgstr "Откључај канале"
+
+#: contents/code/Channel.py:159
+msgid "Ports"
+msgstr "Портови"
+
+#: contents/code/Channel.py:183
+msgid "Profile"
+msgstr "Профил"
+
+#: contents/code/Channel.py:209
+msgid "Veromix Settings"
+msgstr "Поставке Веромикса"
+
+#: contents/code/main.py:58
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr "Веромикс је миксета за звучни сервер Пулсаудио. "
+
+#: contents/code/main.py:133 contents/code/main.py:347
+msgid "Veromix volume up"
+msgstr "Појачај"
+
+#: contents/code/main.py:138 contents/code/main.py:352
+msgid "Veromix volume down"
+msgstr "Утишај"
+
+#: contents/code/main.py:143
+msgid "Veromix toggle mute"
+msgstr "Искључи звук"
+
+#: contents/code/main.py:151
+msgid "Main Volume"
+msgstr "Главна јачина звука"
+
+#: contents/code/main.py:259
+msgid "Appearance"
+msgstr "Изглед"
+
+#: contents/code/main.py:279
+msgid "Media Player Controls"
+msgstr "Управљање медијским плејерима"
+
+#: contents/code/main.py:304
+msgid "Max volume value"
+msgstr "Максимална вредност јачине звука"
+
+#: contents/code/main.py:310
+msgid "Mute if volume reaches zero"
+msgstr "Искључи звук ако је јачина на нули"
+
+#: contents/code/main.py:314
+msgid "Sound Card Profiles"
+msgstr "Профили звучне карте"
+
+#: contents/code/main.py:336
+msgid "Pulseaudio"
+msgstr "Пулсаудио"
+
+#: contents/code/main.py:357
+msgid "Veromix toggle  mute"
+msgstr "Прекидач звука"
+
+#: contents/code/main.py:361
+msgid "Volume Keyboard Shortcuts"
+msgstr "Пречице"
+
+#: contents/code/MediaPlayerUI.py:206
+msgid "Show position"
+msgstr "Прикажи позицију"
+
+#: contents/code/SinkInputUI.py:47 contents/code/SinkMbeqUI.py:133
+msgid "Disconnect/kill"
+msgstr "Откачи се/убиј"
+
+#: contents/code/SinkInputUI.py:55 contents/code/SourceOutputUI.py:50
+msgid "Move To"
+msgstr "Премести на"
+
+#: contents/code/SinkInputUI.py:85
+msgid "Event Sounds"
+msgstr "Звуци догађаја"
+
+#: contents/code/SinkInputUI.py:89
+msgid "Flash Player"
+msgstr "Флеш плејер"
+
+#: contents/code/SinkInputUI.py:93
+msgid "Chromium Browser"
+msgstr "Хромијум"
+
+#: contents/code/SinkInputUI.py:97
+msgid "Event Sound"
+msgstr "Звуци догађаја"
+
+#: contents/code/SinkInputUI.py:99
+msgid "Voice Output"
+msgstr "Излаз за глас"
+
+#: contents/code/SinkMbeqUI.py:138
+msgid "Effect"
+msgstr "Ефекти"
+
+#: contents/code/SinkUI.py:39
+msgid "Default Sink"
+msgstr "Подразумевани одвод"
+
+#: contents/code/Utils.py:28
+msgid "Please remove and re-add myself"
+msgstr "Молим да ме уклоните па поново додате"
+
+#: contents/code/Utils.py:34
+msgid ""
+"<b>Configuration updated</b><br/>             Because of a known bug in KDE "
+"4.4 initialization of Veromix failed.<br/><br/>            A workaround is "
+"now installed.<br/><br/>            Please <b>remove</b> this applet and "
+"<b>add</b> Veromix again to your desktop/panel (alternatively you can "
+"restart plasma-desktop).<br/><br/>             Sorry for the inconvenience."
+"<br/><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/"
+"wiki/VeromixComponents#KDE_4.4_compatibility\">See wiki for more details</a> "
+"<span style=\"font-size: small;\">(right click and copy url)</span>. "
+msgstr ""
+"<b>Поставке су ажуриране</b><br/>            "
+"Због познате бубе у КДЕ-у 4.4 покретање Веромикса није успело..<br/><br/> "
+"Исправка је сада инсталирана.<br/><br/> "
+"Молимо да <b>уклоните</b> овај аплет и <b>поново поставите</b> Веромикс на "
+"површ/панел "
+"(алтернативно, можете поново покренути сесију).<br/><br/> "
+"Извините на непријатности."
+"<br/><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/"
+"wiki/VeromixComponents#KDE_4.4_compatibility\">Погледајте вики за више детаља."
+"</a> "
+"<span style=\"font-size: small;\">(десни клик и копирајте урл)</span>. "
+
+#: contents/code/VeroMix.py:78
+msgid "Add equalizer"
+msgstr "Додај еквилајзер"
+
+#: contents/code/VeroMix.py:118
+msgid "Playback"
+msgstr "Пуштање"
+
+#: contents/code/VeroMix.py:119
+msgid "Record"
+msgstr "Снимање"
+
+#: contents/code/VeroMix.py:139
+msgid ""
+"There is a problem with the backgroud-"
+"service.                                                         "
+"<ul>                                                         <li>If you just "
+"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
+"this plasmoid</li>                                                         "
+"<li>If you don't know how to do that consider rebooting</li></ul><br/"
+">                                                        <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
+"_VeromixServiceMain.py\">See wiki for more details</a> <span style=\"font-"
+"size: small;\">(right click and copy url)</span>."
+msgstr ""
+"Постоји проблем са позадинским сервисом. "
+"<ul>                                                         <li>уколико сте  "
+"вршили надоградњу, пробајте да убијете процес: VeromixServiceMain.py and "
+"и поново покренете овај плазмоид.</li>                                        "
+"                 "
+"<li>ако не знате како, најбоље поново покрените систем.</li></ul><br/"
+">                                                        <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
+"_VeromixServiceMain.py\">Погледајте вики за више детаља.</a> <span "
+"style=\"font-"
+"size: small;\">(right click and copy url)</span>."
+
