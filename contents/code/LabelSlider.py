@@ -30,6 +30,7 @@ class Label(Plasma.Label):
     def __init__(self, parent=None):
         self.text = ""
         self.bold_text = ""
+        self.percent = -1
         Plasma.Label.__init__(self, parent)
 
     def setText(self, text):
@@ -41,7 +42,11 @@ class Label(Plasma.Label):
         self._set_text()
 
     def _set_text(self):
-        Plasma.Label.setText(self, "<b>"+self.bold_text+"</b> "+self.text)
+        Plasma.Label.setText(self, "<b>"+((str(self.percent)+"% ") if self.percent!=-1 else "")+self.bold_text+"</b> "+self.text)
+        
+    def updatePercent(self,percent):
+        self.percent=percent
+        self._set_text()
 
     def setMinimum(self, value):
         pass
@@ -97,6 +102,10 @@ class LabelSlider(Plasma.Slider):
         if self.check_pulse_timestamp():
             self.update_plasma_timestamp()
             self.setValue(value)
+            
+    def setValue(self,value):
+        Plasma.Slider.setValue(self,value)
+        self.label.updatePercent(value)
 
     def update_with_info(self, info):
         self.setValueFromPulse(info.getVolume())
@@ -107,6 +116,7 @@ class LabelSlider(Plasma.Slider):
             self.setValue(value)
 
     def on_slider_cb(self, value):
+        self.label.updatePercent(value)
         if self.check_pulse_timestamp():
             self.update_plasma_timestamp()
             self.volumeChanged.emit(value)
