@@ -1,7 +1,10 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Veromix
+Name[sr]=Веромикс
 Comment=Veromix is a mixer for the Pulseaudio sound server.
+Comment[sr]=Миксетаз за звучни сервер Пулсаудио.
+Comment[sr@latin]=Mikseta za zvučni server Pulseaudio.
 Type=Service
 ServiceTypes=Plasma/Applet,Plasma/PopupApplet
 Icon=veromix-plasmoid
