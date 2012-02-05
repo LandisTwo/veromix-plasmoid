@@ -26,8 +26,8 @@ from VeromixUtils import *
 class CardProfile:
 
     def __init__(self, pa_card_profile):
-        self.name =  pa_card_profile.name
-        self.description =  pa_card_profile.description
+        self.name =  in_unicode(pa_card_profile.name)
+        self.description =  in_unicode(pa_card_profile.description)
         self.n_sinks =  pa_card_profile.n_sinks
         self.n_sources =  pa_card_profile.n_sources
         self.priority =  pa_card_profile.priority
@@ -35,22 +35,22 @@ class CardProfile:
 
     def as_dict(self):
         info = {}
-        info["name"] =str(self.name)
-        info["description"] = str(self.description)
-        info["n_sinks"] = str(self.n_sinks)
-        info["n_sources"] = str(self.n_sources)
-        info["priority"] = str(self.priority)
+        info["name"] = in_unicode(self.name)
+        info["description"] = in_unicode(self.description)
+        info["n_sinks"] = in_unicode(self.n_sinks)
+        info["n_sources"] = in_unicode(self.n_sources)
+        info["priority"] = in_unicode(self.priority)
         return info
 
 class CardInfo:
-    
+
     def __init__(self, pa_card_info):
         self.index = pa_card_info.index
         self.name = pa_card_info.name
         self.owner_module = pa_card_info.owner_module
         self.driver = pa_card_info.driver
         self.n_profiles = pa_card_info.n_profiles
-        
+
         self.active_profile = CardProfile(pa_card_info.active_profile[0])
         self.proplist_string =   pa_proplist_to_string(pa_card_info.proplist)
         self.proplist = proplist_to_dict(self.proplist_string)
@@ -72,7 +72,7 @@ class CardInfo:
         return info
 
     def active_profile_name(self):
-        return self.active_profile.name
+        return in_unicode(self.active_profile.name)
 
 
     def profiles_dict(self):

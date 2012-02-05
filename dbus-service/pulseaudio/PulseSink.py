@@ -46,7 +46,7 @@ class PulseSink:
 
     def __init__(self, index, name, mute, volume, client):
         self.index  = index
-        self.name   = name
+        self.name   = in_unicode(name)
         self.mute   = mute
         self.volume = volume
         self.client = client
@@ -96,22 +96,24 @@ class PulseSinkInfo(PulseSink):
                                  pa_sink_info.mute,
                                  PulseVolumeCtypes(pa_sink_info.volume, pa_sink_info.channel_map),
                                  PulseClient("Selected Sink"))
-        self.description         = pa_sink_info.description
+        self.description         = in_unicode(pa_sink_info.description)
         self.sample_spec         = pa_sink_info.sample_spec
         self.channel_map         = pa_sink_info.channel_map
         self.owner_module        = pa_sink_info.owner_module
         self.monitor_source      = pa_sink_info.monitor_source
-        self.monitor_source_name = pa_sink_info.monitor_source_name
+        self.monitor_source_name = in_unicode(pa_sink_info.monitor_source_name)
         self.latency             = pa_sink_info.latency
         self.driver              = pa_sink_info.driver
         self.flags               = pa_sink_info.flags
         self.proplist            = pa_sink_info.proplist
-        self.active_port              = ""
+        self.active_port         = ""
         self.ports = {}
+
         for x in range(pa_sink_info.n_ports):
-            self.ports[pa_sink_info.ports[x].contents.name] = pa_sink_info.ports[x].contents.description
+            self.ports[in_unicode(pa_sink_info.ports[x].contents.name)] = in_unicode(pa_sink_info.ports[x].contents.description)
+
         if(pa_sink_info.active_port):
-            self.active_port         = pa_sink_info.active_port.contents.name
+            self.active_port         = in_unicode(pa_sink_info.active_port.contents.name)
         #self.configured_latency  = pa_sink_info.configured_latency
         self.device_name = pa_proplist_gets(pa_sink_info.proplist, "device.description")
         self.proplist_string =  ( pa_proplist_to_string(pa_sink_info.proplist))

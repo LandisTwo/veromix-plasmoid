@@ -36,7 +36,7 @@ from VeromixUtils import *
 class PulseSource:
     def __init__(self, index, name, client):
         self.index  = index
-        self.name   = name
+        self.name   = in_unicode(name)
         self.client = client
         self.isDefaultSource = False
         return
@@ -79,7 +79,7 @@ class PulseSourceInfo(PulseSource):
         self.mute =  pa_source_info.mute
         self.volume = PulseVolumeCtypes(pa_source_info.volume,pa_source_info.channel_map )
 
-        self.description          = pa_source_info.description
+        self.description          = in_unicode(pa_source_info.description)
         self.sample_spec          = pa_source_info.sample_spec
         self.channel_map          = pa_source_info.channel_map
         self.owner_module         = pa_source_info.owner_module
@@ -90,13 +90,15 @@ class PulseSourceInfo(PulseSource):
         self.flags                = pa_source_info.flags
         self.proplist             = pa_source_info.proplist
         self.n_ports              = pa_source_info.n_ports
-	self.ports = {}
-	for x in range(self.n_ports):
-	    self.ports[pa_source_info.ports[x].contents.name] = pa_source_info.ports[x].contents.description
-	self.active_port               = ""
-	if pa_source_info.active_port:
-          self.active_port         = pa_source_info.active_port.contents.name
-	
+        self.ports = {}
+        self.active_port = ""
+
+        for x in range(self.n_ports):
+            self.ports[in_unicode(pa_source_info.ports[x].contents.name)] = in_unicode(pa_source_info.ports[x].contents.description)
+
+        if pa_source_info.active_port:
+            self.active_port = in_unicode(pa_source_info.active_port.contents.name)
+
         #self.configured_latency   = pa_source_info.configured_latency
         self.proplist_string =  ( pa_proplist_to_string(pa_source_info.proplist))
         self.proplist_dict = proplist_to_dict(self.proplist_string )
