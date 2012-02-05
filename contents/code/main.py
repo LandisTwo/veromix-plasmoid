@@ -98,7 +98,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
         defaultSize =  QVariant(QSize (0,0))
         size = self.config().readEntry("size", defaultSize ).toSize()
-        if (size != defaultSize) :
+        if self.formFactor() == Plasma.Planar:
+            self.widget.setMinimumSize(275,125)
+        elif (size != defaultSize) :
             self.widget.setPreferredSize(size.width(), size.height())
         else:
             self.widget.setPreferredSize(470 ,145)
@@ -114,7 +116,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         # wont popup when you add it directly to the panel)
         self.setGraphicsWidget(self.widget)
         self.connect(self.applet, SIGNAL("appletDestroyed(Plasma::Applet*)"), self.doExit)
-        self.setBackgroundHints(Plasma.Applet.NoBackground)
+        self.setBackgroundHints(Plasma.Applet.StandardBackground)
         self.applyConfig()
         #except AttributeError , e:
             #print e
@@ -232,7 +234,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.connect(self.config_widget, SIGNAL('destroyed(QObject*)'), self.configWidgetDestroyed)
 
         self.config_ui = uic.loadUi(str(self.package().filePath('ui', 'appearance.ui')), self.config_widget)
-        self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background","0").toInt() [0])
+        self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background","2").toInt() [0])
         self.config_ui.showBackground.currentIndexChanged.connect(parent.settingsModified)
 
         self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
@@ -414,7 +416,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.apply_nowplaying(self.is_nowplaying_enabled() )
         self.apply_mpris2(self.is_mpris2_enabled() )
 
-        bg = self.config().readEntry("background","0").toInt()[0]
+        bg = self.config().readEntry("background","2").toInt()[0]
         if  bg == 0:
             self.setBackgroundHints(Plasma.Applet.NoBackground)
         elif bg == 1:
@@ -458,7 +460,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         return self.config().readEntry("useTabs",False ).toBool()
 
     def get_meter_visible(self):
-        return self.config().readEntry("meter_visible",True ).toBool()
+        return self.config().readEntry("meter_visible",False ).toBool()
 
     def get_auto_mute(self):
         return self.config().readEntry("auto_mute",False ).toBool()
