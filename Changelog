@@ -1,3 +1,8 @@
+0.15.1 - 5.2.2012
+- Make sure we got unicode strings for ports before displaying them.
+- Fix bad looking label in unlocked view.
+- switch from svn to git.
+
 0.15.0 - 30.1.2012
 - Support for changing ports of sinks by Jonathan Challinger.
   Fixes Issue 85: Cannot switch microphone inputs.

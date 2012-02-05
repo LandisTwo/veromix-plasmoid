@@ -64,32 +64,30 @@ class Pa2dBus(QObject):
         volume = sink.volume.getVolumes()
         active_port = sink.active_port
         ports = sink.ports
-        self.dbus.source_info(  index,   name,  muted  , volume ,  sink.propDict() , ports , active_port)
+        self.dbus.source_info(index, name, muted, volume, sink.propDict(), ports, active_port)
 
     def on_source_output_info(self, sink):
         index =  int(sink.index)
         name = in_unicode(sink.name)
         if sink.resample_method != "peaks":
-            self.dbus.source_output_info(  index,   name , sink.propDict() )
+            self.dbus.source_output_info(index, name, sink.propDict())
 
     def on_sink_input_info(self, sink):
         index =   int(sink.index)
         name = in_unicode(sink.name)
         muted = (sink.mute == 1)
         volume = sink.volume.getVolumes()
-        self.dbus.sink_input_info(  index,   name,  muted  , volume ,  sink.propDict() )
+        self.dbus.sink_input_info(index, name, muted, volume, sink.propDict())
 
     def on_sink_info(self, sink):
         index =   int(sink.index)
         name = in_unicode(sink.name)
         muted = (sink.mute == 1)
         volume = sink.volume.getVolumes()
-        active_port = sink.active_port
-        ports = sink.ports
-        self.dbus.sink_info( index,   name,  muted  , volume ,  sink.propDict() , ports , active_port)
+        self.dbus.sink_info(index, name, muted, volume, sink.propDict(), sink.ports, sink.active_port)
 
     def on_card_info(self, card_info):
-        self.dbus.card_info(card_info.index,  card_info.name , card_info.properties(), card_info.active_profile_name() , card_info.profiles_dict())
+        self.dbus.card_info(card_info.index, card_info.name, card_info.properties(), card_info.active_profile_name(), card_info.profiles_dict())
 
     def on_remove_card(self, index):
         self.dbus.card_remove(index)

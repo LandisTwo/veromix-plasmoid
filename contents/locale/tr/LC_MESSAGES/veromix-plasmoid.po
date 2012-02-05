@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-01-31 00:09+0100\n"
+"POT-Creation-Date: 2012-02-05 00:47+0100\n"
 "PO-Revision-Date: 2010-12-16 03:41+0200\n"
 "Last-Translator: Anıl Özbek <ozbekanil@gmail.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
@@ -122,125 +122,125 @@ msgstr "Şu an çalışan medya oynatıcılarlayÖ"
 msgid "Show album art"
 msgstr ""
 
-#: contents/code/Channel.py:145
+#: contents/code/Channel.py:143
 msgid "Muted"
 msgstr ""
 
-#: contents/code/Channel.py:152
+#: contents/code/Channel.py:150
 msgid "Unlock channels"
 msgstr ""
 
-#: contents/code/Channel.py:161
+#: contents/code/Channel.py:159
 msgid "Ports"
 msgstr ""
 
-#: contents/code/Channel.py:185
+#: contents/code/Channel.py:183
 msgid "Profile"
 msgstr ""
 
-#: contents/code/Channel.py:211
+#: contents/code/Channel.py:209
 msgid "Veromix Settings"
 msgstr ""
 
-#: contents/code/main.py:60
+#: contents/code/main.py:58
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
 msgstr "Veromix, PulseAudio ses sunucusu için bir karıştırıcıdır. "
 
-#: contents/code/main.py:133 contents/code/main.py:347
+#: contents/code/main.py:131 contents/code/main.py:345
 msgid "Veromix volume up"
 msgstr "Veromix ses yükselt"
 
-#: contents/code/main.py:138 contents/code/main.py:352
+#: contents/code/main.py:136 contents/code/main.py:350
 msgid "Veromix volume down"
 msgstr "Veromix ses kıs"
 
-#: contents/code/main.py:143
+#: contents/code/main.py:141
 #, fuzzy
 msgid "Veromix toggle mute"
 msgstr "Veromix sessiz"
 
-#: contents/code/main.py:151
+#: contents/code/main.py:149
 msgid "Main Volume"
 msgstr "Ana Ses"
 
-#: contents/code/main.py:259
+#: contents/code/main.py:257
 msgid "Appearance"
 msgstr "Görünüm"
 
-#: contents/code/main.py:279
+#: contents/code/main.py:277
 msgid "Media Player Controls"
 msgstr "Medya Oynatıcı Kontrolleri"
 
-#: contents/code/main.py:304
+#: contents/code/main.py:302
 #, fuzzy
 msgid "Max volume value"
 msgstr "Veromix ses yükselt"
 
-#: contents/code/main.py:310
+#: contents/code/main.py:308
 msgid "Mute if volume reaches zero"
 msgstr ""
 
-#: contents/code/main.py:314
+#: contents/code/main.py:312
 msgid "Sound Card Profiles"
 msgstr ""
 
-#: contents/code/main.py:336
+#: contents/code/main.py:334
 msgid "Pulseaudio"
 msgstr ""
 
-#: contents/code/main.py:357
+#: contents/code/main.py:355
 msgid "Veromix toggle  mute"
 msgstr "Veromix sessiz"
 
-#: contents/code/main.py:361
+#: contents/code/main.py:359
 msgid "Volume Keyboard Shortcuts"
 msgstr ""
 
-#: contents/code/MediaPlayerUI.py:208
+#: contents/code/MediaPlayerUI.py:206
 msgid "Show position"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:49 contents/code/SinkMbeqUI.py:135
+#: contents/code/SinkInputUI.py:47 contents/code/SinkMbeqUI.py:133
 msgid "Disconnect/kill"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:57 contents/code/SourceOutputUI.py:52
+#: contents/code/SinkInputUI.py:55 contents/code/SourceOutputUI.py:50
 msgid "Move To"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:87
+#: contents/code/SinkInputUI.py:85
 msgid "Event Sounds"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:91
+#: contents/code/SinkInputUI.py:89
 msgid "Flash Player"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:95
+#: contents/code/SinkInputUI.py:93
 msgid "Chromium Browser"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:99
+#: contents/code/SinkInputUI.py:97
 msgid "Event Sound"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:101
+#: contents/code/SinkInputUI.py:99
 msgid "Voice Output"
 msgstr ""
 
-#: contents/code/SinkMbeqUI.py:140
+#: contents/code/SinkMbeqUI.py:138
 msgid "Effect"
 msgstr ""
 
-#: contents/code/SinkUI.py:41
+#: contents/code/SinkUI.py:39
 msgid "Default Sink"
 msgstr ""
 
-#: contents/code/Utils.py:30
+#: contents/code/Utils.py:28
 msgid "Please remove and re-add myself"
 msgstr "Lütfen beni kaldır ve tekrar ekle,"
 
-#: contents/code/Utils.py:36
+#: contents/code/Utils.py:34
 msgid ""
 "<b>Configuration updated</b><br/>             Because of a known bug in KDE "
 "4.4 initialization of Veromix failed.<br/><br/>            A workaround is "
@@ -262,19 +262,19 @@ msgstr ""
 "bakabilirsiniz</a> <span style=\"font-size: small;\">(sağ tıklayın ve "
 "bağlantıyı kopyalayın)</span>. "
 
-#: contents/code/VeroMix.py:80
+#: contents/code/VeroMix.py:78
 msgid "Add equalizer"
 msgstr ""
 
-#: contents/code/VeroMix.py:120
+#: contents/code/VeroMix.py:118
 msgid "Playback"
 msgstr "Oynatma"
 
-#: contents/code/VeroMix.py:121
+#: contents/code/VeroMix.py:119
 msgid "Record"
 msgstr "Kaydetme"
 
-#: contents/code/VeroMix.py:141
+#: contents/code/VeroMix.py:139
 msgid ""
 "There is a problem with the backgroud-"
 "service.                                                         "
