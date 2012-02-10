@@ -43,7 +43,7 @@ class Label(Plasma.Label):
 
     def _set_text(self):
         Plasma.Label.setText(self, "<b>"+((str(self.percent)+"% ") if self.percent!=-1 else "")+self.bold_text+"</b> "+self.text)
-        
+
     def updatePercent(self,percent):
         self.percent=percent
         self._set_text()
@@ -102,7 +102,7 @@ class LabelSlider(Plasma.Slider):
         if self.check_pulse_timestamp():
             self.update_plasma_timestamp()
             self.setValue(value)
-            
+
     def setValue(self,value):
         Plasma.Slider.setValue(self,value)
         self.label.updatePercent(value)
@@ -131,11 +131,11 @@ class LabelSlider(Plasma.Slider):
 ## testing
     def check_plasma_timestamp(self):
         now = datetime.datetime.now()
-        return  (now - self.plasma_timestamp ).seconds > self.DELAY
+        return  (now - self.plasma_timestamp).seconds > self.DELAY
 
     def check_pulse_timestamp(self):
         now = datetime.datetime.now()
-        return  (now - self.pulse_timestamp ).seconds > self.DELAY
+        return  (now - self.pulse_timestamp).seconds > self.DELAY
 
 class VerticalSlider(LabelSlider):
     volumeChanged = pyqtSignal(int)
@@ -156,7 +156,7 @@ class MeterSlider(QGraphicsWidget):
 
     def __init__(self):
         QGraphicsWidget.__init__(self)
-        self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True) )
+        self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True))
         #LabelSlider.__init__(self)
         self.slider = LabelSlider()
         self.slider.setParent(self)
