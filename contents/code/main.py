@@ -61,7 +61,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
     VERSION="0.15.1"
 
     nowplaying_player_added = pyqtSignal(QString, QObject)
-    nowplaying_player_removed = pyqtSignal(QString )
+    nowplaying_player_removed = pyqtSignal(QString)
     nowplaying_player_dataUpdated = pyqtSignal(QString, dict)
 
     def __init__(self,parent,args=None):
@@ -97,7 +97,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.widget.init()
 
         defaultSize =  QVariant(QSize (0,0))
-        size = self.config().readEntry("size", defaultSize ).toSize()
+        size = self.config().readEntry("size", defaultSize).toSize()
         if self.formFactor() == Plasma.Planar:
             self.widget.setMinimumSize(275,125)
         elif (size != defaultSize) :
@@ -130,7 +130,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.actionCollection = KActionCollection(self)
         #self.actionCollection.setConfigGlobal(True)
         self.louder_action = self.actionCollection.addAction("VeromixVolumeUp")
-        self.louder_action.setText( i18n("Veromix volume up") )
+        self.louder_action.setText( i18n("Veromix volume up"))
         self.louder_action.setGlobalShortcut(KShortcut())
         self.louder_action.triggered.connect(self.widget.on_step_volume_up)
 
@@ -148,8 +148,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if (self.formFactor() != Plasma.Planar):
             self.tooltip = Plasma.ToolTipContent()
             self.tooltip.setImage(pixmapFromSVG("audio-volume-high"))
-            self.tooltip.setMainText(i18n( "Main Volume") )
-            #self.tooltip.setSubText( "" )
+            self.tooltip.setMainText(i18n( "Main Volume"))
+            #self.tooltip.setSubText("")
             Plasma.ToolTipManager.self().setContent(self.applet, self.tooltip)
             Plasma.ToolTipManager.self().registerWidget(self.applet)
 
@@ -213,7 +213,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.engine = self.dataEngine("apps")
         for source in self.engine.sources():
             key = unicode(source).replace(".desktop", "")
-            if  ( 0<=  key.find(needle) ) or  (0 <= needle.find(key) )  :
+            if  (0<=  key.find(needle)) or  (0 <= needle.find(key))  :
                 #print "found: ",key,  needle , source
                 result = self.engine.query(source)
                 if QString("iconName") in result:
@@ -222,7 +222,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         return None
 
     def wheelEvent(self, event):
-        self.widget.on_step_volume( (event.delta() > 0) )
+        self.widget.on_step_volume((event.delta() > 0))
 
     def mousePressEvent(self, event):
         if event.button() == Qt.MidButton:
@@ -281,7 +281,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         #self.about_widget = QWidget(parent)
         #self.about_ui = uic.loadUi(str(self.package().filePath('ui', 'about.ui')), self.about_widget)
         #self.about_ui.version.setText(VeroMixPlasmoid.VERSION)
-        #parent.addPage(self.about_widget, "About", "help-about" )
+        #parent.addPage(self.about_widget, "About", "help-about")
         self.add_audio_settings(parent)
         self.add_global_shortcut_page(parent)
 
@@ -310,7 +310,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         layout.addWidget(QLabel(i18n("Mute if volume reaches zero")), 1,0)
         layout.addWidget(self.automute_checkbox, 1,1)
 
-        layout.addItem(QSpacerItem(0,20, QSizePolicy.Minimum,QSizePolicy.Fixed ), 2,0)
+        layout.addItem(QSpacerItem(0,20, QSizePolicy.Minimum,QSizePolicy.Fixed), 2,0)
         layout.addWidget(QLabel("<b>"+i18n("Sound Card Profiles")+"</b>"), 3,0)
         index=4
         self.card_settings = {}
@@ -332,7 +332,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
                     active_index = profiles.index(profile)
             combo.setCurrentIndex(active_index)
 
-        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding ), index,0)
+        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding), index,0)
         dialog.addPage(self.audio_settings_page, i18n("Pulseaudio"), "preferences-desktop-sound")
 
     # anybody knows how to remove/extend the default shortcuts page?
@@ -357,7 +357,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         layout.addWidget(QLabel(i18n("Veromix toggle  mute")), 2, 0)
         layout.addWidget(self.mute_action_editor, 2, 1)
 
-        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding ), 3,0)
+        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding), 3,0)
         dialog.addPage(self.kb_settings_page, i18n("Volume Keyboard Shortcuts"), "preferences-desktop-keyboard")
 
     def configDenied(self):
@@ -413,8 +413,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.init_running_mpris2()
 
     def applyConfig(self):
-        self.apply_nowplaying(self.is_nowplaying_enabled() )
-        self.apply_mpris2(self.is_mpris2_enabled() )
+        self.apply_nowplaying(self.is_nowplaying_enabled())
+        self.apply_mpris2(self.is_mpris2_enabled())
 
         bg = self.config().readEntry("background","2").toInt()[0]
         if  bg == 0:
@@ -434,15 +434,15 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if self.louder_action_editor:
             sequence = self.louder_action_editor.keySequence()
             if sequence != self.louder_action.globalShortcut().primary():
-                self.louder_action.setGlobalShortcut(KShortcut(sequence), KAction.ActiveShortcut, KAction.NoAutoloading )
+                self.louder_action.setGlobalShortcut(KShortcut(sequence), KAction.ActiveShortcut, KAction.NoAutoloading)
         if self.lower_action_editor:
             sequence = self.lower_action_editor.keySequence()
             if sequence != self.lower_action.globalShortcut().primary():
-                self.lower_action.setGlobalShortcut(KShortcut(sequence), KAction.ActiveShortcut, KAction.NoAutoloading )
+                self.lower_action.setGlobalShortcut(KShortcut(sequence), KAction.ActiveShortcut, KAction.NoAutoloading)
         if self.mute_action_editor:
             sequence = self.mute_action_editor.keySequence()
             if sequence != self.mute_action.globalShortcut().primary():
-                self.mute_action.setGlobalShortcut(KShortcut(sequence), KAction.ActiveShortcut, KAction.NoAutoloading )
+                self.mute_action.setGlobalShortcut(KShortcut(sequence), KAction.ActiveShortcut, KAction.NoAutoloading)
 
         if self.card_settings:
             for combo in self.card_settings.keys():
@@ -457,23 +457,23 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_ui = None
 
     def useTabs(self):
-        return self.config().readEntry("useTabs",False ).toBool()
+        return self.config().readEntry("useTabs",False).toBool()
 
     def get_meter_visible(self):
-        return self.config().readEntry("meter_visible",False ).toBool()
+        return self.config().readEntry("meter_visible",False).toBool()
 
     def get_auto_mute(self):
-        return self.config().readEntry("auto_mute",False ).toBool()
+        return self.config().readEntry("auto_mute",False).toBool()
 
     def get_show_toolip(self):
-        return self.config().readEntry("show_tooltip",True ).toBool()
+        return self.config().readEntry("show_tooltip",True).toBool()
 
     def get_always_show_sources(self):
-        return self.config().readEntry("always_show_sources",False ).toBool()
+        return self.config().readEntry("always_show_sources",False).toBool()
 
     def get_max_volume_value(self):
         default = 100
-        return self.config().readEntry("max_volume",default ).toInt()[0]
+        return self.config().readEntry("max_volume",default).toInt()[0]
 
 ### now playing
 
@@ -511,7 +511,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             v= controller.name()
             if self.in_mediaplayer_blacklist(v):
                 return
-            self.nowplaying_player_added.emit(controller.name(), controller )
+            self.nowplaying_player_added.emit(controller.name(), controller)
 
     def connect_to_nowplaying_engine(self):
         # get sources and connect
@@ -527,7 +527,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.now_playing_engine.disconnectSource(player, self)
         self.now_playing_engine.connectSource(player, self, 2000)
         controller = self.now_playing_engine.serviceForSource(player)
-        self.nowplaying_player_added.emit(player, NowPlayingController(self.widget,controller) )
+        self.nowplaying_player_added.emit(player, NowPlayingController(self.widget,controller))
 
     def in_mediaplayer_blacklist(self,player):
         for entry in self.get_mediaplayer_blacklist():
@@ -560,7 +560,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def get_mediaplayer_blacklist_string(self):
         default =  "org.mpris.bangarang"
-        return self.config().readEntry("nowplayingBlacklist",default ).toString()
+        return self.config().readEntry("nowplayingBlacklist",default).toString()
 
     @pyqtSignature('dataUpdated(const QString&, const Plasma::DataEngine::Data&)')
     def dataUpdated(self, sourceName, data):
