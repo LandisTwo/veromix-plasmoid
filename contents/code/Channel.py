@@ -92,7 +92,7 @@ class Channel(QGraphicsWidget):
 
     def createMute(self):
         self.mute = MuteButton(self)
-        self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb  )
+        self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb)
 
     def createMiddle(self):
         self.middle = QGraphicsWidget()
@@ -105,18 +105,18 @@ class Channel(QGraphicsWidget):
         self.middle_layout.addItem(self.slider)
 
     def createSlider(self):
-        self.slider = LabelSlider()
+        self.slider = LabelSlider(None, self.veromix.is_slider_unit_value_visible())
         self.slider.setOrientation(Qt.Horizontal)
         self.slider.setMaximum(self.veromix.get_max_volume_value())
         self.slider.setMinimum(0)
-        self.slider.volumeChanged.connect( self.on_slider_cb  )
+        self.slider.volumeChanged.connect( self.on_slider_cb)
 
     def createMeter(self):
         self.meter = ClickableMeter()
         self.meter.setMeterType(Plasma.Meter.AnalogMeter)
         #self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
         self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed, True))
-        self.connect(self.meter, SIGNAL("clicked()"), self.on_meter_clicked  )
+        self.connect(self.meter, SIGNAL("clicked()"), self.on_meter_clicked)
 
     def create_expander(self):
         self.expander = Plasma.IconWidget(self.panel)
@@ -277,6 +277,7 @@ class Channel(QGraphicsWidget):
                 self.panel_layout.removeItem(self.meter)
                 self.meter.hide()
         self.slider.setMaximum(self.veromix.get_max_volume_value())
+        self.slider.set_unit_value_visible(self.veromix.is_slider_unit_value_visible())
         self._on_upate_expander_enabled()
 
     def _on_upate_expander_enabled(self):
@@ -331,7 +332,7 @@ class Channel(QGraphicsWidget):
     def getOutputIndex(self):
         return self.index
 
-    def sinkIndexFor( self, index ):
+    def sinkIndexFor( self, index):
         return (index * 100000) + 100000
 
     def updateIcon(self):

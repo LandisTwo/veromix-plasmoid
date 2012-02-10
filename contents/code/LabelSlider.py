@@ -27,10 +27,12 @@ from PyKDE4.plasma import *
 class Label(Plasma.Label):
     volumeChanged = pyqtSignal(int)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, show_unit_value = False, unit_symbol="%"):
         self.text = ""
         self.bold_text = ""
-        self.percent = -1
+        self.unit_value = -1
+        self.unit_symbol = unit_symbol
+        self.show_unit_value = show_unit_value
         Plasma.Label.__init__(self, parent)
 
     def setText(self, text):
@@ -41,11 +43,16 @@ class Label(Plasma.Label):
         self.bold_text = text
         self._set_text()
 
-    def _set_text(self):
-        Plasma.Label.setText(self, "<b>"+((str(self.percent)+"% ") if self.percent!=-1 else "")+self.bold_text+"</b> "+self.text)
+    def _get_formated_unit_string(self):
+        if self.show_unit_value and self.unit_value != -1:
+            return str(self.unit_value).zfill(2) + self.unit_symbol + " "
+        return ""
 
-    def updatePercent(self,percent):
-        self.percent=percent
+    def _set_text(self):
+        Plasma.Label.setText(self, "<b>" + self._get_formated_unit_string() + self.bold_text + "</b> " + self.text)
+
+    def update_unit_string(self,unit_value):
+        self.unit_value = unit_value
         self._set_text()
 
     def setMinimum(self, value):
@@ -57,10 +64,14 @@ class Label(Plasma.Label):
     def update_with_info(self, info):
         pass
 
+    def set_unit_value_visible(self, boolean):
+        self.show_unit_value = boolean
+        self._set_text()
+
 class LabelSlider(Plasma.Slider):
     volumeChanged = pyqtSignal(int)
 
-    def __init__(self):
+    def __init__(self, parent=None, show_unit_value = False, unit_symbol="%"):
         self.DELAY=  1
         self.text = ""
         self.bold_text = ""
@@ -68,7 +79,7 @@ class LabelSlider(Plasma.Slider):
         self.pulse_timestamp = datetime.datetime.now()  + d
         self.plasma_timestamp = datetime.datetime.now() + d
         Plasma.Slider.__init__(self)
-        self.label = Label(self)
+        self.label = Label(self, show_unit_value, unit_symbol)
         self.label.setPos(0, -4)
 
         self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
@@ -81,6 +92,9 @@ class LabelSlider(Plasma.Slider):
             self.nativeWidget().setTickPosition(QSlider.TicksBelow)
         else:
             self.nativeWidget().setTickPosition(QSlider.NoTicks)
+
+    def set_unit_value_visible(self, boolean):
+        self.label.set_unit_value_visible(boolean)
 
     def _resize_widgets(self):
         w = self.size().width()
@@ -105,7 +119,7 @@ class LabelSlider(Plasma.Slider):
 
     def setValue(self,value):
         Plasma.Slider.setValue(self,value)
-        self.label.updatePercent(value)
+        self.label.update_unit_string(value)
 
     def update_with_info(self, info):
         self.setValueFromPulse(info.getVolume())
@@ -116,7 +130,7 @@ class LabelSlider(Plasma.Slider):
             self.setValue(value)
 
     def on_slider_cb(self, value):
-        self.label.updatePercent(value)
+        self.label.update_unit_string(value)
         if self.check_pulse_timestamp():
             self.update_plasma_timestamp()
             self.volumeChanged.emit(value)
@@ -192,6 +206,8 @@ class MeterSlider(QGraphicsWidget):
         self.slider.setValueFromPulse(value)
     def nativeWidget(self):
         return self.slider.nativeWidget()
+    def set_unit_value_visible(self, boolean):
+        self.slider.set_unit_value_visible(boolean)
 
     def _resize_widgets(self):
         #LabelSlider._resize_widgets(self)

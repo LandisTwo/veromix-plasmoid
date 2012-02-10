@@ -255,6 +255,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_ui.expander_enabled.setChecked(self.is_expander_enabled())
         self.config_ui.expander_enabled.stateChanged.connect(parent.settingsModified)
 
+        self.config_ui.unitvalues_visible.setChecked(self.is_slider_unit_value_visible())
+        self.config_ui.unitvalues_visible.stateChanged.connect(parent.settingsModified)
+
         self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
         parent.addPage(self.config_widget, i18n("Appearance"), "veromix-plasmoid-128")
 
@@ -375,6 +378,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
             self.config().writeEntry("meter_visible", bool(self.config_ui.meter_visible.isChecked()))
             self.config().writeEntry("expander_enabled", bool(self.config_ui.expander_enabled.isChecked()))
+            self.config().writeEntry("unitvalues_visible", bool(self.config_ui.unitvalues_visible.isChecked()))
 
             self.config().writeEntry("use_nowplaying", str(self.mediaplayer_settings_ui.use_nowplaying.isChecked()))
             self.config().writeEntry("use_mpris2", str(self.mediaplayer_settings_ui.use_mpris2.isChecked()))
@@ -387,7 +391,6 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.config().writeEntry("auto_mute", str(self.automute_checkbox.isChecked()))
             if tabs != self.useTabs():
                 self.widget.switchView()
-
         self.applyConfig()
         self.widget.on_update_configuration()
 
@@ -474,6 +477,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def get_max_volume_value(self):
         default = 100
         return self.config().readEntry("max_volume",default).toInt()[0]
+
+    def is_slider_unit_value_visible(self):
+        return self.config().readEntry("unitvalues_visible",False).toBool()
 
 ### now playing
 

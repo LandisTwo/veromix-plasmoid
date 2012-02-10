@@ -474,6 +474,9 @@ class VeroMix(QGraphicsWidget):
     def get_auto_mute(self):
         return self.applet.get_auto_mute()
 
+    def is_slider_unit_value_visible(self):
+        return self.applet.is_slider_unit_value_visible()
+
     def getPulseAudio(self):
         return self.pa
 
