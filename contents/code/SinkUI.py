@@ -49,8 +49,15 @@ class SinkUI(Channel):
 
     def create_menu_kill_sink(self):
         Channel.create_menu_kill_sink(self)
+        if self.pa_sink.props["driver"]=="module-combine-sink.c":
+            action=QAction(i18n("Uncombine"), self.popup_menu)
+            self.popup_menu.addAction(action)
+            action.triggered.connect(self.stopcombining)
         self.context_menu_create_sounddevices_other()
 
+    def stopcombining(self, action):
+        self.pa_sink.remove_combined_sink()
+            
     def on_set_default_sink_triggered(self, action):
         if action:
             self.pa.set_default_sink(self.index)

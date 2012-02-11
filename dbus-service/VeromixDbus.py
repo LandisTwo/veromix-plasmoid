@@ -184,6 +184,10 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.method("org.veromix.pulseaudio", in_signature='i', out_signature='')
     def remove_ladspa_sink(self, sink_index):
         self.pulse.remove_ladspa_sink(sink_index)
+        
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='i', out_signature='')
+    def remove_combined_sink(self, sink_index):
+        self.pulse.remove_combined_sink(sink_index)
 
 ## ----------------------------- generic -----------------------------------------
 
