@@ -135,12 +135,13 @@ class VeroMix(QGraphicsWidget):
     def start_pa(self):
         try:
             self.pa = PulseAudio(self)
+            self.pa.connect_veromix_service()
         except Exception, e:
             self.showMessage(KIcon("script-error"), i18n("There is a problem with the backgroud-service. \
                                                         <ul> \
                                                         <li>If you just upgraded try killing the process named: VeromixServiceMain.py and relaunch this plasmoid</li> \
                                                         <li>If you don't know how to do that consider rebooting</li></ul><br/>\
-                                                        <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:_VeromixServiceMain.py\">See wiki for more details</a> <span style=\"font-size: small;\">(right click and copy url)</span>."))
+                                                        <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more details</a> <span style=\"font-size: small;\">(right click and copy url)</span>."))
             print "\nError connecting to veromix-service:\n" , e, "\n"
             return
         self.connect(self.pa, SIGNAL("on_sink_input_info(PyQt_PyObject)"), self.on_sink_input_info)
@@ -153,9 +154,9 @@ class VeroMix(QGraphicsWidget):
         self.connect(self.pa, SIGNAL("on_source_remove(int)"), self.on_remove_source)
         self.connect(self.pa, SIGNAL("on_source_output_remove(int)"), self.on_remove_source_output)
 
-        self.connect(self.pa, SIGNAL("on_volume_meter_sink(int, float )"), self.on_volume_meter_sink)
-        self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float )"), self.on_volume_meter_sink_input)
-        self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float )"), self.on_volume_meter_source)
+        self.connect(self.pa, SIGNAL("on_volume_meter_sink(int, float)"), self.on_volume_meter_sink)
+        self.connect(self.pa, SIGNAL("on_volume_meter_sink_input(int, float)"), self.on_volume_meter_sink_input)
+        self.connect(self.pa, SIGNAL("on_volume_meter_source(int, float)"), self.on_volume_meter_source)
 
         self.connect(self.pa, SIGNAL("on_card_info(PyQt_PyObject)"), self.on_card_info)
         self.connect(self.pa, SIGNAL("on_card_remove(int)"), self.on_remove_card)
@@ -178,7 +179,7 @@ class VeroMix(QGraphicsWidget):
         for source in self.source_panel_layout.getChannels().values():
             if source.isSourceOutput():
                 count += 1
-        self.setSourcesPanelVisible( self.applet.get_always_show_sources() or count > 0 )
+        self.setSourcesPanelVisible( self.applet.get_always_show_sources() or count > 0)
         # REstore
         #self.sink_panel.adjustSize()
         #self.source_panel.adjustSize()
@@ -229,11 +230,11 @@ class VeroMix(QGraphicsWidget):
 
     def on_source_output_info(self,  sink):
         key = "sourceoutput" + str(sink.index)
-        if not self.update_channel(key ,sink, self.source_panel_layout ):
+        if not self.update_channel(key ,sink, self.source_panel_layout):
             widget =  SourceOutputUI(  self)
            # FIXME sliders want to be visible when added, else we get a crash
             self.setSourcesPanelVisible(True)
-            self.add_channel(key, widget , sink, self.source_panel_layout )
+            self.add_channel(key, widget , sink, self.source_panel_layout)
             # Workaround for comboboxes (from top to bottom decrease the zIndex)
             zindex = 10000 - self.source_panel_layout.order_index(widget)
             widget.setZValue(zindex)
@@ -241,17 +242,17 @@ class VeroMix(QGraphicsWidget):
     def on_remove_source_output(self, index):
         # FIXME sliders want to be visible when added, else we get a crash
         self.setSourcesPanelVisible(True)
-        self.remove_channel("sourceoutput" + str(index), self.source_panel_layout )
+        self.remove_channel("sourceoutput" + str(index), self.source_panel_layout)
 
  ## callbacks source
 
     def on_source_info(self,  sink):
         key = "source" + str(sink.index)
-        if not self.update_channel(key ,sink, self.source_panel_layout ):
+        if not self.update_channel(key ,sink, self.source_panel_layout):
             widget =  SourceUI(self)
            # FIXME sliders want to be visible when added, else we get a crash
             self.setSourcesPanelVisible(True)
-            self.add_channel(key, widget , sink, self.source_panel_layout )
+            self.add_channel(key, widget , sink, self.source_panel_layout)
             # Workaround for comboboxes (from top to bottom decrease the zIndex)
             zindex = 9000 - self.source_panel_layout.order_index(widget)
             widget.setZValue(zindex)
@@ -259,7 +260,7 @@ class VeroMix(QGraphicsWidget):
     def on_remove_source(self, index):
         # FIXME sliders want to be visible when added, else we get a crash
         self.setSourcesPanelVisible(True)
-        self.remove_channel("source" + str(index), self.source_panel_layout )
+        self.remove_channel("source" + str(index), self.source_panel_layout)
 
  ## callbacks sink
 
@@ -285,14 +286,14 @@ class VeroMix(QGraphicsWidget):
                         widget.update_module_info(index, name, argument, n_used, auto_unload)
 
     def on_remove_sink(self, index):
-        self.remove_channel("sink" + str(index), self.sink_panel_layout )
+        self.remove_channel("sink" + str(index), self.sink_panel_layout)
         self.sinkOutputChanged.emit()
 
  ## callbacks sink input
 
     def on_sink_input_info(self,  sink):
         key = "sinkinput" + str(sink.index)
-        if not self.update_channel(key ,sink, self.sink_panel_layout ):
+        if not self.update_channel(key ,sink, self.sink_panel_layout):
             widget = self.sink_panel_layout.get_new_sink_input(self)
             self.add_channel(key, widget, sink , self.sink_panel_layout)
             # Workaround for comboboxes (from top to bottom decrease the zIndex)
