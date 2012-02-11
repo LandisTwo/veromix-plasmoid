@@ -60,6 +60,8 @@ class InputSinkUI(SinkUI):
         self.popup_menu.addMenu(sink_menu)
 
     def on_contextmenu_clicked(self, action):
+        if type(action) == bool:
+            return
         if action.text() == self.action_kill.text():
             self.sink_input_kill()
             return 0
