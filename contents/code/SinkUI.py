@@ -79,11 +79,29 @@ class SinkUI(Channel):
 
 ## Drag and Drop Support
 
+    def startDrag(self,event):
+        drag = QDrag(event.widget())
+        drag.setPixmap(self.mute.icon().pixmap(self.size().height(),self.size().height()))
+        mimedata = QMimeData()
+        liste = []
+        liste.append(QUrl( "veromix://sink_index:"+str(int(self.index)) ))
+        mimedata.setUrls(liste)
+        drag.setMimeData(mimedata)
+        #drag.setHotSpot(event.pos() - self.rect().topLeft())
+        dropAction = drag.start(Qt.MoveAction)
+
     def dropEvent(self, dropEvent):
         uris = dropEvent.mimeData().urls()
         for uri in uris:
-            if uri.scheme() == "veromix":
-                self.pa.move_sink_input(uri.port(), self.index)
+            if uri.scheme() == "veromix" and uri.port() != self.index:
+                if uri.host() == "sink_index":
+                    self.pa.create_combined_sink(self.index, uri.port())
+                elif uri.host() == "sink_input_index":
+                    self.pa.move_sink_input(uri.port(), self.index)
 
-    def startDrag(self,event):
-        pass
+    def dragEnterEvent(self, event):
+        uris = event.mimeData().urls()
+        for uri in uris:
+            if uri.scheme() == "veromix" and uri.port() != self.index:
+                return event.accept()
+        event.ignore()

@@ -34,7 +34,7 @@ class VeromixDbus(dbus.service.Object):
     def __init__(self, pulseaudio, conn , object_path='/org/veromix/pulseaudio'):
         dbus.service.Object.__init__(self, conn, object_path)
         self.pulse = pulseaudio
-        self.VERSION = 10
+        self.VERSION = 11
 
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='')
     def veromix_startup(self):
@@ -118,6 +118,10 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.method("org.veromix.pulseaudio", in_signature='i', out_signature='')
     def set_default_sink(self, index):
         self.pulse.pulse_set_default_sink(index)
+
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='ii', out_signature='')
+    def create_combined_sink(self, fist_sink_index, second_sink_index):
+        self.pulse.create_combined_sink(fist_sink_index, second_sink_index)
 
 ## -----------------------------sink input-----------------------------------------
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='isba{ia{si}}a{ss}')

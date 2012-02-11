@@ -581,6 +581,11 @@ class PulseAudio(QObject):
                 o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
                 pa_operation_unref(o)
 
+    def create_combined_sink(self, first_sink_index, second_sink_index):
+        parameters="slaves=" + str(first_sink_index) + "," + str(second_sink_index)
+        o = pa_context_load_module(self._context, "module-combine-sink",parameters, self._pa_context_index_cb, None)
+        pa_operation_unref(o)
+
     def __print(self, text):
         #print text
         return
