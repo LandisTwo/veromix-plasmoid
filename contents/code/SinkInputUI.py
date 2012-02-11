@@ -113,7 +113,7 @@ class InputSinkUI(SinkUI):
         if text in ["None", None]:
             text = ""
 
-        if iconname == None:
+        if iconname == None or iconname == "":
             iconname = "mixer-pcm"
 
         if iconname :
