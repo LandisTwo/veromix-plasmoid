@@ -1,3 +1,14 @@
+0.16.0
+- Combine sinks by dragging on sink on another.
+- Catch expections when veromix service does not startup.
+- Ticks below sliders instead of above and below, when max volume >100.
+- New option to show values (precentage) of each slider.
+- New serbian translations.
+- Added minimum size, fixing  issue 28 .
+- Changed default background from transparent to standard.
+- Changed meters to hidden by default.
+- Fix: Icon of sink-input sometimes shows the icon of another application.
+
 0.15.1 - 5.2.2012
 - Make sure we got unicode strings for ports before displaying them.
 - Fix bad looking label in unlocked view.
