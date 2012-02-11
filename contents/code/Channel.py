@@ -327,7 +327,8 @@ class Channel(QGraphicsWidget):
         self.update()
 
     def update_label(self):
-        self.set_name(info.name)
+        if self.pa_sink:
+            self.set_name(self.pa_sink.name)
 
     def getOutputIndex(self):
         return self.index
