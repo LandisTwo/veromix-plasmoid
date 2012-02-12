@@ -292,6 +292,8 @@ class VeroMix(QGraphicsWidget):
  ## callbacks sink input
 
     def on_sink_input_info(self,  sink):
+        if sink.props["driver"]=="module-combine-sink.c":
+            return
         key = "sinkinput" + str(sink.index)
         if not self.update_channel(key ,sink, self.sink_panel_layout):
             widget = self.sink_panel_layout.get_new_sink_input(self)
