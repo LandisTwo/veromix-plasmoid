@@ -87,7 +87,7 @@ class PulseAudio(QObject):
 
     def pa_exit(self):
         #try:
-        ##pa_context_exit_daemon(self._context , self._context_notify_cb , 0 )
+        ##pa_context_exit_daemon(self._context, self._context_notify_cb, 0)
         pa_threaded_mainloop_lock (self.pa_mainloop)
         #pa_context_set_state_callback(self._context, None, None)
         #pa_context_disconnect(self._context)
@@ -146,7 +146,7 @@ class PulseAudio(QObject):
             pa_stream_disconnect(self.monitor_sinks[float(sink_index)])
             del self.monitor_sinks[float(sink_index)]
 
-    def pa_create_monitor_stream_for_sink(self, index,  name, force = False):
+    def pa_create_monitor_stream_for_sink(self, index, name, force = False):
         if not index in self.monitor_sinks.keys() or force :
             if float(index) not in self.sinks.keys():
                 return
@@ -161,7 +161,7 @@ class PulseAudio(QObject):
             pa_stream_set_read_callback(pa_stream, self._pa_sink_stream_request_cb, index+1)
             #pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
 
-            pa_stream_connect_record(pa_stream, str(sink.monitor_source) , None, PA_STREAM_PEAK_DETECT)
+            pa_stream_connect_record(pa_stream, str(sink.monitor_source), None, PA_STREAM_PEAK_DETECT)
             self.monitor_sinks[float(index)] =  pa_stream
 
 ###########
@@ -193,7 +193,7 @@ class PulseAudio(QObject):
             pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
 
             device = pa_xstrdup(source.name)
-            pa_stream_connect_record(pa_stream, device , None, PA_STREAM_PEAK_DETECT)
+            pa_stream_connect_record(pa_stream, device, None, PA_STREAM_PEAK_DETECT)
             self.monitor_sources[float(index)] = pa_stream
 
 
@@ -202,7 +202,7 @@ class PulseAudio(QObject):
         # Do nothing....
         return
 
-    def pa_context_success_cb(self, context, c_int,  user_data):
+    def pa_context_success_cb(self, context, c_int, user_data):
         return
 
     # pulseaudio connection status
@@ -314,7 +314,7 @@ class PulseAudio(QObject):
 
             if et == PA_SUBSCRIPTION_EVENT_SINK_INPUT:
                 if event_type & PA_SUBSCRIPTION_EVENT_TYPE_MASK == PA_SUBSCRIPTION_EVENT_REMOVE:
-                    self.emit(SIGNAL("sink_input_remove(int)"),  int(index))
+                    self.emit(SIGNAL("sink_input_remove(int)"), int(index))
                     if float(index) in self.monitor_sink_inputs.keys():
                         del self.monitor_sink_inputs[float(index)]
                     if int(index) in self.sink_inputs.keys():
@@ -403,7 +403,7 @@ class PulseAudio(QObject):
             source = PulseSourceInfo(struct[0])
             source.updateDefaultSource(self.default_source_name)
             self.sources[ float(struct.contents.index) ] = source
-            self.emit(SIGNAL("source_info(PyQt_PyObject)"), source )
+            self.emit(SIGNAL("source_info(PyQt_PyObject)"), source)
             if self._autostart_meters:
                 self.pa_create_monitor_stream_for_source(source)
 
@@ -425,8 +425,8 @@ class PulseAudio(QObject):
             v = 99
         pa_stream_drop(stream)
         if index:
-            self.emit(SIGNAL("volume_meter_sink_input(int, float )"),int(index), float(v))
-            #print "volume_meter_sink_input(int, float )",index, v
+            self.emit(SIGNAL("volume_meter_sink_input(int, float)"),int(index), float(v))
+            #print "volume_meter_sink_input(int, float)",index, v
 
     def pa_source_stream_request_cb(self, stream, length, index):
         # This isnt quite right... maybe not a float.. ?
@@ -440,7 +440,7 @@ class PulseAudio(QObject):
             v = 99
         pa_stream_drop(stream)
         if index:
-            self.emit(SIGNAL("volume_meter_source(int, float )"),int(index), float(v))
+            self.emit(SIGNAL("volume_meter_source(int, float)"),int(index), float(v))
 
     def pa_sink_stream_request_cb(self, stream, length, index_incr):
         index = index_incr - 1
@@ -452,8 +452,8 @@ class PulseAudio(QObject):
         if (v > 100):
             v=99
         pa_stream_drop(stream)
-        #print "volume_meter_sink(int, float )", v
-        self.emit(SIGNAL("volume_meter_sink(int, float )"),int(index), float(v))
+        #print "volume_meter_sink(int, float)", v
+        self.emit(SIGNAL("volume_meter_sink(int, float)"),int(index), float(v))
 
     def pa_module_info_cb(self, context, pa_module_info, index, user_data):
         #print "pa_module_info", pa_module_info, index
@@ -465,7 +465,7 @@ class PulseAudio(QObject):
 
 ################### misc
 
-    #def pa_ext_stream_restore_delete( self, stream ):
+    #def pa_ext_stream_restore_delete( self, stream):
         ## Only execute this if module restore is loaded
         #if "module-stream-restore" in self.loaded_modules:
             #pa_ext_stream_restore_delete(self._context, stream, self._pa_context_success_cb, None)
@@ -484,7 +484,7 @@ class PulseAudio(QObject):
 ################## card profile
 
     def pulse_set_card_profile(self, index, value):
-        operation = pa_context_set_card_profile_by_name(self._context,str(index),str(value) ,  self._null_cb,None)
+        operation = pa_context_set_card_profile_by_name(self._context,str(index),str(value), self._null_cb,None)
         pa_operation_unref(operation)
         return
 
@@ -506,12 +506,12 @@ class PulseAudio(QObject):
         return
 
     def pulse_sink_input_kill(self, index):
-        operation = pa_context_kill_sink_input(self._context,index,  self._null_cb,None)
+        operation = pa_context_kill_sink_input(self._context,index, self._null_cb,None)
         pa_operation_unref(operation)
         return
 
     def pulse_sink_input_mute(self, index, mute):
-        operation = pa_context_set_sink_input_mute(self._context,index,mute,  self._null_cb,None)
+        operation = pa_context_set_sink_input_mute(self._context,index,mute, self._null_cb,None)
         pa_operation_unref(operation)
         return
 
@@ -594,7 +594,7 @@ class PulseAudio(QObject):
             for s in sink_inputs:
                 self.pulse_move_sink_input(s.index, int(target_index))
 
-        except Exception ,e :
+        except Exception,e :
             print e
 
     def remove_ladspa_sink(self, index):
