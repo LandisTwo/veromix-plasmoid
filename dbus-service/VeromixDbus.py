@@ -184,7 +184,7 @@ class VeromixDbus(dbus.service.Object):
     @dbus.service.method("org.veromix.pulseaudio", in_signature='i', out_signature='')
     def remove_ladspa_sink(self, sink_index):
         self.pulse.remove_ladspa_sink(sink_index)
-        
+
     @dbus.service.method("org.veromix.pulseaudio", in_signature='i', out_signature='')
     def remove_combined_sink(self, sink_index):
         self.pulse.remove_combined_sink(sink_index)
@@ -196,9 +196,13 @@ class VeromixDbus(dbus.service.Object):
         self.pulse.requestInfo()
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='', out_signature='i')
-    def  veromix_service_version(self):
+    def veromix_service_version(self):
         return self.VERSION
 
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='b', out_signature='i')
+    def set_autostart_meters(self, aboolean):
+        self.pulse.set_autostart_meters(aboolean)
+
     @dbus.service.method("org.veromix.pulseaudio", in_signature='', out_signature='')
-    def  veromix_service_quit(self):
+    def veromix_service_quit(self):
         sys.exit(0)
