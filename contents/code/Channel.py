@@ -20,7 +20,7 @@ from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 from PyKDE4.plasma import Plasma
 
-from LabelSlider import LabelSlider
+from LabelSlider import MeterSlider
 from MuteButton  import MuteButton
 from ClickableMeter import ClickableMeter
 from SinkChannelWidget import SinkChannelWidget
@@ -105,7 +105,7 @@ class Channel(QGraphicsWidget):
         self.middle_layout.addItem(self.slider)
 
     def createSlider(self):
-        self.slider = LabelSlider(None, self.veromix.is_slider_unit_value_visible())
+        self.slider = MeterSlider(None, self.veromix.is_slider_unit_value_visible())
         self.slider.setOrientation(Qt.Horizontal)
         self.slider.setMaximum(self.veromix.get_max_volume_value())
         self.slider.setMinimum(0)
@@ -314,6 +314,7 @@ class Channel(QGraphicsWidget):
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:
             self.meter.setValue(int(value))
+            self.slider.set_meter_value(int(value))
 
     def update_with_info(self,info):
         self.pa_sink = info

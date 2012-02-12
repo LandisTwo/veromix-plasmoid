@@ -168,11 +168,11 @@ class VerticalSlider(LabelSlider):
 class MeterSlider(QGraphicsWidget):
     volumeChanged = pyqtSignal(int)
 
-    def __init__(self):
+    def __init__(self, show_unit_value = False, unit_symbol="%"):
         QGraphicsWidget.__init__(self)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True))
         #LabelSlider.__init__(self)
-        self.slider = LabelSlider()
+        self.slider = LabelSlider(show_unit_value, unit_symbol)
         self.slider.setParent(self)
         self.meter = Plasma.Meter(self)
 
