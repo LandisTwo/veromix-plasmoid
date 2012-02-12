@@ -117,17 +117,20 @@ class PulseAudio(QObject):
 
     def pa_create_monitor_stream_for_sink_input(self, index, sink_index, name, force = False):
         if not index in self.monitor_sink_inputs.keys() or force :
-            # Create new stream
+            sink = self.sinks[float(sink_index)]
+
             ss = pa_sample_spec()
             ss.channels = 1
-            ss.format = 5
+            ss.format = PA_SAMPLE_FLOAT32LE
             ss.rate = self._meter_rate
-            pa_stream = pa_stream_new(self._context, "Sinkinput Peak detect - ", ss, None)
+            #ss.rate = sink.sample_spec.rate
+
+            pa_stream = pa_stream_new(self._context, "Veromix sinkinput peak detect - " + str(sink.description), ss, None)
             pa_stream_set_monitor_stream(pa_stream, index)
             pa_stream_set_read_callback(pa_stream, self._pa_stream_request_cb, index)
-            pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
+            #pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
             # FIXME We often get the wrong monitor_source here.
-            pa_stream_connect_record(pa_stream, str(self.sinks[float(sink_index)].monitor_source), None, PA_STREAM_PEAK_DETECT)
+            pa_stream_connect_record(pa_stream, str(sink.monitor_source), None, PA_STREAM_PEAK_DETECT)
             self.monitor_sink_inputs[float(index)] =  pa_stream
 
 ###########
@@ -147,15 +150,17 @@ class PulseAudio(QObject):
         if not index in self.monitor_sinks.keys() or force :
             if float(index) not in self.sinks.keys():
                 return
+            sink = self.sinks[float(index)]
             samplespec = pa_sample_spec()
             samplespec.channels = 1
-            samplespec.format = 5
+            samplespec.format = PA_SAMPLE_FLOAT32LE
             samplespec.rate = self._meter_rate
-            pa_stream = pa_stream_new(self._context, "Sink Peak detect - " + name, samplespec, None)
-            pa_stream_set_read_callback(pa_stream, self._pa_sink_stream_request_cb, index+1)
-            pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
+            #samplespec.rate = sink.sample_spec.rate
 
-            sink = self.sinks[float(index)]
+            pa_stream = pa_stream_new(self._context, "Veromix sink peak detect - " + str(sink.description), samplespec, None)
+            pa_stream_set_read_callback(pa_stream, self._pa_sink_stream_request_cb, index+1)
+            #pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
+
             pa_stream_connect_record(pa_stream, str(sink.monitor_source) , None, PA_STREAM_PEAK_DETECT)
             self.monitor_sinks[float(index)] =  pa_stream
 
@@ -180,14 +185,14 @@ class PulseAudio(QObject):
             # Create new stream
             samplespec = pa_sample_spec()
             samplespec.channels = 1
-            samplespec.format = 5
+            samplespec.format = PA_SAMPLE_FLOAT32LE
             samplespec.rate = self._meter_rate
 
-            pa_stream = pa_stream_new(self._context, "Source Peak detect - " + name, samplespec, None)
+            pa_stream = pa_stream_new(self._context, "Veromix source peak detect - " + name, samplespec, None)
             pa_stream_set_read_callback(pa_stream, self._pa_source_stream_request_cb, index)
             pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
 
-            device = pa_xstrdup( source.name)
+            device = pa_xstrdup(source.name)
             pa_stream_connect_record(pa_stream, device , None, PA_STREAM_PEAK_DETECT)
             self.monitor_sources[float(index)] = pa_stream
 
