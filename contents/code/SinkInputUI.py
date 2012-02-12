@@ -28,17 +28,17 @@ from MuteButton  import InputMuteButton
 
 class InputSinkUI(SinkUI):
 
-    def __init__(self , parent):
+    def __init__(self, parent):
         self.mouse_pressed = False
         SinkUI.__init__(self, parent)
         self.setAcceptDrops(False)
         self.setContentsMargins(0,0,0,0)
         self.layout.setContentsMargins(6,2,6,0)
-        
+
     def createMute(self):
         self.mute = InputMuteButton(self)
-        self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed,True) )
-        self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb )
+        self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed,True))
+        self.connect(self.mute, SIGNAL("clicked()"), self.on_mute_cb)
 
     def context_menu_create_custom(self):
         self.create_menu_switch_sink()
@@ -77,7 +77,7 @@ class InputSinkUI(SinkUI):
     def update_label(self):
         text =  self.pa_sink.name
         bold = self.pa_sink.props["app"]
-        
+
         iconname = None
         if self.pa_sink.props["app_icon"] != "None":
             iconname = self.pa_sink.props["app_icon"]
@@ -115,7 +115,7 @@ class InputSinkUI(SinkUI):
         if text in ["None", None]:
             text = ""
 
-        if iconname == None or iconname == "":
+        if iconname in ["", "None", None]:
             iconname = "mixer-pcm"
 
         if iconname :
@@ -144,7 +144,7 @@ class InputSinkUI(SinkUI):
         drag.setPixmap(self.mute.icon().pixmap(self.size().height(),self.size().height()))
         mimedata = QMimeData()
         liste = []
-        liste.append(QUrl( "veromix://sink_input_index:"+str(int(self.index)) ))
+        liste.append(QUrl( "veromix://sink_input_index:" + str(int(self.index))))
         mimedata.setUrls(liste)
         drag.setMimeData(mimedata)
         #drag.setHotSpot(event.pos() - self.rect().topLeft())
