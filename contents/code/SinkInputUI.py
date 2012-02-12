@@ -34,7 +34,7 @@ class InputSinkUI(SinkUI):
         self.setAcceptDrops(False)
         self.setContentsMargins(0,0,0,0)
         self.layout.setContentsMargins(6,2,6,0)
-
+        
     def createMute(self):
         self.mute = InputMuteButton(self)
         self.mute.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed,True) )
@@ -77,7 +77,7 @@ class InputSinkUI(SinkUI):
     def update_label(self):
         text =  self.pa_sink.name
         bold = self.pa_sink.props["app"]
-
+        
         iconname = None
         if self.pa_sink.props["app_icon"] != "None":
             iconname = self.pa_sink.props["app_icon"]

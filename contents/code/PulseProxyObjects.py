@@ -149,6 +149,9 @@ class SinkInfo(AbstractSink):
 
     def remove_ladspa_sink(self):
         self.pulse_proxy.remove_ladspa_sink(int(self.props["owner_module"]))
+        
+    def remove_combined_sink(self):
+        self.pulse_proxy.remove_combined_sink(int(self.props["owner_module"]))
 
 
 class SinkInputInfo(AbstractSink):

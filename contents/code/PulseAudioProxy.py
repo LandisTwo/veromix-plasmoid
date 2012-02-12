@@ -263,6 +263,9 @@ class PulseAudio(QObject):
 
     def remove_ladspa_sink(self, sink_index):
         self.getMixer().remove_ladspa_sink(sink_index)
+    
+    def remove_combined_sink(self, sink_index):
+        self.getMixer().remove_combined_sink(sink_index)
 
     def on_module_info(self, index, name, argument, n_used, auto_unload):
         self.emit(SIGNAL("on_module_info(int,PyQt_PyObject,PyQt_PyObject,PyQt_PyObject,PyQt_PyObject)"),index, name, argument, n_used, auto_unload)

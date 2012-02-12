@@ -585,6 +585,12 @@ class PulseAudio(QObject):
         parameters="slaves=" + str(first_sink_index) + "," + str(second_sink_index)
         o = pa_context_load_module(self._context, "module-combine-sink",parameters, self._pa_context_index_cb, None)
         pa_operation_unref(o)
+        
+    def remove_combined_sink(self, index):
+        for key in self.loaded_modules.keys():
+            if self.loaded_modules[key] == "module-combine-sink" and int(key) == index:
+                o = pa_context_unload_module(self._context, int(key), self._null_cb, None)
+                pa_operation_unref(o)
 
     def __print(self, text):
         #print text
