@@ -34,6 +34,7 @@ class PulseAudio(QObject):
         else:
             mainloop=dbus.mainloop.qt.DBusQtMainLoop(set_as_default=False)
         self.bus = dbus.SessionBus()
+        self.veromix = parent
 
     def connect_veromix_service(self):
         if  self.getMixer().veromix_service_version() != self.REQUIRED_SERVICE_VERSION:
@@ -44,7 +45,6 @@ class PulseAudio(QObject):
             except:
                 raise NameError("Wrong server versions")
 
-        # no exception on startup:
         self.bus.add_signal_receiver(self.on_sink_input_info,
                 dbus_interface="org.veromix.notification",
                 signal_name="sink_input_info")
@@ -298,3 +298,7 @@ class PulseAudio(QObject):
             self.getMixer().requestInfo()
         except Exception, e:
             print "dbus connection not ready: " , e
+
+    def set_autostart_meters(self, aboolean):
+        self.getMixer().set_autostart_meters(aboolean)
+
