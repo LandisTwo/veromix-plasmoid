@@ -212,6 +212,9 @@ class MeterSlider(QGraphicsWidget):
         self.slider.set_unit_value_visible(boolean)
 
     def _resize_widgets(self):
+        if not self.meter:
+            return
+
         meter_width = self.size().width()
         self.meter.setMinimumWidth(meter_width)
         self.meter.setMaximumWidth(meter_width)
@@ -225,5 +228,5 @@ class MeterSlider(QGraphicsWidget):
     def set_meter_value(self, value):
         self.meter.setValue(int(value))
 
-    def set_meteer_visible(self, aboolean):
+    def set_meter_visible(self, aboolean):
         pass
