@@ -249,7 +249,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_ui.always_show_sources.setChecked(self.get_always_show_sources())
         self.config_ui.always_show_sources.stateChanged.connect(parent.settingsModified)
 
-        self.config_ui.meter_visible.setChecked(self.get_meter_visible())
+        self.config_ui.meter_visible.setChecked(self.is_meter_visible())
         self.config_ui.meter_visible.stateChanged.connect(parent.settingsModified)
 
         self.config_ui.expander_enabled.setChecked(self.is_expander_enabled())
@@ -462,7 +462,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def useTabs(self):
         return self.config().readEntry("useTabs",False).toBool()
 
-    def get_meter_visible(self):
+    def is_meter_visible(self):
         return self.config().readEntry("meter_visible",False).toBool()
 
     def get_auto_mute(self):

@@ -96,8 +96,10 @@ class SourceOutputUI( Channel ):
         pass
 
     def on_update_meter(self, index, value, number_of_sinks):
-        if self.getOutputIndex() == index:
-            self.meter.setValue(value)
+        # FIXME
+        pass
+        #if self.getOutputIndex() == index:
+            #self.slider.set_meter_value(int(value)
 
 ### Drag and Drop
 

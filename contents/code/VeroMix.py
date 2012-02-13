@@ -463,8 +463,8 @@ class VeroMix(QGraphicsWidget):
     def is_albumart_enabled(self):
         return self.applet.is_albumart_enabled()
 
-    def get_meter_visible(self):
-        return self.applet.get_meter_visible()
+    def is_meter_visible(self):
+        return self.applet.is_meter_visible()
 
     def is_expander_enabled(self):
         return self.applet.is_expander_enabled()

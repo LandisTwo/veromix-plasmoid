@@ -52,7 +52,7 @@ class SourceUI( Channel ):
 
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:
-            self.meter.setValue(value)
+            self.slider.set_meter_value(int(value))
 
     def updateIcon(self):
         if self.isMuted():

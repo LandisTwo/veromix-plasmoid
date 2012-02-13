@@ -176,13 +176,12 @@ class MeterSlider(QGraphicsWidget):
         self.slider.setParent(self)
         self.slider.volumeChanged.connect(self.on_volume_changed)
 
-        self.create_meter()
-
         self.layout = QGraphicsLinearLayout(Qt.Vertical)
         self.layout.setContentsMargins(2,2,2,0)
 
         self.setLayout(self.layout)
         self.layout.addItem(self.slider)
+        self.slider.setZValue(100)
 
         self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
 
@@ -190,6 +189,7 @@ class MeterSlider(QGraphicsWidget):
         self.meter = Plasma.Meter(self)
         self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
         self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed, True))
+        self.meter.setZValue(0)
 
     def on_volume_changed(self,val):
         self.volumeChanged.emit(val)
