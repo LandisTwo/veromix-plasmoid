@@ -171,20 +171,22 @@ class MeterSlider(QGraphicsWidget):
     def __init__(self, show_unit_value = False, unit_symbol="%"):
         QGraphicsWidget.__init__(self)
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True))
-        #LabelSlider.__init__(self)
+
         self.slider = LabelSlider(show_unit_value, unit_symbol)
         self.slider.setParent(self)
+        self.slider.volumeChanged.connect(self.on_volume_changed)
+
         self.meter = Plasma.Meter(self)
+        self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
+        self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed, True))
 
         self.layout = QGraphicsLinearLayout(Qt.Vertical)
         self.layout.setContentsMargins(2,2,2,0)
+
         self.setLayout(self.layout)
         self.layout.addItem(self.slider)
-        ##self.meter.setMeterType(Plasma.Meter.AnalogMeter)
-        self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
-        self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed, True))
+
         self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
-        self.slider.volumeChanged.connect(self.on_volume_changed)
 
     def on_volume_changed(self,val):
         self.volumeChanged.emit(val)
@@ -210,22 +212,18 @@ class MeterSlider(QGraphicsWidget):
         self.slider.set_unit_value_visible(boolean)
 
     def _resize_widgets(self):
-        #LabelSlider._resize_widgets(self)
+        meter_width = self.size().width()
+        self.meter.setMinimumWidth(meter_width)
+        self.meter.setMaximumWidth(meter_width)
 
-        w = self.size().width()
-        self.meter.setMinimumWidth(w)
-        self.meter.setMaximumWidth(w)
-
-        h = self.size().height()
-        margin = 0  #int(h/2)
-
-        ##meter_height = (Plasma.Theme.defaultTheme().fontMetrics().height())
-        meter_height = int(self.slider.label.size().height())
+        meter_height = (Plasma.Theme.defaultTheme().fontMetrics().height())
         self.meter.setMinimumHeight(meter_height)
         self.meter.setMaximumHeight(meter_height)
-        s = Plasma.Theme.defaultTheme().fontMetrics().height()
-        v = int ((h - meter_height - margin))
-        self.meter.setPos(0,v)
+
+        self.meter.setPos(0,int(self.size().height()/2))
 
     def set_meter_value(self, value):
         self.meter.setValue(int(value))
+
+    def set_meteer_visible(self, aboolean):
+        pass
