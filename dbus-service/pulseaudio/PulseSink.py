@@ -81,7 +81,7 @@ class PulseSink:
 
     def printDebug(self):
         print "self.index:", self.index
-        print "self.name:", self.name
+        print "self.name:", in_unicode(self.name)
         print "self.mute:", self.mute
         print "self.volume:", self.volume
         print "self.client:", self.client
@@ -227,7 +227,7 @@ class PulseSinkInputInfo(PulseSink):
     def propDict(self):
         adict = {
                 "index" : str(self.index),
-                "name" : str(self.name),
+                "name" : in_unicode(self.name),
                 "owner_module" : str(self.owner_module),
 
                 "client_id" : str(self.client_id ) ,
