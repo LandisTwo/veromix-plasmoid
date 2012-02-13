@@ -1,4 +1,6 @@
 0.16.0
+- Replace analog meter with vertical meter below slider.
+- Adding an option to autostart meters.
 - Combine sinks by dragging on sink on another.
 - Catch expections when veromix service does not startup.
 - Ticks below sliders instead of above and below, when max volume >100.
