@@ -71,7 +71,7 @@ class Label(Plasma.Label):
 class LabelSlider(Plasma.Slider):
     volumeChanged = pyqtSignal(int)
 
-    def __init__(self, parent=None, show_unit_value = False, unit_symbol="%"):
+    def __init__(self, parent=None, show_unit_value=False, unit_symbol="%"):
         self.DELAY=  1
         self.text = ""
         self.bold_text = ""
@@ -168,23 +168,30 @@ class VerticalSlider(LabelSlider):
 class MeterSlider(QGraphicsWidget):
     volumeChanged = pyqtSignal(int)
 
-    def __init__(self):
+    def __init__(self, show_unit_value = False, unit_symbol="%"):
         QGraphicsWidget.__init__(self)
+        self.meter = None
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True))
-        #LabelSlider.__init__(self)
-        self.slider = LabelSlider()
+
+        self.slider = LabelSlider(show_unit_value, unit_symbol)
         self.slider.setParent(self)
-        self.meter = Plasma.Meter(self)
+        self.slider.volumeChanged.connect(self.on_volume_changed)
 
         self.layout = QGraphicsLinearLayout(Qt.Vertical)
         self.layout.setContentsMargins(2,2,2,0)
+
         self.setLayout(self.layout)
         self.layout.addItem(self.slider)
-        ##self.meter.setMeterType(Plasma.Meter.AnalogMeter)
+
+        self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
+
+    def create_meter(self):
+        self.meter = Plasma.Meter(self)
         self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
         self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed, True))
-        self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
-        self.slider.volumeChanged.connect(self.on_volume_changed)
+        self.meter.setZValue(0)
+        if self.event_filter:
+            self.meter.installEventFilter(self.event_filter)
 
     def on_volume_changed(self,val):
         self.volumeChanged.emit(val)
@@ -210,22 +217,42 @@ class MeterSlider(QGraphicsWidget):
         self.slider.set_unit_value_visible(boolean)
 
     def _resize_widgets(self):
-        #LabelSlider._resize_widgets(self)
+        if not self.meter:
+            return
 
-        w = self.size().width()
-        self.meter.setMinimumWidth(w)
-        self.meter.setMaximumWidth(w)
+        meter_width = self.size().width()
+        self.meter.setMinimumWidth(meter_width)
+        self.meter.setMaximumWidth(meter_width)
 
-        h = self.size().height()
-        margin = 0  #int(h/2)
-
-        ##meter_height = (Plasma.Theme.defaultTheme().fontMetrics().height())
-        meter_height = int(self.slider.label.size().height())
+        meter_height = Plasma.Theme.defaultTheme().fontMetrics().height()
         self.meter.setMinimumHeight(meter_height)
         self.meter.setMaximumHeight(meter_height)
-        s = Plasma.Theme.defaultTheme().fontMetrics().height()
-        v = int ((h - meter_height - margin))
-        self.meter.setPos(0,v)
+
+        self.meter.setPos(0, int(self.size().height()/2))
+        self.slider.setZValue(800)
+        self.slider.label.setZValue(100)
+
+    def toggle_meter(self):
+        self.set_meter_visible((self.meter == None))
 
     def set_meter_value(self, value):
-        self.meter.setValue(int(value))
+        if self.meter:
+            self.meter.setValue(int(value))
+
+    def set_meter_visible(self, aboolean):
+        if aboolean:
+            self.create_meter()
+        else:
+            if self.meter:
+                self.meter.setParent(None)
+                del self.meter
+                self.meter = None
+        self._resize_widgets()
+
+    def installEventFilter(self, filter):
+        self.event_filter = filter
+        self.slider.installEventFilter(filter)
+        self.slider.label.installEventFilter(filter)
+        if self.meter:
+            self.meter.installEventFilter(filter)
+        QGraphicsWidget.installEventFilter(self, filter)

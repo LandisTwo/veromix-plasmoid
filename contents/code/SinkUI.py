@@ -57,7 +57,7 @@ class SinkUI(Channel):
 
     def stopcombining(self, action):
         self.pa_sink.remove_combined_sink()
-            
+
     def on_set_default_sink_triggered(self, action):
         if action:
             self.pa.set_default_sink(self.index)
@@ -100,8 +100,8 @@ class SinkUI(Channel):
     def dropEvent(self, dropEvent):
         uris = dropEvent.mimeData().urls()
         for uri in uris:
-            if uri.scheme() == "veromix" and uri.port() != self.index:
-                if uri.host() == "sink_index":
+            if uri.scheme() == "veromix":
+                if uri.host() == "sink_index" and uri.port() != self.index:
                     self.pa.create_combined_sink(self.index, uri.port())
                 elif uri.host() == "sink_input_index":
                     self.pa.move_sink_input(uri.port(), self.index)
@@ -109,6 +109,7 @@ class SinkUI(Channel):
     def dragEnterEvent(self, event):
         uris = event.mimeData().urls()
         for uri in uris:
-            if uri.scheme() == "veromix" and uri.port() != self.index:
-                return event.accept()
-        event.ignore()
+            if uri.scheme() == "veromix":
+                 if uri.host() == "sink_index" and uri.port() == self.index:
+                    return event.ignore()
+        event.accept()

@@ -131,6 +131,8 @@ class VeroMix(QGraphicsWidget):
         for sink in self.sink_panel_layout.getChannels().values():
             sink.on_update_configuration()
 
+        self.pa.set_autostart_meters(bool(self.applet.is_meter_visible()))
+
     # connect to pulseaudio(dbus) callbacks
     def start_pa(self):
         try:
@@ -465,8 +467,8 @@ class VeroMix(QGraphicsWidget):
     def is_albumart_enabled(self):
         return self.applet.is_albumart_enabled()
 
-    def get_meter_visible(self):
-        return self.applet.get_meter_visible()
+    def is_meter_visible(self):
+        return self.applet.is_meter_visible()
 
     def is_expander_enabled(self):
         return self.applet.is_expander_enabled()

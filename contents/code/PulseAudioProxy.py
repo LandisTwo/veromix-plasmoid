@@ -20,13 +20,11 @@ from PyQt4.QtCore import *
 
 from PulseProxyObjects import *
 from MediaPlayer import Mpris2MediaPlayer
-##
-
 
 class PulseAudio(QObject):
     mpris2_properties_changed = pyqtSignal(str,dict)
 
-    def __init__(self, parent ):
+    def __init__(self, parent):
         QObject.__init__(self)
         self.REQUIRED_SERVICE_VERSION = 11
         if not dbus.get_default_main_loop():
@@ -34,6 +32,7 @@ class PulseAudio(QObject):
         else:
             mainloop=dbus.mainloop.qt.DBusQtMainLoop(set_as_default=False)
         self.bus = dbus.SessionBus()
+        self.veromix = parent
 
     def connect_veromix_service(self):
         if  self.getMixer().veromix_service_version() != self.REQUIRED_SERVICE_VERSION:
@@ -44,7 +43,6 @@ class PulseAudio(QObject):
             except:
                 raise NameError("Wrong server versions")
 
-        # no exception on startup:
         self.bus.add_signal_receiver(self.on_sink_input_info,
                 dbus_interface="org.veromix.notification",
                 signal_name="sink_input_info")
@@ -103,11 +101,11 @@ class PulseAudio(QObject):
 
     def enable_mpris2(self):
         self.bus.add_signal_receiver(self.on_name_owner_changed,
-                                    signal_name="NameOwnerChanged"  )
+                                    signal_name="NameOwnerChanged")
 
     def disable_mpris2(self):
         self.bus.remove_signal_receiver(self.on_name_owner_changed,
-                                    signal_name="NameOwnerChanged"  )
+                                    signal_name="NameOwnerChanged")
 
     def on_name_owner_changed(self, val, val1=None, val2=None):
         if "org.mpris.MediaPlayer2" in val:
@@ -117,13 +115,13 @@ class PulseAudio(QObject):
                 self.emit(SIGNAL("mpris2_player_removed(QString, PyQt_PyObject)"), str(val), Mpris2MediaPlayer(QString(val), self))
 
     def connect_mpris2_player(self, callback, name):
-        self.bus.add_signal_receiver(callback ,
+        self.bus.add_signal_receiver(callback,
                 dbus_interface="org.freedesktop.DBus.Properties",
                 signal_name="PropertiesChanged",
                 bus_name=name)
 
     def disconnect_mpris2_player(self, callback, name):
-        self.bus.remove_signal_receiver(callback ,
+        self.bus.remove_signal_receiver(callback,
                 dbus_interface="org.freedesktop.DBus.Properties",
                 signal_name="PropertiesChanged",
                 bus_name=name)
@@ -147,58 +145,56 @@ class PulseAudio(QObject):
 
     def getNowPlaying(self, destination):
         pa_obj = self.get_mpris2_object(destination)
-        #pa_obj  = self.bus.get_object("org.mpris.amarok","/Player")
         return dbus.Interface(pa_obj, 'org.mpris.MediaPlayer2.Player')
 
     def getNowPlayingProperty(self, destination, name):
         pa_obj = self.get_mpris2_object(destination)
         props = dbus.Interface(pa_obj, 'org.freedesktop.DBus.Properties')
-        return props.Get('org.mpris.MediaPlayer2.Player', name )
-        #rbprops.Set('org.gnome.Rhythmbox.Shell', 'visibility', force_visible or (not is_visible))
+        return props.Get('org.mpris.MediaPlayer2.Player', name)
 
-    def on_sink_input_info(self,   index,   name,  muted  , volume ,  props):
-        sink =SinkInputInfo(self, index,   name,  muted  , volume ,  props)
-        self.emit(SIGNAL("on_sink_input_info(PyQt_PyObject)"), sink )
+    def on_sink_input_info(self, index, name, muted, volume, props):
+        sink =SinkInputInfo(self, index, name, muted, volume, props)
+        self.emit(SIGNAL("on_sink_input_info(PyQt_PyObject)"), sink)
 
-    def on_sink_info(self,  index,   name,  muted  , volume ,  props , ports , active_port):
-        sink = SinkInfo( self,  index,   name,  muted  , volume,  props , ports , active_port)
-        self.emit(SIGNAL("on_sink_info(PyQt_PyObject)"), sink )
+    def on_sink_info(self, index, name, muted, volume, props, ports, active_port):
+        sink = SinkInfo(self, index, name, muted, volume, props, ports, active_port)
+        self.emit(SIGNAL("on_sink_info(PyQt_PyObject)"), sink)
 
-    def on_source_output_info(self,  index,   name, props):
-        sink = SourceOutputInfo( self,  index,   name, True, {"left":0, "right":0},  props)
-        self.emit(SIGNAL("on_source_output_info(PyQt_PyObject)"), sink )
+    def on_source_output_info(self, index, name, props):
+        sink = SourceOutputInfo(self, index, name, True, {"left":0, "right":0}, props)
+        self.emit(SIGNAL("on_source_output_info(PyQt_PyObject)"), sink)
 
-    def on_source_info(self,  index,   name,  muted  , volume ,  props , ports , active_port):
-        sink = SourceInfo( self,  index,   name,  muted  , volume , props, ports, active_port)
-        self.emit(SIGNAL("on_source_info(PyQt_PyObject)"), sink )
+    def on_source_info(self, index, name, muted, volume, props, ports, active_port):
+        sink = SourceInfo(self, index, name, muted, volume, props, ports, active_port)
+        self.emit(SIGNAL("on_source_info(PyQt_PyObject)"), sink)
 
     def on_sink_input_remove(self, index):
-        self.emit(SIGNAL("on_sink_input_remove(int)"), index )
+        self.emit(SIGNAL("on_sink_input_remove(int)"), index)
 
     def on_sink_remove(self, index):
-        self.emit(SIGNAL("on_sink_remove(int)"), index )
+        self.emit(SIGNAL("on_sink_remove(int)"), index)
 
     def on_source_remove(self, index):
-        self.emit(SIGNAL("on_source_remove(int)"), index )
+        self.emit(SIGNAL("on_source_remove(int)"), index)
 
     def on_source_output_remove(self, index):
-        self.emit(SIGNAL("on_source_output_remove(int)"), index )
+        self.emit(SIGNAL("on_source_output_remove(int)"), index)
 
     def on_volume_meter_sink_input(self, index, value):
-        self.emit(SIGNAL("on_volume_meter_sink_input(int,float)"), index ,value)
+        self.emit(SIGNAL("on_volume_meter_sink_input(int,float)"), index, value)
 
     def on_volume_meter_sink(self, index, value):
-        self.emit(SIGNAL("on_volume_meter_sink(int,float)"), index ,value)
+        self.emit(SIGNAL("on_volume_meter_sink(int,float)"), index, value)
 
     def on_volume_meter_source(self, index, value):
-        self.emit(SIGNAL("on_volume_meter_source(int,float)"), index ,value)
+        self.emit(SIGNAL("on_volume_meter_source(int,float)"), index, value)
 
     def on_card_info(self, index, name, properties, active_profile_name, profiles_dict):
-        info = CardInfo( index, name, properties, active_profile_name, profiles_dict)
+        info = CardInfo(index, name, properties, active_profile_name, profiles_dict)
         self.emit(SIGNAL("on_card_info(PyQt_PyObject)"), info)
 
     def on_card_remove(self, index):
-        self.emit(SIGNAL("on_card_remove(int)"), index )
+        self.emit(SIGNAL("on_card_remove(int)"), index)
     # calls
 
     def set_card_profile(self, index, value):
@@ -255,15 +251,15 @@ class PulseAudio(QObject):
     def toggle_monitor_of_sinkinput(self, sinkinput_index, sink_index, named):
         self.getMixer().toggle_monitor_of_sinkinput(sinkinput_index, sink_index, named)
 
-    def toggle_monitor_of_source(self,  source_index, named):
-        self.getMixer().toggle_monitor_of_source( source_index, named)
+    def toggle_monitor_of_source(self, source_index, named):
+        self.getMixer().toggle_monitor_of_source(source_index, named)
 
     def set_ladspa_sink(self, sink_index, module_index, parameters):
         self.getMixer().set_ladspa_sink(sink_index, module_index, parameters)
 
     def remove_ladspa_sink(self, sink_index):
         self.getMixer().remove_ladspa_sink(sink_index)
-    
+
     def remove_combined_sink(self, sink_index):
         self.getMixer().remove_combined_sink(sink_index)
 
@@ -285,19 +281,23 @@ class PulseAudio(QObject):
         self.getNowPlaying(str(destination)).Play()
 
     def mpris2_get_position(self, destination):
-        return self.getNowPlayingProperty( str(destination) , "Position" )
+        return self.getNowPlayingProperty(str(destination), "Position")
 
     def mpris2_set_position(self, destination, position):
-        self.getNowPlaying(str(destination)).Seek( long(position))
+        self.getNowPlaying(str(destination)).Seek(long(position))
 
     def mpris2_get_metadata(self, destination):
-        return self.getNowPlayingProperty( str(destination) , "Metadata" )
+        return self.getNowPlayingProperty(str(destination), "Metadata")
 
     def mpris2_get_playback_status(self, destination):
-        return self.getNowPlayingProperty( str(destination) , "PlaybackStatus" )
+        return self.getNowPlayingProperty(str(destination), "PlaybackStatus")
 
     def requestInfo(self):
         try:
             self.getMixer().requestInfo()
         except Exception, e:
-            print "dbus connection not ready: " , e
+            print "dbus connection not ready: ", e
+
+    def set_autostart_meters(self, aboolean):
+        self.getMixer().set_autostart_meters(aboolean)
+

@@ -278,9 +278,6 @@ class MediaPlayerUI(Channel):
     def createMute(self):
         pass
 
-    def createMeter(self):
-        pass
-
 # callbacks
 
     def on_mute_cb(self):

@@ -20,7 +20,7 @@ from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 from PyKDE4.plasma import Plasma
 
-from LabelSlider import LabelSlider
+from LabelSlider import MeterSlider
 from MuteButton  import MuteButton
 from ClickableMeter import ClickableMeter
 from SinkChannelWidget import SinkChannelWidget
@@ -43,6 +43,10 @@ class Channel(QGraphicsWidget):
         self.card_settings = None
         self.menus = None
         self.port_actions = None
+
+        self.double_click_filter = ChannelEventFilter(self)
+        self.installEventFilter(self.double_click_filter)
+
         self.init()
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True))
 
@@ -60,7 +64,6 @@ class Channel(QGraphicsWidget):
         self.create_panel()
         self.createMute()
         self.createMiddle()
-        self.createMeter()
         self.create_expander()
 
     def composeArrangement(self):
@@ -68,13 +71,6 @@ class Channel(QGraphicsWidget):
         self.frame_layout.addItem(self.panel)
         self.panel_layout.addItem(self.mute)
         self.panel_layout.addItem(self.middle)
-        if self.veromix.get_meter_visible():
-            self.show_meter = True
-            self.panel_layout.addItem(self.meter)
-            self.meter.show()
-        else:
-            self.show_meter = False
-            self.meter.hide()
 
     def create_frame(self):
         self.frame = Plasma.Frame()
@@ -105,18 +101,13 @@ class Channel(QGraphicsWidget):
         self.middle_layout.addItem(self.slider)
 
     def createSlider(self):
-        self.slider = LabelSlider(None, self.veromix.is_slider_unit_value_visible())
+        self.slider = MeterSlider(None, self.veromix.is_slider_unit_value_visible())
+        self.slider.installEventFilter(self.double_click_filter)
+        self.slider.set_meter_visible(self.veromix.is_meter_visible())
         self.slider.setOrientation(Qt.Horizontal)
         self.slider.setMaximum(self.veromix.get_max_volume_value())
         self.slider.setMinimum(0)
         self.slider.volumeChanged.connect( self.on_slider_cb)
-
-    def createMeter(self):
-        self.meter = ClickableMeter()
-        self.meter.setMeterType(Plasma.Meter.AnalogMeter)
-        #self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
-        self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed, True))
-        self.connect(self.meter, SIGNAL("clicked()"), self.on_meter_clicked)
 
     def create_expander(self):
         self.expander = Plasma.IconWidget(self.panel)
@@ -213,6 +204,11 @@ class Channel(QGraphicsWidget):
     def _resize_widgets(self):
         self.expander.setPos(int(self.panel.size().width() - self.expander.size().width()) ,0)
 
+    def on_double_clicked(self):
+        self.slider.toggle_meter()
+        self.pa_sink.toggle_monitor(int(self.getOutputIndex()))
+        self.slider.set_meter_value(0)
+
     def on_step_volume(self, up):
         vol = self.pa_sink.getVolume()
         STEP = 5
@@ -267,15 +263,7 @@ class Channel(QGraphicsWidget):
         self.veromix.check_geometries()
 
     def on_update_configuration(self):
-        if self.veromix.get_meter_visible() !=  self.show_meter:
-            if self.veromix.get_meter_visible() and not self.show_meter:
-                self.show_meter = True
-                self.panel_layout.addItem(self.meter)
-                self.meter.show()
-            else:
-                self.show_meter = False
-                self.panel_layout.removeItem(self.meter)
-                self.meter.hide()
+        self.slider.set_meter_visible(self.veromix.is_meter_visible())
         self.slider.setMaximum(self.veromix.get_max_volume_value())
         self.slider.set_unit_value_visible(self.veromix.is_slider_unit_value_visible())
         self._on_upate_expander_enabled()
@@ -307,13 +295,9 @@ class Channel(QGraphicsWidget):
     def set_channel_volumes(self, values):
         self.pa_sink.set_volume(values)
 
-    def on_meter_clicked(self):
-        self.pa_sink.toggle_monitor(int(self.getOutputIndex()))
-        self.meter.setValue(0)
-
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:
-            self.meter.setValue(int(value))
+            self.slider.set_meter_value(int(value))
 
     def update_with_info(self,info):
         self.pa_sink = info
@@ -402,3 +386,15 @@ class Channel(QGraphicsWidget):
 
     def get_pasink_name(self):
         return self.pa_sink.name
+
+class ChannelEventFilter(QObject):
+    def __init__(self, channel):
+        QObject.__init__(self)
+        self.channel = channel
+
+    def eventFilter(self, obj, event):
+        if event and event.type() == QEvent.GraphicsSceneMouseDoubleClick:
+            self.channel.on_double_clicked()
+            return True
+        return False
+
