@@ -71,7 +71,7 @@ class Label(Plasma.Label):
 class LabelSlider(Plasma.Slider):
     volumeChanged = pyqtSignal(int)
 
-    def __init__(self, parent=None, show_unit_value = False, unit_symbol="%"):
+    def __init__(self, parent=None, show_unit_value=False, unit_symbol="%"):
         self.DELAY=  1
         self.text = ""
         self.bold_text = ""
@@ -170,6 +170,7 @@ class MeterSlider(QGraphicsWidget):
 
     def __init__(self, show_unit_value = False, unit_symbol="%"):
         QGraphicsWidget.__init__(self)
+        self.meter = None
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True))
 
         self.slider = LabelSlider(show_unit_value, unit_symbol)
@@ -181,7 +182,6 @@ class MeterSlider(QGraphicsWidget):
 
         self.setLayout(self.layout)
         self.layout.addItem(self.slider)
-        self.slider.setZValue(100)
 
         self.connect(self, SIGNAL("geometryChanged()"), self._resize_widgets)
 
@@ -190,6 +190,8 @@ class MeterSlider(QGraphicsWidget):
         self.meter.setMeterType(Plasma.Meter.BarMeterHorizontal)
         self.meter.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed, True))
         self.meter.setZValue(0)
+        if self.event_filter:
+            self.meter.installEventFilter(self.event_filter)
 
     def on_volume_changed(self,val):
         self.volumeChanged.emit(val)
@@ -222,11 +224,16 @@ class MeterSlider(QGraphicsWidget):
         self.meter.setMinimumWidth(meter_width)
         self.meter.setMaximumWidth(meter_width)
 
-        meter_height = (Plasma.Theme.defaultTheme().fontMetrics().height())
+        meter_height = Plasma.Theme.defaultTheme().fontMetrics().height()
         self.meter.setMinimumHeight(meter_height)
         self.meter.setMaximumHeight(meter_height)
 
-        self.meter.setPos(0,int(self.size().height()/2))
+        self.meter.setPos(0, int(self.size().height()/2))
+        self.slider.setZValue(800)
+        self.slider.label.setZValue(100)
+
+    def toggle_meter(self):
+        self.set_meter_visible((self.meter == None))
 
     def set_meter_value(self, value):
         if self.meter:
@@ -236,6 +243,16 @@ class MeterSlider(QGraphicsWidget):
         if aboolean:
             self.create_meter()
         else:
-            self.meter.setParent(None)
-            del self.meter
-            self.meter = None
+            if self.meter:
+                self.meter.setParent(None)
+                del self.meter
+                self.meter = None
+        self._resize_widgets()
+
+    def installEventFilter(self, filter):
+        self.event_filter = filter
+        self.slider.installEventFilter(filter)
+        self.slider.label.installEventFilter(filter)
+        if self.meter:
+            self.meter.installEventFilter(filter)
+        QGraphicsWidget.installEventFilter(self, filter)

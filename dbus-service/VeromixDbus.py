@@ -199,7 +199,7 @@ class VeromixDbus(dbus.service.Object):
     def veromix_service_version(self):
         return self.VERSION
 
-    @dbus.service.method("org.veromix.pulseaudio", in_signature='b', out_signature='i')
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='b', out_signature='')
     def set_autostart_meters(self, aboolean):
         self.pulse.set_autostart_meters(aboolean)
 

@@ -131,6 +131,8 @@ class VeroMix(QGraphicsWidget):
         for sink in self.sink_panel_layout.getChannels().values():
             sink.on_update_configuration()
 
+        self.pa.set_autostart_meters(bool(self.applet.is_meter_visible()))
+
     # connect to pulseaudio(dbus) callbacks
     def start_pa(self):
         try:

@@ -43,6 +43,10 @@ class Channel(QGraphicsWidget):
         self.card_settings = None
         self.menus = None
         self.port_actions = None
+
+        self.double_click_filter = ChannelEventFilter(self)
+        self.installEventFilter(self.double_click_filter)
+
         self.init()
         self.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed,True))
 
@@ -98,7 +102,8 @@ class Channel(QGraphicsWidget):
 
     def createSlider(self):
         self.slider = MeterSlider(None, self.veromix.is_slider_unit_value_visible())
-        self.slider.set_meter_visible(self.veromix.is_meter_visible)
+        self.slider.installEventFilter(self.double_click_filter)
+        self.slider.set_meter_visible(self.veromix.is_meter_visible())
         self.slider.setOrientation(Qt.Horizontal)
         self.slider.setMaximum(self.veromix.get_max_volume_value())
         self.slider.setMinimum(0)
@@ -199,6 +204,11 @@ class Channel(QGraphicsWidget):
     def _resize_widgets(self):
         self.expander.setPos(int(self.panel.size().width() - self.expander.size().width()) ,0)
 
+    def on_double_clicked(self):
+        self.slider.toggle_meter()
+        self.pa_sink.toggle_monitor(int(self.getOutputIndex()))
+        self.slider.set_meter_value(0)
+
     def on_step_volume(self, up):
         vol = self.pa_sink.getVolume()
         STEP = 5
@@ -284,10 +294,6 @@ class Channel(QGraphicsWidget):
 
     def set_channel_volumes(self, values):
         self.pa_sink.set_volume(values)
-
-    def on_meter_clicked(self):
-        self.pa_sink.toggle_monitor(int(self.getOutputIndex()))
-        self.slider.set_meter_value(0)
 
     def on_update_meter(self, index, value, number_of_sinks):
         if self.index == index:
@@ -380,3 +386,15 @@ class Channel(QGraphicsWidget):
 
     def get_pasink_name(self):
         return self.pa_sink.name
+
+class ChannelEventFilter(QObject):
+    def __init__(self, channel):
+        QObject.__init__(self)
+        self.channel = channel
+
+    def eventFilter(self, obj, event):
+        if event and event.type() == QEvent.GraphicsSceneMouseDoubleClick:
+            self.channel.on_double_clicked()
+            return True
+        return False
+
