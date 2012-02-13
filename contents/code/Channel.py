@@ -272,10 +272,12 @@ class Channel(QGraphicsWidget):
                 self.show_meter = True
                 self.panel_layout.addItem(self.meter)
                 self.meter.show()
+                self.slider.set_meter_visible(True)
             else:
                 self.show_meter = False
                 self.panel_layout.removeItem(self.meter)
                 self.meter.hide()
+                self.slider.set_meter_visible(False)
         self.slider.setMaximum(self.veromix.get_max_volume_value())
         self.slider.set_unit_value_visible(self.veromix.is_slider_unit_value_visible())
         self._on_upate_expander_enabled()
