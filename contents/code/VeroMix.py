@@ -62,7 +62,7 @@ class VeroMix(QGraphicsWidget):
         self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
 
-        self.effects_button = Plasma.IconWidget(self.sink_panel)
+        self.effects_button = Plasma.IconWidget(self)
         self.effects_button.setZValue(10)
         self.effects_button.setSvg("widgets/action-overlays","add-normal")
         #self.effects_button.setText(i18n("Effects"))
@@ -338,8 +338,8 @@ class VeroMix(QGraphicsWidget):
         self.emit(SIGNAL("resized()"))
 
     def _update_effects_button_position(self):
-        x = self.sink_panel.size().width() - self.effects_button.size().width()
-        y = self.sink_panel.size().height() - self.effects_button.size().height()
+        x = self.sink_panel.size().width()
+        y = self.sink_panel.size().height()
         self.effects_button.setPos(x,y)
 
 ### panel-icon callbacks
