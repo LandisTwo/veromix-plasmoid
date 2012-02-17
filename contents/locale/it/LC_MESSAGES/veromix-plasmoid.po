@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-05 00:47+0100\n"
+"POT-Creation-Date: 2012-02-18 00:03+0100\n"
 "PO-Revision-Date: 2012-01-28 20:33+0100\n"
 "Last-Translator: \n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -18,19 +18,19 @@ msgstr ""
 "X-Generator: Lokalize 1.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: rc.py:3 rc.py:18 rc.py:75
+#: rc.py:3 rc.py:18 rc.py:81
 msgid "Form"
 msgstr "Form"
 
-#: rc.py:6 rc.py:69
+#: rc.py:6 rc.py:75
 msgid "Version"
 msgstr "Versione"
 
-#: rc.py:9 rc.py:63
+#: rc.py:9 rc.py:69
 msgid "Homepage"
 msgstr "Sito ufficiale"
 
-#: rc.py:12 rc.py:66
+#: rc.py:12 rc.py:72
 msgid ""
 "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
 "com/p/veromix-plasmoid/</A>"
@@ -38,7 +38,7 @@ msgstr ""
 "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
 "com/p/veromix-plasmoid/</A>"
 
-#: rc.py:15 rc.py:72
+#: rc.py:15 rc.py:78
 msgid "X.Y"
 msgstr "X.Y"
 
@@ -91,50 +91,60 @@ msgid "Always show sources"
 msgstr "Mostra sempre sorgenti "
 
 #: rc.py:57
-msgid "Show meter"
-msgstr "Mostra VuMeter"
-
-#: rc.py:60
 msgid "Show context menu button"
 msgstr "Mostra pulsante per menu contestuale"
 
-#: rc.py:78
+#: rc.py:60
+msgid "Show unit values"
+msgstr ""
+
+#: rc.py:63
+msgid "Autostart meters"
+msgstr ""
+
+#: rc.py:66
+msgid ""
+"Meters can be very CPU intensive! You can always enable meters by double "
+"clicking a channel."
+msgstr ""
+
+#: rc.py:84
 msgid "Use KDE nowplaying dataengine"
 msgstr "Usa nowplaying nativo di KDE"
 
-#: rc.py:81
+#: rc.py:87
 msgid "Use mpris2"
 msgstr "Usa mpris2"
 
-#: rc.py:84
+#: rc.py:90
 msgid "Media player blacklist:"
 msgstr "Media player da ignorare:"
 
-#: rc.py:87
+#: rc.py:93
 msgid "Running media players:"
 msgstr "Media player in esecuzione:"
 
-#: rc.py:90
+#: rc.py:96
 msgid "Show album art"
 msgstr "Mostra copertine"
 
-#: contents/code/Channel.py:143
+#: contents/code/Channel.py:134
 msgid "Muted"
 msgstr "Muto"
 
-#: contents/code/Channel.py:150
+#: contents/code/Channel.py:141
 msgid "Unlock channels"
 msgstr "Dividi canali"
 
-#: contents/code/Channel.py:159
+#: contents/code/Channel.py:150
 msgid "Ports"
 msgstr ""
 
-#: contents/code/Channel.py:183
+#: contents/code/Channel.py:174
 msgid "Profile"
 msgstr "Profilo"
 
-#: contents/code/Channel.py:209
+#: contents/code/Channel.py:200
 msgid "Veromix Settings"
 msgstr "Impostazioni di Veromix"
 
@@ -142,51 +152,51 @@ msgstr "Impostazioni di Veromix"
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
 msgstr "Veromix è un mixer per il server sonoro Pulseaudio."
 
-#: contents/code/main.py:131 contents/code/main.py:345
+#: contents/code/main.py:133 contents/code/main.py:350
 msgid "Veromix volume up"
 msgstr "Aumenta volume"
 
-#: contents/code/main.py:136 contents/code/main.py:350
+#: contents/code/main.py:138 contents/code/main.py:355
 msgid "Veromix volume down"
 msgstr "Diminuisci volume"
 
-#: contents/code/main.py:141
+#: contents/code/main.py:143
 msgid "Veromix toggle mute"
 msgstr "Muto per Veromix"
 
-#: contents/code/main.py:149
+#: contents/code/main.py:151
 msgid "Main Volume"
 msgstr "Volume Principale"
 
-#: contents/code/main.py:257
+#: contents/code/main.py:262
 msgid "Appearance"
 msgstr "Aspetto"
 
-#: contents/code/main.py:277
+#: contents/code/main.py:282
 msgid "Media Player Controls"
 msgstr "Controlli Multimediali"
 
-#: contents/code/main.py:302
+#: contents/code/main.py:307
 msgid "Max volume value"
 msgstr "Valore massimo per volume"
 
-#: contents/code/main.py:308
+#: contents/code/main.py:313
 msgid "Mute if volume reaches zero"
 msgstr "Abilita muto se il volume è 0"
 
-#: contents/code/main.py:312
+#: contents/code/main.py:317
 msgid "Sound Card Profiles"
 msgstr "Profili Scheda Audio"
 
-#: contents/code/main.py:334
+#: contents/code/main.py:339
 msgid "Pulseaudio"
 msgstr "Pulseaudio"
 
-#: contents/code/main.py:355
+#: contents/code/main.py:360
 msgid "Veromix toggle  mute"
 msgstr "Muto"
 
-#: contents/code/main.py:359
+#: contents/code/main.py:364
 msgid "Volume Keyboard Shortcuts"
 msgstr "Tasti rapidi per Volume"
 
@@ -202,23 +212,23 @@ msgstr "Disconnetti/termina"
 msgid "Move To"
 msgstr "Sposta in"
 
-#: contents/code/SinkInputUI.py:85
+#: contents/code/SinkInputUI.py:87
 msgid "Event Sounds"
 msgstr "Suoni Notifica"
 
-#: contents/code/SinkInputUI.py:89
+#: contents/code/SinkInputUI.py:91
 msgid "Flash Player"
 msgstr "Flash Player"
 
-#: contents/code/SinkInputUI.py:93
+#: contents/code/SinkInputUI.py:95
 msgid "Chromium Browser"
 msgstr "Chromium Browser"
 
-#: contents/code/SinkInputUI.py:97
+#: contents/code/SinkInputUI.py:99
 msgid "Event Sound"
 msgstr "Suono Notifica"
 
-#: contents/code/SinkInputUI.py:99
+#: contents/code/SinkInputUI.py:101
 msgid "Voice Output"
 msgstr "Uscita"
 
@@ -229,6 +239,10 @@ msgstr "Effetto"
 #: contents/code/SinkUI.py:39
 msgid "Default Sink"
 msgstr "Audio Interno"
+
+#: contents/code/SinkUI.py:53
+msgid "Uncombine"
+msgstr ""
 
 #: contents/code/Utils.py:28
 msgid "Please remove and re-add myself"
@@ -266,7 +280,8 @@ msgstr "Riproduzione"
 msgid "Record"
 msgstr "Registrazione"
 
-#: contents/code/VeroMix.py:139
+#: contents/code/VeroMix.py:142
+#, fuzzy
 msgid ""
 "There is a problem with the backgroud-"
 "service.                                                         "
@@ -275,9 +290,9 @@ msgid ""
 "this plasmoid</li>                                                         "
 "<li>If you don't know how to do that consider rebooting</li></ul><br/"
 ">                                                        <a href=\"http://"
-"code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
-"_VeromixServiceMain.py\">See wiki for more details</a> <span style=\"font-"
-"size: small;\">(right click and copy url)</span>."
+"code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more "
+"details</a> <span style=\"font-size: small;\">(right click and copy url)</"
+"span>."
 msgstr ""
 "Si è verificato un problema col demone Pulseaudio.<ul><li> Se hai già "
 "aggiornato il plasmoide prova a terminare il processo VeromixServiceMain.py "
@@ -286,6 +301,9 @@ msgstr ""
 "VeromixComponents#The_service:_VeromixServiceMain.py\">Consulta il wiki per "
 "maggiori informazioni </a> <span style=\"font-size: small;\">(tasto destro e "
 "\"Copia indirizzo di collegamento\")</span>."
+
+#~ msgid "Show meter"
+#~ msgstr "Mostra VuMeter"
 
 #~ msgid "Output"
 #~ msgstr "Uscita"
