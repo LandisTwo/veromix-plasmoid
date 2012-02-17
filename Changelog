@@ -1,4 +1,7 @@
-0.16.0
+0.16.1 - 17.2.2012
+- fix add effects button not clickable
+
+0.16.0 - 13.2.2012
 - Replace analog meter with vertical meter below slider.
 - Adding an option to autostart meters.
 - Combine sinks by dragging on sink on another.
