@@ -222,9 +222,6 @@ class VeroMixPlasmoid(plasmascript.Applet):
         return None
 
     def wheelEvent(self, event):
-        print Qt.Vertical
-        print event.orientation()
-        print "---"
         if event.orientation() == Qt.Horizontal:
             self.widget.on_step_volume((event.delta() < 0))
         else:
