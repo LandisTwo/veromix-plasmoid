@@ -1,3 +1,9 @@
+0.16.2 - 4.4.2012
+- Invert/fix the behaviour of horizontal scrolling over the icon in the systemtray/panel.
+- Fix: Plasmoid icon changes its size and position when plasmoid settings is changed.
+- Disable background chooser in settings dialog for popup applets.
+- Disable popup-mode checkbox in settings dialog for planar applets.
+
 0.16.1 - 17.2.2012
 - fix add effects button not clickable
 
