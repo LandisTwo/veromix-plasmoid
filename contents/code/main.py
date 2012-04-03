@@ -239,9 +239,13 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_ui = uic.loadUi(str(self.package().filePath('ui', 'appearance.ui')), self.config_widget)
         self.config_ui.showBackground.setCurrentIndex( self.config().readEntry("background","2").toInt() [0])
         self.config_ui.showBackground.currentIndexChanged.connect(parent.settingsModified)
+        if self.formFactor() != Plasma.Planar:
+            self.config_ui.showBackground.setEnabled(False)
 
         self.config_ui.popupMode.setCurrentIndex( self.config().readEntry("popupMode",False).toInt() [0])
         self.config_ui.popupMode.currentIndexChanged.connect(parent.settingsModified)
+        if self.formFactor() == Plasma.Planar:
+            self.config_ui.popupMode.setEnabled(False)
 
         self.config_ui.useTabs.setChecked(self.useTabs())
         self.config_ui.useTabs.stateChanged.connect(parent.settingsModified)
