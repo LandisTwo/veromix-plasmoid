@@ -1,9 +1,9 @@
-veromix (0.16.1-1) unstable; urgency=low
+veromix (0.16.2-1) unstable; urgency=low
 
   * New upstream release.
   * Updated debian/control convert Vcs-Svn field to Vcs-Git.
 
- -- Nik Lutz <nik.lutz@gmail.com>  Fri, 17 Feb 2012 23:59:40 +0100
+ -- Nik Lutz <nik.lutz@gmail.com>  Wed, 04 Apr 2012 00:41:03 +0100
 
 veromix (0.13.1-2) unstable; urgency=low
 
