@@ -422,14 +422,16 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.apply_nowplaying(self.is_nowplaying_enabled())
         self.apply_mpris2(self.is_mpris2_enabled())
 
-        bg = self.config().readEntry("background","2").toInt()[0]
-        if  bg == 0:
-            self.setBackgroundHints(Plasma.Applet.NoBackground)
-        elif bg == 1:
-            self.setBackgroundHints(Plasma.Applet.TranslucentBackground)
-        else:
-            self.setBackgroundHints(Plasma.Applet.StandardBackground)
-        mode =  self.config().readEntry("popupMode",False).toInt()[0]
+        if self.formFactor() == Plasma.Planar:
+            bg = self.config().readEntry("background","2").toInt()[0]
+            if bg == 0:
+                self.setBackgroundHints(Plasma.Applet.NoBackground)
+            elif bg == 1:
+                self.setBackgroundHints(Plasma.Applet.TranslucentBackground)
+            else:
+                self.setBackgroundHints(Plasma.Applet.StandardBackground)
+
+        mode = self.config().readEntry("popupMode",False).toInt()[0]
         if  mode== 0:
             self.setPassivePopup(False)
         elif mode == 1:
