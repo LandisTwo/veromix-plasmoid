@@ -581,7 +581,7 @@ class PulseAudio(QObject):
     def pulse_move_sink_input(self, index, target):
         operation = pa_context_move_sink_input_by_index(self._context,index, target, self._null_cb, None)
         pa_operation_unref(operation)
-        self.pa_create_monitor_stream_for_sink_input(index, target, self.sink_inputs[int(index)], True)
+        self.pa_create_monitor_stream_for_sink_input(index, target, True)
         return
 
     def pulse_move_source_output(self, index, target):
