@@ -6,7 +6,7 @@ TAR_NAME="veromix_$VERSION.orig.tar.gz"
 
 find ./ -name '*~' | xargs rm
 find ./ -name '*.pyc' | xargs rm
-zip -r  ../$NAME * -x */*.svn/* debian\* contrib\* *.sh
+zip -r  ../$NAME * -x */*.git* debian\* contrib\* *.sh
 plasmapkg -u ../$NAME
 echo $NAME
 ORIG=$(pwd)
@@ -14,7 +14,7 @@ ORIG=$(pwd)
 TMPDIR=/tmp/debian
 rm -rf "${TMPDIR}"
 mkdir ${TMPDIR}
-tar zcvf ${TMPDIR}/$TAR_NAME --exclude=.svn --exclude="*~^" --exclude="contrib" --exclude=debian --exclude="reload_plasma.sh"  --exclude="kill_service.sh" --exclude="create_package.sh"  --exclude="metadata.desktop.kde4.4" --exclude="*.mo" .
+tar zcvf ${TMPDIR}/$TAR_NAME --exclude=.git --exclude="*~^" --exclude="contrib" --exclude=debian --exclude="reload_plasma.sh"  --exclude="kill_service.sh" --exclude="create_package.sh"  --exclude="metadata.desktop.kde4.4" --exclude="*.mo" .
 
 BUILDDIR=${TMPDIR}/veromix
 mkdir ${BUILDDIR}
