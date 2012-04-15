@@ -17,10 +17,6 @@ import signal
 import sys
 import dbus
 import dbus.service
-import dbus.mainloop.qt
-
-from PyQt4.QtCore import *
-from PyQt4 import QtCore
 
 #from PulseAudio import *
 from pulseaudio.PulseVolume import *

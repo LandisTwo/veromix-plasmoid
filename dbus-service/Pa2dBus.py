@@ -19,8 +19,10 @@ import dbus
 import dbus.service
 import dbus.mainloop.qt
 
-from PyQt4.QtCore import *
-from PyQt4 import QtCore
+from PyQt4.QtCore import QObject
+from PyQt4.QtCore import SIGNAL
+
+#from PyQt4 import QtCore
 from VeromixUtils import *
 
 ###

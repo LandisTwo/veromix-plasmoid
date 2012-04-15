@@ -27,7 +27,8 @@ from PulseSource    import PulseSourceOutputInfo, PulseSourceInfo
 from PulseClient    import PulseClientCtypes
 from PulseCard      import CardInfo
 
-from PyQt4.QtCore import *
+from PyQt4.QtCore import QObject
+from PyQt4.QtCore import SIGNAL
 
 PA_VOLUME_CONVERSION_FACTOR = 655.36
 
