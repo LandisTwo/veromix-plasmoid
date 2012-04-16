@@ -14,47 +14,340 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import os,commands,re,math
+
+_presets = None
+class LADSPAPresetLoader:
+    configdir = os.getenv('HOME') + "/.pulse"
+    user_preset_directory = configdir + "/presets"
+    system_preset_directory = "/usr/share/pulseaudio-equalizer/presets"
+
+
+    def get_user_preset_directory(self):
+        return self.user_preset_directory
+
+    def read_preset(self, filename):
+        f = open(filename, "r")
+        rawdata=f.read().split('\n')
+        f.close
+
+        preset = {
+            #"plugins" =  #"mbeq"
+            "label" : str(rawdata[1]),
+            # "name" : "Multiband EQ",
+            "name" :   str(rawdata[2]),
+            #unused
+            "preamp" : str(rawdata[3]),
+            #"plugin": "mbeq_1197",
+            "plugin" : str(rawdata[0]),
+            "preset_name" : str(rawdata[4]),
+
+            # unused currently
+            "inputs" : "50,100,156,220,311,440,622,880,1250,1750,2500,3500,5000,10000,20000"
+        }
+
+        #"control": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+        num_ladspa_controls = int(rawdata[5])
+        control = ""
+        for x in range(0, num_ladspa_controls):
+            control = control + str(rawdata[6 + x]) + ","
+
+        preset["control"] = control[:-1]
+
+        effect = None
+        for settings in LADSPAEffects().effects():
+            if (settings["label"] == preset["label"]):
+                effect = settings
+
+        if effect:
+            preset["range"] = effect["range"]
+            #"range" : [[-70, 30],[-70, 30],[-70, 30],[-70, 30],[-70, 30],[-70, 30],[-70, 30],[-70, 30],[-70, 30],[-70, 30],[-70, 30],[-70, 30],[-70, 30],[-70, 30],[-70, 30]],
+            preset["scale"] = effect["scale"]
+            #"scale" : [1,1,1, 1,1,1, 1,1,1, 1,1,1, 1,1,1],
+            preset["labels"] = effect["labels"]
+            #"labels" : ["50Hz","100Hz","156Hz","220Hz","311Hz","440Hz","622Hz","880Hz","1250Hz","1750Hz","2500Hz","3500Hz","5000Hz","10000Hz","20000Hz",]
+
+            _range = []
+            for x in range(0, num_ladspa_controls):
+                _range.append([-30,30])
+            preset["range"] = _range
+
+        else:
+            _range = []
+            for x in range(0, num_ladspa_controls):
+                _range.append([0,100])
+            preset["range"] = _range
+
+            scale = []
+            for x in range(0, num_ladspa_controls):
+                scale.append(1)
+            preset["scale"] = scale
+
+            labels = []
+            for x in range(0, num_ladspa_controls):
+                labels.append("raw_"+str(x))
+            preset["labels"] = labels
+
+        return preset
+
+    def presets(self):
+        global _presets
+        if _presets == None:
+            self.read_presets()
+            _presets = sorted(_presets, key=lambda k: k['preset_name'])
+        return _presets
+
+    def read_presets(self):
+        global _presets
+        _presets = []
+        for path in self.listdir_fullpath(self.user_preset_directory):
+            _presets.append(self.read_preset(path))
+        for path in self.listdir_fullpath(self.system_preset_directory):
+            _presets.append(self.read_preset(path))
+
+    def listdir_fullpath(self, d):
+        if os.path.exists(d):
+            return [os.path.join(d, f) for f in os.listdir(d)]
+        return []
+
+    def preset_exists(self, name):
+        return os.path.exists(self.preset_full_path(name))
+
+    def preset_full_path(self,name):
+        tmp = ''.join(c for c in name if c not in ['\\', '/'])
+        return self.get_user_preset_directory() + tmp
+
+    def write_preset(self, name, preset_name ,plugin_settings):
+        if not os.path.exists(self.get_user_preset_directory()):
+            os.path.mkdir(self.get_user_preset_directory())
+
+        f = open(self.preset_full_path(name), "w")
+        rawdata = []
+        rawdata.append(str(plugin_settings["plugin"]))
+        rawdata.append(str(preset_name))
+        rawdata.append(str(plugin_settings["name"]))
+        rawdata.append(str(0)) # preamp
+        rawdata.append(str(preset_name))
+        rawdata.append(str(len(plugin_settings["control"])))
+        for i in range(num_ladspa_controls):
+            rawdata.append(str(plugin_settings["labels"][i]))
+        for i in range(num_ladspa_controls):
+            rawdata.append(str(plugin_settings["control"][i]))
+
+        for i in rawdata:
+            f.write(str(i)+'\n')
+        f.close()
+
+_effects = None
 class LADSPAEffects:
 
-    effects = { "mbeq" : {          "name" : "Multiband EQ",
-                                    "plugin": "mbeq_1197",
-                                    "control": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
-                                    "range" : [[-70, 30],[-70, 30],[-70, 30],
-                                                [-70, 30],[-70, 30],[-70, 30],
-                                                [-70, 30],[-70, 30],[-70, 30],
-                                                [-70, 30],[-70, 30],[-70, 30],
-                                                [-70, 30],[-70, 30],[-70, 30]],
-                                    "scale" : [1,1,1, 1,1,1, 1,1,1, 1,1,1, 1,1,1],
-                                    "labels" : ["50Hz","100Hz","156Hz",
-                                                "220Hz","311Hz","440Hz",
-                                                "622Hz","880Hz","1250Hz",
-                                                "1750Hz","2500Hz","3500Hz",
-                                                "5000Hz","10000Hz","20000Hz",] },
+    def effects(self):
+        global _effects
+        if _effects == None:
+            _effects = fetch_plugins()
+            _effects = sorted(_effects, key=lambda k: k['preset_name'])
+        return _effects
 
-                "dj_eq_mono" : {    "name" : "DJ Equalizer",
-                                    "plugin": "dj_eq_1901",
-                                    "control": "0,0,0",
-                                    "range" : [[-70, 6],[-70, 6],[-70, 6]],
-                                    "scale" : [1,1,1],
-                                    "labels" : ["Lo gain","Mid gain","Hi gain"]},
-                "flanger" :    {    "name" : "Flanger",
-                                    "plugin": "flanger_1191",
-                                    "control": "6.325,2.5,0.33437,0",
-                                    "range" : [[0.1, 25],[0, 10],[0, 100],[-1, 1]],
-                                    "scale" : [100,10,10, 10],
-                                    "labels" : ["Delay base","Max slowdown","LFO frequency", "Feedback"] },
-                "pitchScale" :    {    "name" : "Pitch Scaler",
-                                    "plugin": "pitch_scale_1193",
-                                    "control": "1",
-                                    "range" : [[0.5, 2]],
-                                    "scale" : [100],
-                                    "labels" : ["Co-efficient"]},
-                "multivoiceChorus" : {"name" : "Multivoice Chorus",
-                                    "plugin": "multivoice_chorus_1201",
-                                    "control": "1,10,0.5,1,9,0",
-                                    "range" : [[1, 8], [10, 40], [0, 2], [0, 5], [2, 30], [-20, 0]],
-                                    "scale" : [1,10,10,10, 10, 10 ],
-                                    "labels" : ["Voices", "Delay base", "Voice separation", "Detune", "LFO frequency", "Output attenuation"] } }
+def fetch_plugins():
+    status,output = commands.getstatusoutput("listplugins")
+    if status != 0:
+        print "Veromix LADSPA: command 'listplugins' returend an error - is it installed? Check if ladspa-sdk is installed."
+        return hardcoded_plugins()
+    plugins = []
+    for line in  output.split("\n"):
+        if re.match (".*:$", line):
+            name = line[0:-1]
+            filename =  os.path.basename(name)
+            try:
+                status,out = commands.getstatusoutput("analyseplugin " + filename)
+                if status != 0:
+                    print "Veromix LADSPA: command 'analyseplugin' returend an error:"
+                    print out
+                else:
+                    lines = out.split("\n")
+
+                    "one file (for example amp.so can have multiple pluigin-definitions)"
+                    plugin = []
+                    for line in lines:
+                        if len(line) == 0:
+                            if len(plugin) > 1:
+                                p = None
+                                #print plugin
+                                p = extract_plugin(filename, plugin)
+                                if p:
+                                    plugins.append(p)
+                                plugin = []
+                        else:
+                            plugin.append(line)
+            except Exception,e:
+                print "Problem during plugin extraction"
+                print e
+
+    if len(plugins) == 0:
+        return hardcoded_plugins()
+    return plugins
+
+def extract_plugin(filename, lines):
+    definition = {
+        "label" : value_from_line(lines[1]),
+        # FIXME
+        "preset_name" : value_from_line(lines[0]) + " (" + filename[0:-3] + ")" ,
+        "plugin" : filename[0:-3],
+        "name" : value_from_line(lines[0])
+        }
+    has_input = False
+    has_output = False
+
+    port_hints = lines[10:]
+    for port_hint in port_hints:
+        # "50Hz gain (low shelving)" input, control, -70 to 30, default 0
+        match = re.match(r'^.*\"(.*)\" input, control, (-?[\d\.]*) to (-?[\d\.]*), default (-?[\d\.]*)(, logarithmic)?', port_hint)
+        if match:
+            if "labels" not in definition.keys():
+                definition["labels"] = []
+            definition["labels"].append(match.group(1))
+            #print match.group(1), match.group(2), match.group(3)
+
+            if "range" not in definition.keys():
+                definition["range"] = []
+            lower = match.group(2)
+            upper = match.group(3)
+            if lower == "...":
+                lower = "-1000"
+            if upper == "...":
+                upper = "1000"
+            lower = float(lower) if '.' in lower else int(lower)
+            upper = float(upper) if '.' in upper else int(upper)
+            definition["range"].append([lower,upper])
+
+            if "control" not in definition.keys():
+                definition["control"] = ""
+                definition["controlnumbers"] = []
+            definition["control"] = definition["control"] + "," + str(match.group(4))
+            definition["controlnumbers"].append(float(match.group(4)) if '.' in match.group(4) else int(match.group(4)))
+
+            if "control_type" not in definition.keys():
+                definition["control_type"] = []
+            if match.group(5):
+                definition["control_type"].append("log")
+            else:
+                definition["control_type"].append("dec")
+
+        # "Input" input, audio
+        match = re.match(r'.*" input, audio', port_hint)
+        if match:
+            has_input = True
+
+        #"Output" output, audio
+        match = re.match(r'.*" output, audio', port_hint)
+        if match:
+            has_output = True
+
+        #"latency" output, control
+        match = re.match(r'.*" output, control', port_hint)
+        if match:
+            pass
+
+
+    # Currently this module only works with plugins that have one audio input port named "Input" and one output with name "Output".
+    # http://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Modules#module-ladspa-sink
+    if has_input and has_output:
+            # some cleanup
+        if "control" in definition.keys():
+            definition["control"] = definition["control"][1:]
+            definition["scale"] = []
+            index = 0
+            for assoc in definition["range"]:
+                lower = assoc[0]
+                upper = assoc[1]
+                control_default = definition["controlnumbers"][index]
+                index = index + 1
+                num = 1
+                if isinstance(lower, float):
+                    num = len(str(lower).split(".")[1])
+                if isinstance(upper, float):
+                    tmp = len(str(upper).split(".")[1])
+                    if tmp > num:
+                        num = tmp
+                if isinstance(control_default, float):
+                    tmp = len(str(control_default).split(".")[1])
+                    if tmp > num:
+                        num = tmp
+                if (upper - lower) < 11:
+                    definition["scale"].append(pow(10,num))
+                else:
+                    definition["scale"].append(1)
+        else:
+            definition["labels"] = []
+            definition["range"] = []
+            definition["control"] = ""
+            definition["scale"] = []
+        return definition
+    return None
+
+def value_from_line(line):
+    match = re.search(r'"(.*)"', line)
+    return match.group(0)[1:-1]
+
+def hardcoded_plugins():
+    return [
+        {
+            "preset_name" : "Multiband EQ",
+            "label" : "mbeq",
+            "name" : "Multiband EQ",
+            "plugin": "mbeq_1197",
+            "control": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
+            "range" : [[-70, 30],[-70, 30],[-70, 30],
+                        [-70, 30],[-70, 30],[-70, 30],
+                        [-70, 30],[-70, 30],[-70, 30],
+                        [-70, 30],[-70, 30],[-70, 30],
+                        [-70, 30],[-70, 30],[-70, 30]],
+            "scale" : [1,1,1, 1,1,1, 1,1,1, 1,1,1, 1,1,1],
+            "labels" : ["50Hz","100Hz","156Hz",
+                        "220Hz","311Hz","440Hz",
+                        "622Hz","880Hz","1250Hz",
+                        "1750Hz","2500Hz","3500Hz",
+                        "5000Hz","10000Hz","20000Hz",] },
+
+        {
+            "preset_name" : "DJ Equalizer",
+            "label" : "dj_eq_mono",
+            "name" : "DJ Equalizer",
+            "plugin": "dj_eq_1901",
+            "control": "0,0,0",
+            "range" : [[-70, 6],[-70, 6],[-70, 6]],
+            "scale" : [1,1,1],
+            "labels" : ["Lo gain","Mid gain","Hi gain"]},
+
+        {
+            "preset_name" : "Flanger",
+            "label" : "flanger",
+            "name" : "Flanger",
+            "plugin": "flanger_1191",
+            "control": "6.325,2.5,0.33437,0",
+            "range" : [[0.1, 25],[0, 10],[0, 100],[-1, 1]],
+            "scale" : [100,10,10, 10],
+            "labels" : ["Delay base","Max slowdown","LFO frequency", "Feedback"] },
+
+        {
+            "preset_name" : "Pitch Scaler",
+            "label" : "pitchScale",
+            "name" : "Pitch Scaler",
+            "plugin": "pitch_scale_1193",
+            "control": "1",
+            "range" : [[0.5, 2]],
+            "scale" : [100],
+            "labels" : ["Co-efficient"]},
+
+        {
+            "preset_name" : "Multivoice Chorus",
+            "label" : "multivoiceChorus",
+            "name" : "Multivoice Chorus",
+            "plugin": "multivoice_chorus_1201",
+            "control": "1,10,0.5,1,9,0",
+            "range" : [[1, 8], [10, 40], [0, 2], [0, 5], [2, 30], [-20, 0]],
+            "scale" : [1,10,10,10, 10, 10 ],
+            "labels" : ["Voices", "Delay base", "Voice separation", "Detune", "LFO frequency", "Output attenuation"] } ]
 
         ## GOOD
         #sink_name="sink_name=ladspa_output.dj_eq_1901.dj_eq."+str(self.ladspa_index)
@@ -139,3 +432,12 @@ class LADSPAEffects:
         #plugin = "plugin=pitch_scale_1194"
         #label = "label=pitchScaleHQ"
         #control = "control=1.9"
+
+
+if __name__ == '__main__':
+    for x in fetch_plugins():
+        print x["preset_name"]
+        print " labels:", x["labels"]
+        print " control: ", x["control"]
+        print " range: ", x["range"]
+        print " scale: ", x["scale"]

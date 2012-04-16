@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import signal, os, datetime
+import signal, os, datetime, urllib
 
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -29,7 +29,9 @@ class SinkMbeqUI(SinkUI):
     muteInfo = pyqtSignal(bool)
 
     def __init__(self , parent):
-        self.effects = LADSPAEffects.effects
+        self.effects = LADSPAEffects().effects()
+        self.presets = LADSPAPresetLoader().presets()
+
         self.automatically_muted = False
         self.extended_panel = None
         self.sliders = {}
@@ -51,10 +53,17 @@ class SinkMbeqUI(SinkUI):
     def update_label(self):
         text = ""
         try:
-            # FIXME
-            text = self.pa_sink.props["device.ladspa.name"] #self.name() #self.pa_sink.props["device_name"]
-        except:
+            if "device.ladspa.name" in self.pa_sink.props.keys():
+                text = self.pa_sink.props["device.ladspa.name"]
+            if "sink_name" in self.module_info.keys():
+                tmp = urllib.unquote(str(self.module_info["sink_name"]))
+                if text == "":
+                    text = tmp
+                elif tmp != text:
+                    text = text + " - " + tmp
+        except Exception, e:
             pass
+
         if self.slider:
             self.label.setBoldText(text)
             self.set_name(text)
@@ -104,19 +113,30 @@ class SinkMbeqUI(SinkUI):
         self.header_layout.addItem(self.label)
 
     def _get_effect_settings(self):
-         label = self.module_info["label"]
-         return self.effects[label]
+        effect = None
+        for preset in self.effects:
+            if preset["label"] == self.module_info["label"]:
+                effect = preset
+        return effect
 
     def on_change_effect(self, value):
-        for key in self.effects.keys():
-            if self.effects[key]["name"] == value:
-                #"sink_name=ladspa_output.dj_eq_1901.dj_eq."+str(self.ladspa_index)
-                parameters = "sink_name=ladspa_output."+self.effects[key]["plugin"]+"."+key
-                parameters =  parameters + " master=%(master)s " % self.module_info
-                parameters =  parameters + " plugin=" + self.effects[key]["plugin"]
-                parameters =  parameters + " label=" + key
-                parameters =  parameters + " control=" + self.effects[key]["control"]
-                self.pa_sink.set_ladspa_sink(parameters)
+        parameters = ""
+        preset = None
+        for p in self.effects:
+            if p["preset_name"] == value:
+                parameters = "sink_name=" + urllib.quote(p["name"])
+                preset = p
+
+        for p in self.presets:
+            if p["preset_name"] == value:
+                parameters = "sink_name=" + urllib.quote(p["preset_name"])
+                preset = p
+
+        parameters =  parameters + " master=%(master)s " % self.module_info
+        parameters =  parameters + " plugin=" + preset["plugin"]
+        parameters =  parameters + " label=" + preset["label"]
+        parameters =  parameters + " control=" + preset["control"]
+        self.pa_sink.set_ladspa_sink(parameters)
 
     def createMiddle(self):
         self.middle = QGraphicsWidget()
@@ -126,22 +146,32 @@ class SinkMbeqUI(SinkUI):
         self.middle.setLayout(self.middle_layout)
         self.middle.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.createSlider()
-        #self.middle_layout.addItem(self.slider)
 
     def context_menu_create_custom(self):
+        self.create_menu_switch_preset()
         self.create_menu_switch_effect()
+
         self.action_kill = QAction(i18n("Disconnect/kill"), self.popup_menu)
         self.popup_menu.addAction(self.action_kill)
         self.action_kill.triggered.connect(self.on_menu_kill_clicked)
 
+    def create_menu_switch_preset(self):
+        effect_menu = QMenu(i18n("Presets"), self.popup_menu)
+        for preset in self.presets:
+            action = QAction(preset["preset_name"],effect_menu)
+            effect_menu.addAction(action)
+            if urllib.unquote(str(self.module_info["sink_name"])) == preset["preset_name"]:
+                action.setCheckable(True)
+                action.setChecked(True)
+                action.setEnabled(False)
+        self.popup_menu.addMenu(effect_menu)
+
     def create_menu_switch_effect(self):
         effect_menu = QMenu(i18n("Effect"), self.popup_menu)
-        sinks = self.veromix.get_sink_widgets()
-        for key in self.effects.keys():
-            effect = self.effects[key]
-            action = QAction(effect["name"],effect_menu)
+        for preset in self.effects:
+            action = QAction(preset["preset_name"],effect_menu)
             effect_menu.addAction(action)
-            if self.module_info["label"] == key:
+            if self.module_info["label"] == preset["label"]:
                 action.setCheckable(True)
                 action.setChecked(True)
                 action.setEnabled(False)
@@ -166,6 +196,7 @@ class SinkMbeqUI(SinkUI):
             self.create_sliders()
             self.add_equalizer_widget()
         self.set_name(self.module_info["sink_name"])
+        self.update_label()
         for i in range(0,self.number_of_siders):
             effect = self._get_effect_settings()
             scale = effect["scale"][i]
@@ -215,9 +246,12 @@ class SinkMbeqUI(SinkUI):
     def _set_ladspa_sink(self, values):
         if self.module_info == None:
             return
+
         control = ""
-        effect = self.effects[self.module_info["label"]]
+        effect = self._get_effect_settings()
         i = 0
+
+        # multiply (visible) values with scale
         for val in values:
             scale = effect["scale"][i]
             control = control +  str(float(val)/float(scale)) + ","
