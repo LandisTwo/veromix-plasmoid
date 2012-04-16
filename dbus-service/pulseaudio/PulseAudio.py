@@ -51,6 +51,7 @@ class PulseAudio(QObject):
         self.monitor_sinks = {}
         self.monitor_sink_inputs = {}
         self.monitor_sources = {}
+        self.sink_inputs_to_restore = []
         self.module_stream_restore_argument = ""
         self.default_source_name = ""
         self.default_sink_name = ""
@@ -476,6 +477,19 @@ class PulseAudio(QObject):
             self.loaded_modules[int(pa_module_info.contents.index)] = pa_module_info.contents.name
             if pa_module_info.contents.name == "module-ladspa-sink":
                 self.emit(SIGNAL("module_info(int, PyQt_PyObject, PyQt_PyObject, PyQt_PyObject, PyQt_PyObject)"),int(pa_module_info.contents.index), str(pa_module_info.contents.name), str(pa_module_info.contents.argument), str(pa_module_info.contents.n_used), str(pa_module_info.contents.auto_unload))
+
+                # Restore ladspa-effects
+                moved = []
+                for values in self.sink_inputs_to_restore:
+                    sink_input = values[0]
+                    parameters = values[1]
+                    if str(pa_module_info.contents.argument) == parameters:
+                        for sink in self.sinks.values():
+                            if sink.owner_module == int(pa_module_info.contents.index):
+                                self.pulse_move_sink_input(sink_input.index, int(sink.index))
+                                moved.append(values)
+                for m in moved:
+                    self.sink_inputs_to_restore.remove(values)
         return
 
 ################### misc
@@ -593,21 +607,16 @@ class PulseAudio(QObject):
 
     def set_ladspa_sink(self, sink_index, module_index, parameters):
         try:
-            sink_inputs = []
             if sink_index > -1 and int(module_index) in self.loaded_modules.keys():
                 # collect connected sink_inputs
                 for sinkinput in self.sink_inputs.values():
-                    if int(sinkinput.sink) == int(module_index):
-                        sink_inputs.append(sinkinput)
+                    if float(sinkinput.sink) in self.sinks.keys():
+                        if self.sinks[float(sinkinput.sink)].owner_module == module_index:
+                            self.sink_inputs_to_restore.append([sinkinput, parameters])
                 self.remove_ladspa_sink(module_index)
 
             o = pa_context_load_module(self._context, "module-ladspa-sink",parameters, self._pa_context_index_cb, None)
             pa_operation_unref(o)
-            # FIXME
-            target_index = max(self.loaded_modules.keys()) + 1
-            # Reconnect sink_inputs
-            for s in sink_inputs:
-                self.pulse_move_sink_input(s.index, int(target_index))
 
         except Exception,e :
             print e
