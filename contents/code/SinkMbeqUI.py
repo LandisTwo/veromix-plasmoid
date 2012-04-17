@@ -53,16 +53,14 @@ class SinkMbeqUI(SinkUI):
     def update_label(self):
         text = ""
         try:
-            if "device.ladspa.name" in self.pa_sink.props.keys():
-                text = self.pa_sink.props["device.ladspa.name"]
-            if "sink_name" in self.module_info.keys():
-                tmp = urllib.unquote(str(self.module_info["sink_name"]))
-                if text == "":
-                    text = tmp
-                elif tmp != text:
-                    text = text + " - " + tmp
+            if self.module_info == None:
+                pass
+            elif self.is_preset():
+                text = str(self.module_info["name"]) + " - " + str(self.module_info["preset_name"])
+            else:
+                text = str(self.module_info["name"])
         except Exception, e:
-            pass
+            print "SinkMbeqUI", e
 
         if self.slider:
             self.label.setBoldText(text)
@@ -119,25 +117,6 @@ class SinkMbeqUI(SinkUI):
                 effect = preset
         return effect
 
-    def on_change_effect(self, value):
-        parameters = ""
-        preset = None
-        for p in self.effects:
-            if p["preset_name"] == value:
-                parameters = "sink_name=" + urllib.quote(p["name"])
-                preset = p
-
-        for p in self.presets:
-            if p["preset_name"] == value:
-                parameters = "sink_name=" + urllib.quote(p["preset_name"])
-                preset = p
-
-        parameters =  parameters + " master=%(master)s " % self.module_info
-        parameters =  parameters + " plugin=" + preset["plugin"]
-        parameters =  parameters + " label=" + preset["label"]
-        parameters =  parameters + " control=" + preset["control"]
-        self.pa_sink.set_ladspa_sink(parameters)
-
     def createMiddle(self):
         self.middle = QGraphicsWidget()
         self.middle_layout = QGraphicsLinearLayout(Qt.Vertical)
@@ -157,6 +136,16 @@ class SinkMbeqUI(SinkUI):
 
     def create_menu_switch_preset(self):
         effect_menu = QMenu(i18n("Presets"), self.popup_menu)
+
+        self.action_save_preset = QAction(i18n("Save"),effect_menu)
+        effect_menu.addAction(self.action_save_preset)
+        if not self.is_preset():
+            self.action_save_preset.setEnabled(False)
+
+        self.action_save_as_preset = QAction(i18n("Save As..."),effect_menu)
+        effect_menu.addAction(self.action_save_as_preset)
+        effect_menu.addSeparator()
+
         for preset in self.presets:
             action = QAction(preset["preset_name"],effect_menu)
             effect_menu.addAction(action)
@@ -178,7 +167,15 @@ class SinkMbeqUI(SinkUI):
         self.popup_menu.addMenu(effect_menu)
 
     def on_contextmenu_clicked(self, action):
-        self.on_change_effect(action.text())
+        if action == self.action_save_preset:
+            LADSPAPresetLoader().write_preset(self.module_info)
+        elif action == self.action_save_as_preset:
+            self.veromix.showModalWidget(SaveAsDialog(self))
+        else:
+            self.on_change_effect(action.text())
+
+    def is_preset(self):
+        return self.module_info["name"] != self.module_info["preset_name"]
 
     def context_menu_create_unlock_channels(self):
         pass
@@ -223,6 +220,12 @@ class SinkMbeqUI(SinkUI):
             s = entry.split("=")
             if len(s) == 2:
                 args[s[0]]=s[1]
+
+        args["name"] = ""
+        if "device.ladspa.name" in self.pa_sink.props.keys():
+            args["name"] = self.pa_sink.props["device.ladspa.name"]
+        args["preset_name"] = urllib.unquote(str(args["sink_name"]))
+
         return args
 
     def on_sliders_cb(self, action):
@@ -260,6 +263,25 @@ class SinkMbeqUI(SinkUI):
         parameters = "sink_name=%(sink_name)s master=%(master)s plugin=%(plugin)s  label=%(label)s control=%(control)s" % self.module_info
         self.pa_sink.set_ladspa_sink(parameters)
 
+    def on_change_effect(self, value):
+        parameters = ""
+        preset = None
+        for p in self.effects:
+            if p["preset_name"] == value:
+                parameters = "sink_name=" + urllib.quote(p["name"])
+                preset = p
+
+        for p in self.presets:
+            if p["preset_name"] == value:
+                parameters = "sink_name=" + urllib.quote(p["preset_name"])
+                preset = p
+
+        parameters =  parameters + " master=%(master)s " % self.module_info
+        parameters =  parameters + " plugin=" + preset["plugin"]
+        parameters =  parameters + " label=" + preset["label"]
+        parameters =  parameters + " control=" + preset["control"]
+        self.pa_sink.set_ladspa_sink(parameters)
+
     def on_menu_kill_clicked(self):
         self.pa_sink.remove_ladspa_sink()
 
@@ -269,3 +291,54 @@ class SinkMbeqUI(SinkUI):
 
     def wheelEvent(self, event):
         pass
+
+    def on_close_save_dialog(self):
+        self.veromix.destroyMessageOverlay()
+
+    def save_preset(self, name):
+        self.module_info["preset_name"] = str(name)
+        LADSPAPresetLoader().write_preset(self.module_info)
+        self.effects = LADSPAEffects().effects()
+        self.on_change_effect(str(name))
+        self.on_close_save_dialog()
+
+class SaveAsDialog(QGraphicsWidget):
+
+    def __init__(self, sinkmbequi):
+        QGraphicsWidget .__init__(self)
+        self.sinkmbequi = sinkmbequi
+        self.setAutoFillBackground(True)
+
+        layout = QGraphicsLinearLayout(Qt.Vertical)
+        self.setLayout(layout)
+
+        input_widget = QGraphicsWidget()
+        input_layout = QGraphicsLinearLayout(Qt.Horizontal)
+        input_widget.setLayout(input_layout)
+        label = Plasma.Label()
+        label.setText("<b>"+i18n("Name")+"</b>")
+        input_layout.addItem(label)
+        self.text_field = Plasma.LineEdit()
+        input_layout.addItem(self.text_field)
+        layout.addItem(input_widget)
+
+        button_widget = QGraphicsWidget()
+        button_layout = QGraphicsLinearLayout(Qt.Horizontal)
+        button_widget.setLayout(button_layout)
+        button_layout.addStretch()
+        cancel_button = Plasma.PushButton()
+        cancel_button.setText(i18n("Cancel"))
+        cancel_button.clicked.connect(self.sinkmbequi.on_close_save_dialog)
+        button_layout.addItem(cancel_button)
+        save_button = Plasma.PushButton()
+        save_button.setText(i18n("Save"))
+        save_button.clicked.connect(self.on_save_clicked)
+        button_layout.addItem(save_button)
+        layout.addItem(button_widget)
+
+        layout.addStretch()
+
+    def on_save_clicked(self):
+        if self.text_field.text() == "":
+            return
+        self.sinkmbequi.save_preset(self.text_field.text())
