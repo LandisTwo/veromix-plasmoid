@@ -90,9 +90,9 @@ class LADSPAPresetLoader:
 
         return preset
 
-    def presets(self):
+    def presets(self, do_reload=False):
         global _presets
-        if _presets == None:
+        if _presets == None or do_reload:
             self.read_presets()
             _presets = sorted(_presets, key=lambda k: k['preset_name'])
         return _presets
@@ -115,28 +115,44 @@ class LADSPAPresetLoader:
 
     def preset_full_path(self,name):
         tmp = ''.join(c for c in name if c not in ['\\', '/'])
-        return self.get_user_preset_directory() + tmp
+        return self.get_user_preset_directory() + "/" + tmp + ".preset"
 
-    def write_preset(self, name, preset_name ,plugin_settings):
+    def write_preset(self, plugin_settings):
         if not os.path.exists(self.get_user_preset_directory()):
             os.path.mkdir(self.get_user_preset_directory())
 
-        f = open(self.preset_full_path(name), "w")
+        f = open(self.preset_full_path(str(plugin_settings["preset_name"])), "w")
         rawdata = []
         rawdata.append(str(plugin_settings["plugin"]))
-        rawdata.append(str(preset_name))
+        rawdata.append(str(plugin_settings["label"]))
         rawdata.append(str(plugin_settings["name"]))
-        rawdata.append(str(0)) # preamp
-        rawdata.append(str(preset_name))
-        rawdata.append(str(len(plugin_settings["control"])))
-        for i in range(num_ladspa_controls):
-            rawdata.append(str(plugin_settings["labels"][i]))
-        for i in range(num_ladspa_controls):
-            rawdata.append(str(plugin_settings["control"][i]))
+        rawdata.append(str(2)) # preamp
+        rawdata.append(str(plugin_settings["preset_name"]))
+
+        controls = plugin_settings["control"].split(",")
+        num_ladspa_controls = len(controls)
+        rawdata.append(str(num_ladspa_controls))
+        for i in controls:
+            rawdata.append(str(i))
+
+        effect = None
+        for settings in LADSPAEffects().effects():
+            if (settings["label"] == plugin_settings["label"]):
+                effect = settings
+
+        for i in effect["labels"]:
+            rawdata.append(str(i))
 
         for i in rawdata:
             f.write(str(i)+'\n')
         f.close()
+
+        found = False
+        for x in self.presets():
+            if x["preset_name"] == plugin_settings["preset_name"]:
+                found = True
+        if not found:
+            self.presets(True)
 
 _effects = None
 class LADSPAEffects:
