@@ -498,3 +498,9 @@ class VeroMix(QGraphicsWidget):
         for i in self.source_panel_layout.getChannels().values():
             # if a slider is not visible, plasmoidviewer crashes if the slider is not removed before exit... (dont ask me)
             i.removeSlider()
+
+    def showModalWidget(self, widget):
+        self.applet.showModalWidget(widget)
+
+    def destroyMessageOverlay(self):
+        self.applet.destroyMessageOverlay()
