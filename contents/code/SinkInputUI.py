@@ -42,6 +42,7 @@ class InputSinkUI(SinkUI):
 
     def context_menu_create_custom(self):
         self.create_menu_switch_sink()
+        self.create_menu_ladspa_effects()
 
     def create_menu_kill_sink(self):
         self.action_kill = QAction(i18n("Disconnect/kill"), self.popup_menu)
@@ -58,6 +59,13 @@ class InputSinkUI(SinkUI):
             action = QAction(sink.name(), self.popup_menu)
             sink_menu.addAction(action)
         self.popup_menu.addMenu(sink_menu)
+
+    def create_menu_ladspa_effects(self):
+        if not self.veromix.is_ladspa_enabled():
+            return
+
+    def context_menu_create_effects(self):
+        pass
 
     def on_contextmenu_clicked(self, action):
         if type(action) == bool:

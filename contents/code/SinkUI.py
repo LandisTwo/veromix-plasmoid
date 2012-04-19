@@ -55,8 +55,19 @@ class SinkUI(Channel):
             action.triggered.connect(self.stopcombining)
         self.context_menu_create_sounddevices_other()
 
+    def context_menu_create_effects(self):
+        effects_menu = QMenu(i18n("Add Effect"), self.popup_menu)
+        effects_menu.triggered.connect(self.on_add_ladspa_effect)
+        self.popup_menu.addMenu(effects_menu)
+
+        self.populate_presets_menu(effects_menu, None, False)
+        self.populate_switch_effect_menu(effects_menu, None)
+
     def stopcombining(self, action):
         self.pa_sink.remove_combined_sink()
+
+    def on_add_ladspa_effect(self, action):
+        self.on_set_ladspa_effect(action.text(), self.get_pasink_name())
 
     def on_set_default_sink_triggered(self, action):
         if action:

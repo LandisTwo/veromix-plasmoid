@@ -464,6 +464,9 @@ class VeroMix(QGraphicsWidget):
                     return info
         return None
 
+    def is_ladspa_enabled(self):
+        return self.applet.is_ladspa_enabled()
+
     def is_albumart_enabled(self):
         return self.applet.is_albumart_enabled()
 

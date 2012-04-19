@@ -293,6 +293,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         #self.about_ui.version.setText(VeroMixPlasmoid.VERSION)
         #parent.addPage(self.about_widget, "About", "help-about")
         self.add_audio_settings(parent)
+        self.add_ladspa_settings(parent)
         self.add_global_shortcut_page(parent)
 
         # FIXME KDE 4.6 workaround
@@ -345,6 +346,20 @@ class VeroMixPlasmoid(plasmascript.Applet):
         layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding), index,0)
         dialog.addPage(self.audio_settings_page, i18n("Pulseaudio"), "preferences-desktop-sound")
 
+    def add_ladspa_settings(self, dialog):
+        self.ladspa_settings_page = QWidget()
+        layout = QGridLayout()
+        self.ladspa_settings_page.setLayout(layout)
+
+        self.ladspa_enabled_checkbox = QCheckBox()
+        self.ladspa_enabled_checkbox.setText(i18n("Enable LADSPA effects."))
+        self.ladspa_enabled_checkbox.setChecked(self.is_ladspa_enabled())
+        self.ladspa_enabled_checkbox.stateChanged.connect(dialog.settingsModified)
+        layout.addWidget(self.ladspa_enabled_checkbox, 0,0)
+
+        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding), 1,0)
+        dialog.addPage(self.ladspa_settings_page, i18n("Effects / Equalizer"), "preferences-desktop-sound")
+
     # anybody knows how to remove/extend the default shortcuts page?
     def add_global_shortcut_page(self,dialog):
         self.kb_settings_page = QWidget()
@@ -396,6 +411,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
             self.config().writeEntry("max_volume", str(self.max_volume_spinbox.value()))
             self.config().writeEntry("auto_mute", str(self.automute_checkbox.isChecked()))
+
+            self.config().writeEntry("ladspa_enabled",str(self.ladspa_enabled_checkbox.isChecked()))
+
             if tabs != self.useTabs():
                 self.widget.switchView()
         self.applyConfig()
@@ -491,6 +509,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
     def is_slider_unit_value_visible(self):
         return self.config().readEntry("unitvalues_visible",False).toBool()
 
+    def is_ladspa_enabled(self):
+        return self.config().readEntry("ladspa_enabled",False).toBool()
 
 ### now playing
 

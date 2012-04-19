@@ -148,11 +148,7 @@ class LADSPAPresetLoader:
         f.close()
 
         found = False
-        for x in self.presets():
-            if x["preset_name"] == plugin_settings["preset_name"]:
-                found = True
-        if not found:
-            self.presets(True)
+        self.presets(True)
 
 _effects = None
 class LADSPAEffects:

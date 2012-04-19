@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import   datetime
+import datetime, urllib
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
@@ -24,9 +24,12 @@ from LabelSlider import MeterSlider
 from MuteButton  import MuteButton
 from ClickableMeter import ClickableMeter
 from SinkChannelWidget import SinkChannelWidget
+from LADSPAEffects import LADSPAEffects
+from LADSPAEffects import LADSPAPresetLoader
 from Utils import *
 
 class Channel(QGraphicsWidget):
+
     def __init__(self , parent):
         QGraphicsWidget.__init__(self)
         self.veromix = parent
@@ -123,6 +126,7 @@ class Channel(QGraphicsWidget):
         self.context_menu_create_custom()
         self.context_menu_create_mute()
         self.context_menu_create_unlock_channels()
+        self.context_menu_create_effects()
         self.create_menu_kill_sink()
         self.context_menu_create_settings()
         if event:
@@ -193,6 +197,9 @@ class Channel(QGraphicsWidget):
                 self.popup_menu.addMenu(each)
 
     def context_menu_create_custom(self):
+        pass
+
+    def context_menu_create_effects(self):
         pass
 
     def context_menu_create_settings(self):
@@ -386,6 +393,60 @@ class Channel(QGraphicsWidget):
 
     def get_pasink_name(self):
         return self.pa_sink.name
+
+## LADSPA helpers
+
+    def populate_presets_menu(self, target_menu, checked_item, add_actions):
+        effect_menu = QMenu(i18n("Presets"), target_menu)
+        if add_actions:
+            self.action_save_preset = QAction(i18n("Save"),effect_menu)
+            effect_menu.addAction(self.action_save_preset)
+            if not self.is_preset():
+                self.action_save_preset.setEnabled(False)
+
+            self.action_save_as_preset = QAction(i18n("Save As..."),effect_menu)
+            effect_menu.addAction(self.action_save_as_preset)
+            effect_menu.addSeparator()
+
+        for preset in LADSPAPresetLoader().presets():
+            action = QAction(preset["preset_name"],effect_menu)
+            effect_menu.addAction(action)
+            if checked_item == preset["preset_name"]:
+                action.setCheckable(True)
+                action.setChecked(True)
+                action.setEnabled(False)
+        target_menu.addMenu(effect_menu)
+
+    def populate_switch_effect_menu(self, target_menu, checked_item):
+        effect_menu = QMenu(i18n("Effect"), target_menu)
+        for preset in LADSPAEffects().effects():
+            action = QAction(preset["preset_name"],effect_menu)
+            effect_menu.addAction(action)
+            if checked_item == preset["label"]:
+                action.setCheckable(True)
+                action.setChecked(True)
+                action.setEnabled(False)
+        target_menu.addMenu(effect_menu)
+
+    def on_set_ladspa_effect(self, value, master):
+        parameters = ""
+        preset = None
+        for p in LADSPAEffects().effects():
+            if p["preset_name"] == value:
+                parameters = "sink_name=" + urllib.quote(p["name"])
+                preset = p
+
+        for p in LADSPAPresetLoader().presets():
+            if p["preset_name"] == value:
+                parameters = "sink_name=" + urllib.quote(p["preset_name"])
+                preset = p
+
+        parameters =  parameters + " master=" + master + " "
+        parameters =  parameters + " plugin=" + preset["plugin"]
+        parameters =  parameters + " label=" + preset["label"]
+        parameters =  parameters + " control=" + preset["control"]
+        self.pa_sink.set_ladspa_sink(parameters)
+
 
 class ChannelEventFilter(QObject):
     def __init__(self, channel):

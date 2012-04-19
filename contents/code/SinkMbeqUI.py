@@ -29,8 +29,6 @@ class SinkMbeqUI(SinkUI):
     muteInfo = pyqtSignal(bool)
 
     def __init__(self , parent):
-        self.effects = LADSPAEffects().effects()
-        self.presets = LADSPAPresetLoader().presets()
 
         self.automatically_muted = False
         self.extended_panel = None
@@ -112,7 +110,7 @@ class SinkMbeqUI(SinkUI):
 
     def _get_effect_settings(self):
         effect = None
-        for preset in self.effects:
+        for preset in LADSPAEffects().effects():
             if preset["label"] == self.module_info["label"]:
                 effect = preset
         return effect
@@ -132,45 +130,20 @@ class SinkMbeqUI(SinkUI):
 
         self.action_kill = QAction(i18n("Disconnect/kill"), self.popup_menu)
         self.popup_menu.addAction(self.action_kill)
-        self.action_kill.triggered.connect(self.on_menu_kill_clicked)
 
     def create_menu_switch_preset(self):
-        effect_menu = QMenu(i18n("Presets"), self.popup_menu)
-
-        self.action_save_preset = QAction(i18n("Save"),effect_menu)
-        effect_menu.addAction(self.action_save_preset)
-        if not self.is_preset():
-            self.action_save_preset.setEnabled(False)
-
-        self.action_save_as_preset = QAction(i18n("Save As..."),effect_menu)
-        effect_menu.addAction(self.action_save_as_preset)
-        effect_menu.addSeparator()
-
-        for preset in self.presets:
-            action = QAction(preset["preset_name"],effect_menu)
-            effect_menu.addAction(action)
-            if urllib.unquote(str(self.module_info["sink_name"])) == preset["preset_name"]:
-                action.setCheckable(True)
-                action.setChecked(True)
-                action.setEnabled(False)
-        self.popup_menu.addMenu(effect_menu)
+        self.populate_presets_menu(self.popup_menu, urllib.unquote(str(self.module_info["sink_name"])), True)
 
     def create_menu_switch_effect(self):
-        effect_menu = QMenu(i18n("Effect"), self.popup_menu)
-        for preset in self.effects:
-            action = QAction(preset["preset_name"],effect_menu)
-            effect_menu.addAction(action)
-            if self.module_info["label"] == preset["label"]:
-                action.setCheckable(True)
-                action.setChecked(True)
-                action.setEnabled(False)
-        self.popup_menu.addMenu(effect_menu)
+        self.populate_switch_effect_menu(self.popup_menu, self.module_info["label"])
 
     def on_contextmenu_clicked(self, action):
         if action == self.action_save_preset:
             LADSPAPresetLoader().write_preset(self.module_info)
         elif action == self.action_save_as_preset:
             self.veromix.showModalWidget(SaveAsDialog(self))
+        elif action == self.action_kill:
+            self.pa_sink.remove_ladspa_sink()
         else:
             self.on_change_effect(action.text())
 
@@ -264,26 +237,7 @@ class SinkMbeqUI(SinkUI):
         self.pa_sink.set_ladspa_sink(parameters)
 
     def on_change_effect(self, value):
-        parameters = ""
-        preset = None
-        for p in self.effects:
-            if p["preset_name"] == value:
-                parameters = "sink_name=" + urllib.quote(p["name"])
-                preset = p
-
-        for p in self.presets:
-            if p["preset_name"] == value:
-                parameters = "sink_name=" + urllib.quote(p["preset_name"])
-                preset = p
-
-        parameters =  parameters + " master=%(master)s " % self.module_info
-        parameters =  parameters + " plugin=" + preset["plugin"]
-        parameters =  parameters + " label=" + preset["label"]
-        parameters =  parameters + " control=" + preset["control"]
-        self.pa_sink.set_ladspa_sink(parameters)
-
-    def on_menu_kill_clicked(self):
-        self.pa_sink.remove_ladspa_sink()
+        self.on_set_ladspa_effect(value, self.module_info["master"])
 
     def get_ladspa_type(self):
         # FIXME
@@ -298,9 +252,11 @@ class SinkMbeqUI(SinkUI):
     def save_preset(self, name):
         self.module_info["preset_name"] = str(name)
         LADSPAPresetLoader().write_preset(self.module_info)
-        self.effects = LADSPAEffects().effects()
         self.on_change_effect(str(name))
         self.on_close_save_dialog()
+
+    def context_menu_create_effects(self):
+        pass
 
 class SaveAsDialog(QGraphicsWidget):
 
