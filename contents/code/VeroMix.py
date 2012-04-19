@@ -62,25 +62,6 @@ class VeroMix(QGraphicsWidget):
         self.scrolled_panel_layout.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
         self.scrolled_panel_layout.setContentsMargins(0,0,0,6)
 
-        self.effects_button = Plasma.IconWidget(self)
-        self.effects_button.setZValue(10)
-        self.effects_button.setSvg("widgets/action-overlays","add-normal")
-        #self.effects_button.setText(i18n("Effects"))
-
-        # Backward compatibility
-        if self.effects_button.setMaximumIconSize:
-            self.effects_button.setMaximumIconSize(QSizeF(12,12))
-        self.effects_button.setOrientation(Qt.Horizontal)
-        self.effects_button.setSizePolicy(QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum))
-        self.effects_button.clicked.connect(self.on_effects_button_clicked)
-        tooltip = Plasma.ToolTipContent()
-        #tooltip.setImage(pixmapFromSVG("audio-volume-high"))
-        tooltip.setMainText(i18n("Add equalizer"))
-        #tooltip.setSubText(controls[i])
-        Plasma.ToolTipManager.self().setContent(self.effects_button, tooltip)
-        Plasma.ToolTipManager.self().registerWidget(self.effects_button)
-        self.sink_panel.geometryChanged.connect(self._update_effects_button_position)
-
         self.showsTabs =  not self.applet.useTabs()
         self.switchView(True)
 
@@ -334,13 +315,7 @@ class VeroMix(QGraphicsWidget):
             source.on_update_meter(index,int(level), len(sources))
 
     def resizeEvent(self, e):
-        self._update_effects_button_position()
         self.emit(SIGNAL("resized()"))
-
-    def _update_effects_button_position(self):
-        x = self.sink_panel.size().width()
-        y = self.sink_panel.size().height()
-        self.effects_button.setPos(x,y)
 
 ### panel-icon callbacks
 
@@ -375,17 +350,6 @@ class VeroMix(QGraphicsWidget):
 
     def on_mediaplayer_removed(self, name):
         self.remove_channel(name,self.sink_panel_layout)
-
-    def on_effects_button_clicked(self):
-        sink = self.getDefaultSink()
-        master_name = "master=" + str(sink.get_pasink_name())   # "master=alsa_output.pci-0000_00_1b.0.analog-stereo"
-        sink_name="sink_name=ladspa_output.mbeq_1197.mbeq."+str(self.ladspa_index)
-        plugin = "plugin=mbeq_1197"
-        label = "label=mbeq"
-        control = "control=0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
-        parameters = sink_name + " " + master_name + " "+  plugin + " "+ label + " "+ control
-        self.ladspa_index = self.ladspa_index + 1
-        self.getPulseAudio().set_ladspa_sink(-1, -1, parameters)
 
 ### panel icons
 
