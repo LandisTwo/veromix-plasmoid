@@ -157,6 +157,7 @@ class VerticalSlider(LabelSlider):
     def __init__(self):
         LabelSlider.__init__(self)
         self.label.setRotation(-90)
+        self._resize_widgets()
 
     def _resize_widgets(self):
         h = self.size().height()
