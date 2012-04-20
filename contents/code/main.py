@@ -510,7 +510,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         return self.config().readEntry("unitvalues_visible",False).toBool()
 
     def is_ladspa_enabled(self):
-        return self.config().readEntry("ladspa_enabled",False).toBool()
+        return self.config().readEntry("ladspa_enabled",True).toBool()
 
 ### now playing
 
