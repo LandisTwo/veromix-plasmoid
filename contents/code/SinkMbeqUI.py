@@ -158,8 +158,12 @@ class SinkMbeqUI(SinkUI):
 
     def update_module_info(self, index, name, argument, n_used, auto_unload):
         self.module_info = self.parse_module_info(argument)
-        controls = self.module_info["control"].split(",")
-        count = len(controls)
+        if str(self.module_info["control"]) == "":
+            count = 0
+            controls = ""
+        else:
+            controls = self.module_info["control"].split(",")
+            count = len(controls)
         if count != self.number_of_siders:
             self.number_of_siders = count
             self.remove_equalizer_widget()
