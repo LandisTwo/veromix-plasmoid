@@ -56,6 +56,8 @@ class SinkUI(Channel):
         self.context_menu_create_sounddevices_other()
 
     def context_menu_create_effects(self):
+        if not self.veromix.is_ladspa_enabled():
+            return
         effects_menu = QMenu(i18n("Add Effect"), self.popup_menu)
         effects_menu.triggered.connect(self.on_add_ladspa_effect)
         self.popup_menu.addMenu(effects_menu)
