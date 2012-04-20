@@ -152,13 +152,39 @@ class LADSPAPresetLoader:
 
 _effects = None
 class LADSPAEffects:
+    blacklist_file = os.getenv('HOME') + "/.pulse/veromix-ladspa-blacklist.conf"
 
-    def effects(self):
+    def effects(self, do_reload=False):
         global _effects
-        if _effects == None:
-            _effects = fetch_plugins()
-            _effects = sorted(_effects, key=lambda k: k['preset_name'])
+        if _effects == None or do_reload:
+            blacklist = self.blacklist()
+            _effects = []
+            for effect in self.all_effects():
+                if effect["preset_name"] not in blacklist:
+                    _effects.append(effect)
         return _effects
+
+    def all_effects(self):
+        _all_effects = fetch_plugins()
+        _all_effects = sorted(_all_effects, key=lambda k: k['preset_name'])
+        return _all_effects
+
+    def blacklist(self):
+        if not os.path.exists(self.blacklist_file):
+            return []
+        f = open(self.blacklist_file, "r")
+        rawdata = f.read().split('\n')
+        f.close
+        return rawdata
+
+    def write_blacklist(self, blacklist):
+        f = open(self.blacklist_file, "w")
+        rawdata = []
+        for entry in blacklist:
+            f.write(str(entry)+'\n')
+        f.close()
+        self.effects(True)
+
 
 def fetch_plugins():
     status,output = commands.getstatusoutput("listplugins")

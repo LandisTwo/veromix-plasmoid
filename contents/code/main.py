@@ -53,6 +53,7 @@ from PyKDE4.kdecore import *
 
 from VeroMix import VeroMix
 from MediaPlayer import NowPlayingController
+from LADSPAEffects import LADSPAEffects
 from Utils import *
 
 COMMENT=i18n("Veromix is a mixer for the Pulseaudio sound server. ")
@@ -357,7 +358,22 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.ladspa_enabled_checkbox.stateChanged.connect(dialog.settingsModified)
         layout.addWidget(self.ladspa_enabled_checkbox, 0,0)
 
-        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding), 1,0)
+        self.effects_list_widget = QListWidget()
+        layout.addWidget(self.effects_list_widget,1,0)
+        self.effects_list_widget.itemClicked.connect(dialog.settingsModified)
+
+        blacklisted = LADSPAEffects().blacklist()
+        effects = LADSPAEffects().all_effects()
+        for effect in effects:
+            item = QListWidgetItem(effect["preset_name"])
+            item.setFlags(Qt.ItemIsUserCheckable | Qt.ItemIsEnabled)
+            if effect["preset_name"] in blacklisted:
+                item.setCheckState(Qt.Unchecked)
+            else:
+                item.setCheckState(Qt.Checked)
+            self.effects_list_widget.addItem(item)
+
+        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding), 2,0)
         dialog.addPage(self.ladspa_settings_page, i18n("Effects / Equalizer"), "preferences-desktop-sound")
 
     # anybody knows how to remove/extend the default shortcuts page?
@@ -413,7 +429,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             self.config().writeEntry("auto_mute", str(self.automute_checkbox.isChecked()))
 
             self.config().writeEntry("ladspa_enabled",str(self.ladspa_enabled_checkbox.isChecked()))
-
+            self.ladspa_save_effects_blacklist()
             if tabs != self.useTabs():
                 self.widget.switchView()
         self.applyConfig()
@@ -511,6 +527,14 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def is_ladspa_enabled(self):
         return self.config().readEntry("ladspa_enabled",True).toBool()
+
+    def ladspa_save_effects_blacklist(self):
+        blacklisted = []
+        for i in range(0,self.effects_list_widget.count()):
+            item = self.effects_list_widget.item(i)
+            if not item.checkState():
+                blacklisted.append(str(item.text()))
+        LADSPAEffects().write_blacklist(blacklisted)
 
 ### now playing
 
