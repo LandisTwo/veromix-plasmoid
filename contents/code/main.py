@@ -54,6 +54,7 @@ from PyKDE4.kdecore import *
 from VeroMix import VeroMix
 from MediaPlayer import NowPlayingController
 from LADSPAEffects import LADSPAEffects
+from LADSPAEffects import LADSPAPresetLoader
 from Utils import *
 
 COMMENT=i18n("Veromix is a mixer for the Pulseaudio sound server. ")
@@ -85,6 +86,8 @@ class VeroMixPlasmoid(plasmascript.Applet):
             #gc.writeEntry("gmail-plasmoid-128.png", vers["gmail-plasmoid-128.png"])
         else:
             print "Error installing veromix icon:", out
+
+        LADSPAPresetLoader().install_ladspa_presets_if_needed(unicode(self.package().path())+"presets")
 
         createDbusServiceDescription(self)
 

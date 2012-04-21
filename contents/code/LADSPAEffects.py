@@ -14,13 +14,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import os,commands,re,math
+import os,commands,re,math,shutil
 
 _presets = None
+
+
+
 class LADSPAPresetLoader:
     configdir = os.getenv('HOME') + "/.pulse"
     user_preset_directory = configdir + "/presets"
 
+    def install_ladspa_presets_if_needed(self, veromix_path):
+        if os.path.exists(self.user_preset_directory):
+            return
+        print "Veromix copying default presets to: ", self.user_preset_directory
+        try:
+            shutil.copytree(veromix_path, self.user_preset_directory)
+        except Exception, e:
+            print "Veromix exception while copying presets: ", e
 
     def get_user_preset_directory(self):
         return self.user_preset_directory
