@@ -20,7 +20,6 @@ _presets = None
 class LADSPAPresetLoader:
     configdir = os.getenv('HOME') + "/.pulse"
     user_preset_directory = configdir + "/presets"
-    system_preset_directory = "/usr/share/pulseaudio-equalizer/presets"
 
 
     def get_user_preset_directory(self):
@@ -102,12 +101,11 @@ class LADSPAPresetLoader:
         _presets = []
         for path in self.listdir_fullpath(self.user_preset_directory):
             _presets.append(self.read_preset(path))
-        for path in self.listdir_fullpath(self.system_preset_directory):
-            _presets.append(self.read_preset(path))
 
-    def listdir_fullpath(self, d):
-        if os.path.exists(d):
-            return [os.path.join(d, f) for f in os.listdir(d)]
+    def listdir_fullpath(self, directory):
+        if os.path.exists(directory):
+            dir_list = os.listdir(directory)
+            return [os.path.join(directory, x) for x in os.listdir(directory) if x.endswith('.preset')]
         return []
 
     def preset_exists(self, name):
