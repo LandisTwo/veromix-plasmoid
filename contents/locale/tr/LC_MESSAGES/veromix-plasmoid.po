@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-18 00:03+0100\n"
+"POT-Creation-Date: 2012-04-25 00:03+0200\n"
 "PO-Revision-Date: 2010-12-16 03:41+0200\n"
 "Last-Translator: Anıl Özbek <ozbekanil@gmail.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
@@ -132,77 +132,119 @@ msgstr "Şu an çalışan medya oynatıcılarlayÖ"
 msgid "Show album art"
 msgstr ""
 
-#: contents/code/Channel.py:134
+#: contents/code/Channel.py:138
 msgid "Muted"
 msgstr ""
 
-#: contents/code/Channel.py:141
+#: contents/code/Channel.py:145
 msgid "Unlock channels"
 msgstr ""
 
-#: contents/code/Channel.py:150
+#: contents/code/Channel.py:154
 msgid "Ports"
 msgstr ""
 
-#: contents/code/Channel.py:174
+#: contents/code/Channel.py:178
 msgid "Profile"
 msgstr ""
 
-#: contents/code/Channel.py:200
+#: contents/code/Channel.py:207
 msgid "Veromix Settings"
 msgstr ""
 
-#: contents/code/main.py:58
+#: contents/code/Channel.py:401
+msgid "Presets"
+msgstr ""
+
+#: contents/code/Channel.py:403 contents/code/SinkMbeqUI.py:294
+msgid "Save"
+msgstr ""
+
+#: contents/code/Channel.py:408
+msgid "Save As..."
+msgstr ""
+
+#: contents/code/Channel.py:422
+msgid "Effect"
+msgstr ""
+
+#: contents/code/main.py:60
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
 msgstr "Veromix, PulseAudio ses sunucusu için bir karıştırıcıdır. "
 
-#: contents/code/main.py:133 contents/code/main.py:350
+#: contents/code/main.py:140 contents/code/main.py:407
 msgid "Veromix volume up"
 msgstr "Veromix ses yükselt"
 
-#: contents/code/main.py:138 contents/code/main.py:355
+#: contents/code/main.py:145 contents/code/main.py:412
 msgid "Veromix volume down"
 msgstr "Veromix ses kıs"
 
-#: contents/code/main.py:143
+#: contents/code/main.py:150
 #, fuzzy
 msgid "Veromix toggle mute"
 msgstr "Veromix sessiz"
 
-#: contents/code/main.py:151
+#: contents/code/main.py:158
 msgid "Main Volume"
 msgstr "Ana Ses"
 
-#: contents/code/main.py:262
+#: contents/code/main.py:276
 msgid "Appearance"
 msgstr "Görünüm"
 
-#: contents/code/main.py:282
+#: contents/code/main.py:296
 msgid "Media Player Controls"
 msgstr "Medya Oynatıcı Kontrolleri"
 
-#: contents/code/main.py:307
+#: contents/code/main.py:322
 #, fuzzy
 msgid "Max volume value"
 msgstr "Veromix ses yükselt"
 
-#: contents/code/main.py:313
+#: contents/code/main.py:328
 msgid "Mute if volume reaches zero"
 msgstr ""
 
-#: contents/code/main.py:317
+#: contents/code/main.py:332
 msgid "Sound Card Profiles"
 msgstr ""
 
-#: contents/code/main.py:339
+#: contents/code/main.py:354
 msgid "Pulseaudio"
 msgstr ""
 
-#: contents/code/main.py:360
+#: contents/code/main.py:361
+msgid ""
+"LADSPA is a standard for handling audio filters and effects. Every linux "
+"software archive offers a large number of effects - search for LADSPA to get "
+"more.            Not every effect is supported by Pulseaudio and others "
+"simple don't make sense (or create only noise).<br/><br/>            The "
+"following list shows all available effects on your system: Only checked "
+"effects will appear in the context-menu."
+msgstr ""
+
+#: contents/code/main.py:366
+msgid ""
+"<br/><br/><b>Warning:</b> Cannot find the executables 'listplugins' and "
+"'analyseplugin' which are required for dynamically detecting installed "
+"effects.<br/>               In OpenSUSE, Fedora and Arch Linux the package "
+"is named 'ladspa', in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>"
+msgstr ""
+
+#: contents/code/main.py:375
+msgid "Enable LADSPA effects."
+msgstr ""
+
+#: contents/code/main.py:396
+msgid "Effects / Equalizer"
+msgstr ""
+
+#: contents/code/main.py:417
 msgid "Veromix toggle  mute"
 msgstr "Veromix sessiz"
 
-#: contents/code/main.py:364
+#: contents/code/main.py:421
 msgid "Volume Keyboard Shortcuts"
 msgstr ""
 
@@ -210,36 +252,40 @@ msgstr ""
 msgid "Show position"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:47 contents/code/SinkMbeqUI.py:133
+#: contents/code/SinkInputUI.py:48 contents/code/SinkMbeqUI.py:131
 msgid "Disconnect/kill"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:55 contents/code/SourceOutputUI.py:50
+#: contents/code/SinkInputUI.py:56 contents/code/SourceOutputUI.py:50
 msgid "Move To"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:87
+#: contents/code/SinkInputUI.py:95
 msgid "Event Sounds"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:91
+#: contents/code/SinkInputUI.py:99
 msgid "Flash Player"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:95
+#: contents/code/SinkInputUI.py:103
 msgid "Chromium Browser"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:99
+#: contents/code/SinkInputUI.py:107
 msgid "Event Sound"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:101
+#: contents/code/SinkInputUI.py:109
 msgid "Voice Output"
 msgstr ""
 
-#: contents/code/SinkMbeqUI.py:138
-msgid "Effect"
+#: contents/code/SinkMbeqUI.py:279
+msgid "Name"
+msgstr ""
+
+#: contents/code/SinkMbeqUI.py:290
+msgid "Cancel"
 msgstr ""
 
 #: contents/code/SinkUI.py:39
@@ -248,6 +294,10 @@ msgstr ""
 
 #: contents/code/SinkUI.py:53
 msgid "Uncombine"
+msgstr ""
+
+#: contents/code/SinkUI.py:61
+msgid "Add Effect"
 msgstr ""
 
 #: contents/code/Utils.py:28
@@ -276,19 +326,15 @@ msgstr ""
 "bakabilirsiniz</a> <span style=\"font-size: small;\">(sağ tıklayın ve "
 "bağlantıyı kopyalayın)</span>. "
 
-#: contents/code/VeroMix.py:78
-msgid "Add equalizer"
-msgstr ""
-
-#: contents/code/VeroMix.py:118
+#: contents/code/VeroMix.py:101
 msgid "Playback"
 msgstr "Oynatma"
 
-#: contents/code/VeroMix.py:119
+#: contents/code/VeroMix.py:102
 msgid "Record"
 msgstr "Kaydetme"
 
-#: contents/code/VeroMix.py:142
+#: contents/code/VeroMix.py:125
 #, fuzzy
 msgid ""
 "There is a problem with the backgroud-"
