@@ -263,6 +263,7 @@ class Channel(QGraphicsWidget):
             self.extended_panel_shown = True
             self.expander.setSvg("widgets/arrows", "down-arrow")
             self.slider = SinkChannelWidget(self.veromix, self)
+            self.slider.installEventFilter(self.double_click_filter)
             self.middle_layout.addItem(self.slider)
         self.middle_layout.setContentsMargins(0,0,0,0)
         self.middle.setContentsMargins(0,0,0,0)
@@ -447,6 +448,24 @@ class Channel(QGraphicsWidget):
         parameters =  parameters + " control=" + preset["control"]
         self.pa_sink.set_ladspa_sink(parameters)
 
+    def next_focus(self, forward=True):
+        channels = self.veromix.get_visible_channels()
+        if len(channels) > 0:
+            index = 0
+            if self in channels:
+                index = channels.index(self)
+                if forward:
+                    index = index + 1
+                    if index >= len(channels):
+                        index = 0
+                else:
+                    index = index - 1
+                    if index < 0:
+                        index = len(channels) - 1
+            channels[index].set_focus()
+
+    def set_focus(self):
+        self.slider.set_focus()
 
 class ChannelEventFilter(QObject):
     def __init__(self, channel):
@@ -457,5 +476,13 @@ class ChannelEventFilter(QObject):
         if event and event.type() == QEvent.GraphicsSceneMouseDoubleClick:
             self.channel.on_double_clicked()
             return True
-        return False
+
+        if event.type() == QEvent.KeyPress:
+            if event.key() == Qt.Key_Backtab:
+                self.channel.next_focus(False)
+                return True
+            elif event.key() == Qt.Key_Tab:
+                self.channel.next_focus()
+                return True
+        return QObject.eventFilter(self, obj, event)
 

@@ -135,6 +135,9 @@ class LabelSlider(Plasma.Slider):
             self.update_plasma_timestamp()
             self.volumeChanged.emit(value)
 
+    def set_focus(self):
+        self.scene().setFocusItem(self, Qt.TabFocusReason)
+
 # private
     def update_pulse_timestamp(self):
         self.pulse_timestamp = datetime.datetime.now()
@@ -257,3 +260,6 @@ class MeterSlider(QGraphicsWidget):
         if self.meter:
             self.meter.installEventFilter(filter)
         QGraphicsWidget.installEventFilter(self, filter)
+
+    def set_focus(self):
+        self.slider.set_focus()

@@ -152,6 +152,9 @@ class SortedLayout(QGraphicsLinearLayout):
         while(self.needs_ordering()):
             self.order_items()
 
+    def sorted_channels(self):
+        return self.sort(self.channels.values())
+
     def order_items(self):
         sorting = self.sort(self.channels.values())
         for i in range(0,len(sorting)):

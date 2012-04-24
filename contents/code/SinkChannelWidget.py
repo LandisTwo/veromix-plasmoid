@@ -72,6 +72,7 @@ class SinkChannelWidget(QGraphicsWidget):
             slider.volumeChanged.connect(self.on_slider_cb)
             self.sliders.append(slider)
             self.slider_layout.addItem(slider)
+            slider.installEventFilter(self.event_filter)
 
     def remove_sliders(self):
         for slider in self.sliders:
@@ -122,3 +123,16 @@ class SinkChannelWidget(QGraphicsWidget):
         # via the pa-callback
         # else we get infinite loops
         self.sink.on_step_volume(event.delta() > 0)
+
+    def installEventFilter(self, filter):
+        if filter:
+            self.event_filter = filter
+        for slider in self.sliders:
+            slider.installEventFilter(filter)
+        self.label.installEventFilter(filter)
+        self.slider_widget.installEventFilter(filter)
+        QGraphicsWidget.installEventFilter(self,filter)
+
+    def set_focus(self):
+        # FIXME
+        self.sliders[0].set_focus()

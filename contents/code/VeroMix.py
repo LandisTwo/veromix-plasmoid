@@ -42,6 +42,8 @@ class VeroMix(QGraphicsWidget):
         self.card_infos = {}
         self.ladspa_index = 1
 
+        self.setFocusPolicy(Qt.TabFocus)
+
     def init(self):
         self.setAcceptsHoverEvents (True)
         self.layout = QGraphicsLinearLayout(Qt.Vertical, self)
@@ -400,6 +402,10 @@ class VeroMix(QGraphicsWidget):
                 return self.sink_panel_layout.get_sink_widgets()[0]
         if len(self.sink_panel_layout.getChannels().values()) > 0:
             return self.sink_panel_layout.getChannels().values()[0]
+
+    def get_visible_channels(self):
+        # FIXME sources self.source_panel
+        return self.sink_panel_layout.sorted_channels()
 ## helpers
 
     def get_card_info_for(self, sink):
