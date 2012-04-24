@@ -1,3 +1,9 @@
+0.17.0 - 25.4.2012
+- LADSPA preset support (load, save) - file format compatible with python-equalizer.
+- Dynamically detect installed LADSPA effects.
+- Remove "Add Effect" Button. Choose effects and presets (to be added) via context-menu.
+- Initial support for keyboard navigation (Tab and Shift-T between streams, change volume with arrwos).
+
 0.16.2 - 4.4.2012
 - Invert/fix the behaviour of horizontal scrolling over the icon in the systemtray/panel.
 - Fix: Plasmoid icon changes its size and position when plasmoid settings is changed.
