@@ -12,7 +12,7 @@ Package: plasma-widget-veromix
 Architecture: all
 Depends:
  ${misc:Depends}, ${python:Depends}, plasma-scriptengine-python, pulseaudio,
- python-xdg, python-qt4-dbus, swh-plugins
+ python-xdg, python-qt4-dbus, swh-plugins, ladspa-sdk
 Description: plasma widget to control pulseaudio
  Veromix is a mixer for the Pulseaudio sound server.
  .

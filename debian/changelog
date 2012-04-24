@@ -2,6 +2,7 @@ veromix (0.17.0-1) unstable; urgency=low
 
   * New upstream release.
   * Updated debian/control Standards-Version to 3.9.3 (no changes).
+  * Adding ladspa-sdk as depends to debian/control.
 
  -- Nik Lutz <nik.lutz@gmail.com>  Wed, 25 Apr 2012 00:15:03 +0100
 
