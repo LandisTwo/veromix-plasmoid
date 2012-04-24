@@ -194,6 +194,10 @@ class LADSPAEffects:
         f.close()
         self.effects(True)
 
+    def ladspa_sdk_available(self):
+        status,output = commands.getstatusoutput("listplugins")
+        #status2, output = commands.getstatusoutput("analyseplugin")
+        return status == 0
 
 def fetch_plugins():
     status,output = commands.getstatusoutput("listplugins")

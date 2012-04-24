@@ -358,14 +358,27 @@ class VeroMixPlasmoid(plasmascript.Applet):
         layout = QGridLayout()
         self.ladspa_settings_page.setLayout(layout)
 
+        text = i18n("LADSPA is a standard for handling audio filters and effects. Every linux software archive offers a large number of effects - search for LADSPA to get more.\
+            Not every effect is supported by Pulseaudio and others simple don't make sense (or create only noise).<br/><br/>\
+            The following list shows all available effects on your system: Only checked effects will appear in the context-menu.")
+
+        if not LADSPAEffects().ladspa_sdk_available():
+            text = text + i18n("<br/><br/><b>Warning:</b> Cannot find the executables 'listplugins' and 'analyseplugin' which are required for dynamically detecting installed effects.<br/>\
+               In OpenSUSE, Fedora and Arch Linux the package is named 'ladspa', in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>")
+
+        ladspa_intro = QLabel(text)
+
+        ladspa_intro.setWordWrap(True)
+        layout.addWidget(ladspa_intro, 0,0)
+
         self.ladspa_enabled_checkbox = QCheckBox()
         self.ladspa_enabled_checkbox.setText(i18n("Enable LADSPA effects."))
         self.ladspa_enabled_checkbox.setChecked(self.is_ladspa_enabled())
         self.ladspa_enabled_checkbox.stateChanged.connect(dialog.settingsModified)
-        layout.addWidget(self.ladspa_enabled_checkbox, 0,0)
+        layout.addWidget(self.ladspa_enabled_checkbox, 1,0)
 
         self.effects_list_widget = QListWidget()
-        layout.addWidget(self.effects_list_widget,1,0)
+        layout.addWidget(self.effects_list_widget,2,0)
         self.effects_list_widget.itemClicked.connect(dialog.settingsModified)
 
         blacklisted = LADSPAEffects().blacklist()
@@ -379,7 +392,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
                 item.setCheckState(Qt.Checked)
             self.effects_list_widget.addItem(item)
 
-        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding), 2,0)
+        layout.addItem(QSpacerItem(0,0, QSizePolicy.Minimum,QSizePolicy.Expanding), 3,0)
         dialog.addPage(self.ladspa_settings_page, i18n("Effects / Equalizer"), "preferences-desktop-sound")
 
     # anybody knows how to remove/extend the default shortcuts page?
