@@ -88,7 +88,10 @@ class VeroMixPlasmoid(plasmascript.Applet):
             print "Error installing veromix icon:", out
 
         LADSPAPresetLoader().install_ladspa_presets_if_needed(unicode(self.package().path())+"presets")
-
+        if self.is_ladspa_enabled():
+            # force singleton initialisation
+            LADSPAPresetLoader().presets()
+            LADSPAEffects().effects()
         createDbusServiceDescription(self)
 
         KGlobal.locale().insertCatalog("veromix-plasmoid")
