@@ -23,7 +23,6 @@ i18n = gettext.gettext
 class SinkChannel():
 
     def __init__(self, name, volume):
-        #QObject.__init__(self)
         self.name = name
         self.volume = volume
 
@@ -40,6 +39,7 @@ class SinkChannel():
         print("    </SinkChannel>")
 
 class AbstractSink():
+    # FIXME KDE
     DEFAULT_ICON = "audio-x-generic-symbolic"
 
     def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props):
@@ -152,6 +152,7 @@ class AbstractSink():
         return int(self.get_index())
 
 class SinkInfo(AbstractSink):
+    # FIXME KDE
     DEFAULT_ICON = "audio-card-symbolic"
 
     def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props, ports, active_port):
@@ -197,7 +198,7 @@ class SinkInfo(AbstractSink):
     def _update_nice_values(self):
         self._nice_text =  ""
         self._nice_title = self.name
-        self._nice_icon = self.DEFAULT_ICON # FIXME "mixer-pcm"
+        self._nice_icon = self.DEFAULT_ICON
         text = ""
         try:
             self._nice_title = self.props["device_name"]
@@ -234,7 +235,7 @@ class SinkInputInfo(AbstractSink):
 
         if self.props["app_icon"] != "None":
             iconname = self.props["app_icon"]
-        ## FIXME
+        ## FIXME KDE
         #if iconname == None and  self.props["app"] != "None":
             #iconname = self.veromix.query_application(self.props["app"])
         if bold == "knotify":
