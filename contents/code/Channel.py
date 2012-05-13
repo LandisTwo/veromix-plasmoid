@@ -217,7 +217,7 @@ class Channel(QGraphicsWidget):
         self.slider.set_meter_value(0)
 
     def on_step_volume(self, up):
-        vol = self.pa_sink.getVolume()
+        vol = self.pa_sink.get_volume()()
         STEP = 5
         if up:
             vol = vol + STEP
@@ -243,9 +243,9 @@ class Channel(QGraphicsWidget):
                 self.pa.set_sink_mute(self.index, False)
         self.set_channel_volumes(vol)
 
-    def getVolume(self):
+    def get_volume()(self):
         if self.pa_sink:
-            return self.pa_sink.getVolume()
+            return self.pa_sink.get_volume()()
         return [0]
 
     def on_expander_clicked(self):

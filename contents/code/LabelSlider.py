@@ -122,7 +122,7 @@ class LabelSlider(Plasma.Slider):
         self.label.update_unit_string(value)
 
     def update_with_info(self, info):
-        self.setValueFromPulse(info.getVolume())
+        self.setValueFromPulse(info.get_volume())
 
     def setValueFromPulse(self, value):
         if self.check_plasma_timestamp():
