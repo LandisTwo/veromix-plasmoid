@@ -166,7 +166,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         if sink == None:
             QTimer.singleShot(2000, self.fixPopupIcon)
             return
-        vol = sink.get_volume()()
+        vol = sink.get_volume()
         if sink.isMuted() :
             icon_state= "audio-volume-muted"
         else:

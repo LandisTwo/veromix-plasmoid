@@ -19,6 +19,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
 from PyKDE4.plasma import Plasma
+from PyKDE4.kdecore import i18n
 
 from LabelSlider import MeterSlider
 from MuteButton  import MuteButton
@@ -217,7 +218,7 @@ class Channel(QGraphicsWidget):
         self.slider.set_meter_value(0)
 
     def on_step_volume(self, up):
-        vol = self.pa_sink.get_volume()()
+        vol = self.pa_sink.get_volume()
         STEP = 5
         if up:
             vol = vol + STEP
@@ -243,9 +244,9 @@ class Channel(QGraphicsWidget):
                 self.pa.set_sink_mute(self.index, False)
         self.set_channel_volumes(vol)
 
-    def get_volume()(self):
+    def get_volume(self):
         if self.pa_sink:
-            return self.pa_sink.get_volume()()
+            return self.pa_sink.get_volume()
         return [0]
 
     def on_expander_clicked(self):
