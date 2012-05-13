@@ -14,32 +14,36 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt4.QtCore import *
+#from PyQt4.QtCore import *
+import gettext
+i18n = gettext.gettext
+
 
 ## FIXME bad name: how is one "channel" of a strereo stream called?
-class SinkChannel(QObject):
+class SinkChannel():
 
     def __init__(self, name, volume):
-        QObject.__init__(self)
+        #QObject.__init__(self)
         self.name = name
         self.volume = volume
 
-    def getName(self) :
+    def get_name(self) :
         return self.name
 
-    def getVolume(self):
+    def get_volume(self):
         return self.volume
 
     def printDebug(self):
-        print "    <SinkChannel>"
-        print  "      <name>", self.name,  "</name>"
-        print "       <volume>", self.volume,  "</volume>"
-        print "    </SinkChannel>"
+        print("    <SinkChannel>")
+        print("      <name>" + self.name + "</name>")
+        print("       <volume>" + self.volume + "</volume>")
+        print("    </SinkChannel>")
 
-class AbstractSink(QObject):
+class AbstractSink():
+    DEFAULT_ICON = "audio-x-generic-symbolic"
 
     def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props):
-        QObject.__init__(self)
+        #QObject.__init__(self)
         self.pulse_proxy = pulseaudio
         #self.pa = pulseaudio
         self.index =  index
@@ -47,46 +51,53 @@ class AbstractSink(QObject):
         self.mute  =   muted
         self. volume  =   volume
         self.props = props
+        self._update_nice_values()
 
-    def getVolume(self):
+    def get_index(self):
+        return int(self.index)
+
+    def get_name(self) :
+        return self.name
+
+    def get_volume(self):
         val =0
-        for t in self.volume.keys():
-            val += self.volume[t].values()[0]
-        return int(val/ len(self.volume.keys()))
+        for t in list(self.volume.keys()):
+            val += list(self.volume[t].values())[0]
+        return int(val/ len(list(self.volume.keys())))
 
     def getChannels(self):
         channels = []
-        for key in self.volume.keys():
+        for key in list(self.volume.keys()):
             t = self.volume[key]
-            name = t.keys()[0]
-            vol = t.values()[0]
+            name = list(t.keys())[0]
+            vol = list(t.values())[0]
             channels.append(SinkChannel(name,vol))
         return channels
 
     def volumeDiffFor(self, value):
         vol = []
-        diff = self.getVolume() - value
-        for key in self.volume.keys():
-            value = self.volume[key].values()[0] - diff
+        diff = self.get_volume() - value
+        for key in list(self.volume.keys()):
+            value = list(self.volume[key].values())[0] - diff
             if value < 0:
                 value = 0
             vol.append(value )
         return vol
 
     def printDebug(self):
-        print "<sink type=" +str(type(self))+ ">"
-        print  "  <index>", self.index,  "</index>"
-        print "  <name>", self.name,  "</name>"
-        print "  <mute>", self.mute,  "</mute>"
-        print "  <volume>",
+        print("<sink type=" +str(type(self))+ ">")
+        print("  <index>" + self.index + "</index>")
+        print("  <name>" + self.name + "</name>")
+        print("  <mute>" + self.mute +  "</mute>")
+        print("  <volume>")
         for channel in self.getChannels():
             channel.printDebug()
-        print "  </volume>"
-        print "  <properties>"
-        for key in self.props.keys():
-            print "    <" + key + ">", self.props[key],"</" + key + ">"
-        print "  </properties>"
-        print "</sink>"
+        print("  </volume>")
+        print("  <properties>")
+        for key in list(self.props.keys()):
+            print("    <" + key + ">", self.props[key],"</" + key + ">")
+        print("  </properties>")
+        print("</sink>")
 
     def isMuted(self):
         return self.mute == 1
@@ -95,8 +106,8 @@ class AbstractSink(QObject):
         name = "Veromix monitor"
         try:
             name = self.name.encode("ascii")
-        except Exception,  e:
-            print e
+        except Exception as  e:
+            print(e)
         return name
 
     ## testing
@@ -116,7 +127,32 @@ class AbstractSink(QObject):
     def properties(self):
         return self.props
 
+    def _update_nice_values(self):
+        self._nice_text =  ""
+        self._nice_title = self.name
+        self._nice_icon = self.DEFAULT_ICON
+
+
+    def get_nice_text(self):
+        return self._nice_text
+
+    def get_nice_title(self):
+        return self._nice_title
+
+    def get_nice_icon(self):
+        return self._nice_icon
+
+    def get_nice_title_and_name(self):
+        return "<b>" + self.get_nice_title() + "</b> " + self.get_nice_text()
+
+    def is_default_sink(self):
+        return False
+
+    def get_output_index(self):
+        return int(self.get_index())
+
 class SinkInfo(AbstractSink):
+    DEFAULT_ICON = "audio-card-symbolic"
 
     def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props, ports, active_port):
         AbstractSink.__init__(self, pulseaudio, index,   name,  muted  , volume ,  props)
@@ -149,10 +185,27 @@ class SinkInfo(AbstractSink):
 
     def remove_ladspa_sink(self):
         self.pulse_proxy.remove_ladspa_sink(int(self.props["owner_module"]))
-        
+
     def remove_combined_sink(self):
         self.pulse_proxy.remove_combined_sink(int(self.props["owner_module"]))
 
+    def is_default_sink(self):
+        if "isdefault" in self.props:
+            return self.props["isdefault"] == "True"
+        return False
+
+    def _update_nice_values(self):
+        self._nice_text =  ""
+        self._nice_title = self.name
+        self._nice_icon = self.DEFAULT_ICON # FIXME "mixer-pcm"
+        text = ""
+        try:
+            self._nice_title = self.props["device_name"]
+        except:
+            pass
+
+    def move_sink_input(self, target_sink):
+        self.pulse_proxy.move_sink_input(int(target_sink), int(self.get_index()))
 
 class SinkInputInfo(AbstractSink):
 
@@ -173,6 +226,57 @@ class SinkInputInfo(AbstractSink):
 
     def kill(self):
         self.pulse_proxy.sink_input_kill(self.index)
+
+    def _update_nice_values(self):
+        text =  self.name
+        bold = self.props["app"]
+        iconname = None
+
+        if self.props["app_icon"] != "None":
+            iconname = self.props["app_icon"]
+        ## FIXME
+        #if iconname == None and  self.props["app"] != "None":
+            #iconname = self.veromix.query_application(self.props["app"])
+        if bold == "knotify":
+            bold = i18n("Event Sounds")
+            text = ""
+            iconname = 'dialog-information'
+        if bold == "npviewer.bin" or bold == "plugin-container":
+            bold = i18n("Flash Player")
+            text = ""
+            iconname = 'flash'
+        if bold == "chromium-browser":
+            bold = i18n("Chromium Browser")
+            text = ""
+        if bold == "Skype":
+            if text == "Event Sound":
+                text = i18n("Event Sound")
+            if text == "Output":
+                text = i18n("Voice Output")
+
+        if text == "LADSPA Stream" or (self.props["media.name"] == "LADSPA Stream"):
+            for sink in self.veromix.get_sink_widgets():
+                if sink.pa_sink.props["owner_module"] == self.props["owner_module"]:
+                    bold = sink.pa_sink.props["device.ladspa.name"]
+                    text = ""
+                    iconname = sink.pa_sink.props["device.icon_name"]
+
+        # FIXME
+        if bold in ["", "None", None]:
+            bold = text
+            text = ""
+
+        if text in ["None", None]:
+            text = ""
+
+        if iconname in ["", "None", None]:
+            iconname = self.DEFAULT_ICON # FIXME "mixer-pcm"
+        self._nice_text = text
+        self._nice_title = bold
+        self._nice_icon = iconname
+
+    def get_output_index(self):
+        return int(self.props["sink"])
 
 class SourceInfo(AbstractSink):
 
@@ -228,13 +332,13 @@ class CardProfile:
         # FIXME other values
 
     def printDebug(self):
-        print "<CardProfile>"
-        print "  <name>", self.name, "</name>"
-        print "  <properties>"
-        for key in self.properties.keys():
-            print "    <" + key + ">", self.properties[key],"</" + key + ">"
-        print "  </properties>"
-        print "</CardProfile>"
+        print("<CardProfile>")
+        print("  <name>", self.name, "</name>")
+        print("  <properties>")
+        for key in list(self.properties.keys()):
+            print("    <" + key + ">", self.properties[key],"</" + key + ">")
+        print("  </properties>")
+        print("</CardProfile>")
 
 class CardInfo:
     def __init__(self, index,   name,  properties, active_profile_name ,  profiles_dict):
@@ -244,13 +348,13 @@ class CardInfo:
          self.active_profile_name = active_profile_name
          self.profiles_dict = profiles_dict
          self.profiles = []
-         for key in self.profiles_dict.keys():
+         for key in list(self.profiles_dict.keys()):
              self.profiles.append(CardProfile(key, self.profiles_dict[key] ))
 
     def get_property(self,key):
         if self.properties == None:
             return ""
-        if key in self.properties.keys():
+        if key in list(self.properties.keys()):
             return self.properties[key]
         return ""
 
@@ -270,11 +374,11 @@ class CardInfo:
         return self.active_profile_name
 
     def printDebug(self):
-        print "<CardInfo>"
-        print  "  <index>", self.index,  "</index>"
-        print "  <name>", self.name, "</name>"
-        print "  <properties>"
-        for key in self.properties.keys():
-            print "    <" + key + ">", self.properties[key],"</" + key + ">"
-        print "  </properties>"
-        print "</CardInfo>"
+        print("<CardInfo>")
+        print("  <index>", self.index,  "</index>")
+        print("  <name>", self.name, "</name>")
+        print("  <properties>")
+        for key in list(self.properties.keys()):
+            print("    <" + key + ">", self.properties[key],"</" + key + ">")
+        print("  </properties>")
+        print("</CardInfo>")
