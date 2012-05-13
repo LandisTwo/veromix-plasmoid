@@ -88,14 +88,9 @@ class SinkUI(Channel):
             self.muteInfo.emit(aBoolean)
 
     def update_label(self):
-        text = ""
-        try:
-            text = self.pa_sink.props["device_name"]
-        except:
-            pass
         if self.slider:
-            self.slider.setBoldText(text)
-            self.set_name(text)
+            self.slider.setBoldText(self.pa_sink.get_nice_title())
+            self.set_name(self.pa_sink.get_nice_title())
 
 ## Drag and Drop Support
 
