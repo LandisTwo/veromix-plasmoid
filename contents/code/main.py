@@ -92,7 +92,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             # force singleton initialisation
             LADSPAPresetLoader().presets()
             LADSPAEffects().effects()
-        createDbusServiceDescription(self)
+        createDbusServiceDescription(unicode(self.package().path()) + "dbus-service/VeromixServiceMain.py")
 
         KGlobal.locale().insertCatalog("veromix-plasmoid")
 

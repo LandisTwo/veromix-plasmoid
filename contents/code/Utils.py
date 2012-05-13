@@ -14,38 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys, os,commands
-from xdg import BaseDirectory
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from PyKDE4.kdecore import *
-from PyKDE4.plasma import Plasma
-from PyKDE4.kdeui import KIcon
+import sys, os
+try:
+    from xdg import BaseDirectory
+    _XDG_SERVICE_DIR = BaseDirectory.xdg_data_home + "dbus-1/services/"
+except:
+    _XDG_SERVICE_DIR = os.path.expanduser("~/.local/share/dbus-1/services/")
 
-def updateMetadataDesktop(applet):
-    applet.layout = QGraphicsLinearLayout(Qt.Vertical)
-    applet.setLayout(applet.layout)
-    icon = Plasma.IconWidget(i18n("Please remove and re-add myself"))
-    icon.setIcon(KIcon("dialog-information"))
-    applet.layout.addItem(icon)
-    commands.getstatusoutput("cp " + unicode(applet.package().path()) + "metadata.desktop.kde4.4 $(kde4-config  --localprefix )share/apps/plasma/plasmoids/veromix-plasmoid/metadata.desktop" )
-    commands.getstatusoutput("cp " + unicode(applet.package().path()) + "metadata.desktop.kde4.4 $(kde4-config  --localprefix )share/kde4/services/plasma-applet-veromix-plasmoid.desktop" )
-    commands.getstatusoutput("kbuildsycoca4" )
-    applet.showMessage(KIcon("dialog-information"),i18n( '<b>Configuration updated</b><br/> \
-            Because of a known bug in KDE 4.4 initialization of Veromix failed.<br/><br/>\
-            A workaround is now installed.<br/><br/>\
-            Please <b>remove</b> this applet and <b>add</b> Veromix again to your desktop/panel (alternatively you can restart plasma-desktop).<br/><br/> \
-            Sorry for the inconvenience.<br/><br/>\
-            <a href="http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#KDE_4.4_compatibility">See wiki for more details</a> <span style="font-size: small;">(right click and copy url)</span>. '), Plasma.ButtonOk)
 
-def createDbusServiceDescription(applet):
-    print "Outputting dbus-servie file"
-    service_dir = os.path.join(BaseDirectory.xdg_data_home,"dbus-1/services/")
+def createDbusServiceDescription(path):
+    print ("Outputting dbus-servie file")
+    service_dir = os.path.join(_XDG_SERVICE_DIR)
     createDirectory(service_dir)
     # File to create
     fn = service_dir+"org.veromix.pulseaudio.service"
 
-    exec_dir = unicode(applet.package().path()) + "dbus-service/VeromixServiceMain.py"
+    exec_dir = str(path)
 
     # File contents
     c = []
@@ -59,19 +43,26 @@ def createDbusServiceDescription(applet):
         f.writelines(c)
         f.close()
     except:
-        print "Problem writing to file: "+fn
-        print "Unexpected error:", sys.exc_info()[0]
-    commands.getstatusoutput("chmod u+x "+exec_dir)
+        print ("Problem writing to file: " + fn)
+        print ("Unexpected error:", sys.exc_info()[0])
+    try:
+        import subprocess
+        subprocess.getstatusoutput("chmod u+x "+exec_dir)
+    except:
+        import commands
+        commands.getstatusoutput("chmod u+x "+exec_dir)
 
 def createDirectory(d):
     if not os.path.isdir(d):
         try:
             os.makedirs(d)
         except:
-            print "Problem creating directory: "+d
-            print "Unexpected error:", sys.exc_info()[0]
+            print ("Problem creating directory: "+d)
+            print ("Unexpected error:", sys.exc_info()[0])
 
 def pixmapFromSVG( name):
+        from PyKDE4.plasma import Plasma
+        from PyKDE4.kdeui import KIcon
         svg = Plasma.Svg()
         svg.setImagePath("icons/audio")
         if not svg.isValid():
@@ -98,7 +89,7 @@ def in_unicode(string):
         try:
             utf8 = unicode(string, enc)
             return utf8
-        except  Exception,  e:
+        except:
             if enc == encodings[-1]:
                 #raise UnicodingError("still don't recognise encoding after trying do guess.")
                 return "problem with string decoding"
