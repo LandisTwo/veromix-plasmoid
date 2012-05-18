@@ -22,7 +22,7 @@
 # Author: Harry Karvonen <harry.karvonen@gmail.com>
 #
 
-from lib_pulseaudio import *
+from .lib_pulseaudio import *
 import math
 
 # This contains all basic volume features
@@ -30,7 +30,7 @@ class PulseVolume:
     def __init__(self, vol, channels):
         self.channels = channels
         if vol > 100 or vol < 0:
-            print "WARNING: Volume is invalid!"
+            print("WARNING: Volume is invalid!")
             vol = 0
         self.values   = [vol] * self.channels
         return
@@ -54,7 +54,7 @@ class PulseVolume:
         ct = struct_pa_cvolume()
         ct.channels = self.channels
         for x in range(0, self.channels):
-            ct.values[x] = (self.values[x] * PA_VOLUME_NORM) / 100
+            ct.values[x] = int((self.values[x] * PA_VOLUME_NORM) / 100)
         return ct
 
     def toCtypes2(self, num):
@@ -67,9 +67,9 @@ class PulseVolume:
     ###
 
     def printDebug(self):
-        print "PulseVolume"
-        print "self.channels:", self.channels
-        print "self.values:", self.values
+        print("PulseVolume")
+        print("self.channels:", self.channels)
+        print("self.values:", self.values)
         #print "self.proplist:", self.proplist
 
     ###
@@ -104,7 +104,7 @@ class PulseVolume:
 
     def __str__(self):
         return "Channels: " + str(self.channels) + \
-               ", values: \"" + str(map(lambda x: str(x) + "%", self.values)) + "\""
+               ", values: \"" + str([str(x) + "%" for x in self.values]) + "\""
 
 ################################################################################
 
@@ -112,8 +112,7 @@ class PulseVolumeCtypes(PulseVolume):
     def __init__(self, pa_cvolume, pa_channel_map):
         self.channels = pa_cvolume.channels
         self.channel_map = pa_channel_map
-        self.values   = map(lambda x: (math.ceil(float(x) * 100 / PA_VOLUME_NORM)),
-                            pa_cvolume.values[0:self.channels])
+        self.values   = [(math.ceil(float(x) * 100 / PA_VOLUME_NORM)) for x in pa_cvolume.values[0:self.channels]]
         return
 
     def getVolumes(self):
