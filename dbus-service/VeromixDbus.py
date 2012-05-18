@@ -21,6 +21,7 @@ import dbus.service
 #from PulseAudio import *
 from pulseaudio.PulseVolume import *
 
+
 ###
 # The DBUS interface we offer
 ###
@@ -64,11 +65,11 @@ class VeromixDbus(dbus.service.Object):
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='ib', out_signature='')
     def source_mute(self, index, mute):
-        self.pulse.pulse_source_mute(long(index), int(mute))
+        self.pulse.pulse_source_mute(int(index), int(mute))
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
     def source_port(self, index, portstr):
-        self.pulse.pulse_set_source_port(long(index), portstr)
+        self.pulse.pulse_set_source_port(int(index), portstr)
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def source_volume(self, index, vol):
@@ -93,15 +94,15 @@ class VeromixDbus(dbus.service.Object):
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='ib', out_signature='')
     def sink_mute(self, index, mute):
-        self.pulse.pulse_sink_mute(long(index), int(mute))
+        self.pulse.pulse_sink_mute(int(index), int(mute))
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='is', out_signature='')
     def sink_port(self, index, portstr):
-        self.pulse.pulse_set_sink_port(long(index), portstr)
+        self.pulse.pulse_set_sink_port(int(index), portstr)
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def sink_volume(self, index, vol):
-        self.pulse.pulse_set_sink_volume(long (index), PulseVolume(vol))
+        self.pulse.pulse_set_sink_volume(int(index), PulseVolume(vol))
 
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='id')
     def volume_meter_sink(self, index,value ):
@@ -130,11 +131,11 @@ class VeromixDbus(dbus.service.Object):
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='i', out_signature='')
     def sink_input_kill(self, index):
-        self.pulse.pulse_sink_input_kill(long(index))
+        self.pulse.pulse_sink_input_kill(int(index))
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='ib', out_signature='')
     def sink_input_mute(self, index, mute):
-        self.pulse.pulse_sink_input_mute(long(index), int(mute))
+        self.pulse.pulse_sink_input_mute(int(index), int(mute))
 
     @dbus.service.method("org.veromix.pulseaudio", in_signature='iai', out_signature='')
     def sink_input_volume(self, index, vol):
