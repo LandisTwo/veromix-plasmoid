@@ -21,9 +21,19 @@
 import ctypes
 from ctypes import *
 
-import lib
+from .lib import *
 
-_lib = lib.LibraryLoader().load_library('pulse')
+import sys
+use_old = True
+if sys.version_info >= (3, 0):
+    use_old = False
+
+def as_p_char(aString):
+    if use_old:
+        return str(aString)
+    return c_char_p(bytes(aString, 'utf8'))
+
+_lib = LibraryLoader().load_library('pulse')
 
 _int_types = (c_int16, c_int32)
 if hasattr(ctypes, 'c_int64'):
