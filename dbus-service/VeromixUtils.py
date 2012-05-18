@@ -22,6 +22,11 @@
 # Author: Harry Karvonen <harry.karvonen@gmail.com>
 #
 
+import sys
+use_old = True
+if sys.version_info >= (3, 0):
+    use_old = False
+    
 class UnicodingError(Exception):
     pass
 
@@ -36,6 +41,13 @@ encodings = [ "ascii", "utf_8", "big5", "big5hkscs", "cp037", "cp424", "cp437", 
     "shift_jisx0213", "utf_32", "utf_32_be", "utf_32_le", "utf_16", "utf_16_be", "utf_16_le", "utf_7", "utf_8_sig" ]
 
 def in_unicode(string):
+    if use_old:
+        return _in_unicode(string)
+    if isinstance(string, bytes):
+        return string.decode("utf-8")
+    return str(string)
+    
+def _in_unicode(string):
     '''make unicode'''
     if isinstance(string, unicode):
         return string
@@ -43,7 +55,7 @@ def in_unicode(string):
         try:
             utf8 = unicode(string, enc)
             return utf8
-        except  Exception,  e:
+        except:
             if enc == encodings[-1]:
                 #raise UnicodingError("still don't recognise encoding after trying do guess.")
                 return "problem with string decoding"
