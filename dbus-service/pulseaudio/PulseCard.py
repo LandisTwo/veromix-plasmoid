@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # PulseCard.py
-# Copyright (C) 2011  Nik Lutz
+# Copyright (C) 2011-2012  Nik Lutz
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,17 +20,17 @@
 #
 # Author: Nik Lutz <nik.lutz@gmail.com>
 #
-from lib_pulseaudio import *
+from .lib_pulseaudio import *
 from VeromixUtils import *
 
 class CardProfile:
 
-    def __init__(self, pa_card_profile):
-        self.name =  in_unicode(pa_card_profile.name)
-        self.description =  in_unicode(pa_card_profile.description)
-        self.n_sinks =  pa_card_profile.n_sinks
-        self.n_sources =  pa_card_profile.n_sources
-        self.priority =  pa_card_profile.priority
+    def __init__(self, card_info):
+        self.name =  in_unicode(card_info.name)
+        self.description =  in_unicode(card_info.description)
+        self.n_sinks =  int(card_info.n_sinks)
+        self.n_sources =  int(card_info.n_sources)
+        self.priority =  int(card_info.priority)
         #print "got profile",  self.name, self.description, self.n_sinks, self.n_sources, self.priority
 
     def as_dict(self):
@@ -45,14 +45,14 @@ class CardProfile:
 class CardInfo:
 
     def __init__(self, pa_card_info):
-        self.index = pa_card_info.index
-        self.name = pa_card_info.name
-        self.owner_module = pa_card_info.owner_module
-        self.driver = pa_card_info.driver
-        self.n_profiles = pa_card_info.n_profiles
+        self.index = int(pa_card_info.index)
+        self.name = in_unicode(pa_card_info.name)
+        self.owner_module = in_unicode(pa_card_info.owner_module)
+        self.driver = in_unicode(pa_card_info.driver)
+        self.n_profiles = int(pa_card_info.n_profiles)
 
         self.active_profile = CardProfile(pa_card_info.active_profile[0])
-        self.proplist_string =   pa_proplist_to_string(pa_card_info.proplist)
+        self.proplist_string = in_unicode(pa_proplist_to_string(pa_card_info.proplist))
         self.proplist = proplist_to_dict(self.proplist_string)
         #print self.proplist
         #self.proplist = pa_card_info.proplist
@@ -67,7 +67,7 @@ class CardInfo:
         # FIXME
         info = {}
         #info["owner_module"] = self.owner_module
-        for key in self.proplist.keys():
+        for key in list(self.proplist.keys()):
             info[key] = self.proplist[key]
         return info
 
