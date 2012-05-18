@@ -15,7 +15,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #from PyQt4.QtCore import *
-import gettext
+import gettext, html
 i18n = gettext.gettext
 
 
@@ -134,10 +134,10 @@ class AbstractSink():
 
 
     def get_nice_text(self):
-        return self._nice_text
+        return html.escape(self._nice_text)
 
     def get_nice_title(self):
-        return self._nice_title
+        return html.escape(self._nice_title)
 
     def get_nice_icon(self):
         return self._nice_icon
@@ -255,7 +255,7 @@ class SinkInputInfo(AbstractSink):
             if text == "Output":
                 text = i18n("Voice Output")
 
-        if text == "LADSPA Stream" or (self.props["media.name"] == "LADSPA Stream"):
+        if text == "LADSPA Stream" or ("media.name" in self.props.keys() and self.props["media.name"] == "LADSPA Stream"):
             for sink in self.veromix.get_sink_widgets():
                 if sink.pa_sink.props["owner_module"] == self.props["owner_module"]:
                     bold = sink.pa_sink.props["device.ladspa.name"]
