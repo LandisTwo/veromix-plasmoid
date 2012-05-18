@@ -23,20 +23,20 @@
 #         Paul W. Frields <stickster@gmail.com>
 #
 
-from lib_pulseaudio import *
+from .lib_pulseaudio import *
 
-from PulseClient import PulseClient
-from PulseClient import PulseClientCtypes
-from PulseVolume import PulseVolumeCtypes
-from PulseVolume import PulseVolume
+from .PulseClient import PulseClient
+from .PulseClient import PulseClientCtypes
+from .PulseVolume import PulseVolumeCtypes
+from .PulseVolume import PulseVolume
 from VeromixUtils import *
 
 # This class contains all commons features from PulseSourceInputInfo and
 # PulseSourceInfo
 class PulseSource:
     def __init__(self, index, name, client):
-        self.index  = index
-        self.name   = in_unicode(name)
+        self.index  = int(index)
+        self.name   = str(in_unicode(name))
         self.client = client
         self.isDefaultSource = False
         return
@@ -57,9 +57,9 @@ class PulseSource:
         return
 
     def printDebug(self):
-        print "self.name:", self.name
-        print "self.index:", self.index
-        print "self.client:", self.client
+        print("self.name:", self.name)
+        print("self.index:", self.index)
+        print("self.client:", self.client)
         return
 
 
@@ -79,17 +79,17 @@ class PulseSourceInfo(PulseSource):
         self.mute =  pa_source_info.mute
         self.volume = PulseVolumeCtypes(pa_source_info.volume,pa_source_info.channel_map )
 
-        self.description          = in_unicode(pa_source_info.description)
-        self.sample_spec          = pa_source_info.sample_spec
-        self.channel_map          = pa_source_info.channel_map
-        self.owner_module         = pa_source_info.owner_module
-        self.monitor_of_sink      = pa_source_info.monitor_of_sink
-        self.monitor_of_sink_name = pa_source_info.monitor_of_sink_name
-        self.latency              = pa_source_info.latency
-        self.driver               = pa_source_info.driver
-        self.flags                = pa_source_info.flags
+        self.description          = in_unicode(in_unicode(pa_source_info.description))
+        self.sample_spec          = in_unicode(pa_source_info.sample_spec)
+        self.channel_map          = in_unicode(pa_source_info.channel_map)
+        self.owner_module         = in_unicode(pa_source_info.owner_module)
+        self.monitor_of_sink      = in_unicode(pa_source_info.monitor_of_sink)
+        self.monitor_of_sink_name = in_unicode(pa_source_info.monitor_of_sink_name)
+        self.latency              = in_unicode(pa_source_info.latency)
+        self.driver               = in_unicode(pa_source_info.driver)
+        self.flags                = in_unicode(pa_source_info.flags)
         self.proplist             = pa_source_info.proplist
-        self.n_ports              = pa_source_info.n_ports
+        self.n_ports              = int(pa_source_info.n_ports)
         self.ports = {}
         self.active_port = ""
 
@@ -100,7 +100,7 @@ class PulseSourceInfo(PulseSource):
             self.active_port = in_unicode(pa_source_info.active_port.contents.name)
 
         #self.configured_latency   = pa_source_info.configured_latency
-        self.proplist_string =  ( pa_proplist_to_string(pa_source_info.proplist))
+        self.proplist_string =  in_unicode( pa_proplist_to_string(pa_source_info.proplist))
         self.proplist_dict = proplist_to_dict(self.proplist_string )
 
         return
@@ -149,21 +149,21 @@ class PulseSourceInfo(PulseSource):
     ###
 
     def printDebug(self):
-        print "PulseSourceInfo"
+        print("PulseSourceInfo")
         PulseSource.printDebug(self)
-        print "self.mute:", self.mute
-        print "self.volume:", self.volume
-        print "self.description", self.description
-        print "self.sample_spec", self.sample_spec
-        print "self.channel_map", self.channel_map
-        print "self.owner_module", self.owner_module
-        print "self.monitor_of_sink", self.monitor_of_sink
-        print "self.monitor_of_sink_name", self.monitor_of_sink_name
-        print "self.latency", self.latency
-        print "self.driver", self.driver
-        print "self.flags", self.flags
+        print("self.mute:", self.mute)
+        print("self.volume:", self.volume)
+        print("self.description", self.description)
+        print("self.sample_spec", self.sample_spec)
+        print("self.channel_map", self.channel_map)
+        print("self.owner_module", self.owner_module)
+        print("self.monitor_of_sink", self.monitor_of_sink)
+        print("self.monitor_of_sink_name", self.monitor_of_sink_name)
+        print("self.latency", self.latency)
+        print("self.driver", self.driver)
+        print("self.flags", self.flags)
         #print "self.proplist", self.proplist
-        print "self.configured_latency", self.configured_latency
+        print("self.configured_latency", self.configured_latency)
         return
 
     ###
@@ -185,7 +185,7 @@ class PulseSourceOutputInfo(PulseSource):
                                  PulseClient("PulseSourceOutputInfo"))
         self.owner_module    = pa_source_output_info.owner_module
         self.client_id       = pa_source_output_info.client
-        self.source          = str(pa_source_output_info.source)
+        self.source          = in_unicode(pa_source_output_info.source)
 
         self.sample_spec     = pa_source_output_info.sample_spec
         self.channel_map     = pa_source_output_info.channel_map
@@ -194,7 +194,7 @@ class PulseSourceOutputInfo(PulseSource):
         self.resample_method = pa_source_output_info.resample_method
         self.driver          = pa_source_output_info.driver
         self.proplist        = pa_source_output_info.proplist
-        self.proplist_string =  ( pa_proplist_to_string(pa_source_output_info.proplist))
+        self.proplist_string =  in_unicode( pa_proplist_to_string(pa_source_output_info.proplist))
         self.proplist_dict = proplist_to_dict(self.proplist_string )
 
         return
@@ -224,18 +224,18 @@ class PulseSourceOutputInfo(PulseSource):
     ###
 
     def printDebug(self):
-        print "PulseSourceOutputInfo"
+        print("PulseSourceOutputInfo")
         PulseSource.printDebug(self)
 
-        print "self.owner_module:", self.owner_module
-        print "self.client_id:", self.client_id
-        print "self.source:", self.source
-        print "self.sample_spec:", self.sample_spec
-        print "self.channel_map:", self.channel_map
-        print "self.buffer_usec:", self.buffer_usec
-        print "self.source_usec:", self.source_usec
-        print "self.resample_method:", self.resample_method
-        print "self.driver:", self.driver
+        print("self.owner_module:", self.owner_module)
+        print("self.client_id:", self.client_id)
+        print("self.source:", self.source)
+        print("self.sample_spec:", self.sample_spec)
+        print("self.channel_map:", self.channel_map)
+        print("self.buffer_usec:", self.buffer_usec)
+        print("self.source_usec:", self.source_usec)
+        print("self.resample_method:", self.resample_method)
+        print("self.driver:", self.driver)
 
     ###
 
