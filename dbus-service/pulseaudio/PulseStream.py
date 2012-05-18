@@ -22,11 +22,11 @@
 # Author: Paul W. Frields <stickster@gmail.com>
 #
 
-from lib_pulseaudio import *
+from .lib_pulseaudio import *
 from ctypes import *
 
-from PulseClient import PulseClient
-from PulseVolume import PulseVolumeCtypes
+from .PulseClient import PulseClient
+from .PulseVolume import PulseVolumeCtypes
 
 class PulseStream:
     def __init__(self, context, name, sample_spec, channel_map):
