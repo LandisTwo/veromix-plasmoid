@@ -52,7 +52,7 @@ class LibraryLoader(object):
             return self.load_framework(kwargs['framework'])
 
         platform_names = kwargs.get(self.platform, [])
-        if type(platform_names) in (str, unicode):
+        if type(platform_names) in (str, str):
             platform_names = [platform_names]
         elif type(platform_names) is tuple:
             platform_names = list(platform_names)
@@ -65,7 +65,7 @@ class LibraryLoader(object):
             try:
                 lib = ctypes.cdll.LoadLibrary(name)
                 #if _debug_lib:
-                print "Loaded library :", name
+                print("Loaded library :", name)
                 #if _debug_trace:
                 #    lib = _TraceLibrary(lib)
                 return lib
@@ -75,7 +75,7 @@ class LibraryLoader(object):
                     try:
                         lib = ctypes.cdll.LoadLibrary(path)
                         if _debug_lib:
-                            print path
+                            print(path)
                         if _debug_trace:
                             lib = _TraceLibrary(lib)
                         return lib
