@@ -33,6 +33,7 @@ from PyQt4 import QtCore
 
 from pulseaudio.PulseAudio import *
 from VeromixDbus import *
+from VeromixEvent import *
 from Pa2dBus import *
 
 
@@ -48,6 +49,7 @@ if __name__ == '__main__':
     pulse = PulseAudio()
     bus = VeromixDbus(pulse,conn)
     i = Pa2dBus(bus, pulse)
+    event_processor = VeromixEvent(i)
+    pulse.set_receiver(event_processor)
     pulse.start_pulsing()
-    print "main loop"
     app.exec_()
