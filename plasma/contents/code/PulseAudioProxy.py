@@ -18,7 +18,7 @@ import signal
 import dbus.mainloop.qt
 from PyQt4.QtCore import *
 
-from PulseProxyObjects import *
+from veromixcommon.PulseProxyObjects import *
 from MediaPlayer import Mpris2MediaPlayer
 
 class PulseAudio(QObject):
@@ -137,7 +137,7 @@ class PulseAudio(QObject):
         return collection
 
     def getMixer(self):
-        pa_obj  = self.bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
+        pa_obj  = self.bus.get_object("org.veromix.pulseaudio.qt","/org/veromix/pulseaudio")
         return dbus.Interface(pa_obj, 'org.veromix.pulseaudio')
 
     def get_mpris2_object(self, destination):
