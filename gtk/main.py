@@ -126,7 +126,7 @@ class Veromix(Gtk.VBox):
         self.launch_pa()
         
     def launch_pa(self):
-        createDbusServiceDescription(VEROMIX_BASEDIR + VEROMIX_SERVICE)
+        createDbusServiceDescription(VEROMIX_BASEDIR + VEROMIX_SERVICE, False)
         
         self.pa.connect_veromix_service()
         CardProfiles.get_instance(self)

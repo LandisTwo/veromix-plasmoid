@@ -156,7 +156,7 @@ class PulseAudio(GObject.GObject):
         return collection
 
     def getMixer(self):
-        pa_obj  = self.bus.get_object("org.veromix.pulseaudioservice","/org/veromix/pulseaudio")
+        pa_obj  = self.bus.get_object("org.veromix.pulseaudio.glib","/org/veromix/pulseaudio")
         return dbus.Interface(pa_obj, 'org.veromix.pulseaudio')
 
     def get_mpris2_object(self, destination):

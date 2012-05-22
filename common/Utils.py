@@ -17,24 +17,29 @@
 import sys, os
 try:
     from xdg import BaseDirectory
-    _XDG_SERVICE_DIR = BaseDirectory.xdg_data_home + "dbus-1/services/"
+    _XDG_SERVICE_DIR = BaseDirectory.xdg_data_home + "/dbus-1/services/"
 except:
     _XDG_SERVICE_DIR = os.path.expanduser("~/.local/share/dbus-1/services/")
 
 
-def createDbusServiceDescription(path):
+def createDbusServiceDescription(path, use_qt):
     print ("Outputting dbus-servie file")
     service_dir = os.path.join(_XDG_SERVICE_DIR)
     createDirectory(service_dir)
     # File to create
-    fn = service_dir+"org.veromix.pulseaudio.service"
+    fn = service_dir+"org.veromix.pulseaudio.qt.service"
+    if not use_qt:
+       fn = service_dir+"org.veromix.pulseaudio.glib.service"
 
     exec_dir = str(path)
 
     # File contents
     c = []
     c.append("[D-BUS Service]\n")
-    c.append("Name=org.veromix.pulseaudioservice\n")
+    if use_qt:
+        c.append("Name=org.veromix.pulseaudio.qt\n")
+    else:
+        c.append("Name=org.veromix.pulseaudio.glib\n")
     c.append("Exec="+exec_dir+"\n")
 
     # Write file

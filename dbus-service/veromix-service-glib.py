@@ -32,7 +32,7 @@ if __name__ == '__main__':
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     mainloop = dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
     conn = dbus.SessionBus()
-    name = dbus.service.BusName("org.veromix.pulseaudioservice", conn)
+    name = dbus.service.BusName("org.veromix.pulseaudio.glib", conn)
 
     dbus.set_default_main_loop(mainloop)
     

@@ -55,7 +55,7 @@ from VeroMix import VeroMix
 from MediaPlayer import NowPlayingController
 from LADSPAEffects import LADSPAEffects
 from LADSPAEffects import LADSPAPresetLoader
-from Utils import *
+from veromixcommon.Utils import *
 
 COMMENT=i18n("Veromix is a mixer for the Pulseaudio sound server. ")
 
@@ -92,7 +92,9 @@ class VeroMixPlasmoid(plasmascript.Applet):
             # force singleton initialisation
             LADSPAPresetLoader().presets()
             LADSPAEffects().effects()
-        createDbusServiceDescription(unicode(self.package().path()) + "dbus-service/VeromixServiceMain.py")
+
+        base = os.path.abspath(os.path.join(str(self.package().path()), os.path.pardir))
+        createDbusServiceDescription(base + "/dbus-service/veromix-service-qt.py", True)
 
         KGlobal.locale().insertCatalog("veromix-plasmoid")
 
