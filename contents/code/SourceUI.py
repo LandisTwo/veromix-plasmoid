@@ -41,10 +41,7 @@ class SourceUI( Channel ):
 
     def update_label(self):
         text =  ""
-        bold = self.pa_sink.name
-        if "description" in self.pa_sink.props.keys():
-            bold = self.pa_sink.props["description"]
-            text = self.pa_sink.name
+        bold = self.pa_sink.get_nice_title()
         if self.slider:
             self.slider.setText(text )
             self.slider.setBoldText(bold)

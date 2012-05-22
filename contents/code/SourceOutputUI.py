@@ -59,28 +59,16 @@ class SourceOutputUI( Channel ):
                 self.veromix.pa.move_source_output(self.index, widget.index)
 
     def update_label(self):
-        text =  ""
-        bold = self.pa_sink.name
-        if "description" in self.pa_sink.props.keys():
-            bold = self.pa_sink.props["description"]
-            text = self.pa_sink.name
-
-        if self.name().find("ALSA") == 0 and "application.process.binary" in self.pa_sink.props.keys():
-            bold = self.pa_sink.props[ "application.process.binary"]
-            text =  self.pa_sink.props[ "application.name"]
+        text =  self.pa_sink.get_nice_text()
+        bold = self.pa_sink.get_nice_title()
         self.set_name(bold)
-
         if self.slider:
             self.slider.setText(text)
             self.slider.setBoldText(bold)
-        iconname = None
-        if "application.icon_name" in self.pa_sink.props.keys():
-            iconname = self.pa_sink.props["application.icon_name"]
+            
+        iconname = self.pa_sink.get_nice_icon()
         if iconname == None and  "app" in self.pa_sink.props.keys():
             iconname = self.veromix.query_application(self.pa_sink.props["app"])
-
-        if iconname is None and bold == "plugin-container":
-            iconname = 'flash'
 
         if iconname :
             self.mute.setBigIconName(iconname)
