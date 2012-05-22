@@ -9,7 +9,7 @@ from GPulseAudioProxy import *
 from CardProfiles import *
 
 from SortedChannelBox import SortedChannelBox
-from Utils import *
+from veromixcommon.Utils import *
 
 #VEROMIX_BASEDIR = os.path.abspath(os.path.join(os.getcwd(), os.path.pardir))
 VEROMIX_BASEDIR = os.path.abspath(os.path.join(os.path.realpath(__file__), os.path.pardir))

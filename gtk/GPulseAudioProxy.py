@@ -19,7 +19,7 @@ import dbus.mainloop.glib
 #from PyQt4.QtCore import *
 from gi.repository import GObject
 
-from PulseProxyObjects import *
+from veromixcommon.PulseProxyObjects import *
 #from MediaPlayer import Mpris2MediaPlayer
 
 def SIGNAL(name):
