@@ -1,0 +1,371 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Kai Uwe b <privat@kde.broulik.de>, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: veromix-0.9\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-04-25 00:03+0200\n"
+"PO-Revision-Date: 2011-06-10 18:43+0200\n"
+"Last-Translator: Kai Uwe b <privat@kde.broulik.de>\n"
+"Language-Team: German <kde-i18n-de@kde.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: German\n"
+"X-Generator: Lokalize 1.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#
+#: rc.py:3 rc.py:18 rc.py:81
+msgid "Form"
+msgstr "Von"
+
+#: rc.py:6 rc.py:75
+msgid "Version"
+msgstr "Version"
+
+#: rc.py:9 rc.py:69
+msgid "Homepage"
+msgstr "Homepage"
+
+#: rc.py:12 rc.py:72
+msgid ""
+"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+"com/p/veromix-plasmoid/</A>"
+msgstr ""
+"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
+"com/p/veromix-plasmoid/</A>"
+
+#: rc.py:15 rc.py:78
+msgid "X.Y"
+msgstr "X.Y"
+
+#: rc.py:21
+msgid "Popup Mode"
+msgstr "Popup-Verhalten"
+
+#: rc.py:24
+#, fuzzy
+msgid "Close when losing focus"
+msgstr "Automatisch schließen"
+
+#: rc.py:27
+msgid "Close manually"
+msgstr "Klicken zum Schließen"
+
+#: rc.py:30
+msgid "Background"
+msgstr "Hintergrund"
+
+#: rc.py:33
+msgid "No background"
+msgstr "Kein Hintergrund"
+
+#: rc.py:36
+msgid "Translucent background"
+msgstr "Durchsichtiger Hintergrund"
+
+#: rc.py:39
+msgid "Standard background"
+msgstr "Standard-Hintergrund"
+
+#: rc.py:42
+#, fuzzy
+msgid "Notification "
+msgstr "Systembenachrichtigungen"
+
+#: rc.py:45
+msgid "Show toolip"
+msgstr "Popup zeigen"
+
+#: rc.py:48
+msgid "Layout"
+msgstr "Layout"
+
+#: rc.py:51
+msgid "Use tabs"
+msgstr "Registerkarten verwenden"
+
+#: rc.py:54
+msgid "Always show sources"
+msgstr "Eingabegeräte immer anzeigen"
+
+#: rc.py:57
+msgid "Show context menu button"
+msgstr ""
+
+#: rc.py:60
+msgid "Show unit values"
+msgstr ""
+
+#: rc.py:63
+msgid "Autostart meters"
+msgstr ""
+
+#: rc.py:66
+msgid ""
+"Meters can be very CPU intensive! You can always enable meters by double "
+"clicking a channel."
+msgstr ""
+
+#: rc.py:84
+msgid "Use KDE nowplaying dataengine"
+msgstr "KDE-Wiedergabe-Engine verwenden"
+
+#: rc.py:87
+msgid "Use mpris2"
+msgstr "MPris2 verwenden"
+
+#: rc.py:90
+msgid "Media player blacklist:"
+msgstr "Die folgenden Medienspieler ignorieren:"
+
+#: rc.py:93
+msgid "Running media players:"
+msgstr "Aktuell laufende Medienwiedergabeprogramme:"
+
+#: rc.py:96
+msgid "Show album art"
+msgstr ""
+
+#: contents/code/Channel.py:138
+msgid "Muted"
+msgstr ""
+
+#: contents/code/Channel.py:145
+msgid "Unlock channels"
+msgstr ""
+
+#: contents/code/Channel.py:154
+msgid "Ports"
+msgstr ""
+
+#: contents/code/Channel.py:178
+msgid "Profile"
+msgstr ""
+
+#: contents/code/Channel.py:207
+msgid "Veromix Settings"
+msgstr ""
+
+#: contents/code/Channel.py:401
+msgid "Presets"
+msgstr ""
+
+#: contents/code/Channel.py:403 contents/code/SinkMbeqUI.py:294
+msgid "Save"
+msgstr ""
+
+#: contents/code/Channel.py:408
+msgid "Save As..."
+msgstr ""
+
+#: contents/code/Channel.py:422
+msgid "Effect"
+msgstr ""
+
+#: contents/code/main.py:60
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr "Veromix ist ein Lautstärkeregler für den Pulseaudio-Soundserver."
+
+#: contents/code/main.py:140 contents/code/main.py:407
+msgid "Veromix volume up"
+msgstr "Veromix-Lautstärke erhöhen"
+
+#: contents/code/main.py:145 contents/code/main.py:412
+msgid "Veromix volume down"
+msgstr "Veromix-Lautstärke verringern"
+
+#: contents/code/main.py:150
+msgid "Veromix toggle mute"
+msgstr "Veromix-Stummschaltung ein/aus"
+
+#: contents/code/main.py:158
+msgid "Main Volume"
+msgstr "Hauptregler"
+
+#: contents/code/main.py:276
+msgid "Appearance"
+msgstr "Erscheinungsbild"
+
+#: contents/code/main.py:296
+msgid "Media Player Controls"
+msgstr "Medienwiedergabesteuerung"
+
+#: contents/code/main.py:322
+msgid "Max volume value"
+msgstr "Maximal-Lautstärke"
+
+#: contents/code/main.py:328
+msgid "Mute if volume reaches zero"
+msgstr "Stummschalten wenn Lautstärke Null erreicht"
+
+#: contents/code/main.py:332
+msgid "Sound Card Profiles"
+msgstr "Soundkarten-Profile"
+
+#: contents/code/main.py:354
+msgid "Pulseaudio"
+msgstr "Pulseaudio"
+
+#: contents/code/main.py:361
+msgid ""
+"LADSPA is a standard for handling audio filters and effects. Every linux "
+"software archive offers a large number of effects - search for LADSPA to get "
+"more.            Not every effect is supported by Pulseaudio and others "
+"simple don't make sense (or create only noise).<br/><br/>            The "
+"following list shows all available effects on your system: Only checked "
+"effects will appear in the context-menu."
+msgstr ""
+
+#: contents/code/main.py:366
+msgid ""
+"<br/><br/><b>Warning:</b> Cannot find the executables 'listplugins' and "
+"'analyseplugin' which are required for dynamically detecting installed "
+"effects.<br/>               In OpenSUSE, Fedora and Arch Linux the package "
+"is named 'ladspa', in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>"
+msgstr ""
+
+#: contents/code/main.py:375
+msgid "Enable LADSPA effects."
+msgstr ""
+
+#: contents/code/main.py:396
+msgid "Effects / Equalizer"
+msgstr ""
+
+#: contents/code/main.py:417
+#, fuzzy
+msgid "Veromix toggle  mute"
+msgstr "Veromix-Stummschaltung ein/aus"
+
+#: contents/code/main.py:421
+msgid "Volume Keyboard Shortcuts"
+msgstr "Lautstärke-Tastenkürzel"
+
+#: contents/code/MediaPlayerUI.py:206
+msgid "Show position"
+msgstr ""
+
+#: contents/code/SinkInputUI.py:48 contents/code/SinkMbeqUI.py:131
+msgid "Disconnect/kill"
+msgstr "Trennen"
+
+#: contents/code/SinkInputUI.py:56 contents/code/SourceOutputUI.py:50
+msgid "Move To"
+msgstr ""
+
+#: contents/code/SinkInputUI.py:95
+msgid "Event Sounds"
+msgstr "Ereignist&ouml;ne"
+
+#: contents/code/SinkInputUI.py:99
+msgid "Flash Player"
+msgstr "Flash Player"
+
+#: contents/code/SinkInputUI.py:103
+msgid "Chromium Browser"
+msgstr "Chromium Browser"
+
+#: contents/code/SinkInputUI.py:107
+msgid "Event Sound"
+msgstr "Ereigniston"
+
+#: contents/code/SinkInputUI.py:109
+msgid "Voice Output"
+msgstr "Sprachausgabe"
+
+#: contents/code/SinkMbeqUI.py:279
+msgid "Name"
+msgstr ""
+
+#: contents/code/SinkMbeqUI.py:290
+msgid "Cancel"
+msgstr ""
+
+#: contents/code/SinkUI.py:39
+msgid "Default Sink"
+msgstr "Standardgerät"
+
+#: contents/code/SinkUI.py:53
+msgid "Uncombine"
+msgstr ""
+
+#: contents/code/SinkUI.py:61
+msgid "Add Effect"
+msgstr ""
+
+#: contents/code/Utils.py:28
+msgid "Please remove and re-add myself"
+msgstr ""
+"Bitte <b>entfernen</b> Sie dieses Plasmoid und fügen Sie es erneut zu Ihrem "
+"Desktop hinzu. Alternativ können Sie Ihren Computer auch neu starten. "
+
+#: contents/code/Utils.py:34
+msgid ""
+"<b>Configuration updated</b><br/>             Because of a known bug in KDE "
+"4.4 initialization of Veromix failed.<br/><br/>            A workaround is "
+"now installed.<br/><br/>            Please <b>remove</b> this applet and "
+"<b>add</b> Veromix again to your desktop/panel (alternatively you can "
+"restart plasma-desktop).<br/><br/>             Sorry for the inconvenience."
+"<br/><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/"
+"wiki/VeromixComponents#KDE_4.4_compatibility\">See wiki for more details</a> "
+"<span style=\"font-size: small;\">(right click and copy url)</span>. "
+msgstr ""
+"<b>Konfiguration aktualisiert</a><br/>Aufgrund eines bekannten Fehlers in "
+"KDE 4.4 konnte Veromix nicht geladen werden.<br/><br/>Die Konfiguration "
+"wurde aktualisiert, sodass dieser Fehler beim nächsten Start nicht mehr "
+"auftreten sollte.<br/><br/>Bitte <b>entfernen</b> Sie dieses Plasmoid und "
+"fügen Sie es erneut zu Ihrem Desktop hinzu. Alternativ können Sie Ihren "
+"Computer auch neu starten. <br/><br/><a href=\"http://code.google.com/p/"
+"veromix-plasmoid/wiki/VeromixComponents#KDE_4.4_compatibility\">Mehr "
+"Informationen finden sie im Wiki</a> <span style=\"font-size: small;\">"
+"(Recktsklick → „Adresse kopieren“)</span>."
+
+#: contents/code/VeroMix.py:101
+msgid "Playback"
+msgstr "Wiedergabe"
+
+#: contents/code/VeroMix.py:102
+msgid "Record"
+msgstr "Aufnahme"
+
+#: contents/code/VeroMix.py:125
+#, fuzzy
+msgid ""
+"There is a problem with the backgroud-"
+"service.                                                         "
+"<ul>                                                         <li>If you just "
+"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
+"this plasmoid</li>                                                         "
+"<li>If you don't know how to do that consider rebooting</li></ul><br/"
+">                                                        <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more "
+"details</a> <span style=\"font-size: small;\">(right click and copy url)</"
+"span>."
+msgstr ""
+"Es besteht ein Problem mit der Verbindung zum Pulseaudio server.<ul><li> "
+"Falls Sie das Plasmoid gerade aktualisiert haben, versuchen Sie den Prozess "
+"mit dem Namen \"VeromixServiceMain.py\" zu beenden</li><li>Alternativ können "
+"Sie Ihren Computer auch neu starten</li></ul><br/><a href=\"http://code."
+"google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
+"_VeromixServiceMain.py\">Mehr Informationen finden sie im Wiki</a> <span "
+"style=\"font-size: small;\">(rechts click und \"Adresse kopieren\")</span>."
+
+#~ msgid "Show meter"
+#~ msgstr "Lautstärke anzeigen"
+
+#~ msgid "Output"
+#~ msgstr "Ausgabe"
+
+#~ msgid "Enable media player controls"
+#~ msgstr "Medienwiedergabesteuerung anzeigen"
+
+#~ msgid "mpris2 Mediaplayers"
+#~ msgstr "mpris2 Medien-Player "
+
+#~ msgid "Use tabs (requires plasma restart)"
+#~ msgstr "Tabs anzeigen (plasma muss neu gestartet werden)"
