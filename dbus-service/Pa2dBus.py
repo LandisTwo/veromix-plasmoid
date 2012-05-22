@@ -64,7 +64,10 @@ class Pa2dBus():
         volume = sink.volume.getVolumes()
         active_port = sink.active_port
         ports = sink.ports
-        self.dbus.source_info(index, name, muted, volume, sink.propDict(), ports, active_port)
+        props = sink.propDict()
+        if "device.class" in props.keys() and props["device.class"]  == "monitor":
+            return
+        self.dbus.source_info(index, name, muted, volume, props, ports, active_port)
 
     def on_source_output_info(self, sink):
         index =  int(sink.index)
