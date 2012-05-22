@@ -18,7 +18,7 @@ from PyKDE4.plasma import Plasma
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from PyKDE4.kdeui import *
-from Utils import *
+from veromixcommon.Utils import *
 
 
 class MuteButton(Plasma.IconWidget):

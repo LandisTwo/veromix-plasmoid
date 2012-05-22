@@ -27,7 +27,7 @@ from ClickableMeter import ClickableMeter
 from SinkChannelWidget import SinkChannelWidget
 from LADSPAEffects import LADSPAEffects
 from LADSPAEffects import LADSPAPresetLoader
-from Utils import *
+from veromixcommon.Utils import *
 
 class Channel(QGraphicsWidget):
 

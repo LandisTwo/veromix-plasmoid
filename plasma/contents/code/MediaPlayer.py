@@ -20,7 +20,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from PyKDE4.kdeui import *
-from PulseProxyObjects import *
+from veromixcommon.PulseProxyObjects import *
 
 ##
 
