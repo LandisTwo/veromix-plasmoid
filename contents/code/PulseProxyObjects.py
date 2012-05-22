@@ -53,12 +53,33 @@ class AbstractSink():
         self.props = props
         self._update_nice_values()
 
+    def is_default(self):
+        return False            
+
     def get_index(self):
         return int(self.index)
 
     def get_name(self) :
         return self.name
 
+    def toggle_mute(self ):
+        pass
+
+    def step_volume_by(self, STEP, up):
+        vol = self.get_volume()
+        if up:
+            vol = vol + STEP
+        else:
+            vol = vol - STEP
+        if vol < 0:
+            vol = 0
+        if vol > 100: # FIXME self.get_max_volume_value():
+            vol = 100 #self.get_max_volume_value()
+        self.set_volume(self.volumeDiffFor(vol))
+        
+    def set_volume(self, values):
+        pass
+        
     def get_volume(self):
         val =0
         for t in list(self.volume.keys()):
@@ -100,6 +121,10 @@ class AbstractSink():
         print("</sink>")
 
     def isMuted(self):
+        # FIXME
+        return self.is_muted()
+
+    def is_muted(self):
         return self.mute == 1
 
     def get_monitor_name(self):
@@ -162,6 +187,11 @@ class SinkInfo(AbstractSink):
 
     def is_sink(self):
         return True
+        
+    def is_default(self):
+        if "isdefault" in self.props:
+            return self.props["isdefault"] == "True"      
+        return False
 
     def set_volume(self, values):
         self.pulse_proxy.set_sink_volume(self.index, values)
@@ -280,6 +310,7 @@ class SinkInputInfo(AbstractSink):
         return int(self.props["sink"])
 
 class SourceInfo(AbstractSink):
+    DEFAULT_ICON = "audio-input-microphone-symbolic"
 
     def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props, ports, active_port):
         AbstractSink.__init__(self, pulseaudio, index,   name,  muted  , volume ,  props)
@@ -307,6 +338,14 @@ class SourceInfo(AbstractSink):
     def kill(self):
         pass
 
+    def _update_nice_values(self):
+        self._nice_text =  ""
+        self._nice_title = self.name
+        self._nice_icon = self.DEFAULT_ICON
+        if "description" in self.props.keys():
+            self._nice_title = self.props["description"]
+#            self._nice_text = self.name
+        
 class SourceOutputInfo(AbstractSink):
 
     def is_sourceoutput(self):
@@ -324,6 +363,34 @@ class SourceOutputInfo(AbstractSink):
     def toggle_monitor(self,parent):
         pass
 
+
+    def get_volume(self):
+        return 0
+
+    def getChannels(self):
+        return []
+
+    def _update_nice_values(self):        
+        self._nice_text =  ""
+        self._nice_title = self.name
+        self._nice_icon = self.DEFAULT_ICON
+        if "description" in self.props.keys():
+            self._nice_title = self.props["description"]
+            self._nice_text = self.name
+
+        if self.name.find("ALSA") == 0 and "application.process.binary" in self.props.keys():
+            self._nice_title = self.props[ "application.process.binary"]
+            self._nice_text =  self.props[ "application.name"]
+        
+        if "application.icon_name" in self.props.keys():
+            self._nice_icon = self.props["application.icon_name"]
+            
+        # FIXME KDE
+#        if iconname == None and  "app" in self.props.keys():
+#            self._nice_icon = self.veromix.query_application(self.pa_sink.props["app"])
+
+        if self._nice_icon is None and self._nice_title == "plugin-container":
+            self._nice_icon = 'flash'
 
 class CardProfile:
     def __init__(self, name, properties):
