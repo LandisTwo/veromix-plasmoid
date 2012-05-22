@@ -191,7 +191,7 @@ class PulseSourceOutputInfo(PulseSource):
         self.channel_map     = pa_source_output_info.channel_map
         self.buffer_usec     = pa_source_output_info.buffer_usec
         self.source_usec     = None #pa_source_output_info.source_usec
-        self.resample_method = pa_source_output_info.resample_method
+        self.resample_method = in_unicode(pa_source_output_info.resample_method)
         self.driver          = pa_source_output_info.driver
         self.proplist        = pa_source_output_info.proplist
         self.proplist_string =  in_unicode( pa_proplist_to_string(pa_source_output_info.proplist))
