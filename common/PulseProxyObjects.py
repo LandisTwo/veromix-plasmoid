@@ -15,9 +15,16 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #from PyQt4.QtCore import *
-import gettext, html
+import gettext
 i18n = gettext.gettext
 
+try:
+    import html
+except:
+    class html:
+        @staticmethod
+        def escape(arg):
+            return str(arg)
 
 ## FIXME bad name: how is one "channel" of a strereo stream called?
 class SinkChannel():
