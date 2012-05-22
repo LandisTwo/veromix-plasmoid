@@ -24,6 +24,7 @@
 
 from .lib_pulseaudio import *
 import math
+from VeromixUtils import *
 
 # This contains all basic volume features
 class PulseVolume:
@@ -120,6 +121,6 @@ class PulseVolumeCtypes(PulseVolume):
         for i in range(0, self.channels):
             key = pa_channel_position_to_pretty_string(self.channel_map.map[i])
             entry = {}
-            entry[str(key)] = self.values[i]
+            entry[in_unicode(key)] = self.values[i]
             vol[i] = entry 
         return vol
