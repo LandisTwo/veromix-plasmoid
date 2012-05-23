@@ -41,7 +41,6 @@ install-gtk:
 	cp -a data/applications/veromix.desktop $(DESTDIR)/usr/share/applications
 
 clean:
-	rm -rf .pc
 	-find . -name '*~' | xargs rm -f
 	-find . -name '*.pyc' | xargs rm -f
 	-find . -name '__pycache__' | xargs rm -f
