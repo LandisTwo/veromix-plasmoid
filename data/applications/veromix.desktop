@@ -1,0 +1,13 @@
+
+[Desktop Entry]
+Type=Application
+Exec=veromix
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[de_CH]=Veromix
+Name=Veromix
+Comment[de_CH]=
+Comment=
+Icon=veromix-plasmoid
+
