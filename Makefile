@@ -12,9 +12,7 @@ build:
 	echo "sh Messages.sh"
 
 install:
-	install-service
-	install-plasmoid
-	install-gtk
+	install-service	install-plasmoid install-gtk
 
 install-service:
 	mkdir -p $(_VEROMIX_SHARED)
