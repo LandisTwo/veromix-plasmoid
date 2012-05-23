@@ -2,39 +2,49 @@
 
 SHELL	:= sh -e
 
-VERSION	:= $$(awk -F= '/X-KDE-PluginInfo-Version/ { print $$2 }' metadata.desktop)
+VERSION	:= $$(awk -F= '/X-KDE-PluginInfo-Version/ { print $$2 }' plasma/metadata.desktop)
+
+_VEROMIX_SHARED := $(DESTDIR)/usr/share/veromix
 
 all:	build
 
 build:
-	sh Messages.sh
+	echo "sh Messages.sh"
 
-install:
+install-service:
+    mkdir -p $(_VEROMIX_SHARED)
+    cp -a  dbus-service common $(_VEROMIX_SHARED)
+    
+    mkdir -p $(_VEROMIX_SHARED)/data
+    cp -a data/icons data/presets $(_VEROMIX_SHARED)/data
+    
+ 	mkdir -p $(DESTDIR)/usr/share/dbus-1/services
+    cp -a data/dbus-1/services/* $(DESTDIR)/usr/share/dbus-1/services
+
+	mkdir -p $(DESTDIR)/usr/share/icons
+	ln -s ../veromix/data/icons/veromix-plasmoid-128.png $(DESTDIR)/usr/share/icons/veromix-plasmoid.png
+	ln -s ../veromix/data/icons/veromix-plasmoid-128.png $(DESTDIR)/usr/share/icons/veromix.png
+        
+install-plasmoid:
 	mkdir -p $(DESTDIR)/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid
-	cp -a contents dbus-service metadata.desktop $(DESTDIR)/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid
-
-	mkdir -p $(DESTDIR)/usr/share/dbus-1/services
-	cp -a org.veromix.pulseaudio.service $(DESTDIR)/usr/share/dbus-1/services
+	cp -a plasma/contents plasma/metadata.desktop $(DESTDIR)/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid	
 
 	mkdir -p $(DESTDIR)/usr/share/kde4/services
 	ln -s ../apps/plasma/plasmoids/veromix-plasmoid/metadata.desktop $(DESTDIR)/usr/share/kde4/services/plasma-widget-veromix.desktop
 
-	mkdir -p $(DESTDIR)/usr/share/icons
-	ln -s ../kde4/apps/plasma/plasmoids/veromix-plasmoid/contents/icons/veromix-plasmoid-128.png $(DESTDIR)/usr/share/icons/veromix-plasmoid.png
-
-	# legacy hack for kde 4.4
-	if [ "$$(kde4-config --kde-version | awk -F\. '{ print $$2 }')" -lt 5 ]; \
-	then \
-		sed -i -e 's|Plasma/Applet,Plasma/PopupApplet|Plasma/PopupApplet|' $(DESTDIR)/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid/metadata.desktop ; \
-	fi
+install-gtk:
+    mkdir -p $(_VEROMIX_SHARED)
+    cp -a  gtk $(_VEROMIX_SHARED)
+    cp -a data/applications/veromix.desktop $(DESTDIR)/usr/share/applications
 
 clean:
 	rm -rf .pc
 	-find . -name '*~' | xargs rm -f
 	-find . -name '*.pyc' | xargs rm -f
+	-find . -name '__pycache__' | xargs rm -f
 	-find contents/locale -name "*.mo" | xargs rm -f
 
 distclean:	clean
 
 dist:	clean
-	tar cfzv ../plasma-widget-veromix_$(VERSION).orig.tar.gz --exclude=.git --exclude=debian --exclude="contrib" ../$(shell basename $(CURDIR))
+	tar cfzv ../veromix_$(VERSION).orig.tar.gz --exclude=.git --exclude=debian --exclude="contrib" ../$(shell basename $(CURDIR))
