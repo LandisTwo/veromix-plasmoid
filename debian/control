@@ -11,26 +11,8 @@ Vcs-Git: https://code.google.com/p/veromix-plasmoid/
 Package: veromix
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends}, python3-dbus, python3-gi
-Description: Common files for veromix.
- Veromix is a mixer for the Pulseaudio sound server.
- .
- This package contains the libraries and command-line utility.
-
-Package: veromix-common
-Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, ladspa-sdk, pulseaudio, swh-plugins
-Description: Common files for veromix.
- Veromix is a mixer for the Pulseaudio sound server.
- .
- This package contains the libraries and command-line utility.
-
-Package: plasma-widget-veromix
-Architecture: all
-Depends:
- ${misc:Depends}, ${python:Depends}, plasma-scriptengine-python,
- python-qt4-dbus, python-xdg, veromix-common
-Description: plasma widget to control pulseaudio
- Veromix is a mixer for the Pulseaudio sound server.
+Description: Mixer for the PulseAudio sound server (GTK+)
+ Veromix is a mixer for the PulseAudio sound server.
  .
  Features:
   * control volume of each playback stream
@@ -41,10 +23,47 @@ Description: plasma widget to control pulseaudio
   * mute/unmute (click icon)
   * volume meter (on mouse over)
   * PopUp-Applet (icon-representation if inside panel)
-  * can life in system tray / notification area
+  * can life in system tray or notification area
   * kill playback streams
   * set default output device
   * Middle-click on panel icon mutes default output
   * Mouse-wheel over panel icon increases/decreases volume of default output
   * supports global hotkeys
   * set volume above 100%
+ .
+ This package contains the GTK+ frontend for GNOME and others.
+
+Package: veromix-common
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, ladspa-sdk, pulseaudio, swh-plugins
+Description: Mixer for the PulseAudio sound server (common)
+ Veromix is a mixer for the PulseAudio sound server.
+ .
+ This package contains the common files.
+
+Package: plasma-widget-veromix
+Architecture: all
+Depends:
+ ${misc:Depends}, ${python:Depends}, plasma-scriptengine-python,
+ python-qt4-dbus, python-xdg, veromix-common
+Description: Mixer for the PulseAudio sound server (Plasma)
+ Veromix is a mixer for the PulseAudio sound server.
+ .
+ Features:
+  * control volume of each playback stream
+  * control volume of devices (hardware)
+  * control volume of input devices (microphone)
+  * move playback streams between different devices (drag icon of playback
+    stream and drop it on target device)
+  * mute/unmute (click icon)
+  * volume meter (on mouse over)
+  * PopUp-Applet (icon-representation if inside panel)
+  * can life in system tray or notification area
+  * kill playback streams
+  * set default output device
+  * Middle-click on panel icon mutes default output
+  * Mouse-wheel over panel icon increases/decreases volume of default output
+  * supports global hotkeys
+  * set volume above 100%
+ .
+ This package contains the Plasma widget for KDE.
