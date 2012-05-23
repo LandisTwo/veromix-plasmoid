@@ -9,7 +9,12 @@ _VEROMIX_SHARED := $(DESTDIR)/usr/share/veromix
 all:	build
 
 build:
-	"sh Messages.sh"
+	echo "sh Messages.sh"
+
+install:
+	install-service
+	install-plasmoid
+	install-gtk
 
 install-service:
 	mkdir -p $(_VEROMIX_SHARED)
