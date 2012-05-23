@@ -8,17 +8,17 @@ Homepage: http://code.google.com/p/veromix-plasmoid/
 Vcs-Browser: http://code.google.com/p/veromix-plasmoid/source/browse/
 Vcs-Git: https://code.google.com/p/veromix-plasmoid/
 
-Package: veromix-common
+Package: veromix
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, ladspa-sdk, pulseaudio, swh-plugins
+Depends: ${misc:Depends}, ${python3:Depends}, python3-dbus, python3-gi
 Description: Common files for veromix.
  Veromix is a mixer for the Pulseaudio sound server.
  .
  This package contains the libraries and command-line utility.
 
-Package: veromix
+Package: veromix-common
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}, python3-dbus, python3-gi
+Depends: ${misc:Depends}, ${python:Depends}, ladspa-sdk, pulseaudio, swh-plugins
 Description: Common files for veromix.
  Veromix is a mixer for the Pulseaudio sound server.
  .
