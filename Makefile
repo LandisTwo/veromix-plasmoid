@@ -9,17 +9,17 @@ _VEROMIX_SHARED := $(DESTDIR)/usr/share/veromix
 all:	build
 
 build:
-	echo "sh Messages.sh"
+	"sh Messages.sh"
 
 install-service:
-    mkdir -p $(_VEROMIX_SHARED)
-    cp -a  dbus-service common $(_VEROMIX_SHARED)
+	mkdir -p $(_VEROMIX_SHARED)
+	cp -a  dbus-service common $(_VEROMIX_SHARED)
     
-    mkdir -p $(_VEROMIX_SHARED)/data
-    cp -a data/icons data/presets $(_VEROMIX_SHARED)/data
+	mkdir -p $(_VEROMIX_SHARED)/data
+	cp -a data/icons data/presets $(_VEROMIX_SHARED)/data
     
- 	mkdir -p $(DESTDIR)/usr/share/dbus-1/services
-    cp -a data/dbus-1/services/* $(DESTDIR)/usr/share/dbus-1/services
+	mkdir -p $(DESTDIR)/usr/share/dbus-1/services
+	cp -a data/dbus-1/services/* $(DESTDIR)/usr/share/dbus-1/services
 
 	mkdir -p $(DESTDIR)/usr/share/icons
 	ln -s ../veromix/data/icons/veromix-plasmoid-128.png $(DESTDIR)/usr/share/icons/veromix-plasmoid.png
@@ -33,16 +33,16 @@ install-plasmoid:
 	ln -s ../apps/plasma/plasmoids/veromix-plasmoid/metadata.desktop $(DESTDIR)/usr/share/kde4/services/plasma-widget-veromix.desktop
 
 install-gtk:
-    mkdir -p $(_VEROMIX_SHARED)
-    cp -a  gtk $(_VEROMIX_SHARED)
-    cp -a data/applications/veromix.desktop $(DESTDIR)/usr/share/applications
+	mkdir -p $(_VEROMIX_SHARED)
+	cp -a  gtk $(_VEROMIX_SHARED)
+	cp -a data/applications/veromix.desktop $(DESTDIR)/usr/share/applications
 
 clean:
 	rm -rf .pc
 	-find . -name '*~' | xargs rm -f
 	-find . -name '*.pyc' | xargs rm -f
 	-find . -name '__pycache__' | xargs rm -f
-	-find contents/locale -name "*.mo" | xargs rm -f
+	-find plasma/contents/locale -name "*.mo" | xargs rm -f
 
 distclean:	clean
 
