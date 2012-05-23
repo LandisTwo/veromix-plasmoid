@@ -10,27 +10,26 @@ Vcs-Git: https://code.google.com/p/veromix-plasmoid/
 
 Package: veromix-common
 Architecture: all
-Depends: 
+Depends:
  ${python:Depends}, ${misc:Depends}, pulseaudio, swh-plugins, ladspa-sdk
 Description: Common files for veromix.
- Veromix is a mixer for the Pulseaudio sound server. 
+ Veromix is a mixer for the Pulseaudio sound server.
  .
  This package contains the libraries and command-line utility.
 
 Package: veromix
 Architecture: all
-Depends: 
+Depends:
  ${python3:Depends}, ${misc:Depends}, python3-gi, python3-dbus
 Description: Common files for veromix.
- Veromix is a mixer for the Pulseaudio sound server. 
+ Veromix is a mixer for the Pulseaudio sound server.
  .
  This package contains the libraries and command-line utility.
-
 
 Package: plasma-widget-veromix
 Architecture: all
 Depends:
- ${misc:Depends}, ${python:Depends}, plasma-scriptengine-python, python-xdg, 
+ ${misc:Depends}, ${python:Depends}, plasma-scriptengine-python, python-xdg,
  python-qt4-dbus, veromix-common
 Description: plasma widget to control pulseaudio
  Veromix is a mixer for the Pulseaudio sound server.
@@ -51,5 +50,3 @@ Description: plasma widget to control pulseaudio
   * Mouse-wheel over panel icon increases/decreases volume of default output
   * supports global hotkeys
   * set volume above 100%
-
-  
