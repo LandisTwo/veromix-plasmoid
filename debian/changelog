@@ -1,3 +1,11 @@
+(01:06:25) dba: mach mal bei gelgenheit im veromix:debian/copyright ein 2010-2012 rein
+(01:06:41) dba: und tu das auf machine interpretable format 1.0 updaten
+(01:06:42) dba: siehe
+(01:07:29) dba: http://sources.progress-linux.org/gitweb/?p=users/daniel/packages/lxc.git;a=blob;f=debian/copyright;h=917b5101df8d3c4088ac45387cb5e543c5ad0677;hb=refs/heads/debian
+
+(01:18:11) dba: wenn du kram von anderen paketn holst (python-equalizer),
+(01:18:21) dba: dann muss das in debian/copyright stehen
+
 veromix (0.17.0-1) unstable; urgency=low
 
   * New upstream release.
