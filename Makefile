@@ -11,7 +11,8 @@ all:	build
 build:
 	echo "sh Messages.sh"
 
-install:	install-service	install-plasmoid install-gtk
+install:
+	install-service	install-plasmoid install-gtk
 
 install-service:
 	mkdir -p $(_VEROMIX_SHARED)
@@ -37,7 +38,6 @@ install-plasmoid:
 install-gtk:
 	mkdir -p $(_VEROMIX_SHARED)
 	cp -a  gtk $(_VEROMIX_SHARED)
-	mkdir -p $(DESTDIR)/usr/share/applications
 	cp -a data/applications/veromix.desktop $(DESTDIR)/usr/share/applications
 
 clean:
