@@ -1,4 +1,19 @@
 #!/usr/bin/python3
+# -*- coding: utf-8 -*-
+# Copyright (C) 2012 Nik Lutz <nik.lutz@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 ##
 # python3-gi python3-dbus
@@ -11,7 +26,6 @@ from CardProfiles import *
 from SortedChannelBox import SortedChannelBox
 from veromixcommon.Utils import *
 
-#VEROMIX_BASEDIR = os.path.abspath(os.path.join(os.getcwd(), os.path.pardir))
 VEROMIX_BASEDIR = os.path.abspath(os.path.join(os.path.realpath(__file__), os.path.pardir))
 VEROMIX_BASEDIR = os.path.abspath(os.path.join(VEROMIX_BASEDIR, os.path.pardir))
 
@@ -23,11 +37,11 @@ class IconoTray:
         self.veromix = veromix
         self.menu = Gtk.Menu()
         self.indicator = None
-        
+
         self.APPIND_SUPPORT = True
         try: from gi.repository import AppIndicator3
         except: self.APPIND_SUPPORT = False
-        
+
         if self.APPIND_SUPPORT:
             self.indicator = AppIndicator3.Indicator.new("Veromix", iconname, AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
             self.indicator.set_status (AppIndicator3.IndicatorStatus.ACTIVE)
@@ -38,7 +52,7 @@ class IconoTray:
             toggle = Gtk.MenuItem()
             toggle.set_label("Toggle Window")
             toggle.connect("activate", self.toggle_window)
-            
+
             mute = Gtk.MenuItem()
             mute.set_label("Mute")
             mute.connect("activate", self.on_middle_click)
@@ -52,13 +66,13 @@ class IconoTray:
             self.status_icon.connect("activate", self.toggle_window)
             self.status_icon.connect('scroll_event', self.on_scroll_wheel)
             self.status_icon.connect("button_press_event", self.on_status_icon_clicked)
-            
+
         quit = Gtk.MenuItem()
         quit.set_label("Quit")
         quit.connect("activate", Gtk.main_quit)
-        self.menu.append(quit)        
+        self.menu.append(quit)
 
-        self.menu.show_all()           
+        self.menu.show_all()
 
     def on_status_icon_clicked(self, widget, event):
         if event.button == 2:
@@ -71,14 +85,14 @@ class IconoTray:
         self.veromix.get_default_sink().toggle_mute()
 
     def on_scroll_wheel(self, widget, event, value = None):
-        if self.APPIND_SUPPORT: 
+        if self.APPIND_SUPPORT:
             self.veromix.get_default_sink().step_volume((value == 0))
         else:
             if event.direction  == Gdk.ScrollDirection.DOWN or event.direction  == Gdk.ScrollDirection.LEFT:
                 self.veromix.get_default_sink().step_volume(False)
             if event.direction  == Gdk.ScrollDirection.UP or event.direction  == Gdk.ScrollDirection.RIGHT:
                 self.veromix.get_default_sink().step_volume(True)
- 
+
     def toggle_window(self, widget):
         if not self.window.is_active():
             self.window.present()
@@ -86,7 +100,7 @@ class IconoTray:
             self.window.hide()
 
     def get_tray_menu(self):
-        return self.menu        
+        return self.menu
 
     def on_right_click_statusicon(self, icon, button, time):
         self.get_tray_menu()
@@ -103,13 +117,13 @@ class IconoTray:
             self.set_icon("audio-volume-muted")
         elif volume > 75:
             self.set_icon("audio-volume-high")
-        elif volume > 30:    
+        elif volume > 30:
             self.set_icon("audio-volume-medium")
         elif volume > -5:
             self.set_icon("audio-volume-low")
 
     def set_icon(self, iconname):
-        if self.APPIND_SUPPORT:            
+        if self.APPIND_SUPPORT:
             self.indicator.set_icon(iconname)
         else:
             self.status_icon.set_from_icon_name(iconname)
@@ -120,21 +134,21 @@ class Veromix(Gtk.VBox):
         Gtk.VBox.__init__(self, window)
         self.window = window
         self.pa = PulseAudio(self)
-        
+
         self.create_sinks()
         self.create_indicator()
         self.launch_pa()
-        
+
     def launch_pa(self):
         createDbusServiceDescription(VEROMIX_BASEDIR + VEROMIX_SERVICE, False)
-        
+
         self.pa.connect_veromix_service()
         CardProfiles.get_instance(self)
 
         self.pa.connect("on_sink_info", self.sink_box.on_sink_info)
         self.pa.connect("on_sink_info", self.tray_icon.on_sink_info, self.sink_box)
         self.pa.connect("on_sink_remove", self.sink_box.on_sink_remove)
-        
+
         self.pa.connect("on_sink_input_info", self.sink_box.on_sink_input_info)
         self.pa.connect("on_sink_input_remove", self.sink_box.on_sink_remove)
 
@@ -143,7 +157,7 @@ class Veromix(Gtk.VBox):
 
         self.pa.connect("on_source_output_info", self.source_box.on_source_output_info)
         self.pa.connect("on_source_output_remove", self.source_box.on_sink_remove)
-        
+
         self.pa.requestInfo()
 
     def create_sinks(self):
@@ -155,7 +169,7 @@ class Veromix(Gtk.VBox):
         self.sink_box = SortedChannelBox()
         self.veromix_sinks.pack_start(self.sink_box, False, True, 0)
 
-        spacer = Gtk.HBox()        
+        spacer = Gtk.HBox()
         self.veromix_sinks.pack_start(spacer,True,True,0)
 
         self.scroll = Gtk.ScrolledWindow(hadjustment=None, vadjustment=None)
@@ -167,7 +181,7 @@ class Veromix(Gtk.VBox):
 #        self.expander.set_expanded(True)
 #        self.expander.add(self.scroll)
 #        self.pack_start(self.expander, True, True, 0)
-        
+
         self.pack_start(self.scroll, True, True, 0)
 
     def create_indicator(self):
@@ -181,26 +195,26 @@ class Veromix(Gtk.VBox):
 
     def pa_proxy(self):
         return self.pa
-    
+
 class VeromixWindow(Gtk.Window):
 
     def __init__(self):
         Gtk.Window.__init__(self, title="Veromix",type =Gtk.WindowType.TOPLEVEL)
 #        self.set_wmclass ("veromix", "veromix-plasmoid")
-#        self.icon = self.render_icon(Gtk.STOCK_FIND, Gtk.IconSize.BUTTON)  
+#        self.icon = self.render_icon(Gtk.STOCK_FIND, Gtk.IconSize.BUTTON)
         self.icon = self.render_icon("veromix-plasmoid", Gtk.IconSize.BUTTON)
         self.set_icon(self.icon)
 #        self.set_type_hint(Gtk.WindowType.TOPLEVEL)
 #        Gdk.set_program_class("veromix-plasmoid")
         self.connect('delete-event', self.on_delete_event)
-        
+
         veromix = Veromix(self)
         self.add(veromix)
-        self.set_default_size(430, 180)        
+        self.set_default_size(430, 180)
 
     def on_delete_event(self, widget, event):
         self.hide()
-        return True  
+        return True
 
 Gdk.set_program_class("veromix-gtk")
 win = VeromixWindow()
@@ -208,4 +222,5 @@ win = VeromixWindow()
 win.show_all()
 
 if __name__ == '__main__':
+    # Veromix is dedicated to my girlfriend Véronique
     Gtk.main()

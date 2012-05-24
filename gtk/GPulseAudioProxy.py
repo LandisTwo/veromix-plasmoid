@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# copyright 2010  Nik Lutz
+# Copyright (C) 2012 Nik Lutz <nik.lutz@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -33,12 +33,12 @@ class PulseAudio(GObject.GObject):
         'on_sink_remove': (GObject.SIGNAL_RUN_FIRST, None, (int,)),
         'on_sink_input_info': (GObject.SIGNAL_RUN_FIRST, None, (object,)),
         'on_sink_input_remove': (GObject.SIGNAL_RUN_FIRST, None, (int,)),
-        
+
         'on_source_info': (GObject.SIGNAL_RUN_FIRST, None, (object,)),
         'on_source_remove': (GObject.SIGNAL_RUN_FIRST, None, (int,)),
         'on_source_output_info': (GObject.SIGNAL_RUN_FIRST, None, (object,)),
-        'on_source_output_remove': (GObject.SIGNAL_RUN_FIRST, None, (int,)),     
-        
+        'on_source_output_remove': (GObject.SIGNAL_RUN_FIRST, None, (int,)),
+
         'on_card_info': (GObject.SIGNAL_RUN_FIRST, None, (object,)),
         'on_card_remove': (GObject.SIGNAL_RUN_FIRST, None, (int,)),
     }

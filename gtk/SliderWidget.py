@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# copyright 2012  Nik Lutz
+# Copyright (C) 2012 Nik Lutz <nik.lutz@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -55,9 +55,9 @@ class LabelSlider(Gtk.Fixed):
     def on_resize(self, widget, event):
         if event:
             # set position of slider
-            event.y = event.y + self.label.get_layout().get_pixel_size()[1] * 0.3            
+            event.y = event.y + self.label.get_layout().get_pixel_size()[1] * 0.3
             self.slider.size_allocate(event)
-        
+
     def _create_label(self):
         self.label = Gtk.Label()
         self.layout = self.label.get_layout()
@@ -80,7 +80,7 @@ class LabelSlider(Gtk.Fixed):
 
     def hide_slider(self):
         if not self.slider_hidden:
-            self.slider.unmap()  
+            self.slider.unmap()
             self.slider_hidden = True
 
 class SliderWidget(Gtk.VBox):
@@ -118,7 +118,7 @@ class SliderWidget(Gtk.VBox):
             self.remove(self.label_box)
             del self.label
             self.label = None
-        
+
         slider = self._create_slider(sink.get_nice_title_and_name())
         slider.connect_value_changed(self.on_slider_value_changed)
 
@@ -150,8 +150,8 @@ class SliderWidget(Gtk.VBox):
         else:
             if len(self.sliders) != 1:
                 self.remove_sliders(pa_sink_proxy)
-                self.add_sliders(pa_sink_proxy)                
-            if len(self.sliders) > 0:            
+                self.add_sliders(pa_sink_proxy)
+            if len(self.sliders) > 0:
                 if nr_channels > 0:
                     self.sliders[0].set_volume(pa_sink_proxy.get_volume())
                 if nr_channels == 0:

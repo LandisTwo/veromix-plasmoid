@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# copyright 2010  Nik Lutz
+# Copyright (C) 2010-2012 Nik Lutz <nik.lutz@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#from PyQt4.QtCore import *
 import gettext
 i18n = gettext.gettext
 
@@ -61,7 +60,7 @@ class AbstractSink():
         self._update_nice_values()
 
     def is_default(self):
-        return False            
+        return False
 
     def get_index(self):
         return int(self.index)
@@ -83,10 +82,10 @@ class AbstractSink():
         if vol > 100: # FIXME self.get_max_volume_value():
             vol = 100 #self.get_max_volume_value()
         self.set_volume(self.volumeDiffFor(vol))
-        
+
     def set_volume(self, values):
         pass
-        
+
     def get_volume(self):
         val =0
         for t in list(self.volume.keys()):
@@ -194,10 +193,10 @@ class SinkInfo(AbstractSink):
 
     def is_sink(self):
         return True
-        
+
     def is_default(self):
         if "isdefault" in self.props:
-            return self.props["isdefault"] == "True"      
+            return self.props["isdefault"] == "True"
         return False
 
     def set_volume(self, values):
@@ -352,7 +351,7 @@ class SourceInfo(AbstractSink):
         if "description" in self.props.keys():
             self._nice_title = self.props["description"]
 #            self._nice_text = self.name
-        
+
 class SourceOutputInfo(AbstractSink):
 
     def is_sourceoutput(self):
@@ -377,7 +376,7 @@ class SourceOutputInfo(AbstractSink):
     def getChannels(self):
         return []
 
-    def _update_nice_values(self):        
+    def _update_nice_values(self):
         self._nice_text =  ""
         self._nice_title = self.name
         self._nice_icon = self.DEFAULT_ICON
@@ -388,10 +387,10 @@ class SourceOutputInfo(AbstractSink):
         if self.name.find("ALSA") == 0 and "application.process.binary" in self.props.keys():
             self._nice_title = self.props[ "application.process.binary"]
             self._nice_text =  self.props[ "application.name"]
-        
+
         if "application.icon_name" in self.props.keys():
             self._nice_icon = self.props["application.icon_name"]
-            
+
         # FIXME KDE
 #        if iconname == None and  "app" in self.props.keys():
 #            self._nice_icon = self.veromix.query_application(self.pa_sink.props["app"])

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# copyright 2012  Nik Lutz
+# Copyright (C) 2012 Nik Lutz <nik.lutz@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ class SortedChannelBox(Gtk.VBox):
         if data.get_index() not in self.channels.keys():
             channel = SinkChannel()
         self._add_channel_widget(channel,data)
-        
+
     def on_sink_input_info(self, widget, data):
         channel = None
         if data.get_index() not in self.channels.keys():
@@ -85,7 +85,7 @@ class SortedChannelBox(Gtk.VBox):
 
     def get_sinks(self):
         return list(filter(lambda channel: channel.pa_sink_proxy().is_sink(), self.channels.values()))
-        
+
     def get_default_sink(self):
         if len(self.channels.values()) == 0:
             return None

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# copyright 2012  Nik Lutz
+# Copyright (C) 2012 Nik Lutz <nik.lutz@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -111,7 +111,7 @@ class Channel(Gtk.Alignment):
 
     def toggle_mute(self):
         self.pa_sink_proxy().toggle_mute()
-        
+
 class SinkChannel(Channel):
 
     def _init(self):
@@ -158,14 +158,14 @@ class SinkInputChannel(Channel):
 
     def on_drag_data_get(self, widget, drag_context, data, info, time):
         data.set_text("veromix://sink_input_index:"+str(self.pa_sink_proxy().get_index()), -1)
-        
-        
+
+
 class SourceChannel(Channel):
 
     def _init(self):
         Channel._init(self)
         #self.set_padding(padding_top, padding_bottom, padding_left, padding_right)
-#        self.set_padding(0, 0, self.ICON_HEIGHT / 2, 0)      
+#        self.set_padding(0, 0, self.ICON_HEIGHT / 2, 0)
 
 class SourceOutputChannel(Channel):
 
@@ -173,4 +173,4 @@ class SourceOutputChannel(Channel):
         Channel._init(self)
         #self.set_padding(padding_top, padding_bottom, padding_left, padding_right)
         self.set_padding(0, 0, self.ICON_HEIGHT / 2, 0)
-              
+

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# copyright 2009  Nik Lutz
+# Copyright (C) 2009-2012 Nik Lutz <nik.lutz@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ class SourceOutputUI( Channel ):
         if self.slider:
             self.slider.setText(text)
             self.slider.setBoldText(bold)
-            
+
         iconname = self.pa_sink.get_nice_icon()
         if iconname == None and  "app" in self.pa_sink.props.keys():
             iconname = self.veromix.query_application(self.pa_sink.props["app"])
