@@ -1,13 +1,9 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-# vi: et sw=2
+# Copyright (C) 2010-2012 Nik Lutz <nik.lutz@gmail.com>
 #
-# PulseVolume.py
-# Copyright (C) 2009  Harry Karvonen
-#
-# This program is free software: you can redistribute it and/or modify
+# This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
+# the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
 #
 # This program is distributed in the hope that it will be useful,
@@ -16,17 +12,14 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-#
-# Author: Harry Karvonen <harry.karvonen@gmail.com>
-#
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 
 import sys
 use_old = True
 if sys.version_info >= (3, 0):
     use_old = False
-    
+
 class UnicodingError(Exception):
     pass
 
@@ -46,7 +39,7 @@ def in_unicode(string):
     if isinstance(string, bytes):
         return string.decode("utf-8")
     return str(string)
-    
+
 def _in_unicode(string):
     '''make unicode'''
     if isinstance(string, unicode):

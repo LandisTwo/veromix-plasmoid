@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-# copyright 2012  Nik Lutz
+# Copyright (C) 2012 Nik Lutz <nik.lutz@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ from pulseaudio.PulseAudio import *
 from VeromixDbus import *
 from VeromixEvent import *
 from Pa2dBus import *
-                    
+
 if __name__ == '__main__':
     GObject.threads_init()
     signal.signal(signal.SIGINT, signal.SIG_DFL)
@@ -35,7 +35,7 @@ if __name__ == '__main__':
     name = dbus.service.BusName("org.veromix.pulseaudio.glib", conn)
 
     dbus.set_default_main_loop(mainloop)
-    
+
     pulse = PulseAudio()
     bus = VeromixDbus(pulse,conn)
     i = Pa2dBus(bus, pulse)
