@@ -1,5 +1,5 @@
 Source: veromix
-Section: other
+Section: sound
 Priority: optional
 Maintainer: Nik Lutz <nik.lutz@gmail.com>
 Build-Depends: debhelper (>= 9), gettext, kdelibs-bin, kdesdk-scripts, python
@@ -10,7 +10,8 @@ Vcs-Git: https://code.google.com/p/veromix-plasmoid/
 
 Package: veromix
 Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends}, python3-dbus, python3-gi
+Depends:
+ ${misc:Depends}, ${python3:Depends}, python3-dbus, python3-gi, veromix-common
 Description: Mixer for the PulseAudio sound server (GTK+)
  Veromix is a mixer for the PulseAudio sound server.
  .
