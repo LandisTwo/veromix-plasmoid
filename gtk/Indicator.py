@@ -18,18 +18,24 @@
 from gi.repository import Gtk, Gdk
 
 class Indicator:
-    def __init__(self, iconname, veromix):
+    def __init__(self, veromix):
         self.window = veromix.window
         self.veromix = veromix
         self.menu = Gtk.Menu()
         self.indicator = None
+        self.install_menu()
+        self.connect_events()
 
+    def connect_events(self):
+        self.veromix.pa_proxy().connect("on_sink_info", self.on_sink_info, self.veromix)
+
+    def install_menu(self):
         self.APPIND_SUPPORT = True
         try: from gi.repository import AppIndicator3
         except: self.APPIND_SUPPORT = False
 
         if self.APPIND_SUPPORT:
-            self.indicator = AppIndicator3.Indicator.new("Veromix", iconname, AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
+            self.indicator = AppIndicator3.Indicator.new("Veromix", "audio-volume-medium", AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
             self.indicator.set_status (AppIndicator3.IndicatorStatus.ACTIVE)
             self.indicator.set_menu(self.menu)
             self.indicator.connect("scroll-event", self.on_scroll_wheel)

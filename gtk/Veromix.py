@@ -18,7 +18,6 @@ from gi.repository import Gtk, Gdk
 
 from GPulseAudioProxy import *
 from CardProfiles import *
-from Indicator import Indicator
 from SortedChannelBox import SortedChannelBox
 
 class Veromix(Gtk.VBox):
@@ -29,7 +28,6 @@ class Veromix(Gtk.VBox):
         self.pa = PulseAudio(self)
 
         self.create_sinks()
-        self.create_indicator()
         self.launch_pa()
 
     def launch_pa(self):
@@ -38,7 +36,6 @@ class Veromix(Gtk.VBox):
         CardProfiles.get_instance(self)
 
         self.pa.connect("on_sink_info", self.sink_box.on_sink_info)
-        self.pa.connect("on_sink_info", self.tray_icon.on_sink_info, self.sink_box)
         self.pa.connect("on_sink_remove", self.sink_box.on_sink_remove)
 
         self.pa.connect("on_sink_input_info", self.sink_box.on_sink_input_info)
@@ -57,9 +54,11 @@ class Veromix(Gtk.VBox):
 
         self.source_box = SortedChannelBox()
         self.veromix_sinks.pack_start(self.source_box, False, True, 0)
+        self.source_box.connect("veromix-resize", self._do_resize)
 
         self.sink_box = SortedChannelBox()
         self.veromix_sinks.pack_start(self.sink_box, False, True, 0)
+        self.sink_box.connect("veromix-resize", self._do_resize)
 
         spacer = Gtk.HBox()
         self.veromix_sinks.pack_start(spacer,True,True,0)
@@ -76,9 +75,6 @@ class Veromix(Gtk.VBox):
 
         self.pack_start(self.scroll, True, True, 0)
 
-    def create_indicator(self):
-        self.tray_icon = Indicator("audio-volume-medium", self)
-
     def get_default_sink(self):
         return self.sink_box.get_default_sink()
 
@@ -87,4 +83,16 @@ class Veromix(Gtk.VBox):
 
     def pa_proxy(self):
         return self.pa
+
+    def _do_resize(self, event):
+        previous_policy = self.scroll.get_policy()
+        # Disable scrolling:
+        self.scroll.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.NEVER)
+        # See what changed:
+        desired = self.scroll.size_request()
+        toplevel = self.scroll.get_toplevel()
+        new_size = toplevel.size_request()
+        # Reenable scrolling:
+        self.scroll.set_policy(*previous_policy)
+        self.window.resize(new_size.width, new_size.height)
 

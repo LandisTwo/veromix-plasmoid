@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
+from gi.repository import Gtk, GObject
 
 from Channel import SinkChannel
 from Channel import SinkInputChannel
@@ -23,7 +23,10 @@ from Channel import SourceOutputChannel
 
 class SortedChannelBox(Gtk.VBox):
     CHANNEL_PADDING = 2
-
+    __gsignals__ = {
+        'veromix-resize': (GObject.SIGNAL_RUN_FIRST, None, (),),
+    }
+    
     def __init__(self):
         Gtk.VBox.__init__(self)
         self.set_border_width(4)
@@ -35,7 +38,6 @@ class SortedChannelBox(Gtk.VBox):
             del self.channels[index]
         self.order_items()
         self.check_resize()
-
 
     def on_sink_info(self, widget, data):
         channel = None
@@ -73,6 +75,7 @@ class SortedChannelBox(Gtk.VBox):
     def order_items(self):
         while(self.needs_ordering()):
             self._order_items()
+        self.emit('veromix-resize')
 
     def needs_ordering(self):
         sorting = self._sort()
