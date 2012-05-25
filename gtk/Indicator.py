@@ -28,6 +28,7 @@ class Indicator:
         self.menu = Gtk.Menu()
         self.indicator = None
         self.install_menu()
+        self.dbus_menu()
         self.connect_events()
 
     def connect_events(self):
@@ -78,7 +79,7 @@ class Indicator:
             return True
         return False
 
-    def on_middle_click(self, event):
+    def on_middle_click(self, event, arg=None, data=None):
         self.veromix.get_default_sink().toggle_mute()
 
     def on_scroll_wheel(self, widget, event, value = None):
@@ -120,9 +121,43 @@ class Indicator:
         elif volume > -5:
             self.set_icon("audio-volume-low")
 
+        if self.DBUSMENU_SUPPORT:
+            if channel.pa_sink_proxy().is_muted():
+                self.dbusmenu_mute.property_set_int(self.dbusmenu_checked[0], self.dbusmenu_checked[1])
+            else:
+                self.dbusmenu_mute.property_set_int(self.dbusmenu_unchecked[0], self.dbusmenu_unchecked[1])
+
     def set_icon(self, iconname):
         if self.APPIND_SUPPORT:
             self.indicator.set_icon(iconname)
         else:
             self.status_icon.set_from_icon_name(iconname)
+
+    def dbus_menu(self):
+        self.DBUSMENU_SUPPORT = True
+        try: 
+            from gi.repository import Unity, Dbusmenu
+            self.dbusmenu_checked = (Dbusmenu.MENUITEM_PROP_TOGGLE_STATE, Dbusmenu.MENUITEM_TOGGLE_STATE_CHECKED)
+            self.dbusmenu_unchecked = (Dbusmenu.MENUITEM_PROP_TOGGLE_STATE, Dbusmenu.MENUITEM_TOGGLE_STATE_UNCHECKED)
+        except: 
+            self.DBUSMENU_SUPPORT = False
+            return
+        self.launcher = Unity.LauncherEntry.get_for_desktop_id("veromix.desktop") 
+        self.quicklist = Dbusmenu.Menuitem.new()
+        self.dbusmenu_mute = Dbusmenu.Menuitem.new()
+        self.dbusmenu_mute.property_set(Dbusmenu.MENUITEM_PROP_LABEL, "Mute")
+        self.dbusmenu_mute.property_set(Dbusmenu.MENUITEM_PROP_TOGGLE_TYPE, Dbusmenu.MENUITEM_TOGGLE_CHECK)
+        self.dbusmenu_mute.property_set_int(Dbusmenu.MENUITEM_PROP_TOGGLE_STATE, Dbusmenu.MENUITEM_TOGGLE_STATE_UNCHECKED)
+        self.dbusmenu_mute.property_set_bool(Dbusmenu.MENUITEM_PROP_VISIBLE, True)
+        self.dbusmenu_mute.connect (Dbusmenu.MENUITEM_SIGNAL_ITEM_ACTIVATED, self.on_middle_click, None)
+        self.quicklist.child_append(self.dbusmenu_mute)
+
+        if not config().get_window_exit_on_close():
+            quit = Dbusmenu.Menuitem.new()
+            quit.property_set (Dbusmenu.MENUITEM_PROP_LABEL, "Shutdown Veromix")
+            quit.property_set_bool(Dbusmenu.MENUITEM_PROP_VISIBLE, True)
+            quit.connect(Dbusmenu.MENUITEM_SIGNAL_ITEM_ACTIVATED, Gtk.main_quit, None)
+            self.quicklist.child_append(quit)
+
+        self.launcher.set_property("quicklist", self.quicklist)
 
