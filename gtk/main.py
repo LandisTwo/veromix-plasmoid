@@ -18,7 +18,7 @@
 ##
 # python3-gi python3-dbus
 ##
-import os, gettext, dbus
+import os, gettext, dbus, dbus.service
 from gi.repository import Gtk, Gdk
 
 from Veromix import Veromix
@@ -26,51 +26,59 @@ from Indicator import Indicator
 from Configuration import config
 from veromixcommon.Utils import createDbusServiceDescription
 
+DBUS_INTERFACE = "org.veromix.gtkfrontend"
+
 VEROMIX_BASEDIR = os.path.abspath(os.path.join(os.path.realpath(__file__), os.path.pardir))
 VEROMIX_BASEDIR = os.path.abspath(os.path.join(VEROMIX_BASEDIR, os.path.pardir))
 VEROMIX_SERVICE = "/dbus-service/veromix-service-glib.py"
 
-class VeromixWindow(Gtk.Window):
+class VeromixWindow(dbus.service.Object):
 
-    def __init__(self):
-        Gtk.Window.__init__(self, title="Veromix",type =Gtk.WindowType.TOPLEVEL)
-#        self.set_wmclass ("veromix", "veromix-plasmoid")
-#        self.icon = self.render_icon(Gtk.STOCK_FIND, Gtk.IconSize.BUTTON)
-        self.icon = self.render_icon("veromix-plasmoid", Gtk.IconSize.BUTTON)
-        self.set_icon(self.icon)
-#        self.set_type_hint(Gtk.WindowType.TOPLEVEL)
-#        Gdk.set_program_class("veromix-plasmoid")
-        self.connect('delete-event', self.on_delete_event)
+    def __init__(self, bus):
+        dbus.service.Object.__init__ (self, bus, "/", DBUS_INTERFACE)
 
-        self.init_dbus()
-        veromix = Veromix(self, self.bus)
-        self.add(veromix)
+        self.window = Gtk.Window(title="Veromix",type =Gtk.WindowType.TOPLEVEL)
+        self.icon = self.window.render_icon("veromix-plasmoid", Gtk.IconSize.BUTTON)
+        self.window.set_icon(self.icon)
+        self.window.connect('delete-event', self.on_delete_event)
+        self.window.set_default_size(430, 180)
+
+        veromix = Veromix(self.window, bus)
+        self.window.add(veromix)
         self.create_indicator(veromix)
-        self.set_default_size(430, 180)
+        self.window.show_all()
+
+    @dbus.service.method (DBUS_INTERFACE, in_signature='', out_signature='')
+    def show_window(self):
+        self.window.present()
 
     def on_delete_event(self, widget, event):
         if config().get_window_exit_on_close():
             Gtk.main_quit()
-        self.hide()
+        self.window.hide()
         return True
 
     def create_indicator(self, veromix):
         self.tray_icon = Indicator(veromix)
 
-    def init_dbus(self):
-        if not dbus.get_default_main_loop():
-            mainloop=dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
-        else:
-            mainloop=dbus.mainloop.glib.DBusGMainLoop(set_as_default=False)
-        self.bus = dbus.SessionBus()
-
-Gdk.set_program_class("veromix")
-win = VeromixWindow()
-#win.connect("delete-event", Gtk.main_quit)
-win.show_all()
 
 if __name__ == '__main__':
     # Veromix is dedicated to my girlfriend Véronique
-    createDbusServiceDescription(VEROMIX_BASEDIR + VEROMIX_SERVICE, False)
-    Gtk.main()
-    config().save()
+    Gdk.set_program_class("veromix")
+    if not dbus.get_default_main_loop():
+        mainloop=dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+    else:
+        mainloop=dbus.mainloop.glib.DBusGMainLoop(set_as_default=False)
+    bus = dbus.SessionBus()
+    request = bus.request_name (DBUS_INTERFACE, dbus.bus.NAME_FLAG_DO_NOT_QUEUE)
+    if request == dbus.bus.REQUEST_NAME_REPLY_EXISTS:
+        obj = bus.get_object (DBUS_INTERFACE, "/")
+        app = dbus.Interface (obj, DBUS_INTERFACE)
+        app.show_window()
+        Gdk.notify_startup_complete()
+    else:
+        createDbusServiceDescription(VEROMIX_BASEDIR + VEROMIX_SERVICE, False)
+        win = VeromixWindow(bus)
+        win.show_window()
+        Gtk.main()
+        config().save()
