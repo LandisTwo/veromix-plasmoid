@@ -95,5 +95,6 @@ class Veromix(Gtk.VBox):
         new_size = toplevel.size_request()
         # Reenable scrolling:
         self.scroll.set_policy(*previous_policy)
-        self.window.resize(new_size.width, new_size.height)
+        default_size = self.window.get_default_size()
+        self.window.resize(max(new_size.width, default_size[0]), max(new_size.height, default_size[1]))
 
