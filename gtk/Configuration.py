@@ -49,7 +49,7 @@ class VeromixConfiguration:
     
     def _get(self, key, default):
         if key not in self._config[self.section]:
-            self._config[self.section][key] = default
+            self._config[self.section][key] = str(default)
         if type(default) == bool:
             return self._config[self.section].getboolean(key)
         if type(default) == int:
