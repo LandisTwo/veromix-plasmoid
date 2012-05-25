@@ -23,7 +23,6 @@ class Indicator:
     def __init__(self, veromix):
         self.window = veromix.window
         self.veromix = veromix
-        print(config().get_indicator_type())
         if config().get_indicator_type() == 'None':
             return None
         self.menu = Gtk.Menu()
@@ -57,9 +56,7 @@ class Indicator:
             self.indicator.set_secondary_activate_target(mute)
             self.menu.append(toggle)
             self.APPIND_SUPPORT = True
-            print("app ind")
         elif config().get_indicator_type() == 'GtkStatusIcon':
-            print("stat")
             self.status_icon = Gtk.StatusIcon()
             self.status_icon.set_from_icon_name("audio-volume-medium")
             self.status_icon.connect('popup-menu', self.on_right_click_statusicon)
