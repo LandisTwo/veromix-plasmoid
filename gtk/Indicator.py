@@ -23,12 +23,11 @@ class Indicator:
     def __init__(self, veromix):
         self.window = veromix.window
         self.veromix = veromix
-        if config().get_indicator_type() == 'None':
-            return None
         self.menu = Gtk.Menu()
         self.indicator = None
-        self.install_menu()
-        self.dbus_menu()
+        if config().get_indicator_type() != 'None':
+            self.install_menu()
+        self.install_quicklist()
         self.connect_events()
 
     def connect_events(self):
@@ -69,7 +68,6 @@ class Indicator:
         quit.set_label("Quit")
         quit.connect("activate", Gtk.main_quit)
         self.menu.append(quit)
-
         self.menu.show_all()
 
     def on_status_icon_clicked(self, widget, event):
@@ -109,18 +107,18 @@ class Indicator:
 
     def on_sink_info(self, index, info, sink_box):
         channel = sink_box.get_default_sink()
-        if channel == None:
-            return
-        volume = channel.pa_sink_proxy().get_volume()
-        if channel.pa_sink_proxy().is_muted():
-            self.set_icon("audio-volume-muted")
-        elif volume > 75:
-            self.set_icon("audio-volume-high")
-        elif volume > 30:
-            self.set_icon("audio-volume-medium")
-        elif volume > -5:
-            self.set_icon("audio-volume-low")
-
+        if config().get_indicator_type() != 'None':
+            if channel == None:
+                return
+            volume = channel.pa_sink_proxy().get_volume()
+            if channel.pa_sink_proxy().is_muted():
+                self.set_icon("audio-volume-muted")
+            elif volume > 75:
+                self.set_icon("audio-volume-high")
+            elif volume > 30:
+                self.set_icon("audio-volume-medium")
+            elif volume > -5:
+                self.set_icon("audio-volume-low")
         if self.DBUSMENU_SUPPORT:
             if channel.pa_sink_proxy().is_muted():
                 self.dbusmenu_mute.property_set_int(self.dbusmenu_checked[0], self.dbusmenu_checked[1])
@@ -133,7 +131,7 @@ class Indicator:
         else:
             self.status_icon.set_from_icon_name(iconname)
 
-    def dbus_menu(self):
+    def install_quicklist(self):
         self.DBUSMENU_SUPPORT = True
         try: 
             from gi.repository import Unity, Dbusmenu
