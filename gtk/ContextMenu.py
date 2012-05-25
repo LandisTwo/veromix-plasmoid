@@ -21,14 +21,14 @@ from gi.repository import GObject
 i18n = gettext.gettext
 
 _instance = None
-class CardProfiles:
+class ContextMenu:
     def get_instance(pa_proxy=None):
         global _instance
         if _instance == None:
-            _instance = CardAndProfiles(pa_proxy)
+            _instance = ContextMenuFactory(pa_proxy)
         return _instance
 
-class CardAndProfiles(GObject.GObject):
+class ContextMenuFactory(GObject.GObject):
 
     def __init__(self, veromix):
         GObject.GObject.__init__(self)

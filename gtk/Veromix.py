@@ -16,8 +16,8 @@
 
 from gi.repository import Gtk, Gdk
 
-from GPulseAudioProxy import *
-from CardProfiles import *
+from GPulseAudioProxy import PulseAudio
+from ContextMenu import ContextMenu
 from SortedChannelBox import SortedChannelBox
 
 class Veromix(Gtk.VBox):
@@ -33,7 +33,8 @@ class Veromix(Gtk.VBox):
     def launch_pa(self):
 
         self.pa.connect_veromix_service()
-        CardProfiles.get_instance(self)
+        # FIXME: singleton initialization 
+        ContextMenu.get_instance(self)
 
         self.pa.connect("on_sink_info", self.sink_box.on_sink_info)
         self.pa.connect("on_sink_remove", self.sink_box.on_sink_remove)

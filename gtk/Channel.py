@@ -18,7 +18,7 @@ import re
 from gi.repository import Gtk, Gdk
 
 from SliderWidget import SliderWidget
-from CardProfiles import *
+from ContextMenu import ContextMenu
 
 DRAG_ACTION = Gdk.DragAction.COPY
 (TARGET_ENTRY_TEXT, TARGET_ENTRY_PIXBUF) = range(2)
@@ -82,7 +82,7 @@ class Channel(Gtk.Alignment):
     def on_button_press_event(self, widget, event):
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
             self.menu = Gtk.Menu()
-            instance = CardProfiles.get_instance()
+            instance = ContextMenu.get_instance()
             instance.populate_menu(self.pa_sink_proxy(), self.menu, self.slider)
             self.menu.show_all()
             self.menu.popup(None, None, None, None, event.button, event.time)
