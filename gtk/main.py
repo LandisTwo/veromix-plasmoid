@@ -42,7 +42,8 @@ class VeromixWindow(Gtk.Window):
 #        Gdk.set_program_class("veromix-plasmoid")
         self.connect('delete-event', self.on_delete_event)
 
-        veromix = Veromix(self)
+        self.init_dbus()
+        veromix = Veromix(self, self.bus)
         self.add(veromix)
         self.create_indicator(veromix)
         self.set_default_size(430, 180)
@@ -55,6 +56,13 @@ class VeromixWindow(Gtk.Window):
 
     def create_indicator(self, veromix):
         self.tray_icon = Indicator(veromix)
+
+    def init_dbus(self):
+        if not dbus.get_default_main_loop():
+            mainloop=dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+        else:
+            mainloop=dbus.mainloop.glib.DBusGMainLoop(set_as_default=False)
+        self.bus = dbus.SessionBus()
 
 Gdk.set_program_class("veromix")
 win = VeromixWindow()

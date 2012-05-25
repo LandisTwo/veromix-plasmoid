@@ -22,10 +22,10 @@ from SortedChannelBox import SortedChannelBox
 
 class Veromix(Gtk.VBox):
 
-    def __init__(self, window):
+    def __init__(self, window, dbus):
         Gtk.VBox.__init__(self, window)
         self.window = window
-        self.pa = PulseAudio(self)
+        self.pa = PulseAudio(self, dbus)
 
         self.create_sinks()
         self.launch_pa()
