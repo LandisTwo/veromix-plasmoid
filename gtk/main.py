@@ -23,6 +23,7 @@ from gi.repository import Gtk, Gdk
 
 from Veromix import Veromix
 from Indicator import Indicator
+from Configuration import config
 from veromixcommon.Utils import createDbusServiceDescription
 
 VEROMIX_BASEDIR = os.path.abspath(os.path.join(os.path.realpath(__file__), os.path.pardir))
@@ -47,11 +48,13 @@ class VeromixWindow(Gtk.Window):
         self.set_default_size(430, 180)
 
     def on_delete_event(self, widget, event):
+        if config().get_window_exit_on_close():
+            Gtk.main_quit()
         self.hide()
         return True
 
     def create_indicator(self, veromix):
-        self.tray_icon = Indicator(veromix)        
+        self.tray_icon = Indicator(veromix)
 
 Gdk.set_program_class("veromix")
 win = VeromixWindow()
@@ -62,3 +65,4 @@ if __name__ == '__main__':
     # Veromix is dedicated to my girlfriend Véronique
     createDbusServiceDescription(VEROMIX_BASEDIR + VEROMIX_SERVICE, False)
     Gtk.main()
+    config().save()

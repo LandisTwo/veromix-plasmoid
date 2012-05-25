@@ -17,10 +17,15 @@
 
 from gi.repository import Gtk, Gdk
 
+from Configuration import config
+
 class Indicator:
     def __init__(self, veromix):
         self.window = veromix.window
         self.veromix = veromix
+        print(config().get_indicator_type())
+        if config().get_indicator_type() == 'None':
+            return None
         self.menu = Gtk.Menu()
         self.indicator = None
         self.install_menu()
@@ -34,7 +39,7 @@ class Indicator:
         try: from gi.repository import AppIndicator3
         except: self.APPIND_SUPPORT = False
 
-        if self.APPIND_SUPPORT:
+        if self.APPIND_SUPPORT and config().get_indicator_type() == 'AppIndicator':
             self.indicator = AppIndicator3.Indicator.new("Veromix", "audio-volume-medium", AppIndicator3.IndicatorCategory.APPLICATION_STATUS)
             self.indicator.set_status (AppIndicator3.IndicatorStatus.ACTIVE)
             self.indicator.set_menu(self.menu)
@@ -51,14 +56,17 @@ class Indicator:
             self.menu.append(mute)
             self.indicator.set_secondary_activate_target(mute)
             self.menu.append(toggle)
-        else:
+            self.APPIND_SUPPORT = True
+            print("app ind")
+        elif config().get_indicator_type() == 'GtkStatusIcon':
+            print("stat")
             self.status_icon = Gtk.StatusIcon()
-            self.status_icon.set_from_icon_name(iconname)
+            self.status_icon.set_from_icon_name("audio-volume-medium")
             self.status_icon.connect('popup-menu', self.on_right_click_statusicon)
             self.status_icon.connect("activate", self.toggle_window)
             self.status_icon.connect('scroll_event', self.on_scroll_wheel)
             self.status_icon.connect("button_press_event", self.on_status_icon_clicked)
-
+            self.APPIND_SUPPORT = False
         quit = Gtk.MenuItem()
         quit.set_label("Quit")
         quit.connect("activate", Gtk.main_quit)
@@ -79,6 +87,7 @@ class Indicator:
     def on_scroll_wheel(self, widget, event, value = None):
         if self.APPIND_SUPPORT:
             self.veromix.get_default_sink().step_volume((value == 0))
+            self.window.present()
         else:
             if event.direction  == Gdk.ScrollDirection.DOWN or event.direction  == Gdk.ScrollDirection.LEFT:
                 self.veromix.get_default_sink().step_volume(False)

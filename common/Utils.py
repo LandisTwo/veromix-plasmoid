@@ -22,6 +22,12 @@ try:
 except:
     _XDG_SERVICE_DIR = os.path.expanduser("~/.local/share/dbus-1/services/")
 
+try:
+    from xdg import BaseDirectory
+    _XDG_CONFIG_DIR = BaseDirectory.xdg_config_home + "/veromix/"
+except:
+    _XDG_CONFIG_DIR = os.path.expanduser("~/.config/veromix/")
+
 
 def createDbusServiceDescription(path, use_qt):
     print ("Outputting dbus-servie file")
@@ -100,3 +106,5 @@ def in_unicode(string):
                 #raise UnicodingError("still don't recognise encoding after trying do guess.")
                 return "problem with string decoding"
     return "problem with string decoding"
+
+  
