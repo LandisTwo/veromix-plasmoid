@@ -52,7 +52,7 @@ class VeromixDbus(dbus.service.Object):
     def volume_meter_source(self, index,value ):
         pass
 
-    @dbus.service.method("org.veromix.pulseaudio", in_signature='i', out_signature='')
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='s', out_signature='')
     def set_default_source(self, index):
         self.pulse.pulse_set_default_source(index)
 
@@ -114,7 +114,7 @@ class VeromixDbus(dbus.service.Object):
     def toggle_monitor_of_sink(self, sink_index,named ):
         self.pulse.pulse_toggle_monitor_of_sink( sink_index, named)
 
-    @dbus.service.method("org.veromix.pulseaudio", in_signature='i', out_signature='')
+    @dbus.service.method("org.veromix.pulseaudio", in_signature='s', out_signature='')
     def set_default_sink(self, index):
         self.pulse.pulse_set_default_sink(index)
 
