@@ -73,7 +73,7 @@ class SinkUI(Channel):
 
     def on_set_default_sink_triggered(self, action):
         if action:
-            self.pa.set_default_sink(self.index)
+            self.pa_sink.be_default_sink()
 
     def updateIcon(self):
         if self.isMuted():
