@@ -562,7 +562,7 @@ class PulseAudio():
         return
 
     def pulse_set_default_sink(self, index):
-        operation = pa_context_set_default_sink(self._context, str(index),self._null_cb,None)
+        operation = pa_context_set_default_sink(self._context, as_p_char(str(index)),self._null_cb,None)
         pa_operation_unref(operation)
         return
 
@@ -579,7 +579,7 @@ class PulseAudio():
         return
 
     def pulse_set_default_source(self, index):
-        operation = pa_context_set_default_source(self._context, str(index),self._null_cb,None)
+        operation = pa_context_set_default_source(self._context, as_p_char(index),self._null_cb,None)
         pa_operation_unref(operation)
         return
 
