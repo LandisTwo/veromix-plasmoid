@@ -194,6 +194,9 @@ class SinkInfo(AbstractSink):
     def is_sink(self):
         return True
 
+    def be_default_sink(self):
+        self.pulse_proxy.set_default_sink(self.name)
+
     def is_default(self):
         if "isdefault" in self.props:
             return self.props["isdefault"] == "True"
