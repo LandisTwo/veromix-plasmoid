@@ -44,6 +44,7 @@ class PulseSink:
         self.volume = volume
         self.client = client
         self.isDefaultSink = False
+        self.default_sink_name = ""
 
         return
 
@@ -69,7 +70,8 @@ class PulseSink:
         return {"pulsesink":"pulsesink"}
 
     def updateDefaultSink(self, string):
-        self.isDefaultSink = (self.name == string)
+        self.isDefaultSink = (self.name == in_unicode(string))
+        self.default_sink_name = in_unicode(string)
 
 
     def printDebug(self):
@@ -126,7 +128,8 @@ class PulseSinkInfo(PulseSink):
                   "driver" : str(self.driver) ,
                   "flags" : str(self.flags) ,
                    "device_name" : str(self.device_name),
-                   "isdefault" : str(self.isDefaultSink)
+                   "isdefault" : str(self.isDefaultSink),
+                   "default_sink_name" : str(self.default_sink_name)
            }
         dict.update(self.proplist_dict)
         return dict
