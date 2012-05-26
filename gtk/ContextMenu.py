@@ -51,6 +51,9 @@ class ContextMenuFactory(GObject.GObject):
             if int(card.index) == int(index):
                 del self.card_infos[key]
 
+    def on_defaultsink_clicked(self, widget, sink):
+        sink.be_default_sink()
+
     def on_mute_clicked(self, widget, sink):
         sink.toggle_mute()
 
@@ -76,11 +79,20 @@ class ContextMenuFactory(GObject.GObject):
         if pa_sink_proxy.is_sink():
             self.context_menu_create_ports(pa_sink_proxy, menu)
             self.context_menu_create_sounddevices(pa_sink_proxy, menu)
+            self.context_menu_create_defaultsink(pa_sink_proxy, menu)
         self.context_menu_create_mute(pa_sink_proxy, menu)
         self.context_menu_create_expand(slider, menu)
 
         if pa_sink_proxy.is_sink():
             self.context_menu_create_sounddevices_other(menu)
+
+    def context_menu_create_defaultsink(self, sink, popup_menu):
+        item = Gtk.CheckMenuItem()
+        item.set_active(sink.is_default())
+        item.set_label(i18n("Default device"))
+        item.connect("activate", self.on_defaultsink_clicked, sink)
+        popup_menu.append(item)
+
 
     def context_menu_create_mute(self, sink, popup_menu):
         item = Gtk.CheckMenuItem()
