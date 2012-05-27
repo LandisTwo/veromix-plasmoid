@@ -44,7 +44,7 @@ install-gtk: install-service
 clean:
 	-find . -name '*~' | xargs rm -f
 	-find . -name '*.pyc' | xargs rm -f
-	-find . -name '__pycache__' | xargs rm -f
+	-find . -name '__pycache__' | xargs rm -rf
 	-find plasma/contents/locale -name "*.mo" | xargs rm -f
 
 distclean: clean
