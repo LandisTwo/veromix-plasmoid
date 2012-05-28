@@ -37,6 +37,7 @@ Description: Mixer for the PulseAudio sound server (GTK+)
 Package: veromix-common
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}, ladspa-sdk, pulseaudio, swh-plugins
+Suggests: ${python2:Depends}|${python3:Depends}
 Description: Mixer for the PulseAudio sound server (common)
  Veromix is a mixer for the PulseAudio sound server.
  .
