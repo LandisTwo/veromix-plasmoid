@@ -437,7 +437,6 @@ class PulseAudio():
         data = POINTER(c_float)()
         pa_stream_peek(stream, data, ctypes.c_ulong(length))
         v = data[int(length / 4 -1)] * 100
-        print (v)
         if (v < 0):
             v = 0
         if (v > 100):
@@ -479,7 +478,7 @@ class PulseAudio():
         if pa_module_info:
             self.loaded_modules[int(pa_module_info.contents.index)] = pa_module_info.contents.name
             if pa_module_info.contents.name == "module-ladspa-sink":
-                self.receiver.module_info(int(pa_module_info.contents.index), str(pa_module_info.contents.name), str(pa_module_info.contents.argument), str(pa_module_info.contents.n_used), str(pa_module_info.contents.auto_unload))
+                self.receiver.module_info(int(pa_module_info.contents.index), pa_module_info.contents.name, pa_module_info.contents.argument, pa_module_info.contents.n_used, pa_module_info.contents.auto_unload)
 
                 # Restore ladspa-effects
                 moved = []
@@ -516,7 +515,6 @@ class PulseAudio():
 ################## card profile
 
     def pulse_set_card_profile(self, index, value):
-        print (index, value)
 #        operation = pa_context_set_card_profile_by_name(self._context,as_p_char(index),as_p_char(value), self._null_cb,None)
         operation = pa_context_set_card_profile_by_index(self._context,int(index),as_p_char(value), self._null_cb,None)
         pa_operation_unref(operation)

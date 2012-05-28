@@ -143,4 +143,4 @@ class Pa2dBus():
                 self.dbus.volume_meter_source(int(index),level)
 
     def on_module_info(self, index, name, argument, n_used, auto_unload):
-        self.dbus.module_info( index, name, argument, n_used, auto_unload)
+        self.dbus.module_info(index, in_unicode(name), in_unicode(argument), in_unicode(n_used), in_unicode(auto_unload))

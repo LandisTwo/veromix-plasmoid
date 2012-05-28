@@ -41,7 +41,19 @@ def in_unicode(string):
     return str(string)
 
 def _in_unicode(string):
-    '''make unicode'''
+    # FIXME - fix the sender!
+    if string == None:
+        return "None"
+    if isinstance(string, int):
+        return str(string)
+    if isinstance(string, float):
+        return str(string) 
+    if isinstance(string, long):
+        return str(string)     
+    if isinstance(string, tuple):
+        if len(string) > 1:
+            return in_unicode(string[0])
+        return ""
     if isinstance(string, unicode):
         return string
     for enc in encodings:
@@ -51,6 +63,7 @@ def _in_unicode(string):
         except:
             if enc == encodings[-1]:
                 #raise UnicodingError("still don't recognise encoding after trying do guess.")
+#                print type(string)
                 return "problem with string decoding"
     return "problem with string decoding"
 

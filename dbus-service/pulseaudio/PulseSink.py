@@ -94,7 +94,7 @@ class PulseSinkInfo(PulseSink):
         self.description         = in_unicode(pa_sink_info.description)
         self.sample_spec         = in_unicode(pa_sink_info.sample_spec)
         self.channel_map         = in_unicode(pa_sink_info.channel_map)
-        self.owner_module        = in_unicode(pa_sink_info.owner_module)
+        self.owner_module        = int(pa_sink_info.owner_module)
         self.monitor_source      = in_unicode(pa_sink_info.monitor_source)
         self.monitor_source_name = in_unicode(pa_sink_info.monitor_source_name)
         self.latency             = int(pa_sink_info.latency)
