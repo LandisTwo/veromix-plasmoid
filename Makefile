@@ -33,6 +33,7 @@ install-plasmoid: install-service
 
 	mkdir -p $(DESTDIR)/usr/share/kde4/services
 	ln -s ../apps/plasma/plasmoids/veromix-plasmoid/metadata.desktop $(DESTDIR)/usr/share/kde4/services/plasma-widget-veromix.desktop
+	ln -sf ../../../../../../../veromix/common $(DESTDIR)/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid/contents/code/veromixcommon
 
 install-gtk: install-service
 	mkdir -p $(_VEROMIX_SHARED)
