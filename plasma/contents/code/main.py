@@ -79,12 +79,12 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def init(self):
         plasmascript.Applet.init(self)
-        out = commands.getstatusoutput("xdg-icon-resource install --size 128 " + unicode(self.package().path()) + "contents/icons/veromix-plasmoid-128.png veromix-plasmoid")
-        if out[0] == 0:
-            print "veromix icon installed"
-            #gc.writeEntry("gmail-plasmoid-128.png", vers["gmail-plasmoid-128.png"])
-        else:
-            print "Error installing veromix icon:", out
+        if "usr/share/kde4" not in os.path.realpath(__file__):
+            out = commands.getstatusoutput("xdg-icon-resource install --size 128 " + unicode(self.package().path()) + "contents/icons/veromix-plasmoid-128.png veromix-plasmoid")
+            if out[0] == 0:
+                print "veromix icon installed"
+            else:
+                print "Error installing veromix icon:", out
 
         LADSPAPresetLoader().install_ladspa_presets_if_needed(unicode(self.package().path())+"presets")
         if self.is_ladspa_enabled():
