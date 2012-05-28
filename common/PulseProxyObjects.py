@@ -304,10 +304,10 @@ class SinkInputInfo(AbstractSink):
         if veromix:
             if text == "LADSPA Stream" or ("media.name" in self.props.keys() and self.props["media.name"] == "LADSPA Stream"):
                 for sink in veromix.get_sink_widgets():
-                    if sink.pa_sink.props["owner_module"] == self.props["owner_module"]:
-                        bold = sink.pa_sink.props["device.ladspa.name"]
+                    if sink.pa_sink_proxy().get_owner_module() == self.get_owner_module():
+                        bold = sink.pa_sink_proxy().props["device.ladspa.name"]
                         text = ""
-                        iconname = sink.pa_sink.props["device.icon_name"]
+                        iconname = sink.pa_sink_proxy().props["device.icon_name"]
 
         # FIXME
         if bold in ["", "None", None]:

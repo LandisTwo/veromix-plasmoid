@@ -468,6 +468,9 @@ class Channel(QGraphicsWidget):
     def set_focus(self):
         self.slider.set_focus()
 
+    def pa_sink_proxy(self):
+        return self.pa_sink
+
 class ChannelEventFilter(QObject):
     def __init__(self, channel):
         QObject.__init__(self)
