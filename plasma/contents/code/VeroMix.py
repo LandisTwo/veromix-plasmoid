@@ -266,8 +266,9 @@ class VeroMix(QGraphicsWidget):
         key = "sink" + str(index)
         for widget in self.sink_panel_layout.getChannels().values():
             if widget.pa_sink:
-                if "owner_module" in widget.pa_sink.props:
-                    if widget.pa_sink.props["owner_module"] == str(index):
+                module = widget.pa_sink.get_owner_module()
+                if module:
+                    if module == str(index):
                         widget.update_module_info(index, name, argument, n_used, auto_unload)
 
     def on_remove_sink(self, index):

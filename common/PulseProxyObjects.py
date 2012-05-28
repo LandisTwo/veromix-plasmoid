@@ -48,16 +48,14 @@ class AbstractSink():
     # FIXME KDE
     DEFAULT_ICON = "audio-x-generic-symbolic"
 
-    def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props):
-        #QObject.__init__(self)
+    def __init__(self, pulseaudio, index, name, muted, volume, props):
         self.pulse_proxy = pulseaudio
-        #self.pa = pulseaudio
         self.index =  index
         self.name =   name
         self.mute  =   muted
         self. volume  =   volume
         self.props = props
-        self._update_nice_values()
+        self._update_nice_values(pulseaudio.veromix)
 
     def is_default(self):
         return False
@@ -158,11 +156,10 @@ class AbstractSink():
     def properties(self):
         return self.props
 
-    def _update_nice_values(self):
+    def _update_nice_values(self, veromix=None):
         self._nice_text =  ""
         self._nice_title = self.name
         self._nice_icon = self.DEFAULT_ICON
-
 
     def get_nice_text(self):
         return html.escape(self._nice_text)
@@ -182,12 +179,17 @@ class AbstractSink():
     def get_output_index(self):
         return int(self.get_index())
 
+    def get_owner_module(self):
+         if "owner_module" in self.props:
+            return self.props["owner_module"]
+         return None
+
 class SinkInfo(AbstractSink):
     # FIXME KDE
     DEFAULT_ICON = "audio-card-symbolic"
 
-    def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props, ports, active_port):
-        AbstractSink.__init__(self, pulseaudio, index,   name,  muted  , volume ,  props)
+    def __init__(self, pulseaudio, index, name, muted, volume, props, ports, active_port):
+        AbstractSink.__init__(self, pulseaudio, index, name, muted, volume, props)
         self.ports=ports
         self.active_port=active_port
 
@@ -234,7 +236,7 @@ class SinkInfo(AbstractSink):
             return self.props["isdefault"] == "True"
         return False
 
-    def _update_nice_values(self):
+    def _update_nice_values(self, veromix=None):
         self._nice_text =  ""
         self._nice_title = self.name
         self._nice_icon = self.DEFAULT_ICON
@@ -246,6 +248,11 @@ class SinkInfo(AbstractSink):
 
     def move_sink_input(self, target_sink):
         self.pulse_proxy.move_sink_input(int(target_sink), int(self.get_index()))
+
+    def is_ladspa_sink(self):
+        return "device.ladspa.module" in sink.properties().keys()
+        # return self.props["device.ladspa.module"] == 
+
 
 class SinkInputInfo(AbstractSink):
 
@@ -267,7 +274,7 @@ class SinkInputInfo(AbstractSink):
     def kill(self):
         self.pulse_proxy.sink_input_kill(self.index)
 
-    def _update_nice_values(self):
+    def _update_nice_values(self, veromix=None):
         text =  self.name
         bold = self.props["app"]
         iconname = None
@@ -294,12 +301,13 @@ class SinkInputInfo(AbstractSink):
             if text == "Output":
                 text = i18n("Voice Output")
 
-        if text == "LADSPA Stream" or ("media.name" in self.props.keys() and self.props["media.name"] == "LADSPA Stream"):
-            for sink in self.veromix.get_sink_widgets():
-                if sink.pa_sink.props["owner_module"] == self.props["owner_module"]:
-                    bold = sink.pa_sink.props["device.ladspa.name"]
-                    text = ""
-                    iconname = sink.pa_sink.props["device.icon_name"]
+        if veromix:
+            if text == "LADSPA Stream" or ("media.name" in self.props.keys() and self.props["media.name"] == "LADSPA Stream"):
+                for sink in veromix.get_sink_widgets():
+                    if sink.pa_sink.props["owner_module"] == self.props["owner_module"]:
+                        bold = sink.pa_sink.props["device.ladspa.name"]
+                        text = ""
+                        iconname = sink.pa_sink.props["device.icon_name"]
 
         # FIXME
         if bold in ["", "None", None]:
@@ -321,8 +329,8 @@ class SinkInputInfo(AbstractSink):
 class SourceInfo(AbstractSink):
     DEFAULT_ICON = "audio-input-microphone-symbolic"
 
-    def __init__(self, pulseaudio, index,   name,  muted  , volume ,  props, ports, active_port):
-        AbstractSink.__init__(self, pulseaudio, index,   name,  muted  , volume ,  props)
+    def __init__(self, pulseaudio, index, name, muted, volume, props, ports, active_port):
+        AbstractSink.__init__(self, pulseaudio, index, name, muted, volume, props)
         self.ports=ports
         self.active_port=active_port
 
@@ -347,7 +355,7 @@ class SourceInfo(AbstractSink):
     def kill(self):
         pass
 
-    def _update_nice_values(self):
+    def _update_nice_values(self, veromix=None):
         self._nice_text =  ""
         self._nice_title = self.name
         self._nice_icon = self.DEFAULT_ICON
@@ -379,7 +387,7 @@ class SourceOutputInfo(AbstractSink):
     def getChannels(self):
         return []
 
-    def _update_nice_values(self):
+    def _update_nice_values(self, veromix=None):
         self._nice_text =  ""
         self._nice_title = self.name
         self._nice_icon = self.DEFAULT_ICON
@@ -394,9 +402,9 @@ class SourceOutputInfo(AbstractSink):
         if "application.icon_name" in self.props.keys():
             self._nice_icon = self.props["application.icon_name"]
 
-        # FIXME KDE
-#        if iconname == None and  "app" in self.props.keys():
-#            self._nice_icon = self.veromix.query_application(self.pa_sink.props["app"])
+        if veromix:
+            if iconname == None and  "app" in self.props.keys():
+                self._nice_icon = veromix.query_application(self.props["app"])
 
         if self._nice_icon is None and self._nice_title == "plugin-container":
             self._nice_icon = 'flash'
@@ -418,7 +426,7 @@ class CardProfile:
         print("</CardProfile>")
 
 class CardInfo:
-    def __init__(self, index,   name,  properties, active_profile_name ,  profiles_dict):
+    def __init__(self, index, name, properties, active_profile_name, profiles_dict):
          self.index = index
          self.name = name
          self.properties = properties
@@ -459,3 +467,13 @@ class CardInfo:
             print("    <" + key + ">", self.properties[key],"</" + key + ">")
         print("  </properties>")
         print("</CardInfo>")
+        
+class ModuleInfo:
+
+    def __init__(self, index, name, argument, n_used, auto_unload):
+        self.index = index
+        self.name = name
+        self.argument = argument
+        self.n_used = n_used
+        self.auto_unload = auto_unload
+

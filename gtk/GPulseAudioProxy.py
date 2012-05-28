@@ -286,7 +286,8 @@ class PulseAudio(GObject.GObject):
         self.getMixer().remove_combined_sink(sink_index)
 
     def on_module_info(self, index, name, argument, n_used, auto_unload):
-        self.emit(SIGNAL("on_module_info(int,PyQt_PyObject,PyQt_PyObject,PyQt_PyObject,PyQt_PyObject)"),index, name, argument, n_used, auto_unload)
+        info = ModuleInfo(index, name, argument, n_used, auto_unload)
+        self.emit("on_module_info",info)
 
     # FIXME
 
