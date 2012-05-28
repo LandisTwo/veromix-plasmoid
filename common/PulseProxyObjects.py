@@ -281,9 +281,9 @@ class SinkInputInfo(AbstractSink):
 
         if self.props["app_icon"] != "None":
             iconname = self.props["app_icon"]
-        ## FIXME KDE
-        #if iconname == None and  self.props["app"] != "None":
-            #iconname = self.veromix.query_application(self.props["app"])
+        if veromix:
+            if iconname == None and  self.props["app"] != "None":
+                iconname = veromix.query_application(self.props["app"], self.DEFAULT_ICON)
         if bold == "knotify":
             bold = i18n("Event Sounds")
             text = ""
@@ -404,7 +404,7 @@ class SourceOutputInfo(AbstractSink):
 
         if veromix:
             if iconname == None and  "app" in self.props.keys():
-                self._nice_icon = veromix.query_application(self.props["app"])
+                self._nice_icon = veromix.query_application(self.props["app"], self.DEFAULT_ICON)
 
         if self._nice_icon is None and self._nice_title == "plugin-container":
             self._nice_icon = 'flash'

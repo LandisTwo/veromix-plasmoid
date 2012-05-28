@@ -459,7 +459,7 @@ class VeroMix(QGraphicsWidget):
     def getPulseAudio(self):
         return self.pa
 
-    def query_application(self, needle):
+    def query_application(self, needle, default_icon=None):
         return self.applet.query_application(needle)
 
     def showMessage(self, icon, message):
