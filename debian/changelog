@@ -1,10 +1,24 @@
 veromix (0.17.0-1) unstable; urgency=low
 
   * New upstream release.
-  * Updated debian/control Standards-Version to 3.9.3 (no changes).
-  * Adding ladspa-sdk as depends to debian/control.
+  * Updated debian/control:
+    - Standards-Version to 3.9.3 (no changes).
+    - Change Section from kde to sound.
+    - New binary packages: veromix-common, veromix.
+    - Moving dependencies from plasma-widget-veromix to veromix-common.
+  * Update debian/copyright.
+  * Update debian/rules:
+    - Also using gzip compression level 9 for binary packages.
+    - Update override_dh_python2 for new packages.
+  * Adding manpage for veromix (debian/veromix.1, debian/veromix.manpages).
+  * New Files:
+    - veromix.1
+    - veromix.install
+    - veromix.links
+    - veromix-common.install
+    - veromix.manpages
 
- -- Nik Lutz <nik.lutz@gmail.com>  Wed, 25 Apr 2012 00:15:03 +0100
+ -- Nik Lutz <nik.lutz@gmail.com>  Mon, 28 May 2012 02:00:00 +0100
 
 veromix (0.16.2-1) unstable; urgency=low
 
