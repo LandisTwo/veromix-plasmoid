@@ -20,18 +20,14 @@ from gi.repository import Gtk, Gdk
 DRAG_ACTION = Gdk.DragAction.COPY
 (TARGET_ENTRY_TEXT, TARGET_ENTRY_PIXBUF) = range(2)
 
-class LabelSlider(Gtk.Fixed):
+class AbstractLabelSlider:
 
     def __init__(self):
-        Gtk.Fixed.__init__(self)
         self.MAX_VOLUME = 100
         self.STEP_SIZE = -5
         self.slider_hidden = False
         self._create_label()
         self._create_slider()
-        self.put(self.label,0,3)
-        self.put(self.slider, 0, 0)
-        self.connect('size-allocate', self.on_resize)
         self._signal_handler = None
 
     def connect_value_changed(self, target):
@@ -52,12 +48,6 @@ class LabelSlider(Gtk.Fixed):
         #self.slider.set_show_fill_level(True)
         #self.slider.set_fill_level(50)
 
-    def on_resize(self, widget, event):
-        if event:
-            # set position of slider
-            event.y = event.y + self.label.get_layout().get_pixel_size()[1] * 0.3
-            self.slider.size_allocate(event)
-
     def _create_label(self):
         self.label = Gtk.Label()
         self.layout = self.label.get_layout()
@@ -72,6 +62,9 @@ class LabelSlider(Gtk.Fixed):
     def set_volume(self, volume):
         self.slider.set_value(volume)
 
+    def set_range(self, amin, amax):
+        self.slider.set_range(amin, amax)
+
     def get_volume(self):
         return self.slider.get_value()
 
@@ -83,13 +76,65 @@ class LabelSlider(Gtk.Fixed):
             self.slider.unmap()
             self.slider_hidden = True
 
+class LabelSlider(Gtk.Fixed, AbstractLabelSlider):
+
+    def __init__(self):
+        Gtk.Fixed.__init__(self)
+        AbstractLabelSlider.__init__(self)
+        self.init_layout()
+        self.connect('size-allocate', self.on_resize)
+
+    def init_layout(self):
+        self.put(self.label,0,3)
+        self.put(self.slider, 0, 0)
+
+    def on_resize(self, widget, event):
+        if event:
+            # set position of slider
+            event.y = event.y + self.label.get_layout().get_pixel_size()[1] * 0.3
+            self.slider.size_allocate(event)
+
+class VerticalLabelSlider(Gtk.HBox, AbstractLabelSlider):
+
+    def __init__(self):
+        Gtk.HBox.__init__(self)
+        AbstractLabelSlider.__init__(self)
+        self.init_layout()
+
+    def init_layout(self):
+        align = Gtk.Alignment()
+        align.set_padding(20, 5, 0, 0)
+        align.add(self.label)
+        self.pack_start(align, False, False, 0)
+        self.pack_start(self.slider, False, False, 0)
+
+    def _create_label(self):
+        LabelSlider._create_label(self)
+        self.label.set_angle(90)
+#        self.set_size_request(450, 50)
+#        self.set_default_size(450, 50)
+
+    def _create_slider(self):
+        self.slider = Gtk.VScale()
+        self.slider.set_draw_value(False)
+        self.slider.set_value_pos(1)
+        self.slider.set_range(0, self.MAX_VOLUME)
+        self.slider.set_value(0)
+        self.slider.set_increments(0, self.STEP_SIZE)
+
+    def get_size_request(self):
+        print ("ss")
+        s = self.label.size_request()
+        s.width = s.width * 3;
+        return s
+
 class SliderWidget(Gtk.VBox):
 
     def __init__(self):
         Gtk.VBox.__init__(self)
+        self.set_border_width(0)
         self._pa_sink_proxy = None
         self.sliders = []
-        self.set_border_width(0)
         self.label = None
         self.EXPAND_CHANNELS = False
 
@@ -189,3 +234,8 @@ class SliderWidget(Gtk.VBox):
             vol.append(slider.get_volume())
         self.pa_sink_proxy().set_volume(vol)
         return False
+
+    def on_pa_module_data_updated(self, data):
+        pass
+
+
