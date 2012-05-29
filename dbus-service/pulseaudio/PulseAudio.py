@@ -26,7 +26,7 @@ from .PulseSink      import PulseSinkInputInfo, PulseSinkInfo
 from .PulseSource    import PulseSourceOutputInfo, PulseSourceInfo
 from .PulseClient    import PulseClientCtypes
 from .PulseCard      import CardInfo
-from VeromixUtils import in_unicode 
+from VeromixUtils import in_unicode
 
 PA_VOLUME_CONVERSION_FACTOR = 655.36
 
@@ -619,7 +619,7 @@ class PulseAudio():
                             self.sink_inputs_to_restore.append([sinkinput, parameters])
                 self.remove_ladspa_sink(module_index)
 
-            o = pa_context_load_module(self._context, "module-ladspa-sink",parameters, self._pa_context_index_cb, None)
+            o = pa_context_load_module(self._context, as_p_char("module-ladspa-sink"),as_p_char(parameters), self._pa_context_index_cb, None)
             pa_operation_unref(o)
 
         except Exception as e :
