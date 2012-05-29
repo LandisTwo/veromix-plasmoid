@@ -85,7 +85,7 @@ class Veromix(Gtk.VBox):
     def pa_proxy(self):
         return self.pa
 
-    def query_application(self, app_info, default_icon=None)
+    def query_application(self, app_info, default_icon=None):
         # FIXME
         return default_icon
 
