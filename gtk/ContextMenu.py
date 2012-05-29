@@ -18,6 +18,9 @@ import gettext, dbus
 from gi.repository import Gtk
 from gi.repository import GObject
 
+from veromixcommon.LADSPAEffects import LADSPAPresetLoader
+from veromixcommon.LADSPAEffects import LADSPAEffects
+
 i18n = gettext.gettext
 
 _instance = None
@@ -41,6 +44,25 @@ class ContextMenuFactory(GObject.GObject):
         self._pa_proxy = veromix.pa_proxy()
         self._pa_proxy.connect("on_card_info", self.on_card_info)
         self._pa_proxy.connect("on_card_remove", self.on_remove_card)
+
+    def populate_menu(self, pa_sink_proxy, menu, slider):
+        if pa_sink_proxy.is_sinkinput():
+            self.create_menu_sinks(pa_sink_proxy, menu)
+        if slider.is_ladspa():
+            self.context_menu_create_presets(slider, menu)
+            self.context_menu_create_effects(slider, menu)
+        if pa_sink_proxy.is_sink():
+            self.context_menu_create_ports(pa_sink_proxy, menu)
+            self.context_menu_create_sounddevices(pa_sink_proxy, menu)
+            self.context_menu_create_defaultsink(pa_sink_proxy, menu)
+        self.context_menu_create_mute(pa_sink_proxy, menu)
+        self.context_menu_create_expand(slider, menu)
+
+        if pa_sink_proxy.is_sink() and not slider.is_ladspa():
+            self.context_menu_create_presets_and_effects(slider, menu)
+            self.context_menu_create_sounddevices_other(menu)
+
+# ---- helper methods
 
     def on_card_info(self, widget, info):
         self.card_infos[info.name] = info
@@ -72,19 +94,6 @@ class ContextMenuFactory(GObject.GObject):
 
     def on_card_port_clicked(self, widget, sink):
         sink.set_port(self.port_actions[widget])
-
-    def populate_menu(self, pa_sink_proxy, menu, slider):
-        if pa_sink_proxy.is_sinkinput():
-            self.create_menu_sinks(pa_sink_proxy, menu)
-        if pa_sink_proxy.is_sink():
-            self.context_menu_create_ports(pa_sink_proxy, menu)
-            self.context_menu_create_sounddevices(pa_sink_proxy, menu)
-            self.context_menu_create_defaultsink(pa_sink_proxy, menu)
-        self.context_menu_create_mute(pa_sink_proxy, menu)
-        self.context_menu_create_expand(slider, menu)
-
-        if pa_sink_proxy.is_sink():
-            self.context_menu_create_sounddevices_other(menu)
 
     def context_menu_create_defaultsink(self, sink, popup_menu):
         item = Gtk.CheckMenuItem()
@@ -204,3 +213,66 @@ class ContextMenuFactory(GObject.GObject):
                 if info.properties[dbus.String(card_identifier)] == sink.props[card_identifier]:
                     return info
         return None
+
+    def context_menu_create_presets_and_effects(self, sink, popup_menu):
+        effects_menu = Gtk.Menu()
+        effects_menu_item = Gtk.MenuItem()
+        effects_menu_item.set_label(i18n("Add Effect"))
+        effects_menu_item.set_submenu(effects_menu)
+        popup_menu.append(effects_menu_item)
+        self.context_menu_create_presets(sink, effects_menu)
+        self.context_menu_create_effects(sink, effects_menu)
+
+    def context_menu_create_presets(self, slider, popup_menu):
+        presets_menu = Gtk.Menu()
+        presets_menu_item = Gtk.MenuItem()
+        presets_menu_item.set_label(i18n("Preset"))
+        presets_menu_item.set_submenu(presets_menu)
+        popup_menu.append(presets_menu_item)
+
+
+        #self.action_save_preset = QAction(i18n("Save"),effect_menu)
+            #effect_menu.addAction(self.action_save_preset)
+            #if not self.is_preset():
+                #self.action_save_preset.setEnabled(False)
+
+            #self.action_save_as_preset = QAction(i18n("Save As..."),effect_menu)
+            #effect_menu.addAction(self.action_save_as_preset)
+            #effect_menu.addSeparator()
+        self.presets_actions = {}
+        for preset in LADSPAPresetLoader().presets():
+            action = Gtk.CheckMenuItem()
+            action.set_draw_as_radio(True)
+            action.set_label(preset["preset_name"])
+            presets_menu.append(action)
+            self.presets_actions[action] = slider
+            if slider.get_selected_preset() == preset["preset_name"]:
+                action.set_active(True)
+            action.connect("activate", self.on_preset_clicked, preset)
+
+    def context_menu_create_effects(self, slider, popup_menu):
+        effects_menu = Gtk.Menu()
+        effects_menu_item = Gtk.MenuItem()
+        effects_menu_item.set_label(i18n("Effect"))
+        effects_menu_item.set_submenu(effects_menu)
+        popup_menu.append(effects_menu_item)
+
+        self.effect_actions = {}
+        for preset in LADSPAEffects().effects():
+            action = Gtk.CheckMenuItem()
+            action.set_draw_as_radio(True)
+            action.set_label(preset["preset_name"])
+            #action.connect("activate", self.on_effect_clicked, preset)
+            effects_menu.append(action)
+            self.effect_actions[action] = slider
+            if slider.get_selected_effect() == preset["label"]:
+                action.set_active(True)
+
+
+    def on_preset_clicked(self, widget, preset):
+        print(widget)
+        self.presets_actions[widget].set_ladspa_effect(preset["preset_name"], self.presets_actions[widget].get_ladspa_master())
+
+    def on_effect_clicked(self, widget, preset):
+        print(widget)
+        self.presets_actions[widget].set_ladspa_effect(preset["label"], self.presets_actions[widget].get_ladspa_master())

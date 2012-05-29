@@ -517,6 +517,9 @@ class ModuleInfo:
         args["preset_name"] = unquote(str(args["sink_name"]))
         self.ladspa_module_info = args
 
+    def get_ladspa_effect_name(self):
+        return self.get_ladspa_label()
+
     def get_ladspa_preset_name(self):
         return self.ladspa_module_info["preset_name"]
 
@@ -587,3 +590,6 @@ class ModuleInfo:
         self.ladspa_module_info["control"] = control[:-1]
         parameters = "sink_name=%(sink_name)s master=%(master)s plugin=%(plugin)s  label=%(label)s control=%(control)s" % self.ladspa_module_info
         pa_sink_proxy.set_ladspa_sink(parameters)
+
+    def get_ladspa_master(self):
+        return self.ladspa_module_info["master"]

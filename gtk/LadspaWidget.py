@@ -115,12 +115,23 @@ class LadspaWidget(SliderWidget):
         self.timer = None
         self.module_proxy.set_ladspa_sink(self.ladspa_values, self.pa_sink_proxy())
 
-    def on_change_effect(self, value):
-        self.on_set_ladspa_effect(value, self.module_info["master"])
+    #def on_change_effect(self, value):
+        #self.on_set_ladspa_effect(value, self.module_info["master"])
 
-    def save_preset(self, name):
-        self.module_info["preset_name"] = str(name)
-        LADSPAPresetLoader().write_preset(self.module_info)
-        self.on_change_effect(str(name))
-        self.on_close_save_dialog()
+    #def save_preset(self, name):
+        #self.module_info["preset_name"] = str(name)
+        #LADSPAPresetLoader().write_preset(self.module_info)
+        #self.on_change_effect(str(name))
+        #self.on_close_save_dialog()
 
+    def get_selected_preset(self):
+        return self.module_proxy.get_ladspa_preset_name()
+
+    def get_selected_effect(self):
+        return self.module_proxy.get_ladspa_effect_name()
+
+    def is_ladspa(self):
+        return True
+
+    def get_ladspa_master(self):
+        return self.module_proxy.get_ladspa_master()

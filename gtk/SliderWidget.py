@@ -14,8 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import re
+import re, urllib.parse
 from gi.repository import Gtk, Gdk
+from veromixcommon.LADSPAEffects import *
 
 DRAG_ACTION = Gdk.DragAction.COPY
 (TARGET_ENTRY_TEXT, TARGET_ENTRY_PIXBUF) = range(2)
@@ -238,4 +239,34 @@ class SliderWidget(Gtk.VBox):
     def on_pa_module_data_updated(self, data):
         pass
 
+    def get_selected_preset(self):
+        return None
 
+    def get_selected_effect(self):
+        return None
+
+    def is_ladspa(self):
+        return False
+
+    def get_ladspa_master(self):
+        return self.pa_sink_proxy().get_ladspa_master()
+
+    def set_ladspa_effect(self, value, master):
+        print(value, master)
+        parameters = ""
+        preset = None
+        for p in LADSPAEffects().effects():
+            if p["preset_name"] == value:
+                parameters = "sink_name=" + urllib.parse.quote(p["name"])
+                preset = p
+
+        for p in LADSPAPresetLoader().presets():
+            if p["preset_name"] == value:
+                parameters = "sink_name=" + urllib.parse.quote(p["preset_name"])
+                preset = p
+
+        parameters =  parameters + " master=" + master + " "
+        parameters =  parameters + " plugin=" + preset["plugin"]
+        parameters =  parameters + " label=" + preset["label"]
+        parameters =  parameters + " control=" + preset["control"]
+        self.pa_sink_proxy().set_ladspa_sink(parameters)
