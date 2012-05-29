@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import os,commands,re,math,shutil
+import os,subprocess,re,math,shutil
 
 _presets = None
 
@@ -27,11 +27,11 @@ class LADSPAPresetLoader:
     def install_ladspa_presets_if_needed(self, veromix_path):
         if os.path.exists(self.user_preset_directory):
             return
-        print "Veromix copying default presets to: ", self.user_preset_directory
+        print("Veromix copying default presets to: " + self.user_preset_directory)
         try:
             shutil.copytree(veromix_path, self.user_preset_directory)
-        except Exception, e:
-            print "Veromix exception while copying presets: ", e
+        except:
+            print("Veromix exception while copying presets: ")
 
     def get_user_preset_directory(self):
         return self.user_preset_directory
@@ -195,14 +195,14 @@ class LADSPAEffects:
         self.effects(True)
 
     def ladspa_sdk_available(self):
-        status,output = commands.getstatusoutput("listplugins")
+        status,output = subprocess.getstatusoutput("listplugins")
         #status2, output = commands.getstatusoutput("analyseplugin")
         return status == 0
 
 def fetch_plugins():
-    status,output = commands.getstatusoutput("listplugins")
+    status,output = subprocess.getstatusoutput("listplugins")
     if status != 0:
-        print "Veromix LADSPA: command 'listplugins' returend an error - is it installed? Check if ladspa-sdk is installed."
+        print("Veromix LADSPA: command 'listplugins' returend an error - is it installed? Check if ladspa-sdk is installed.")
         return hardcoded_plugins()
     plugins = []
     for line in  output.split("\n"):
@@ -210,10 +210,10 @@ def fetch_plugins():
             name = line[0:-1]
             filename =  os.path.basename(name)
             try:
-                status,out = commands.getstatusoutput("analyseplugin " + filename)
+                status,out = subprocess.getstatusoutput("analyseplugin " + filename)
                 if status != 0:
-                    print "Veromix LADSPA: command 'analyseplugin' returend an error:"
-                    print out
+                    print("Veromix LADSPA: command 'analyseplugin' returend an error:")
+                    print(out)
                 else:
                     lines = out.split("\n")
 
@@ -230,9 +230,8 @@ def fetch_plugins():
                                 plugin = []
                         else:
                             plugin.append(line)
-            except Exception,e:
-                print "Problem during plugin extraction"
-                print e
+            except:
+                print("Problem during plugin extraction")
 
     if len(plugins) == 0:
         return hardcoded_plugins()
@@ -254,12 +253,12 @@ def extract_plugin(filename, lines):
         # "50Hz gain (low shelving)" input, control, -70 to 30, default 0
         match = re.match(r'^.*\"(.*)\" input, control, (-?[\d\.]*) to (-?[\d\.]*), default (-?[\d\.]*)(, logarithmic)?', port_hint)
         if match:
-            if "labels" not in definition.keys():
+            if "labels" not in list(definition.keys()):
                 definition["labels"] = []
             definition["labels"].append(match.group(1))
             #print match.group(1), match.group(2), match.group(3)
 
-            if "range" not in definition.keys():
+            if "range" not in list(definition.keys()):
                 definition["range"] = []
             lower = match.group(2)
             upper = match.group(3)
@@ -271,13 +270,13 @@ def extract_plugin(filename, lines):
             upper = float(upper) if '.' in upper else int(upper)
             definition["range"].append([lower,upper])
 
-            if "control" not in definition.keys():
+            if "control" not in list(definition.keys()):
                 definition["control"] = ""
                 definition["controlnumbers"] = []
             definition["control"] = definition["control"] + "," + str(match.group(4))
             definition["controlnumbers"].append(float(match.group(4)) if '.' in match.group(4) else int(match.group(4)))
 
-            if "control_type" not in definition.keys():
+            if "control_type" not in list(definition.keys()):
                 definition["control_type"] = []
             if match.group(5):
                 definition["control_type"].append("log")
@@ -304,7 +303,7 @@ def extract_plugin(filename, lines):
     # http://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Modules#module-ladspa-sink
     if has_input and has_output:
             # some cleanup
-        if "control" in definition.keys():
+        if "control" in list(definition.keys()):
             definition["control"] = definition["control"][1:]
             definition["scale"] = []
             index = 0
@@ -487,8 +486,9 @@ def hardcoded_plugins():
 
 if __name__ == '__main__':
     for x in fetch_plugins():
-        print x["preset_name"]
-        print " labels:", x["labels"]
-        print " control: ", x["control"]
-        print " range: ", x["range"]
-        print " scale: ", x["scale"]
+        print(x["preset_name"])
+        print(" labels:" + str(x["labels"]))
+        print(" control: " + str(x["control"]))
+        print(" range: " + str(x["range"]))
+        print(" scale: " + str(x["scale"]))
+
