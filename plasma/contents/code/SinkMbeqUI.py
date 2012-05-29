@@ -23,7 +23,7 @@ from PyKDE4.plasma import Plasma
 
 from SinkUI import SinkUI
 from LabelSlider import *
-from LADSPAEffects import *
+from veromixcommon.LADSPAEffects import *
 
 class SinkMbeqUI(SinkUI):
     muteInfo = pyqtSignal(bool)

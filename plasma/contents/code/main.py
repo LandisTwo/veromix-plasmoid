@@ -52,8 +52,8 @@ from PyKDE4.kdecore import *
 
 from VeroMix import VeroMix
 from MediaPlayer import NowPlayingController
-from LADSPAEffects import LADSPAEffects
-from LADSPAEffects import LADSPAPresetLoader
+from veromixcommon.LADSPAEffects import LADSPAEffects
+from veromixcommon.LADSPAEffects import LADSPAPresetLoader
 from veromixcommon.Utils import *
 
 COMMENT=i18n("Veromix is a mixer for the Pulseaudio sound server. ")

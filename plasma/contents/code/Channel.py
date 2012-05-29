@@ -25,8 +25,8 @@ from LabelSlider import MeterSlider
 from MuteButton  import MuteButton
 from ClickableMeter import ClickableMeter
 from SinkChannelWidget import SinkChannelWidget
-from LADSPAEffects import LADSPAEffects
-from LADSPAEffects import LADSPAPresetLoader
+from veromixcommon.LADSPAEffects import LADSPAEffects
+from veromixcommon.LADSPAEffects import LADSPAPresetLoader
 from veromixcommon.Utils import *
 
 class Channel(QGraphicsWidget):
