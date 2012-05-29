@@ -26,7 +26,7 @@ from .PulseSink      import PulseSinkInputInfo, PulseSinkInfo
 from .PulseSource    import PulseSourceOutputInfo, PulseSourceInfo
 from .PulseClient    import PulseClientCtypes
 from .PulseCard      import CardInfo
-
+from VeromixUtils import in_unicode 
 
 PA_VOLUME_CONVERSION_FACTOR = 655.36
 
@@ -474,11 +474,12 @@ class PulseAudio():
         self.receiver.volume_meter_sink(int(index), float(v))
 
     def pa_module_info_cb(self, context, pa_module_info, index, user_data):
-        #print "pa_module_info", pa_module_info, index
+#        print ("pa_module_info", pa_module_info, index)
         if pa_module_info:
             self.loaded_modules[int(pa_module_info.contents.index)] = pa_module_info.contents.name
-            if pa_module_info.contents.name == "module-ladspa-sink":
-                self.receiver.module_info(int(pa_module_info.contents.index), pa_module_info.contents.name, pa_module_info.contents.argument, pa_module_info.contents.n_used, pa_module_info.contents.auto_unload)
+
+            if in_unicode(pa_module_info.contents.name) == "module-ladspa-sink":
+                self.receiver.module_info(int(pa_module_info.contents.index), in_unicode(pa_module_info.contents.name), in_unicode(pa_module_info.contents.argument), in_unicode(pa_module_info.contents.n_used), in_unicode(pa_module_info.contents.auto_unload))
 
                 # Restore ladspa-effects
                 moved = []
