@@ -54,7 +54,7 @@ class LadspaWidget(SliderWidget):
     def create_sliders(self, sink):
         self.sliders = []
         for i in range(0, self.number_of_siders):
-            slider = self._create_slider("<b></b>")
+            slider = self._create_slider("")
             slider.connect_value_changed(self.on_sliders_value_changed)
 
     def on_sliders_value_changed(self, widget, value, data):
@@ -62,17 +62,6 @@ class LadspaWidget(SliderWidget):
         for i in range(0,self.number_of_siders):
             values.append(self.sliders[i].get_volume())
         self._schedule_set_ladspa_sink(values)
-
-
-#    def on_contextmenu_clicked(self, action):
-#        if action == self.action_save_preset:
-#            LADSPAPresetLoader().write_preset(self.module_info)
-#        elif action == self.action_save_as_preset:
-#            self.veromix.showModalWidget(SaveAsDialog(self))
-#        elif action == self.action_kill:
-#            self.pa_sink.remove_ladspa_sink()
-#        else:
-#            self.on_change_effect(action.text())
 
     def set_volume(self, pa_sink_proxy):
         self._pa_sink_proxy = pa_sink_proxy
@@ -111,12 +100,8 @@ class LadspaWidget(SliderWidget):
         self.timer = GObject.timeout_add(1000, self._set_ladspa_sink)
 
     def _set_ladspa_sink(self):
-        print ("setting", self.ladspa_values)
         self.timer = None
         self.module_proxy.set_ladspa_sink(self.ladspa_values, self.pa_sink_proxy())
-
-    #def on_change_effect(self, value):
-        #self.on_set_ladspa_effect(value, self.module_info["master"])
 
     #def save_preset(self, name):
         #self.module_info["preset_name"] = str(name)

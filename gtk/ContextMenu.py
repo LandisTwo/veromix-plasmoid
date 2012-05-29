@@ -240,7 +240,6 @@ class ContextMenuFactory(GObject.GObject):
         presets_menu_item.set_submenu(presets_menu)
         popup_menu.append(presets_menu_item)
 
-
         #self.action_save_preset = QAction(i18n("Save"),effect_menu)
             #effect_menu.addAction(self.action_save_preset)
             #if not self.is_preset():
@@ -249,13 +248,12 @@ class ContextMenuFactory(GObject.GObject):
             #self.action_save_as_preset = QAction(i18n("Save As..."),effect_menu)
             #effect_menu.addAction(self.action_save_as_preset)
             #effect_menu.addSeparator()
-        self.presets_actions = {}
+        self.presets_slider = slider
         for preset in LADSPAPresetLoader().presets():
             action = Gtk.CheckMenuItem()
             action.set_draw_as_radio(True)
             action.set_label(preset["preset_name"])
             presets_menu.append(action)
-            self.presets_actions[action] = slider
             if slider.get_selected_preset() == preset["preset_name"]:
                 action.set_active(True)
             action.connect("activate", self.on_preset_clicked, preset)
@@ -267,22 +265,19 @@ class ContextMenuFactory(GObject.GObject):
         effects_menu_item.set_submenu(effects_menu)
         popup_menu.append(effects_menu_item)
 
-        self.effect_actions = {}
+        self.effect_slider = slider
         for preset in LADSPAEffects().effects():
             action = Gtk.CheckMenuItem()
             action.set_draw_as_radio(True)
             action.set_label(preset["preset_name"])
-            #action.connect("activate", self.on_effect_clicked, preset)
             effects_menu.append(action)
-            self.effect_actions[action] = slider
             if slider.get_selected_effect() == preset["label"]:
                 action.set_active(True)
-
+            action.connect("activate", self.on_effect_clicked, preset)
 
     def on_preset_clicked(self, widget, preset):
-        print(widget)
-        self.presets_actions[widget].set_ladspa_effect(preset["preset_name"], self.presets_actions[widget].get_ladspa_master())
+        self.presets_slider.set_ladspa_effect(preset["preset_name"], self.presets_slider.get_ladspa_master())
 
     def on_effect_clicked(self, widget, preset):
-        print(widget)
-        self.presets_actions[widget].set_ladspa_effect(preset["label"], self.presets_actions[widget].get_ladspa_master())
+        self.effect_slider.set_ladspa_effect(preset["preset_name"], self.effect_slider.get_ladspa_master())
+

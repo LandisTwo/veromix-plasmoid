@@ -263,6 +263,8 @@ class SinkInfo(AbstractSink):
         return "device.ladspa.module" in self.props.keys()
         # return self.props["device.ladspa.module"] ==
 
+    def get_ladspa_master(self):
+        return self.get_name()
 
 class SinkInputInfo(AbstractSink):
 
@@ -594,3 +596,4 @@ class ModuleInfo:
 
     def get_ladspa_master(self):
         return self.ladspa_module_info["master"]
+

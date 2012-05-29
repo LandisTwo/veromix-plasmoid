@@ -112,8 +112,6 @@ class VerticalLabelSlider(Gtk.HBox, AbstractLabelSlider):
     def _create_label(self):
         LabelSlider._create_label(self)
         self.label.set_angle(90)
-#        self.set_size_request(450, 50)
-#        self.set_default_size(450, 50)
 
     def _create_slider(self):
         self.slider = Gtk.VScale()
@@ -121,13 +119,8 @@ class VerticalLabelSlider(Gtk.HBox, AbstractLabelSlider):
         self.slider.set_value_pos(1)
         self.slider.set_range(0, self.MAX_VOLUME)
         self.slider.set_value(0)
-        self.slider.set_increments(0, self.STEP_SIZE)
-
-    def get_size_request(self):
-        print ("ss")
-        s = self.label.size_request()
-        s.width = s.width * 3;
-        return s
+        self.slider.set_increments(0, -1 * self.STEP_SIZE)
+        self.slider.set_inverted(True)
 
 class SliderWidget(Gtk.VBox):
 
@@ -252,7 +245,6 @@ class SliderWidget(Gtk.VBox):
         return self.pa_sink_proxy().get_ladspa_master()
 
     def set_ladspa_effect(self, value, master):
-        print(value, master)
         parameters = ""
         preset = None
         for p in LADSPAEffects().effects():
@@ -264,7 +256,6 @@ class SliderWidget(Gtk.VBox):
             if p["preset_name"] == value:
                 parameters = "sink_name=" + urllib.parse.quote(p["preset_name"])
                 preset = p
-
         parameters =  parameters + " master=" + master + " "
         parameters =  parameters + " plugin=" + preset["plugin"]
         parameters =  parameters + " label=" + preset["label"]

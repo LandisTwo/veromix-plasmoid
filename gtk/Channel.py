@@ -131,11 +131,8 @@ class SinkChannel(Channel):
         if info == TARGET_ENTRY_TEXT:
             match =  re.match("veromix://sink_input_index:(\d*)", data.get_text())
             if match:
-                print (match.group(1))
                 self.pa_sink_proxy().move_sink_input(match.group(1))
-                print ("veromix text: %s" % match.group(1))
-            else:
-                print ("Received text: %s" % data.get_text())
+                # print ("veromix text: %s" % match.group(1))
 
 class SinkInputChannel(Channel):
 
