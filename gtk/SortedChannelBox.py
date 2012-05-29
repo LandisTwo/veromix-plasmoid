@@ -20,13 +20,14 @@ from Channel import SinkChannel
 from Channel import SinkInputChannel
 from Channel import SourceChannel
 from Channel import SourceOutputChannel
+from Channel import LadspaChannel
 
 class SortedChannelBox(Gtk.VBox):
     CHANNEL_PADDING = 2
     __gsignals__ = {
         'veromix-resize': (GObject.SIGNAL_RUN_FIRST, None, (),),
     }
-    
+
     def __init__(self):
         Gtk.VBox.__init__(self)
         self.set_border_width(4)
@@ -42,7 +43,10 @@ class SortedChannelBox(Gtk.VBox):
     def on_sink_info(self, widget, data):
         channel = None
         if data.get_index() not in self.channels.keys():
-            channel = SinkChannel()
+            if "device.ladspa.module" in data.properties().keys():
+                channel = LadspaChannel()
+            else:
+                channel = SinkChannel()
         self._add_channel_widget(channel,data)
 
     def on_sink_input_info(self, widget, data):
@@ -62,6 +66,15 @@ class SortedChannelBox(Gtk.VBox):
         if data.get_index() not in self.channels.keys():
             channel = SourceOutputChannel()
         self._add_channel_widget(channel,data)
+
+    def on_module_info(self, widget, data):
+        for widget in self.channels.values():
+            if widget.pa_sink_proxy():
+                module = widget.pa_sink_proxy().get_owner_module()
+                if module:
+                    if module == str(data.get_index()):
+                        widget.on_pa_module_data_updated(data)
+        self.emit('veromix-resize')
 
     def _add_channel_widget(self, channel, data):
         if data.get_index() not in self.channels.keys():

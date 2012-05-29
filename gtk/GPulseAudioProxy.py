@@ -41,6 +41,8 @@ class PulseAudio(GObject.GObject):
 
         'on_card_info': (GObject.SIGNAL_RUN_FIRST, None, (object,)),
         'on_card_remove': (GObject.SIGNAL_RUN_FIRST, None, (int,)),
+        
+        'on_module_info': (GObject.SIGNAL_RUN_FIRST, None, (object,)),
     }
 
     def __init__(self, parent, dbus=None):

@@ -18,6 +18,7 @@ import re
 from gi.repository import Gtk, Gdk
 
 from SliderWidget import SliderWidget
+from LadspaWidget import LadspaWidget
 from ContextMenu import ContextMenu
 
 DRAG_ACTION = Gdk.DragAction.COPY
@@ -112,6 +113,9 @@ class Channel(Gtk.Alignment):
     def toggle_mute(self):
         self.pa_sink_proxy().toggle_mute()
 
+    def on_pa_module_data_updated(self, data):
+        pass
+
 class SinkChannel(Channel):
 
     def _init(self):
@@ -173,4 +177,12 @@ class SourceOutputChannel(Channel):
         Channel._init(self)
         #self.set_padding(padding_top, padding_bottom, padding_left, padding_right)
         self.set_padding(0, 0, self.ICON_HEIGHT / 2, 0)
+
+class LadspaChannel(SinkChannel):
+    
+    def _create_slider(self):
+        self.slider = LadspaWidget()
+
+    def on_pa_module_data_updated(self, data):
+        self.slider.on_pa_module_data_updated(data, self.pa_sink_proxy())
 

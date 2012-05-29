@@ -33,7 +33,7 @@ class Veromix(Gtk.VBox):
     def launch_pa(self):
 
         self.pa.connect_veromix_service()
-        # FIXME: singleton initialization 
+        # FIXME: singleton initialization
         ContextMenu.get_instance(self)
 
         self.pa.connect("on_sink_info", self.sink_box.on_sink_info)
@@ -47,6 +47,8 @@ class Veromix(Gtk.VBox):
 
         self.pa.connect("on_source_output_info", self.source_box.on_source_output_info)
         self.pa.connect("on_source_output_remove", self.source_box.on_sink_remove)
+
+        self.pa.connect("on_module_info", self.sink_box.on_module_info)
 
         self.pa.requestInfo()
 
