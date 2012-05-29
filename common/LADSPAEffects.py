@@ -30,7 +30,8 @@ class LADSPAPresetLoader:
     configdir = os.getenv('HOME') + "/.pulse"
     user_preset_directory = configdir + "/presets"
 
-    def install_ladspa_presets_if_needed(self, veromix_path):
+    def install_ladspa_presets_if_needed(self):
+        veromix_path = os.path.abspath(os.path.join(os.path.abspath(os.path.join(os.path.realpath(__file__), os.path.pardir)), os.path.pardir)) + "/data/presets"
         if os.path.exists(self.user_preset_directory):
             return
         print("Veromix copying default presets to: " + self.user_preset_directory)

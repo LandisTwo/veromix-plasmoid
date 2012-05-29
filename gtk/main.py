@@ -25,6 +25,7 @@ from Veromix import Veromix
 from Indicator import Indicator
 from Configuration import config
 from veromixcommon.Utils import createDbusServiceDescription
+from veromixcommon.LADSPAEffects import LADSPAPresetLoader
 
 DBUS_INTERFACE = "org.veromix.gtkfrontend"
 
@@ -78,6 +79,7 @@ if __name__ == '__main__':
         Gdk.notify_startup_complete()
     else:
         createDbusServiceDescription(VEROMIX_BASEDIR + VEROMIX_SERVICE, False)
+        LADSPAPresetLoader().install_ladspa_presets_if_needed()
         win = VeromixWindow(bus)
         win.show_window()
         Gtk.main()

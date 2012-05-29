@@ -86,7 +86,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             else:
                 print "Error installing veromix icon:", out
 
-        LADSPAPresetLoader().install_ladspa_presets_if_needed(unicode(self.package().path())+"presets")
+        LADSPAPresetLoader().install_ladspa_presets_if_needed()
         if self.is_ladspa_enabled():
             # force singleton initialisation
             LADSPAPresetLoader().presets()
