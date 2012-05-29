@@ -179,7 +179,7 @@ class SourceOutputChannel(Channel):
         self.set_padding(0, 0, self.ICON_HEIGHT / 2, 0)
 
 class LadspaChannel(SinkChannel):
-    
+
     def _create_slider(self):
         self.slider = LadspaWidget()
 
