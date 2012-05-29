@@ -17,6 +17,8 @@
 import gettext
 i18n = gettext.gettext
 
+from .LADSPAEffects import *
+
 try:
     import html
 except:
@@ -24,6 +26,13 @@ except:
         @staticmethod
         def escape(arg):
             return str(arg)
+
+try:
+    import urllib.parse
+    unquote = urllib.parse.unquote
+except:
+    import urllib
+    unquote = urllib.unquote
 
 ## FIXME bad name: how is one "channel" of a strereo stream called?
 class SinkChannel():
@@ -251,7 +260,7 @@ class SinkInfo(AbstractSink):
 
     def is_ladspa_sink(self):
         return "device.ladspa.module" in sink.properties().keys()
-        # return self.props["device.ladspa.module"] == 
+        # return self.props["device.ladspa.module"] ==
 
 
 class SinkInputInfo(AbstractSink):
@@ -467,13 +476,114 @@ class CardInfo:
             print("    <" + key + ">", self.properties[key],"</" + key + ">")
         print("  </properties>")
         print("</CardInfo>")
-        
+
 class ModuleInfo:
 
     def __init__(self, index, name, argument, n_used, auto_unload):
-        self.index = index
+        self.index = int(index)
         self.name = name
         self.argument = argument
         self.n_used = n_used
         self.auto_unload = auto_unload
 
+    def get_index(self):
+        return self.index
+
+    def set_pa_sink_proxy(self, pa_sink_proxy):
+        self.pa_sink_proxy = pa_sink_proxy
+        self.ladspa_parse_module_info(self.argument, self.pa_sink_proxy)
+
+    def get_ladspa_nice_title(self):
+        text = ""
+        try:
+            if self.is_ladspa_preset():
+                text = str(self.get_ladspa_name()) + " - " + str(self.get_ladspa_preset_name())
+            else:
+                text = str(self.get_ladspa_name())
+        except:
+            pass
+        return text
+
+    def ladspa_parse_module_info(self, string, pa_sink_proxy):
+        args = {}
+        controls = string.split(" ")
+        for entry in controls:
+            s = entry.split("=")
+            if len(s) == 2:
+                args[s[0]]=s[1]
+        args["name"] = ""
+        if "device.ladspa.name" in pa_sink_proxy.props.keys():
+            args["name"] = pa_sink_proxy.props["device.ladspa.name"]
+        args["preset_name"] = unquote(str(args["sink_name"]))
+        self.ladspa_module_info = args
+
+    def get_ladspa_preset_name(self):
+        return self.ladspa_module_info["preset_name"]
+
+    def get_ladspa_name(self):
+        return self.ladspa_module_info["name"]
+
+    def get_ladspa_label(self):
+        return self.ladspa_module_info["label"]
+
+    def get_ladspa_control_string(self):
+        return self.ladspa_module_info["control"]
+
+    def get_ladspa_control(self):
+        string = self.get_ladspa_control_string()
+        controls = []
+        if str(string) != "":
+            controls = string.split(",")
+        return controls
+
+    def get_lasapa_number_of_controls(self):
+        return len(self.get_ladspa_control())
+
+    def get_ladspa_effect_settings(self):
+        effect = None
+        for preset in LADSPAEffects().effects():
+            if preset["label"] == self.get_ladspa_label():
+                effect = preset
+        return effect
+
+    def is_ladspa_preset(self):
+        return self.get_ladspa_name() != self.get_ladspa_preset_name()
+
+    def get_ladspa_scale(self, number):
+        effect = self.get_ladspa_effect_settings()
+        return effect["scale"][number]
+
+    def get_ladspa_range(self, number):
+        effect = self.get_ladspa_effect_settings()
+        return effect["range"][number]
+
+    def get_ladspa_scaled_range(self, number):
+        scale = self.get_ladspa_scale(number)
+        scaled = [0,0]
+        scaled[0] = (self.get_ladspa_range(number)[0]) * scale
+        scaled[1] = (self.get_ladspa_range(number)[1]) * scale
+        return scaled
+
+    def get_ladspa_effect_label(self, number):
+        effect = self.get_ladspa_effect_settings()
+        return effect["labels"][number]
+
+    def get_ladspa_control_value(self, number):
+        return float(self.get_ladspa_control()[number])
+
+    def get_ladspa_control_value_scaled(self, number):
+        return int(self.get_ladspa_scale(number) * self.get_ladspa_control_value(number))
+
+    def set_ladspa_sink(self, values, pa_sink_proxy):
+        control = ""
+        effect = self.get_ladspa_effect_settings()
+        i = 0
+
+        # multiply (visible) values with scale
+        for val in values:
+            scale = self.get_ladspa_scale(i)
+            control = control +  str(float(val)/float(scale)) + ","
+            i = i + 1
+        self.ladspa_module_info["control"] = control[:-1]
+        parameters = "sink_name=%(sink_name)s master=%(master)s plugin=%(plugin)s  label=%(label)s control=%(control)s" % self.ladspa_module_info
+        pa_sink_proxy.set_ladspa_sink(parameters)
