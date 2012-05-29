@@ -229,7 +229,8 @@ class SinkInfo(AbstractSink):
         self.pulse_proxy.toggle_monitor_of_sink(self.index, self.get_monitor_name())
 
     def kill(self):
-        pass
+        if self.is_ladspa_sink():
+            self.remove_ladspa_sink()
 
     def set_ladspa_sink(self,parameters):
         self.pulse_proxy.set_ladspa_sink(int(self.index), int(self.props["owner_module"]), str(parameters))
@@ -259,7 +260,7 @@ class SinkInfo(AbstractSink):
         self.pulse_proxy.move_sink_input(int(target_sink), int(self.get_index()))
 
     def is_ladspa_sink(self):
-        return "device.ladspa.module" in sink.properties().keys()
+        return "device.ladspa.module" in self.props.keys()
         # return self.props["device.ladspa.module"] ==
 
 

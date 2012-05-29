@@ -56,8 +56,10 @@ class ContextMenuFactory(GObject.GObject):
             self.context_menu_create_sounddevices(pa_sink_proxy, menu)
             self.context_menu_create_defaultsink(pa_sink_proxy, menu)
         self.context_menu_create_mute(pa_sink_proxy, menu)
-        self.context_menu_create_expand(slider, menu)
-
+        if not slider.is_ladspa():
+            self.context_menu_create_expand(slider, menu)
+        if pa_sink_proxy.is_sinkinput() or slider.is_ladspa():
+            self.context_menu_create_kill(pa_sink_proxy, menu)
         if pa_sink_proxy.is_sink() and not slider.is_ladspa():
             self.context_menu_create_presets_and_effects(slider, menu)
             self.context_menu_create_sounddevices_other(menu)
@@ -78,6 +80,9 @@ class ContextMenuFactory(GObject.GObject):
 
     def on_mute_clicked(self, widget, sink):
         sink.toggle_mute()
+
+    def on_kill_clicked(self, widget, sink):
+        sink.kill()
 
     def on_expand_clicked(self, widget, slider_widget):
         slider_widget.expand(widget.get_active())
@@ -102,6 +107,11 @@ class ContextMenuFactory(GObject.GObject):
         item.connect("activate", self.on_defaultsink_clicked, sink)
         popup_menu.append(item)
 
+    def context_menu_create_kill(self, sink, popup_menu):
+        item = Gtk.MenuItem()
+        item.set_label(i18n("Kill"))
+        item.connect("activate", self.on_kill_clicked, sink)
+        popup_menu.append(item)
 
     def context_menu_create_mute(self, sink, popup_menu):
         item = Gtk.CheckMenuItem()
