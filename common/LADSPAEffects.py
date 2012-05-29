@@ -14,10 +14,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import os,subprocess,re,math,shutil
+import os,re,math,shutil
 
 _presets = None
 
+try:
+    import commands
+    getstatusoutput = commands.getstatusoutput
+except:
+    import subprocess
+    getstatusoutput = subprocess.getstatusoutput
 
 
 class LADSPAPresetLoader:
@@ -195,12 +201,12 @@ class LADSPAEffects:
         self.effects(True)
 
     def ladspa_sdk_available(self):
-        status,output = subprocess.getstatusoutput("listplugins")
+        status,output = getstatusoutput("listplugins")
         #status2, output = commands.getstatusoutput("analyseplugin")
         return status == 0
 
 def fetch_plugins():
-    status,output = subprocess.getstatusoutput("listplugins")
+    status,output = getstatusoutput("listplugins")
     if status != 0:
         print("Veromix LADSPA: command 'listplugins' returend an error - is it installed? Check if ladspa-sdk is installed.")
         return hardcoded_plugins()
@@ -210,7 +216,7 @@ def fetch_plugins():
             name = line[0:-1]
             filename =  os.path.basename(name)
             try:
-                status,out = subprocess.getstatusoutput("analyseplugin " + filename)
+                status,out = getstatusoutput("analyseplugin " + filename)
                 if status != 0:
                     print("Veromix LADSPA: command 'analyseplugin' returend an error:")
                     print(out)
