@@ -85,14 +85,6 @@ class LadspaWidget(SliderWidget):
             self.sliders[i].set_volume(self.module_proxy.get_ladspa_control_value_scaled(i))
         self.show_all()
 
-    def on_sliders_cb(self, action):
-        if action == 7 or action == 3:
-            values = []
-            for i in range(0,self.number_of_siders):
-                values.append(self.sliders[i].value())
-                self.sliders[i].update_plasma_timestamp()
-            self._schedule_set_ladspa_sink(values)
-
     def _schedule_set_ladspa_sink(self,values):
         if self.timer != None:
             GObject.source_remove(self.timer)
@@ -103,11 +95,9 @@ class LadspaWidget(SliderWidget):
         self.timer = None
         self.module_proxy.set_ladspa_sink(self.ladspa_values, self.pa_sink_proxy())
 
-    #def save_preset(self, name):
-        #self.module_info["preset_name"] = str(name)
-        #LADSPAPresetLoader().write_preset(self.module_info)
-        #self.on_change_effect(str(name))
-        #self.on_close_save_dialog()
+    def save_preset(self, name):
+        self.module_proxy.save_preset(name)
+        self.on_sliders_value_changed(None, None, None)
 
     def get_selected_preset(self):
         return self.module_proxy.get_ladspa_preset_name()
@@ -120,3 +110,4 @@ class LadspaWidget(SliderWidget):
 
     def get_ladspa_master(self):
         return self.module_proxy.get_ladspa_master()
+        

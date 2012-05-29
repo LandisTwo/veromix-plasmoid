@@ -261,7 +261,6 @@ class SinkInfo(AbstractSink):
 
     def is_ladspa_sink(self):
         return "device.ladspa.module" in self.props.keys()
-        # return self.props["device.ladspa.module"] ==
 
     def get_ladspa_master(self):
         return self.get_name()
@@ -596,4 +595,10 @@ class ModuleInfo:
 
     def get_ladspa_master(self):
         return self.ladspa_module_info["master"]
+
+    def save_preset(self, name=None):
+        if name != None:
+            self.ladspa_module_info["preset_name"] = str(name)
+            self.ladspa_module_info["sink_name"] = str(name)
+        LADSPAPresetLoader().write_preset(self.ladspa_module_info)
 

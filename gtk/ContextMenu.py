@@ -240,14 +240,20 @@ class ContextMenuFactory(GObject.GObject):
         presets_menu_item.set_submenu(presets_menu)
         popup_menu.append(presets_menu_item)
 
-        #self.action_save_preset = QAction(i18n("Save"),effect_menu)
-            #effect_menu.addAction(self.action_save_preset)
-            #if not self.is_preset():
-                #self.action_save_preset.setEnabled(False)
+        if slider.is_ladspa():
+            if slider.module_proxy.is_ladspa_preset():
+                save = Gtk.MenuItem()
+                save.set_label(i18n("Save"))
+                presets_menu.append(save)
+                save.connect("activate", self.on_save_preset_clicked)
 
-            #self.action_save_as_preset = QAction(i18n("Save As..."),effect_menu)
-            #effect_menu.addAction(self.action_save_as_preset)
-            #effect_menu.addSeparator()
+                saveas = Gtk.MenuItem()
+                saveas.set_label(i18n("Save As..."))
+                presets_menu.append(saveas)
+                saveas.connect("activate", self.on_save_as_preset_clicked)
+
+                separator = Gtk.SeparatorMenuItem()
+                presets_menu.append(separator)
         self.presets_slider = slider
         for preset in LADSPAPresetLoader().presets():
             action = Gtk.CheckMenuItem()
@@ -280,4 +286,41 @@ class ContextMenuFactory(GObject.GObject):
 
     def on_effect_clicked(self, widget, preset):
         self.effect_slider.set_ladspa_effect(preset["preset_name"], self.effect_slider.get_ladspa_master())
+
+    def on_save_preset_clicked(self, widget):
+        self.effect_slider.save_preset(None)
+
+    def on_save_as_preset_clicked(self, widget):
+        dialog = SavePresetsDialog(self.veromix.window)
+        response = dialog.run()
+        text = dialog.get_text()
+        if response == Gtk.ResponseType.OK:
+            self.effect_slider.save_preset(text)
+        dialog.destroy()
+
+class SavePresetsDialog(Gtk.MessageDialog):
+
+    def __init__(self, parent):
+        Gtk.MessageDialog.__init__(self, 0, Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+            Gtk.MessageType.QUESTION,
+            Gtk.ButtonsType.OK_CANCEL,
+            i18n("Save Preset"))
+
+        self.set_markup('Please enter a <b>name</b> for the preset:')
+        self.entry = Gtk.Entry()
+        self.entry.connect("activate", self.save_and_close, self, Gtk.ResponseType.OK)
+
+        hbox = Gtk.HBox()
+        hbox.pack_start(Gtk.Label("Name:"), False, 5, 5)
+        hbox.pack_end(self.entry, True, 5, 5)
+
+        self.format_secondary_markup("It will be save in ~/.pulse/presets")
+        self.vbox.pack_end(hbox, True, True, 0)
+        self.show_all()
+
+    def get_text(self):
+        return self.entry.get_text()
+
+    def save_and_close(self, entry, dialog, response):
+        self.response(response)
 
