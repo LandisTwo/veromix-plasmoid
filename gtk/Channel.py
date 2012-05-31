@@ -41,15 +41,14 @@ class Channel(Gtk.Alignment):
         self.hbox = Gtk.HBox()
         self.mute.set_size_request(self.ICON_HEIGHT,self.ICON_HEIGHT)
 
-        #self.middle.pack_start(self.label, True, True, 0)
-        #self.middle.pack_start(self.slider, True, True, 0)
-        #self.hbox.pack_start(self.middle,True,True,5)
-
         self.mute_box.pack_start(self.mute, False, True, 2)
         self.mute_box.pack_start(Gtk.HBox(), True, True, 0)
+        self.menu_box.pack_start(self.menu_button, False, True, 2)
+        self.menu_box.pack_start(Gtk.HBox(), True, True, 0)
 
         self.hbox.pack_start(self.mute_box, False, True, 2)
         self.hbox.pack_start(self.slider,True,True,5)
+        self.hbox.pack_start(self.menu_box,False,False, 2)
 
         self.frame.add(self.hbox)
         self.add(self.frame)
@@ -58,7 +57,17 @@ class Channel(Gtk.Alignment):
     def _create(self):
         self._create_mute()
         self._create_slider()
-        #self._create_middle()
+        self._create_menu_button()
+
+    def _create_menu_button(self):
+        self.menu_box=Gtk.VBox()
+        self.menu_button = Gtk.ToggleButton()
+        self.menu_button.set_relief(Gtk.ReliefStyle.NONE)
+        self.menu_button.add(Gtk.Arrow(Gtk.ArrowType.DOWN, Gtk.ShadowType.NONE))
+        self.menu_button.connect("released", self.show_popupmenu)
+
+    def on_menu_button_released(self, widget):
+        self.menu_button.set_active(False)
 
     def _create_mute(self):
         self.mute_box = Gtk.VBox()
@@ -72,21 +81,21 @@ class Channel(Gtk.Alignment):
         ##self.mute.set_image_position(1)
         ##self.mute.connect("clicked", self.on_muted_clicked)
 
-    #def _create_middle(self):
-        #self.middle = Gtk.VBox()
-        #self.middle.set_border_width(0)
-        ##self.middle.set_homogeneous(True)
-
     def _create_slider(self):
         self.slider = SliderWidget()
 
+    def show_popupmenu(self, widget, button=0, time=0):
+        self.menu = Gtk.Menu()
+        self.menu.connect("selection-done", self.on_menu_button_released)
+        instance = ContextMenu.get_instance()
+        instance.populate_menu(self.pa_sink_proxy(), self.menu, self.slider)
+        self.menu.show_all()
+        self.menu.popup(None, None, None, None, 0, 0)
+        return False
+
     def on_button_press_event(self, widget, event):
-        if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3:
-            self.menu = Gtk.Menu()
-            instance = ContextMenu.get_instance()
-            instance.populate_menu(self.pa_sink_proxy(), self.menu, self.slider)
-            self.menu.show_all()
-            self.menu.popup(None, None, None, None, event.button, event.time)
+        if (event.type == Gdk.EventType.BUTTON_PRESS and event.button == 3):
+            self.show_popupmenu(event.button, event.time)
             return True # event has been handled
 
     def on_muted_clicked(self, button):
