@@ -45,7 +45,7 @@ class PulseSink:
         self.client = client
         self.isDefaultSink = False
         self.default_sink_name = ""
-
+        self.monitor_enabled = False
         return
 
     # PROTOTYPE
@@ -73,6 +73,11 @@ class PulseSink:
         self.isDefaultSink = (self.name == in_unicode(string))
         self.default_sink_name = in_unicode(string)
 
+    def set_has_monitor(self, aboolean):
+        self.monitor_enabled = aboolean
+
+    def has_monitor(self):
+        return self.monitor_enabled
 
     def printDebug(self):
         print("self.index:", self.index)
@@ -129,7 +134,8 @@ class PulseSinkInfo(PulseSink):
                   "flags" : str(self.flags) ,
                    "device_name" : str(self.device_name),
                    "isdefault" : str(self.isDefaultSink),
-                   "default_sink_name" : str(self.default_sink_name)
+                   "default_sink_name" : str(self.default_sink_name),
+                   "has_monitor" : str(self.has_monitor())
            }
         dict.update(self.proplist_dict)
         return dict
@@ -243,6 +249,7 @@ class PulseSinkInputInfo(PulseSink):
                "app" : str(self.app),
                "app_icon" : str(self.app_icon),
                "isdefault" : str(self.isDefaultSink),
+               "has_monitor" : str(self.has_monitor())
                #"proplist" : str(self.proplist_string)
                 }
         adict.update(self.proplist_dict)

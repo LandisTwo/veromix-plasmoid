@@ -133,6 +133,10 @@ class PulseAudio():
             pa_stream_disconnect(self.monitor_sink_inputs[float(sinkinput_index)])
             del self.monitor_sink_inputs[float(sinkinput_index)]
 
+            sink = self.sink_inputs[int(sinkinput_index)]
+            sink.set_has_monitor(False)
+            self.receiver.sink_input_info(sink)
+
     def pa_create_monitor_stream_for_sink_input(self, index, sink_index, force = False):
         if not index in list(self.monitor_sink_inputs.keys()) or force :
             sink = self.sinks[float(sink_index)]
@@ -143,13 +147,18 @@ class PulseAudio():
             ss.rate = self._meter_rate
             #ss.rate = sink.sample_spec.rate
 
-            pa_stream = pa_stream_new(self._context, as_p_char("Veromix sinkinput peak detect - " + str(sink.description)), ss, None)
+            pa_stream = pa_stream_new(self._context, as_p_char("Veromix sinkinput peak detect"), ss, None)
             pa_stream_set_monitor_stream(pa_stream, index)
             pa_stream_set_read_callback(pa_stream, self._pa_stream_request_cb, index)
             #pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
             # FIXME We often get the wrong monitor_source here.
             pa_stream_connect_record(pa_stream, as_p_char(sink.monitor_source), None, PA_STREAM_PEAK_DETECT)
             self.monitor_sink_inputs[float(index)] =  pa_stream
+
+            sinkinput = self.sink_inputs[int(index)]
+            sinkinput.set_has_monitor(True)
+            self.receiver.sink_input_info(sinkinput)
+
 
 ###########
 
@@ -164,6 +173,10 @@ class PulseAudio():
             pa_stream_disconnect(self.monitor_sinks[float(sink_index)])
             del self.monitor_sinks[float(sink_index)]
 
+            sink = self.sinks[float(sink_index)]
+            sink.set_has_monitor(False)
+            self.receiver.sink_info(sink)
+
     def pa_create_monitor_stream_for_sink(self, index, name, force = False):
         if not index in list(self.monitor_sinks.keys()) or force :
             if float(index) not in list(self.sinks.keys()):
@@ -175,12 +188,16 @@ class PulseAudio():
             samplespec.rate = self._meter_rate
             #samplespec.rate = sink.sample_spec.rate
 
-            pa_stream = pa_stream_new(self._context, as_p_char("Veromix sink peak detect - " + str(sink.description)), samplespec, None)
+            pa_stream = pa_stream_new(self._context, as_p_char("Veromix sink peak detect - " + in_unicode(sink.description)), samplespec, None)
             pa_stream_set_read_callback(pa_stream, self._pa_sink_stream_request_cb, index+1)
             #pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
 
             pa_stream_connect_record(pa_stream, as_p_char(sink.monitor_source), None, PA_STREAM_PEAK_DETECT)
             self.monitor_sinks[float(index)] =  pa_stream
+
+            sink.set_has_monitor(True)
+            self.receiver.sink_info(sink)
+
 
 ###########
 
@@ -206,13 +223,16 @@ class PulseAudio():
             samplespec.format = PA_SAMPLE_FLOAT32LE
             samplespec.rate = self._meter_rate
 
-            pa_stream = pa_stream_new(self._context, as_p_char("Veromix source peak detect - " + name), samplespec, None)
+            pa_stream = pa_stream_new(self._context, as_p_char("Veromix source peak detect"), samplespec, None)
             pa_stream_set_read_callback(pa_stream, self._pa_source_stream_request_cb, index)
             pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
 
-            device = pa_xstrdup(source.name)
-            pa_stream_connect_record(pa_stream, as_p_char(device), None, PA_STREAM_PEAK_DETECT)
+            device = pa_xstrdup(as_p_char(in_unicode(source.name)))
+            pa_stream_connect_record(pa_stream, device, None, PA_STREAM_PEAK_DETECT)
             self.monitor_sources[float(index)] = pa_stream
+
+            source.set_has_monitor(True)
+            self.receiver.source_info(source)
 
 
 ############# callbacks
@@ -394,6 +414,7 @@ class PulseAudio():
         if struct :
             sink = PulseSinkInputInfo(struct[0])
             #print ( pa_proplist_to_string(struct.contents.proplist))
+            sink.set_has_monitor(float(sink.index) in list(self.monitor_sink_inputs.keys()))
             self.sink_inputs[int(sink.index)] = sink
             self.receiver.sink_input_info(sink)
             if self._autostart_meters:
@@ -402,6 +423,7 @@ class PulseAudio():
     def pa_sink_info_cb(self, context, struct, index, data):
         if struct:
             sink = PulseSinkInfo(struct[0])
+            sink.set_has_monitor((float(sink.index) in list(self.monitor_sinks.keys())))
             sink.updateDefaultSink(self.default_sink_name)
             self.sinks[float(sink.index)] = sink
             self.receiver.sink_info(sink)
@@ -419,6 +441,7 @@ class PulseAudio():
     def pa_source_info_cb(self, context, struct, eol, user_data):
         if struct:
             source = PulseSourceInfo(struct[0])
+            source.set_has_monitor((float(source.index) in list(self.monitor_sources.keys())))
             source.updateDefaultSource(self.default_source_name)
             self.sources[ float(struct.contents.index) ] = source
             self.receiver.source_info(source)

@@ -52,6 +52,7 @@ class Veromix(Gtk.VBox):
 
         self.pa.connect("on_volume_meter_sink", self.sink_box.on_volume_meter_sink)
         self.pa.connect("on_volume_meter_sink_input", self.sink_box.on_volume_meter_sink_input)
+        self.pa.connect("on_volume_meter_source", self.source_box.on_volume_meter_source)
 
         self.pa.requestInfo()
 

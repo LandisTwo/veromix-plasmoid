@@ -128,7 +128,7 @@ class ContextMenuFactory(GObject.GObject):
 
     def context_menu_create_volume_meter(self, sink, popup_menu):
         item = Gtk.CheckMenuItem()
-        #item.set_active(sink.isMuted())
+        item.set_active(sink.has_monitor())
         #item.set_draw_as_radio(True)
         item.set_label(i18n("Volume meter"))
         item.connect("activate", self.on_volume_meter_clicked, sink)

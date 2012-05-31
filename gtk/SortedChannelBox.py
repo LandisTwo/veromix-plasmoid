@@ -86,6 +86,12 @@ class SortedChannelBox(Gtk.VBox):
             if sink.pa_sink_proxy().get_index() == index:
                 sink.slider.on_volume_meter_data(value)
 
+    def on_volume_meter_source(self, widget, index, value):
+        # FIXME
+        for sink in self.channels.values():
+            if sink.pa_sink_proxy().get_index() == index:
+                sink.slider.on_volume_meter_data(value)
+
     def _add_channel_widget(self, channel, data):
         if data.get_index() not in self.channels.keys():
             self.channels[data.get_index()] = channel
@@ -108,6 +114,9 @@ class SortedChannelBox(Gtk.VBox):
             if self.get_children()[i] != sorting[i]:
                 return True
         return False
+
+    def get_sources(self):
+        return list(filter(lambda channel: channel.pa_sink_proxy().is_source(), self.channels.values()))
 
     def get_sinks(self):
         return list(filter(lambda channel: channel.pa_sink_proxy().is_sink(), self.channels.values()))

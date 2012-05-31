@@ -80,8 +80,12 @@ class AbstractLabelSlider:
             self.slider_hidden = True
 
     def set_meter(self, value):
-        self.slider.set_show_fill_level(True)
         self.slider.set_fill_level(value)
+
+    def set_show_fill_level(self, value):
+        if self.slider.get_show_fill_level() != value:
+            self.slider.set_show_fill_level(value)
+            self.slider.set_fill_level(0)
 
 class LabelSlider(Gtk.Fixed, AbstractLabelSlider):
 
@@ -196,6 +200,7 @@ class SliderWidget(Gtk.VBox):
         if self.EXPAND_CHANNELS and nr_channels > 1:
             self.set_slider_values(pa_sink_proxy)
             self.label.set_markup(pa_sink_proxy.get_nice_title_and_name())
+            self.sliders[0].set_show_fill_level(pa_sink_proxy.has_monitor())
         else:
             if len(self.sliders) != 1:
                 self.remove_sliders(pa_sink_proxy)
@@ -203,6 +208,7 @@ class SliderWidget(Gtk.VBox):
             if len(self.sliders) > 0:
                 if nr_channels > 0:
                     self.sliders[0].set_volume(pa_sink_proxy.get_volume())
+                    self.sliders[0].set_show_fill_level(pa_sink_proxy.has_monitor())
                 if nr_channels == 0:
                     self.sliders[0].hide_slider()
                 self.sliders[0].set_markup(pa_sink_proxy.get_nice_title_and_name())

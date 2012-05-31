@@ -156,6 +156,9 @@ class AbstractSink():
     def is_sinkoutput(self):
         return False
 
+    def is_source(self):
+        return self.is_sinkoutput()
+
     def is_sinkinput(self):
         return False
 
@@ -192,6 +195,11 @@ class AbstractSink():
          if "owner_module" in self.props:
             return self.props["owner_module"]
          return None
+
+    def has_monitor(self):
+        if "has_monitor" in self.props:
+            return (self.props["has_monitor"] == "True")
+        return False
 
 class SinkInfo(AbstractSink):
     # FIXME KDE

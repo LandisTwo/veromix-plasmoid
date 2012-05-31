@@ -32,6 +32,7 @@ class PulseSource:
         self.name   = str(in_unicode(name))
         self.client = client
         self.isDefaultSource = False
+        self.monitor_enabled = False
         return
 
     # PROTOTYPE
@@ -55,12 +56,18 @@ class PulseSource:
         print("self.client:", self.client)
         return
 
+    def set_has_monitor(self, aboolean):
+        self.monitor_enabled = aboolean
+
+    def has_monitor(self):
+        return self.monitor_enabled
 
     def propDict(self):
         return {
             "name:": self.name,
             "index:": self.index ,
-            "client:": self.client}
+            "client:": self.client,
+            "has_monitor" : str(self.has_monitor())}
 ################################################################################
 
 class PulseSourceInfo(PulseSource):
@@ -109,7 +116,8 @@ class PulseSourceInfo(PulseSource):
             "latency":self.latency ,
             "driver":self.driver ,
             "flags":self.flags,
-            "isdefault" : str(self.isDefaultSource)}
+            "isdefault" : str(self.isDefaultSource),
+            "has_monitor" : str(self.has_monitor())}
         aDict.update(self.proplist_dict)
 
         return assertEncoding(aDict)
@@ -205,7 +213,8 @@ class PulseSourceOutputInfo(PulseSource):
             "source_usec":self.source_usec ,
             "driver":self.driver ,
             "resample_method":self.resample_method,
-            "isdefault" : str(self.isDefaultSource)})
+            "isdefault" : str(self.isDefaultSource),
+            "has_monitor" : str(self.has_monitor())})
         return assertEncoding(aDict)
 
 
