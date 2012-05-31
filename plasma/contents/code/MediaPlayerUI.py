@@ -25,7 +25,7 @@ from LabelSlider import LabelSlider
 from LabelSlider import Label
 from Channel import Channel
 from MuteButton  import *
-from MediaPlayer import *
+from veromixcommon.MediaPlayer import *
 
 
 class MediaPlayerUI(Channel):
@@ -186,8 +186,8 @@ class MediaPlayerUI(Channel):
             else:
                 if self.controller.length() > 0 :
                     v = self.controller.position() * 100 / self.controller.length()
-                    if self.slider.check_pulse_timestamp():
-                        self.slider.setValue(v)
+#                    if self.slider.check_pulse_timestamp():
+                    self.slider.setValueFromPulse(v)
 
     def on_slider_action_triggered(self, action):
         value = self.slider.nativeWidget().sliderPosition()

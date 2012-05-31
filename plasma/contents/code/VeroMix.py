@@ -220,9 +220,6 @@ class VeroMix(QGraphicsWidget):
            # FIXME sliders want to be visible when added, else we get a crash
             self.setSourcesPanelVisible(True)
             self.add_channel(key, widget , sink, self.source_panel_layout)
-            # Workaround for comboboxes (from top to bottom decrease the zIndex)
-            zindex = 10000 - self.source_panel_layout.order_index(widget)
-            widget.setZValue(zindex)
 
     def on_remove_source_output(self, index):
         # FIXME sliders want to be visible when added, else we get a crash
@@ -238,9 +235,6 @@ class VeroMix(QGraphicsWidget):
            # FIXME sliders want to be visible when added, else we get a crash
             self.setSourcesPanelVisible(True)
             self.add_channel(key, widget , sink, self.source_panel_layout)
-            # Workaround for comboboxes (from top to bottom decrease the zIndex)
-            zindex = 9000 - self.source_panel_layout.order_index(widget)
-            widget.setZValue(zindex)
 
     def on_remove_source(self, index):
         # FIXME sliders want to be visible when added, else we get a crash
@@ -256,9 +250,6 @@ class VeroMix(QGraphicsWidget):
             self.add_channel(key, widget, sink , self.sink_panel_layout)
             widget.muteInfo.connect(self.updateIcon)
             self.sinkOutputChanged.emit()
-            # Workaround for comboboxes (from top to bottom decrease the zIndex)
-            zindex = 8000 - self.sink_panel_layout.order_index(widget)
-            widget.setZValue(zindex)
         #sink.printDebug()
 
     # FIXME
@@ -284,9 +275,6 @@ class VeroMix(QGraphicsWidget):
         if not self.update_channel(key ,sink, self.sink_panel_layout):
             widget = self.sink_panel_layout.get_new_sink_input(self)
             self.add_channel(key, widget, sink , self.sink_panel_layout)
-            # Workaround for comboboxes (from top to bottom decrease the zIndex)
-            zindex = 7000 - self.sink_panel_layout.order_index(widget)
-            widget.setZValue(zindex)
 
     def on_remove_sink_input(self, index):
         self.remove_channel("sinkinput" + str(index), self.sink_panel_layout)
@@ -347,9 +335,6 @@ class VeroMix(QGraphicsWidget):
             return
         widget = MediaPlayerUI( name, self, controller)
         self.add_channel(name, widget, None, self.sink_panel_layout)
-        # Workaround for comboboxes (from top to bottom decrease the zIndex)
-        zindex = 6000 - self.sink_panel_layout.order_index(widget)
-        widget.setZValue(zindex)
 
     def on_mediaplayer_removed(self, name):
         self.remove_channel(name,self.sink_panel_layout)

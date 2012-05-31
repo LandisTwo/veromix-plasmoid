@@ -51,7 +51,7 @@ from PyKDE4.kdeui import KDialog
 from PyKDE4.kdecore import *
 
 from VeroMix import VeroMix
-from MediaPlayer import NowPlayingController
+from NowPlaying import NowPlayingController
 from veromixcommon.LADSPAEffects import LADSPAEffects
 from veromixcommon.LADSPAEffects import LADSPAPresetLoader
 from veromixcommon.Utils import *
