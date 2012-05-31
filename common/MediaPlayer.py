@@ -21,7 +21,7 @@ import signal, os, datetime, dbus
 
 class MediaPlayer():
 
-    Stopped, Playing, Paused, NA = range(4)
+    Stopped, Playing, Paused, NA = list(range(4))
 
     def __init__(self):
         self._state = MediaPlayer.NA
@@ -169,7 +169,7 @@ class Mpris2MediaPlayer(MediaPlayer):
 
         if type(properties) == type(dbus.String("")):
             return
-        if dbus.String("PlaybackStatus") in properties.keys():
+        if dbus.String("PlaybackStatus") in list(properties.keys()):
             status = properties[dbus.String("PlaybackStatus")]
             old_state = self.state()
             if status == 'Playing':
@@ -179,7 +179,7 @@ class Mpris2MediaPlayer(MediaPlayer):
             if old_state != self.state():
                 changed = True
 
-        if dbus.String("Metadata") in properties.keys():
+        if dbus.String("Metadata") in list(properties.keys()):
             metadata = properties[dbus.String("Metadata")]
             if type(metadata) == type(dbus.String("")):
                 return
@@ -187,7 +187,7 @@ class Mpris2MediaPlayer(MediaPlayer):
 		#deadbeef fallback
 		metadata = metadata[0]
             #self.mpris2_trackid = metadata[dbus.String("mpris:trackid")]
-            if dbus.String("mpris:artUrl") in metadata.keys():
+            if dbus.String("mpris:artUrl") in list(metadata.keys()):
                 val = self.url_path_of(str(metadata[dbus.String("mpris:artUrl")]))
                 if val != self._cover_string:
                     changed = True
@@ -197,7 +197,7 @@ class Mpris2MediaPlayer(MediaPlayer):
                         self.set_artwork(None)
                     self._cover_string = val
 
-            if dbus.String("mpris:length") in metadata.keys():
+            if dbus.String("mpris:length") in list(metadata.keys()):
                 length = metadata[dbus.String("mpris:length")] / 1000000
                 if length != self.length():
                     changed = True
