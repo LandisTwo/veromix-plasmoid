@@ -65,6 +65,7 @@ class Channel(Gtk.Alignment):
         self.menu_button.set_relief(Gtk.ReliefStyle.NONE)
         self.menu_button.add(Gtk.Arrow(Gtk.ArrowType.DOWN, Gtk.ShadowType.NONE))
         self.menu_button.connect("released", self.show_popupmenu)
+        self.menu_button.set_size_request(-1, self.ICON_HEIGHT)
 
     def on_menu_button_released(self, widget):
         self.menu_button.set_active(False)
