@@ -22,7 +22,6 @@ from veromixcommon.PulseProxyObjects import *
 from Mpris2MediaPlayerQt import Mpris2MediaPlayerQt
 
 class PulseAudio(QObject):
-    mpris2_properties_changed = pyqtSignal(str,dict)
 
     def __init__(self, parent):
         QObject.__init__(self)
@@ -125,9 +124,6 @@ class PulseAudio(QObject):
                 dbus_interface="org.freedesktop.DBus.Properties",
                 signal_name="PropertiesChanged",
                 bus_name=name)
-
-    def on_mpris2_properties_changed(self, interface, properties, signature):
-        self.mpris2_properties_changed.emit(str(interface), properties)
 
     def get_mpris2_players(self):
         collection = []
