@@ -214,7 +214,7 @@ class Channel(QGraphicsWidget):
 
     def on_double_clicked(self):
         self.slider.toggle_meter()
-        self.pa_sink.toggle_monitor(int(self.getOutputIndex()))
+        self.pa_sink.toggle_monitor()
         self.slider.set_meter_value(0)
 
     def on_step_volume(self, up):

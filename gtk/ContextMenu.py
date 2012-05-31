@@ -58,6 +58,8 @@ class ContextMenuFactory(GObject.GObject):
         self.context_menu_create_mute(pa_sink_proxy, menu)
         if not slider.is_ladspa():
             self.context_menu_create_expand(slider, menu)
+            self.context_menu_create_volume_meter(pa_sink_proxy, menu)
+
         if pa_sink_proxy.is_sinkinput() or slider.is_ladspa():
             self.context_menu_create_kill(pa_sink_proxy, menu)
         if pa_sink_proxy.is_sink() and not slider.is_ladspa():
@@ -80,6 +82,9 @@ class ContextMenuFactory(GObject.GObject):
 
     def on_mute_clicked(self, widget, sink):
         sink.toggle_mute()
+
+    def on_volume_meter_clicked(self, widget, proxy):
+        proxy.toggle_monitor()
 
     def on_kill_clicked(self, widget, sink):
         sink.kill()
@@ -119,6 +124,14 @@ class ContextMenuFactory(GObject.GObject):
         #item.set_draw_as_radio(True)
         item.set_label(i18n("Mute"))
         item.connect("activate", self.on_mute_clicked, sink)
+        popup_menu.append(item)
+
+    def context_menu_create_volume_meter(self, sink, popup_menu):
+        item = Gtk.CheckMenuItem()
+        #item.set_active(sink.isMuted())
+        #item.set_draw_as_radio(True)
+        item.set_label(i18n("Volume meter"))
+        item.connect("activate", self.on_volume_meter_clicked, sink)
         popup_menu.append(item)
 
     def context_menu_create_expand(self, slider_widget, popup_menu):

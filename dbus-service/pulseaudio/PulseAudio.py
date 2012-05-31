@@ -436,7 +436,7 @@ class PulseAudio():
         #null_ptr = ctypes.c_void_p()
         data = POINTER(c_float)()
         pa_stream_peek(stream, data, ctypes.c_ulong(length))
-        v = data[int(length / 4 -1)] * 100
+        v = data[int(length / 4) - 1] * 100
         if (v < 0):
             v = 0
         if (v > 100):
@@ -451,7 +451,7 @@ class PulseAudio():
         #null_ptr = ctypes.c_void_p()
         data = POINTER(c_float)()
         pa_stream_peek(stream, data, ctypes.c_ulong(length))
-        v = data[length / 4 -1] * 100
+        v = data[int(length / 4) - 1] * 100
         if (v < 0):
             v = 0
         if (v > 100):
@@ -464,7 +464,7 @@ class PulseAudio():
         index = index_incr - 1
         data = POINTER(c_float)()
         pa_stream_peek(stream, data, ctypes.c_ulong(length))
-        v = data[length / 4 -1] * 100
+        v = data[int(length / 4) - 1] * 100
         if (v < 0):
             v = 0
         if (v > 100):

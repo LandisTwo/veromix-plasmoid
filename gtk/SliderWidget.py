@@ -22,6 +22,8 @@ DRAG_ACTION = Gdk.DragAction.COPY
 (TARGET_ENTRY_TEXT, TARGET_ENTRY_PIXBUF) = range(2)
 
 class AbstractLabelSlider:
+    # FIXME
+    SLIDER_HEIGHT = 36
 
     def __init__(self):
         self.MAX_VOLUME = 100
@@ -46,15 +48,15 @@ class AbstractLabelSlider:
         self.slider.set_range(0, self.MAX_VOLUME)
         self.slider.set_value(0)
         self.slider.set_increments(0, self.STEP_SIZE)
-        #self.slider.set_show_fill_level(True)
-        #self.slider.set_fill_level(50)
+        self.slider.set_restrict_to_fill_level(False)
+        self.slider.set_size_request(-1, self.SLIDER_HEIGHT)
 
     def _create_label(self):
         self.label = Gtk.Label()
         self.layout = self.label.get_layout()
         self.label.set_markup("<b>Initialg</b>g")
-        self.label.set_alignment(xalign=0, yalign=1)
-        #self.label.set_justify(Gtk.Justification.LEFT)
+        self.label.set_alignment(xalign=0, yalign=0)
+        self.label.set_size_request(-1, self.SLIDER_HEIGHT)
 
     #def show_slider_value(self):
         #self.slider.set_draw_value(True)
@@ -76,6 +78,10 @@ class AbstractLabelSlider:
         if not self.slider_hidden:
             self.slider.unmap()
             self.slider_hidden = True
+
+    def set_meter(self, value):
+        self.slider.set_show_fill_level(True)
+        self.slider.set_fill_level(value)
 
 class LabelSlider(Gtk.Fixed, AbstractLabelSlider):
 
@@ -179,6 +185,10 @@ class SliderWidget(Gtk.VBox):
 
     def pa_sink_proxy(self):
         return self._pa_sink_proxy
+
+    def on_volume_meter_data(self, value):
+        if len(self.sliders) > 0:
+            self.sliders[0].set_meter(value)
 
     def set_volume(self, pa_sink_proxy):
         self._pa_sink_proxy = pa_sink_proxy

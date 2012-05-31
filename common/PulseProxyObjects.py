@@ -225,7 +225,7 @@ class SinkInfo(AbstractSink):
     def set_port(self,portstr):
          self.pulse_proxy.set_sink_port(self.index,portstr)
 
-    def toggle_monitor(self,parent):
+    def toggle_monitor(self):
         self.pulse_proxy.toggle_monitor_of_sink(self.index, self.get_monitor_name())
 
     def kill(self):
@@ -279,8 +279,8 @@ class SinkInputInfo(AbstractSink):
         else:
             self.pulse_proxy.set_sink_input_mute(self.index, True)
 
-    def toggle_monitor(self,parent):
-        self.pulse_proxy.toggle_monitor_of_sinkinput(self.index, parent,self.get_monitor_name())
+    def toggle_monitor(self):
+        self.pulse_proxy.toggle_monitor_of_sinkinput(self.index, self.get_output_index(), self.get_monitor_name())
 
     def kill(self):
         self.pulse_proxy.sink_input_kill(self.index)
@@ -360,7 +360,7 @@ class SourceInfo(AbstractSink):
     def set_port(self,portstr):
          self.pulse_proxy.set_source_port(self.index,portstr)
 
-    def toggle_monitor(self,parent):
+    def toggle_monitor(self):
         self.pulse_proxy.toggle_monitor_of_source(self.index, self.get_monitor_name())
 
     def kill(self):
@@ -390,7 +390,6 @@ class SourceOutputInfo(AbstractSink):
 
     def toggle_monitor(self,parent):
         pass
-
 
     def get_volume(self):
         return 0

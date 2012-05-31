@@ -41,8 +41,12 @@ class PulseAudio(GObject.GObject):
 
         'on_card_info': (GObject.SIGNAL_RUN_FIRST, None, (object,)),
         'on_card_remove': (GObject.SIGNAL_RUN_FIRST, None, (int,)),
-        
+
         'on_module_info': (GObject.SIGNAL_RUN_FIRST, None, (object,)),
+
+        'on_volume_meter_sink_input': (GObject.SIGNAL_RUN_FIRST, None, (int, float,)),
+        'on_volume_meter_source': (GObject.SIGNAL_RUN_FIRST, None, (int, float,)),
+        'on_volume_meter_sink': (GObject.SIGNAL_RUN_FIRST, None, (int, float,)),
     }
 
     def __init__(self, parent, dbus=None):
@@ -99,17 +103,17 @@ class PulseAudio(GObject.GObject):
                 dbus_interface="org.veromix.notification",
                 signal_name="source_output_remove")
 
-        #self.bus.add_signal_receiver(self.on_volume_meter_sink_input,
-                #dbus_interface="org.veromix.notification",
-                #signal_name="volume_meter_sink_input")
+        self.bus.add_signal_receiver(self.on_volume_meter_sink_input,
+                dbus_interface="org.veromix.notification",
+                signal_name="volume_meter_sink_input")
 
-        #self.bus.add_signal_receiver(self.on_volume_meter_source,
-                #dbus_interface="org.veromix.notification",
-                #signal_name="volume_meter_source")
+        self.bus.add_signal_receiver(self.on_volume_meter_source,
+                dbus_interface="org.veromix.notification",
+                signal_name="volume_meter_source")
 
-        #self.bus.add_signal_receiver(self.on_volume_meter_sink,
-                #dbus_interface="org.veromix.notification",
-                #signal_name="volume_meter_sink")
+        self.bus.add_signal_receiver(self.on_volume_meter_sink,
+                dbus_interface="org.veromix.notification",
+                signal_name="volume_meter_sink")
 
         self.bus.add_signal_receiver(self.on_card_info,
                 dbus_interface="org.veromix.notification",
@@ -205,13 +209,13 @@ class PulseAudio(GObject.GObject):
         self.emit("on_source_output_remove", index)
 
     def on_volume_meter_sink_input(self, index, value):
-        self.emit(SIGNAL("on_volume_meter_sink_input(int,float)"), index, value)
+        self.emit("on_volume_meter_sink_input", index, value)
 
     def on_volume_meter_sink(self, index, value):
-        self.emit(SIGNAL("on_volume_meter_sink(int,float)"), index, value)
+        self.emit("on_volume_meter_sink", index, value)
 
     def on_volume_meter_source(self, index, value):
-        self.emit(SIGNAL("on_volume_meter_source(int,float)"), index, value)
+        self.emit("on_volume_meter_source", index, value)
 
     def on_card_info(self, index, name, properties, active_profile_name, profiles_dict):
         info = CardInfo(index, name, properties, active_profile_name, profiles_dict)

@@ -76,6 +76,16 @@ class SortedChannelBox(Gtk.VBox):
                         widget.on_pa_module_data_updated(data)
         self.emit('veromix-resize')
 
+    def on_volume_meter_sink(self, widget, index, value):
+        for sink in self.get_sinks():
+            if sink.pa_sink_proxy().get_index() == index:
+                sink.slider.on_volume_meter_data(value)
+
+    def on_volume_meter_sink_input(self, widget, index, value):
+        for sink in self.get_sink_inputs():
+            if sink.pa_sink_proxy().get_index() == index:
+                sink.slider.on_volume_meter_data(value)
+
     def _add_channel_widget(self, channel, data):
         if data.get_index() not in self.channels.keys():
             self.channels[data.get_index()] = channel
