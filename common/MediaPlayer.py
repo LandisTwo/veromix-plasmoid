@@ -126,6 +126,9 @@ class Mpris2MediaPlayer(MediaPlayer):
     def init_connection(self):
         self.connect_mpris2()
 
+    def get_index(self):
+        return self.name()
+
     def name(self):
         return self._name
 
@@ -184,8 +187,8 @@ class Mpris2MediaPlayer(MediaPlayer):
             if type(metadata) == type(dbus.String("")):
                 return
             if type(metadata) == type(dbus.Struct([""])):
-		#deadbeef fallback
-		metadata = metadata[0]
+                #deadbeef fallback
+                metadata = metadata[0]
             #self.mpris2_trackid = metadata[dbus.String("mpris:trackid")]
             if dbus.String("mpris:artUrl") in list(metadata.keys()):
                 val = self.url_path_of(str(metadata[dbus.String("mpris:artUrl")]))
