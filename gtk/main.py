@@ -40,7 +40,7 @@ class VeromixWindow(dbus.service.Object):
 
         self.window = Gtk.Window(title="Veromix",type =Gtk.WindowType.TOPLEVEL)
         self.icon = self.window.render_icon("veromix-plasmoid", Gtk.IconSize.BUTTON)
-        self.window.set_icon(self.icon)
+        self.window.set_icon_name("veromix-plasmoid")
         self.window.connect('delete-event', self.on_delete_event)
         self.window.set_default_size(430, 180)
 
