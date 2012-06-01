@@ -28,12 +28,12 @@ def config():
     return __config_instance
 
 class VeromixConfiguration:
-    _FILENAME = _XDG_CONFIG_DIR + "/veromix.conf" 
-        
+    _FILENAME = _XDG_CONFIG_DIR + "/veromix.conf"
+
     def __init__(self):
         self.section = 'UI'
         self._load()
-    
+
     def _load(self):
         self._config = configparser.ConfigParser()
         self._config[self.section] = {}
@@ -41,12 +41,12 @@ class VeromixConfiguration:
             self._config.read(self._FILENAME)
         if len(self._config.sections()) == 0:
             self._config[self.section] = {}
-    
+
     def save(self):
         createDirectory(_XDG_CONFIG_DIR)
         with open(self._FILENAME, 'w') as configfile:
             self._config.write(configfile)
-    
+
     def _get(self, key, default):
         if key not in self._config[self.section]:
             self._config[self.section][key] = str(default)
@@ -55,11 +55,13 @@ class VeromixConfiguration:
         if type(default) == int:
             return self._config[self.section].getint(key)
         return self._config[self.section][key]
-        
+
     def get_window_exit_on_close(self):
         return self._get('exit_on_close', True)
-        
+
     def get_indicator_type(self):
         self._config[self.section]['#indicator_type'] = 'None|GtkStatusIcon|AppIndicator'
         return self._get('indicator_type', 'AppIndicator')
 
+    def get_media_player_enabled(self):
+        return self._get('media_player_enable', True)

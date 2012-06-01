@@ -19,6 +19,7 @@ from gi.repository import Gtk, Gdk
 from GPulseAudioProxy import PulseAudio
 from ContextMenu import ContextMenu
 from SortedChannelBox import SortedChannelBox
+from Configuration import config
 
 class Veromix(Gtk.VBox):
 
@@ -61,6 +62,8 @@ class Veromix(Gtk.VBox):
         self.pa.requestInfo()
 
     def init_mpris2(self):
+        if not config().get_media_player_enabled():
+            return self
         self.pa.enable_mpris2()
         for controller in self.pa.get_mpris2_players():
             v = controller.get_name()
