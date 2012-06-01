@@ -161,11 +161,15 @@ class Mpris2MediaPlayer(MediaPlayer):
         if not self._dbus_proxy:
             return
         properties = {}
-        # Once connected we get notified via dbus about changes - but initially we fetch them manually
-        properties[dbus.String("PlaybackStatus")] =self._dbus_proxy.mpris2_get_playback_status(self.name())
-        properties[dbus.String("Metadata")] = self._dbus_proxy.mpris2_get_metadata(self.name())
-        self.on_mpris2_properties_changed(None, properties, None)
-        self.fetch_position()
+
+        try:
+            # Once connected we get notified via dbus about changes - but initially we fetch them manually
+            properties[dbus.String("PlaybackStatus")] =self._dbus_proxy.mpris2_get_playback_status(self.name())
+            properties[dbus.String("Metadata")] = self._dbus_proxy.mpris2_get_metadata(self.name())
+            self.on_mpris2_properties_changed(None, properties, None)
+            self.fetch_position()
+        except:
+            pass
 
     def on_mpris2_properties_changed(self, interface, properties, signature):
         changed = False
