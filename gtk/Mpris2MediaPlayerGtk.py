@@ -24,16 +24,16 @@ class Mpris2MediaPlayerGtk(GObject.GObject, Mpris2MediaPlayer, AbstractSink):
     __gsignals__ = {
         'data_updated': (GObject.SIGNAL_RUN_FIRST, None, (),),
     }
-    
+
     def __init__(self, name, dbus_proxy):
         GObject.GObject.__init__(self)
         Mpris2MediaPlayer.__init__(self, name, dbus_proxy)
         self.init_connection()
         self._nice_title = name
-    
+
     def signal_data_updated(self):
         self.emit("data_updated")
-        
+
     def url_path_of(self, string):
         # FIXME
         return string[7:]
@@ -50,5 +50,12 @@ class Mpris2MediaPlayerGtk(GObject.GObject, Mpris2MediaPlayer, AbstractSink):
         return True
 
     def get_assotiated_sink_input(self, sink_inputs):
-        return sink_inputs[0]
+        name = str(self.get_application_name()).lower()
+        for channel in sink_inputs:
+            if str(name).lower().find(channel.pa_sink_proxy().get_nice_title()) >= 0:
+                return channel
+        for channel in sink_inputs:
+            if str(channel.pa_sink_proxy().get_nice_title()).lower().find(name) >= 0:
+                return channel
+        return None
 
