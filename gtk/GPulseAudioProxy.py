@@ -20,14 +20,13 @@ import dbus.mainloop.glib
 from gi.repository import GObject
 
 from veromixcommon.PulseProxyObjects import *
-#from MediaPlayer import Mpris2MediaPlayer
+from Mpris2MediaPlayerGtk import Mpris2MediaPlayerGtk
 
 def SIGNAL(name):
     return name
 
 class PulseAudio(GObject.GObject):
-    #mpris2_properties_changed = pyqtSignal(str,dict)
-        #'mpris2_properties_changed': (GObject.SIGNAL_RUN_FIRST, None, (str,str,)),
+
     __gsignals__ = {
         'on_sink_info': (GObject.SIGNAL_RUN_FIRST, None, (object,)),
         'on_sink_remove': (GObject.SIGNAL_RUN_FIRST, None, (int,)),
@@ -47,6 +46,9 @@ class PulseAudio(GObject.GObject):
         'on_volume_meter_sink_input': (GObject.SIGNAL_RUN_FIRST, None, (int, float,)),
         'on_volume_meter_source': (GObject.SIGNAL_RUN_FIRST, None, (int, float,)),
         'on_volume_meter_sink': (GObject.SIGNAL_RUN_FIRST, None, (int, float,)),
+
+        'mpris2_player_added': (GObject.SIGNAL_RUN_FIRST, None, (str, object,)),
+        'mpris2_player_removed': (GObject.SIGNAL_RUN_FIRST, None, (str, object,)),
     }
 
     def __init__(self, parent, dbus=None):
@@ -138,9 +140,9 @@ class PulseAudio(GObject.GObject):
     def on_name_owner_changed(self, val, val1=None, val2=None):
         if "org.mpris.MediaPlayer2" in val:
             if val in self.bus.list_names():
-                self.emit(SIGNAL("mpris2_player_added(QString, PyQt_PyObject)"), str(val), Mpris2MediaPlayer(QString(val), self))
+                self.emit("mpris2_player_added", str(val), Mpris2MediaPlayerGtk(str(val), self))
             else:
-                self.emit(SIGNAL("mpris2_player_removed(QString, PyQt_PyObject)"), str(val), Mpris2MediaPlayer(QString(val), self))
+                self.emit("mpris2_player_removed", str(val), Mpris2MediaPlayerGtk(str(val), self))
 
     def connect_mpris2_player(self, callback, name):
         self.bus.add_signal_receiver(callback,
@@ -154,14 +156,11 @@ class PulseAudio(GObject.GObject):
                 signal_name="PropertiesChanged",
                 bus_name=name)
 
-    def on_mpris2_properties_changed(self, interface, properties, signature):
-        self.mpris2_properties_changed.emit(str(interface), properties)
-
     def get_mpris2_players(self):
         collection = []
         for val in self.bus.list_names() :
             if "org.mpris.MediaPlayer2" in val:
-                collection.append(Mpris2MediaPlayer(QString(val), self))
+                collection.append(Mpris2MediaPlayerGtk(str(val), self))
         return collection
 
     def getMixer(self):

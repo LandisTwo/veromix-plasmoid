@@ -29,6 +29,7 @@ class Veromix(Gtk.VBox):
 
         self.create_sinks()
         self.launch_pa()
+        self.init_mpris2()
 
     def launch_pa(self):
 
@@ -54,7 +55,18 @@ class Veromix(Gtk.VBox):
         self.pa.connect("on_volume_meter_sink_input", self.sink_box.on_volume_meter_sink_input)
         self.pa.connect("on_volume_meter_source", self.source_box.on_volume_meter_source)
 
+        self.pa.connect("mpris2_player_added", self.sink_box.on_media_player_added)
+        self.pa.connect("mpris2_player_removed", self.sink_box.on_media_player_removed)
+
         self.pa.requestInfo()
+
+    def init_mpris2(self):
+        self.pa.enable_mpris2()
+        for controller in self.pa.get_mpris2_players():
+            v = controller.name()
+#            if self.in_mediaplayer_blacklist(v):
+#                return
+            self.sink_box.on_media_player_added(None, controller.name(), controller)
 
     def create_sinks(self):
         self.veromix_sinks = Gtk.VBox()

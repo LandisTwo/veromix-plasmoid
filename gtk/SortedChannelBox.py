@@ -21,6 +21,7 @@ from Channel import SinkInputChannel
 from Channel import SourceChannel
 from Channel import SourceOutputChannel
 from Channel import LadspaChannel
+from Channel import MediaPlayerChannel
 
 class SortedChannelBox(Gtk.VBox):
     CHANNEL_PADDING = 2
@@ -91,6 +92,17 @@ class SortedChannelBox(Gtk.VBox):
         for sink in self.channels.values():
             if sink.pa_sink_proxy().get_index() == index:
                 sink.slider.on_volume_meter_data(value)
+
+    def on_media_player_added(self, widget, string, obj):
+        channel = MediaPlayerChannel(string,obj)
+        self._add_channel_widget(channel,obj)
+
+    def on_media_player_removed(self, widget, string, obj):
+        if string in self.channels.keys():
+            self.remove(self.channels[string])
+            del self.channels[string]
+        self.order_items()
+        self.check_resize()
 
     def _add_channel_widget(self, channel, data):
         if data.get_index() not in self.channels.keys():

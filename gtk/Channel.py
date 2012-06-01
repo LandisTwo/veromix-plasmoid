@@ -31,7 +31,6 @@ class Channel(Gtk.Alignment):
     def __init__(self):
         Gtk.Alignment.__init__(self)
         #self.set_homogeneous(False)
-        self._create()
         self._init()
         self.set_size_request(self.ICON_HEIGHT, self.ICON_HEIGHT)
         self._current_icon = None
@@ -39,8 +38,11 @@ class Channel(Gtk.Alignment):
     def _init(self):
         self.frame = Gtk.Frame()
         self.hbox = Gtk.HBox()
-        self.mute.set_size_request(self.ICON_HEIGHT,self.ICON_HEIGHT)
+        self._create()
+        self._pack_contents()
+        self._pack_frame()
 
+    def _pack_contents(self):
         self.mute_box.pack_start(self.mute, False, True, 2)
         self.mute_box.pack_start(Gtk.HBox(), True, True, 0)
         self.menu_box.pack_start(self.menu_button, False, True, 2)
@@ -50,6 +52,7 @@ class Channel(Gtk.Alignment):
         self.hbox.pack_start(self.slider,True,True,5)
         self.hbox.pack_start(self.menu_box,False,False, 2)
 
+    def _pack_frame(self):
         self.frame.add(self.hbox)
         self.add(self.frame)
         self.connect("button-press-event", self.on_button_press_event)
@@ -75,6 +78,7 @@ class Channel(Gtk.Alignment):
         self.mute = Gtk.ToggleButton()
         self.mute.set_image_position(1)
         self.mute.connect("released", self.on_muted_clicked)
+        self.mute.set_size_request(self.ICON_HEIGHT,self.ICON_HEIGHT)
 
     #def _create_mute(self):
         ##self.mute = Gtk.ToggleButton()
@@ -192,4 +196,26 @@ class LadspaChannel(SinkChannel):
 
     def on_pa_module_data_updated(self, data):
         self.slider.on_pa_module_data_updated(data, self.pa_sink_proxy())
+
+class MediaPlayerChannel(Channel):
+
+    def __init__(self,name, controller):
+        Channel.__init__(self)
+        self._pa_sink = controller
+        self.controller = controller
+        self.controller.connect("data_updated", self.controller_data_updated)
+
+    def controller_data_updated(self, widget):
+        print("data updated")
+#        self.update_state()
+#        self.update_cover()
+
+    def on_pa_data_updated(self, data):
+        pass
+
+    def _pack_contents(self):
+        pass
+
+    def _create(self):
+        pass
 
