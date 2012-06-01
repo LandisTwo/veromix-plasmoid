@@ -165,6 +165,9 @@ class AbstractSink():
     def is_sink(self):
         return False
 
+    def is_media_player(self):
+        return False
+
     def properties(self):
         return self.props
 
