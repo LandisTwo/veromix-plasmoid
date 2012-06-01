@@ -209,18 +209,18 @@ class MediaPlayerChannel(Channel):
         self.controller_data_updated(None)
         self.set_padding(0, 0, self.ICON_HEIGHT / 2, 0)
 
-    def controller_data_updated(self, widget):        
+    def controller_data_updated(self, widget):
         img = Gtk.Image()
         if self.controller.state() == MediaPlayer.Playing:
             img.set_from_icon_name("player_stop", Gtk.IconSize.BUTTON)
         else:
             img.set_from_icon_name("player_play", Gtk.IconSize.BUTTON)
         self.play.set_image(img)
-        
+
         p = self.controller.artwork()
         if p:
             q = p.get_pixbuf().scale_simple(self.ICON_HEIGHT * 2, self.ICON_HEIGHT * 2, 0)
-            self.cover.set_from_pixbuf(q) 
+            self.cover.set_from_pixbuf(q)
 
     def on_pa_data_updated(self, data):
         pass
@@ -236,27 +236,19 @@ class MediaPlayerChannel(Channel):
         self.cover = Gtk.Image()
         self.cover.set_size_request(self.ICON_HEIGHT * 2,self.ICON_HEIGHT * 2)
         self.cover.set_from_icon_name("banshee", Gtk.IconSize.BUTTON)
-        
-        self.prev = Gtk.Button()
-        img = Gtk.Image()
-        img.set_from_icon_name("player_rew", Gtk.IconSize.BUTTON)
-        self.prev.set_image(img)
-        self.prev.set_size_request(self.ICON_HEIGHT,self.ICON_HEIGHT)
-        self.prev.connect("clicked", self.on_prev_clicked)
 
-        self.play = Gtk.Button()
-        img = Gtk.Image()
-        img.set_from_icon_name("player_play", Gtk.IconSize.BUTTON)
-        self.play.set_image(img)
-        self.play.set_size_request(self.ICON_HEIGHT,self.ICON_HEIGHT)
-        self.play.connect("clicked", self.on_play_clicked)
+        self.prev = self._create_button("player_rew", self.on_prev_clicked)
+        self.play = self._create_button("player_play", self.on_play_clicked)
+        self.next = self._create_button("player_fwd", self.on_next_clicked)
 
-        self.next = Gtk.Button()
+    def _create_button(self, image_name, callback):
+        button = Gtk.Button()
         img = Gtk.Image()
-        img.set_from_icon_name("player_fwd", Gtk.IconSize.BUTTON)
-        self.next.set_image(img)
-        self.next.set_size_request(self.ICON_HEIGHT,self.ICON_HEIGHT)
-        self.next.connect("clicked", self.on_next_clicked)
+        img.set_from_icon_name(image_name, Gtk.IconSize.BUTTON)
+        button.set_image(img)
+        button.set_size_request(self.ICON_HEIGHT,self.ICON_HEIGHT)
+        button.connect("clicked", callback)
+        return button
 
     def on_play_clicked(self, widget):
         if self.controller.state() == MediaPlayer.Playing:
