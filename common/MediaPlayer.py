@@ -83,9 +83,9 @@ class MediaPlayer():
 
     def get_application_name(self):
         name = self.name()
-        if name.indexOf("org.mpris.MediaPlayer2.")  == 0:
+        if str(name).find("org.mpris.MediaPlayer2.")  == 0:
             return name[23:]
-        if name.indexOf("org.mpris.")  == 0:
+        if str(name).find("org.mpris.")  == 0:
             return name[10:]
         return name
 
