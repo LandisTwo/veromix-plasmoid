@@ -210,36 +210,57 @@ class MediaPlayerChannel(Channel):
         self.set_padding(0, 0, self.ICON_HEIGHT / 2, 0)
 
     def controller_data_updated(self, widget):
-        img = Gtk.Image()
+        #img = Gtk.Image()
         if self.controller.state() == MediaPlayer.Playing:
-            img.set_from_icon_name("player_stop", Gtk.IconSize.BUTTON)
+            self.play.set_from_icon_name("player_stop", Gtk.IconSize.BUTTON)
         else:
-            img.set_from_icon_name("player_play", Gtk.IconSize.BUTTON)
-        self.play.set_image(img)
+            self.play.set_from_icon_name("player_play", Gtk.IconSize.BUTTON)
+        #self.play.set_image(img)
 
         p = self.controller.artwork()
         if p:
             q = p.get_pixbuf().scale_simple(self.ICON_HEIGHT * 2, self.ICON_HEIGHT * 2, 0)
             self.cover.set_from_pixbuf(q)
+        else:
+            self.cover.set_from_icon_name(self.controller.get_application_name(), Gtk.IconSize.BUTTON)
 
     def on_pa_data_updated(self, data):
         pass
 
     def _pack_contents(self):
-        self.hbox.pack_start(self.cover, False,False, 0)
-        self.hbox.pack_start(self.prev, False,False, 0)
-        self.hbox.pack_start(self.play, False,False, 0)
-        self.hbox.pack_start(self.next, False,False, 0)
-        pass
+        prev_box = Gtk.VBox()
+        prev_box.pack_start(Gtk.HBox(), True,True, 0)
+        prev_box.pack_start(self.prev, False,False, 0)
+
+        next_box = Gtk.VBox()
+        next_box.pack_start(Gtk.HBox(), True,True, 0)
+        next_box.pack_start(self.next, False,False, 0)
+
+        self.hbox.pack_start(Gtk.HBox(), True, True, 0)
+        self.hbox.pack_start(prev_box, False,False, 0)
+        self.hbox.pack_start(self.event_box, False,False, 0)
+        self.hbox.pack_start(next_box, False,False, 0)
+        self.hbox.pack_start(Gtk.HBox(), True, True, 0)
 
     def _create(self):
         self.cover = Gtk.Image()
-        self.cover.set_size_request(self.ICON_HEIGHT * 2,self.ICON_HEIGHT * 2)
-        self.cover.set_from_icon_name("banshee", Gtk.IconSize.BUTTON)
+        self.cover.set_size_request(self.ICON_HEIGHT * 2, self.ICON_HEIGHT * 2)
+
+        self.play = Gtk.Image()
+        self.play.set_size_request(self.ICON_HEIGHT, self.ICON_HEIGHT)
+        self.play.set_from_icon_name("player_stop", Gtk.IconSize.BUTTON)
 
         self.prev = self._create_button("player_rew", self.on_prev_clicked)
-        self.play = self._create_button("player_play", self.on_play_clicked)
         self.next = self._create_button("player_fwd", self.on_next_clicked)
+
+        self.fixed = Gtk.Fixed()
+        self.fixed.add(self.cover)
+        self.fixed.put(self.play, int(self.ICON_HEIGHT/2), self.ICON_HEIGHT)
+
+        self.event_box = Gtk.EventBox()
+        self.event_box.add(self.fixed)
+        self.event_box.show_all()
+        self.event_box.connect("button_press_event", self.on_play_clicked)
 
     def _create_button(self, image_name, callback):
         button = Gtk.Button()
@@ -250,7 +271,7 @@ class MediaPlayerChannel(Channel):
         button.connect("clicked", callback)
         return button
 
-    def on_play_clicked(self, widget):
+    def on_play_clicked(self, widget, data):
         if self.controller.state() == MediaPlayer.Playing:
             self.controller.pause()
         else:
