@@ -63,10 +63,10 @@ class Veromix(Gtk.VBox):
     def init_mpris2(self):
         self.pa.enable_mpris2()
         for controller in self.pa.get_mpris2_players():
-            v = controller.name()
+            v = controller.get_name()
 #            if self.in_mediaplayer_blacklist(v):
 #                return
-            self.sink_box.on_media_player_added(None, controller.name(), controller)
+            self.sink_box.on_media_player_added(None, controller.get_name(), controller)
 
     def create_sinks(self):
         self.veromix_sinks = Gtk.VBox()

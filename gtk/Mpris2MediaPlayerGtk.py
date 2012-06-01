@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk, GObject
+from gi.repository import Gtk, Gdk, GObject
 
 from veromixcommon.MediaPlayer import *
 from veromixcommon.PulseProxyObjects import AbstractSink
@@ -28,19 +28,27 @@ class Mpris2MediaPlayerGtk(GObject.GObject, Mpris2MediaPlayer, AbstractSink):
     def __init__(self, name, dbus_proxy):
         GObject.GObject.__init__(self)
         Mpris2MediaPlayer.__init__(self, name, dbus_proxy)
+        self.init_connection()
+        self._nice_title = name
     
     def signal_data_updated(self):
         self.emit("data_updated")
         
     def url_path_of(self, string):
-        print(string)
-        return QUrl(string).path()
+        # FIXME
+        return string[7:]
 
     def trigger_timer_callback(self, timeout, function):
         QTimer.singleShot(timeout, function)
 
     def create_pixmap(self, val):
-        return Gtk.Pixmap(val)
+        img = Gtk.Image()
+        img.set_from_file(val)
+        return img
 
+    def is_media_player(self):
+        return True
 
-        
+    def get_assotiated_sink_input(self, sink_inputs):
+        return sink_inputs[0]
+

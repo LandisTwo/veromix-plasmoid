@@ -144,6 +144,9 @@ class SortedChannelBox(Gtk.VBox):
     def get_sink_inputs(self):
         return list(filter(lambda channel: channel.pa_sink_proxy().is_sinkinput(), self.channels.values()))
 
+    def get_media_players(self):
+        return list(filter(lambda channel: channel.pa_sink_proxy().is_media_player(), self.channels.values()))
+
     def _order_items(self):
         sorting = self._sort()
 
@@ -161,7 +164,7 @@ class SortedChannelBox(Gtk.VBox):
         sinks = self._sort_by_attribute(self.get_sinks())
         sink_inputs = self._sort_by_attribute(self.get_sink_inputs())
 
-        mediaplayers = [] # self._sort_by_attribute(self._get_mediaplayer_widgets(objects), '_name')
+        mediaplayers = self._sort_by_attribute(self.get_media_players()) # self._sort_by_attribute(self._get_mediaplayer_widgets(objects), '_name')
         sorting = []
         for s in sinks:
             if s.pa_sink_proxy().is_default_sink():
@@ -181,8 +184,8 @@ class SortedChannelBox(Gtk.VBox):
                     sorting.append(i)
                     # FIXME
                     for m in mediaplayers:
-                        assoc = m.get_assotiated_sink_input()
-                        if assoc != None and int(i.index) == assoc.index:
+                        assoc = m.pa_sink_proxy().get_assotiated_sink_input(sink_inputs)
+                        if assoc != None and int(i.pa_sink_proxy().get_index()) == assoc.pa_sink_proxy().get_index():
                             sorting.append(m)
         # FIXME
         #for i in set(objects).difference(set(sorting)):

@@ -20,6 +20,8 @@ from gi.repository import Gtk, Gdk
 from SliderWidget import SliderWidget
 from LadspaWidget import LadspaWidget
 from ContextMenu import ContextMenu
+from veromixcommon.MediaPlayer import MediaPlayer
+from gi.repository.GdkPixbuf import Pixbuf
 
 DRAG_ACTION = Gdk.DragAction.COPY
 (TARGET_ENTRY_TEXT, TARGET_ENTRY_PIXBUF) = range(2)
@@ -204,18 +206,67 @@ class MediaPlayerChannel(Channel):
         self._pa_sink = controller
         self.controller = controller
         self.controller.connect("data_updated", self.controller_data_updated)
+        self.controller_data_updated(None)
+        self.set_padding(0, 0, self.ICON_HEIGHT / 2, 0)
 
-    def controller_data_updated(self, widget):
-        print("data updated")
-#        self.update_state()
-#        self.update_cover()
+    def controller_data_updated(self, widget):        
+        img = Gtk.Image()
+        if self.controller.state() == MediaPlayer.Playing:
+            img.set_from_icon_name("player_stop", Gtk.IconSize.BUTTON)
+        else:
+            img.set_from_icon_name("player_play", Gtk.IconSize.BUTTON)
+        self.play.set_image(img)
+        
+        p = self.controller.artwork()
+        if p:
+            q = p.get_pixbuf().scale_simple(self.ICON_HEIGHT * 2, self.ICON_HEIGHT * 2, 0)
+            self.cover.set_from_pixbuf(q) 
 
     def on_pa_data_updated(self, data):
         pass
 
     def _pack_contents(self):
+        self.hbox.pack_start(self.cover, False,False, 0)
+        self.hbox.pack_start(self.prev, False,False, 0)
+        self.hbox.pack_start(self.play, False,False, 0)
+        self.hbox.pack_start(self.next, False,False, 0)
         pass
 
     def _create(self):
-        pass
+        self.cover = Gtk.Image()
+        self.cover.set_size_request(self.ICON_HEIGHT * 2,self.ICON_HEIGHT * 2)
+        self.cover.set_from_icon_name("banshee", Gtk.IconSize.BUTTON)
+        
+        self.prev = Gtk.Button()
+        img = Gtk.Image()
+        img.set_from_icon_name("player_rew", Gtk.IconSize.BUTTON)
+        self.prev.set_image(img)
+        self.prev.set_size_request(self.ICON_HEIGHT,self.ICON_HEIGHT)
+        self.prev.connect("clicked", self.on_prev_clicked)
+
+        self.play = Gtk.Button()
+        img = Gtk.Image()
+        img.set_from_icon_name("player_play", Gtk.IconSize.BUTTON)
+        self.play.set_image(img)
+        self.play.set_size_request(self.ICON_HEIGHT,self.ICON_HEIGHT)
+        self.play.connect("clicked", self.on_play_clicked)
+
+        self.next = Gtk.Button()
+        img = Gtk.Image()
+        img.set_from_icon_name("player_fwd", Gtk.IconSize.BUTTON)
+        self.next.set_image(img)
+        self.next.set_size_request(self.ICON_HEIGHT,self.ICON_HEIGHT)
+        self.next.connect("clicked", self.on_next_clicked)
+
+    def on_play_clicked(self, widget):
+        if self.controller.state() == MediaPlayer.Playing:
+            self.controller.pause()
+        else:
+            self.controller.play()
+
+    def on_prev_clicked(self, widget):
+        self.controller.prev_track()
+
+    def on_next_clicked(self, widget):
+        self.controller.next_track()
 
