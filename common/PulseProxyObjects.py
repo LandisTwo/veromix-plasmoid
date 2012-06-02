@@ -424,7 +424,7 @@ class SourceOutputInfo(AbstractSink):
             self._nice_icon = self.props["application.icon_name"]
 
         if veromix:
-            if iconname == None and  "app" in self.props.keys():
+            if self._nice_icon == self.DEFAULT_ICON and  "app" in self.props.keys():
                 self._nice_icon = veromix.query_application(self.props["app"], self.DEFAULT_ICON)
 
         if self._nice_icon is None and self._nice_title == "plugin-container":
