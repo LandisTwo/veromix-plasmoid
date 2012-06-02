@@ -42,6 +42,7 @@ class AbstractLabelSlider:
 
     def _create_slider(self):
         self.slider = Gtk.HScale()
+        self.slider.set_can_focus(False)
         #self.slider.set_slider_size_fixed(True)
         self.slider.set_draw_value(False)
         self.slider.set_value_pos(1)
@@ -125,6 +126,7 @@ class VerticalLabelSlider(Gtk.HBox, AbstractLabelSlider):
 
     def _create_slider(self):
         self.slider = Gtk.VScale()
+        self.slider.set_can_focus(False)
         self.slider.set_draw_value(False)
         self.slider.set_value_pos(1)
         self.slider.set_range(0, self.MAX_VOLUME)

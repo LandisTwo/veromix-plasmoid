@@ -68,6 +68,7 @@ class Channel(Gtk.Alignment):
         self.menu_box=Gtk.VBox()
         self.menu_button = Gtk.ToggleButton()
         self.menu_button.set_relief(Gtk.ReliefStyle.NONE)
+        self.menu_button.set_can_focus(False)
         self.menu_button.add(Gtk.Arrow(Gtk.ArrowType.DOWN, Gtk.ShadowType.NONE))
         self.menu_button.connect("released", self.show_popupmenu)
         self.menu_button.set_size_request(-1, self.ICON_HEIGHT)
@@ -78,6 +79,8 @@ class Channel(Gtk.Alignment):
     def _create_mute(self):
         self.mute_box = Gtk.VBox()
         self.mute = Gtk.ToggleButton()
+        self.mute.set_can_focus(False)
+        self.mute.set_relief(Gtk.ReliefStyle.NONE)
         self.mute.set_image_position(1)
         self.mute.connect("released", self.on_muted_clicked)
         self.mute.set_size_request(self.ICON_HEIGHT,self.ICON_HEIGHT)
@@ -264,6 +267,8 @@ class MediaPlayerChannel(Channel):
 
     def _create_button(self, image_name, callback):
         button = Gtk.Button()
+        button.set_relief(Gtk.ReliefStyle.NONE)
+        button.set_can_focus(False)
         img = Gtk.Image()
         img.set_from_icon_name(image_name, Gtk.IconSize.BUTTON)
         button.set_image(img)
