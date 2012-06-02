@@ -56,7 +56,7 @@ class ContextMenuFactory(GObject.GObject):
             self.context_menu_create_sounddevices(pa_sink_proxy, menu)
             self.context_menu_create_defaultsink(pa_sink_proxy, menu)
         self.context_menu_create_mute(pa_sink_proxy, menu)
-        if not slider.is_ladspa():
+        if not slider.is_ladspa() and not pa_sink_proxy.is_sourceoutput():
             self.context_menu_create_expand(slider, menu)
             self.context_menu_create_volume_meter(pa_sink_proxy, menu)
 
