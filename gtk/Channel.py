@@ -213,19 +213,17 @@ class MediaPlayerChannel(Channel):
         self.set_padding(0, 0, self.ICON_HEIGHT / 2, 0)
 
     def controller_data_updated(self, widget):
-        #img = Gtk.Image()
         if self.controller.state() == MediaPlayer.Playing:
             self.play.set_from_icon_name("player_stop", Gtk.IconSize.BUTTON)
         else:
             self.play.set_from_icon_name("player_play", Gtk.IconSize.BUTTON)
-        #self.play.set_image(img)
 
         p = self.controller.artwork()
         if p:
             q = p.get_pixbuf().scale_simple(self.ICON_HEIGHT * 2, self.ICON_HEIGHT * 2, 0)
             self.cover.set_from_pixbuf(q)
         else:
-            self.cover.set_from_icon_name(self.controller.get_application_name(), Gtk.IconSize.BUTTON)
+            self.cover.set_from_icon_name(self.controller.get_application_name(), Gtk.IconSize.DND)
 
     def on_pa_data_updated(self, data):
         pass
