@@ -103,7 +103,7 @@ class LabelSlider(Gtk.Fixed, AbstractLabelSlider):
     def on_resize(self, widget, event):
         if event:
             # set position of slider
-            event.y = event.y + self.label.get_layout().get_pixel_size()[1] * 0.3
+            event.y = event.y + self.label.get_layout().get_pixel_size()[1] * 0.4
             self.slider.size_allocate(event)
 
 class VerticalLabelSlider(Gtk.HBox, AbstractLabelSlider):
