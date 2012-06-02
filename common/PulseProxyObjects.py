@@ -75,7 +75,7 @@ class AbstractSink():
     def get_name(self) :
         return self.name
 
-    def toggle_mute(self ):
+    def toggle_mute(self):
         pass
 
     def step_volume_by(self, STEP, up):
@@ -227,13 +227,13 @@ class SinkInfo(AbstractSink):
     def set_volume(self, values):
         self.pulse_proxy.set_sink_volume(self.index, values)
 
-    def toggle_mute(self ):
+    def toggle_mute(self):
         if self.isMuted():
             self.pulse_proxy.set_sink_mute(self.index, False)
         else:
             self.pulse_proxy.set_sink_mute(self.index, True)
 
-    def set_port(self,portstr):
+    def set_port(self, portstr):
          self.pulse_proxy.set_sink_port(self.index,portstr)
 
     def toggle_monitor(self):
@@ -284,7 +284,7 @@ class SinkInputInfo(AbstractSink):
     def set_volume(self, values):
         self.pulse_proxy.set_sink_input_volume(self.index, values)
 
-    def toggle_mute(self ):
+    def toggle_mute(self):
         if self.isMuted():
             self.pulse_proxy.set_sink_input_mute(self.index, False)
         else:
@@ -362,13 +362,13 @@ class SourceInfo(AbstractSink):
     def set_volume(self, values):
         self.pulse_proxy.set_source_volume(self.index, values)
 
-    def toggle_mute(self ):
+    def toggle_mute(self):
         if self.isMuted():
             self.pulse_proxy.set_source_mute(self.index, False)
         else:
             self.pulse_proxy.set_source_mute(self.index, True)
 
-    def set_port(self,portstr):
+    def set_port(self, portstr):
          self.pulse_proxy.set_source_port(self.index,portstr)
 
     def toggle_monitor(self):
@@ -393,13 +393,13 @@ class SourceOutputInfo(AbstractSink):
     def set_volume(self, values):
         pass
 
-    def toggle_mute(self ):
+    def toggle_mute(self):
         pass
 
     def kill(self):
         pass
 
-    def toggle_monitor(self,parent):
+    def toggle_monitor(self, parent):
         pass
 
     def get_volume(self):
