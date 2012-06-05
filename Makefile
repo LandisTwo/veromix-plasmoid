@@ -3,6 +3,7 @@
 SHELL := sh -e
 
 VERSION := $$(awk -F= '/X-KDE-PluginInfo-Version/ { print $$2 }' plasma/metadata.desktop)
+DATE := $$(date +"%Y-%m-%d")
 
 _VEROMIX_SHARED := $(DESTDIR)/usr/share/veromix
 
@@ -42,6 +43,11 @@ install-gtk: install-service
 
 	mkdir -p $(DESTDIR)/usr/share/applications
 	cp -a data/applications/veromix.desktop $(DESTDIR)/usr/share/applications
+
+plasma-pkg: clean
+	cd plasma && zip -r ../../tmp-veroimx.plasmoid .
+	cd ..
+	mv ../tmp-veroimx.plasmoid ../$(DATE)_$(VERSION)_veromix.plasmoid
 
 clean:
 	-find . -name '*~' | xargs rm -f
