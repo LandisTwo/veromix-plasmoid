@@ -1,6 +1,6 @@
 veromix (0.17.0-1) unstable; urgency=low
 
-  * New upstream release.
+  * New upstream release (adds Gtk frontend).
   * Updated debian/control:
     - Standards-Version to 3.9.3 (no changes).
     - Change Section from kde to sound.
