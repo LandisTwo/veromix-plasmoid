@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-25 00:03+0200\n"
+"POT-Creation-Date: 2012-06-06 00:35+0200\n"
 "PO-Revision-Date: 2010-12-16 03:41+0200\n"
 "Last-Translator: Anıl Özbek <ozbekanil@gmail.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
@@ -132,209 +132,110 @@ msgstr "Şu an çalışan medya oynatıcılarlayÖ"
 msgid "Show album art"
 msgstr ""
 
-#: contents/code/Channel.py:138
+#: plasma/contents/code/Channel.py:139
 msgid "Muted"
 msgstr ""
 
-#: contents/code/Channel.py:145
+#: plasma/contents/code/Channel.py:146
 msgid "Unlock channels"
 msgstr ""
 
-#: contents/code/Channel.py:154
+#: plasma/contents/code/Channel.py:155
 msgid "Ports"
 msgstr ""
 
-#: contents/code/Channel.py:178
+#: plasma/contents/code/Channel.py:179
 msgid "Profile"
 msgstr ""
 
-#: contents/code/Channel.py:207
+#: plasma/contents/code/Channel.py:208
 msgid "Veromix Settings"
 msgstr ""
 
-#: contents/code/Channel.py:401
+#: plasma/contents/code/Channel.py:402
 msgid "Presets"
 msgstr ""
 
-#: contents/code/Channel.py:403 contents/code/SinkMbeqUI.py:294
+#: plasma/contents/code/Channel.py:404 plasma/contents/code/SinkMbeqUI.py:294
 msgid "Save"
 msgstr ""
 
-#: contents/code/Channel.py:408
+#: plasma/contents/code/Channel.py:409
 msgid "Save As..."
 msgstr ""
 
-#: contents/code/Channel.py:422
+#: plasma/contents/code/Channel.py:423
 msgid "Effect"
 msgstr ""
 
-#: contents/code/main.py:60
-msgid "Veromix is a mixer for the Pulseaudio sound server. "
-msgstr "Veromix, PulseAudio ses sunucusu için bir karıştırıcıdır. "
-
-#: contents/code/main.py:140 contents/code/main.py:407
-msgid "Veromix volume up"
-msgstr "Veromix ses yükselt"
-
-#: contents/code/main.py:145 contents/code/main.py:412
-msgid "Veromix volume down"
-msgstr "Veromix ses kıs"
-
-#: contents/code/main.py:150
-#, fuzzy
-msgid "Veromix toggle mute"
-msgstr "Veromix sessiz"
-
-#: contents/code/main.py:158
-msgid "Main Volume"
-msgstr "Ana Ses"
-
-#: contents/code/main.py:276
-msgid "Appearance"
-msgstr "Görünüm"
-
-#: contents/code/main.py:296
-msgid "Media Player Controls"
-msgstr "Medya Oynatıcı Kontrolleri"
-
-#: contents/code/main.py:322
-#, fuzzy
-msgid "Max volume value"
-msgstr "Veromix ses yükselt"
-
-#: contents/code/main.py:328
-msgid "Mute if volume reaches zero"
-msgstr ""
-
-#: contents/code/main.py:332
-msgid "Sound Card Profiles"
-msgstr ""
-
-#: contents/code/main.py:354
-msgid "Pulseaudio"
-msgstr ""
-
-#: contents/code/main.py:361
-msgid ""
-"LADSPA is a standard for handling audio filters and effects. Every linux "
-"software archive offers a large number of effects - search for LADSPA to get "
-"more.            Not every effect is supported by Pulseaudio and others "
-"simple don't make sense (or create only noise).<br/><br/>            The "
-"following list shows all available effects on your system: Only checked "
-"effects will appear in the context-menu."
-msgstr ""
-
-#: contents/code/main.py:366
-msgid ""
-"<br/><br/><b>Warning:</b> Cannot find the executables 'listplugins' and "
-"'analyseplugin' which are required for dynamically detecting installed "
-"effects.<br/>               In OpenSUSE, Fedora and Arch Linux the package "
-"is named 'ladspa', in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>"
-msgstr ""
-
-#: contents/code/main.py:375
-msgid "Enable LADSPA effects."
-msgstr ""
-
-#: contents/code/main.py:396
-msgid "Effects / Equalizer"
-msgstr ""
-
-#: contents/code/main.py:417
-msgid "Veromix toggle  mute"
-msgstr "Veromix sessiz"
-
-#: contents/code/main.py:421
-msgid "Volume Keyboard Shortcuts"
-msgstr ""
-
-#: contents/code/MediaPlayerUI.py:206
+#: plasma/contents/code/MediaPlayerUI.py:206
 msgid "Show position"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:48 contents/code/SinkMbeqUI.py:131
+#: plasma/contents/code/SinkInputUI.py:48
+#: plasma/contents/code/SinkMbeqUI.py:131
 msgid "Disconnect/kill"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:56 contents/code/SourceOutputUI.py:50
+#: plasma/contents/code/SinkInputUI.py:56
+#: plasma/contents/code/SourceOutputUI.py:50
 msgid "Move To"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:95
+#: plasma/contents/code/SinkInputUI.py:95
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:310
 msgid "Event Sounds"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:99
+#: plasma/contents/code/SinkInputUI.py:99
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:314
 msgid "Flash Player"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:103
+#: plasma/contents/code/SinkInputUI.py:103
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:318
 msgid "Chromium Browser"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:107
+#: plasma/contents/code/SinkInputUI.py:107
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:322
 msgid "Event Sound"
 msgstr ""
 
-#: contents/code/SinkInputUI.py:109
+#: plasma/contents/code/SinkInputUI.py:109
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:324
 msgid "Voice Output"
 msgstr ""
 
-#: contents/code/SinkMbeqUI.py:279
+#: plasma/contents/code/SinkMbeqUI.py:279
 msgid "Name"
 msgstr ""
 
-#: contents/code/SinkMbeqUI.py:290
+#: plasma/contents/code/SinkMbeqUI.py:290
 msgid "Cancel"
 msgstr ""
 
-#: contents/code/SinkUI.py:39
+#: plasma/contents/code/SinkUI.py:39
 msgid "Default Sink"
 msgstr ""
 
-#: contents/code/SinkUI.py:53
+#: plasma/contents/code/SinkUI.py:53
 msgid "Uncombine"
 msgstr ""
 
-#: contents/code/SinkUI.py:61
+#: plasma/contents/code/SinkUI.py:61
 msgid "Add Effect"
 msgstr ""
 
-#: contents/code/Utils.py:28
-msgid "Please remove and re-add myself"
-msgstr "Lütfen beni kaldır ve tekrar ekle,"
-
-#: contents/code/Utils.py:34
-msgid ""
-"<b>Configuration updated</b><br/>             Because of a known bug in KDE "
-"4.4 initialization of Veromix failed.<br/><br/>            A workaround is "
-"now installed.<br/><br/>            Please <b>remove</b> this applet and "
-"<b>add</b> Veromix again to your desktop/panel (alternatively you can "
-"restart plasma-desktop).<br/><br/>             Sorry for the inconvenience."
-"<br/><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/"
-"wiki/VeromixComponents#KDE_4.4_compatibility\">See wiki for more details</a> "
-"<span style=\"font-size: small;\">(right click and copy url)</span>. "
-msgstr ""
-"<b>Yapılandırma güncellendi</b><br/>             KDE 4.4'teki bilinen bir "
-"hatadan dolayı Veromix'in ilklendirilmesi başarısızlığa uğradı.<br/><br/"
-">            Geçici bir çözüm yüklendi.<br/><br/>            Lütfen bu "
-"programcığı <b>kaldırın</b> ve Veromix'i tekrar masaüstünüze veya panelinize "
-"<b>ekleyin</b> (alternatif olarak plasma-desktop'u yeniden "
-"başlatabilirsiniz).<br/><br/>             Rahatsızlık için üzgünüz.<br/><br/"
-">            <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/"
-"VeromixComponents#KDE_4.4_compatibility\">Daha fazla bilgi için vikiye "
-"bakabilirsiniz</a> <span style=\"font-size: small;\">(sağ tıklayın ve "
-"bağlantıyı kopyalayın)</span>. "
-
-#: contents/code/VeroMix.py:101
+#: plasma/contents/code/VeroMix.py:101
 msgid "Playback"
 msgstr "Oynatma"
 
-#: contents/code/VeroMix.py:102
+#: plasma/contents/code/VeroMix.py:102
 msgid "Record"
 msgstr "Kaydetme"
 
-#: contents/code/VeroMix.py:125
+#: plasma/contents/code/VeroMix.py:125
 #, fuzzy
 msgid ""
 "There is a problem with the backgroud-"
@@ -359,6 +260,111 @@ msgstr ""
 "code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
 "_VeromixServiceMain.py\">detaylar için vikiye bakınız</a> <span style=\"font-"
 "size: small;\">(sağ tıklayın ve bağlantıyı kopyalayın)</span>."
+
+#: plasma/contents/code/main.py:59
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr "Veromix, PulseAudio ses sunucusu için bir karıştırıcıdır. "
+
+#: plasma/contents/code/main.py:141 plasma/contents/code/main.py:408
+msgid "Veromix volume up"
+msgstr "Veromix ses yükselt"
+
+#: plasma/contents/code/main.py:146 plasma/contents/code/main.py:413
+msgid "Veromix volume down"
+msgstr "Veromix ses kıs"
+
+#: plasma/contents/code/main.py:151
+#, fuzzy
+msgid "Veromix toggle mute"
+msgstr "Veromix sessiz"
+
+#: plasma/contents/code/main.py:159
+msgid "Main Volume"
+msgstr "Ana Ses"
+
+#: plasma/contents/code/main.py:277
+msgid "Appearance"
+msgstr "Görünüm"
+
+#: plasma/contents/code/main.py:297
+msgid "Media Player Controls"
+msgstr "Medya Oynatıcı Kontrolleri"
+
+#: plasma/contents/code/main.py:323
+#, fuzzy
+msgid "Max volume value"
+msgstr "Veromix ses yükselt"
+
+#: plasma/contents/code/main.py:329
+msgid "Mute if volume reaches zero"
+msgstr ""
+
+#: plasma/contents/code/main.py:333
+msgid "Sound Card Profiles"
+msgstr ""
+
+#: plasma/contents/code/main.py:355
+msgid "Pulseaudio"
+msgstr ""
+
+#: plasma/contents/code/main.py:362
+msgid ""
+"LADSPA is a standard for handling audio filters and effects. Every linux "
+"software archive offers a large number of effects - search for LADSPA to get "
+"more.            Not every effect is supported by Pulseaudio and others "
+"simple don't make sense (or create only noise).<br/><br/>            The "
+"following list shows all available effects on your system: Only checked "
+"effects will appear in the context-menu."
+msgstr ""
+
+#: plasma/contents/code/main.py:367
+msgid ""
+"<br/><br/><b>Warning:</b> Cannot find the executables 'listplugins' and "
+"'analyseplugin' which are required for dynamically detecting installed "
+"effects.<br/>               In OpenSUSE, Fedora and Arch Linux the package "
+"is named 'ladspa', in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>"
+msgstr ""
+
+#: plasma/contents/code/main.py:376
+msgid "Enable LADSPA effects."
+msgstr ""
+
+#: plasma/contents/code/main.py:397
+msgid "Effects / Equalizer"
+msgstr ""
+
+#: plasma/contents/code/main.py:418
+msgid "Veromix toggle  mute"
+msgstr "Veromix sessiz"
+
+#: plasma/contents/code/main.py:422
+msgid "Volume Keyboard Shortcuts"
+msgstr ""
+
+#~ msgid "Please remove and re-add myself"
+#~ msgstr "Lütfen beni kaldır ve tekrar ekle,"
+
+#~ msgid ""
+#~ "<b>Configuration updated</b><br/>             Because of a known bug in "
+#~ "KDE 4.4 initialization of Veromix failed.<br/><br/>            A "
+#~ "workaround is now installed.<br/><br/>            Please <b>remove</b> "
+#~ "this applet and <b>add</b> Veromix again to your desktop/panel "
+#~ "(alternatively you can restart plasma-desktop).<br/><br/>             "
+#~ "Sorry for the inconvenience.<br/><br/>            <a href=\"http://code."
+#~ "google.com/p/veromix-plasmoid/wiki/VeromixComponents#KDE_4.4_compatibility"
+#~ "\">See wiki for more details</a> <span style=\"font-size: small;\">(right "
+#~ "click and copy url)</span>. "
+#~ msgstr ""
+#~ "<b>Yapılandırma güncellendi</b><br/>             KDE 4.4'teki bilinen bir "
+#~ "hatadan dolayı Veromix'in ilklendirilmesi başarısızlığa uğradı.<br/><br/"
+#~ ">            Geçici bir çözüm yüklendi.<br/><br/>            Lütfen bu "
+#~ "programcığı <b>kaldırın</b> ve Veromix'i tekrar masaüstünüze veya "
+#~ "panelinize <b>ekleyin</b> (alternatif olarak plasma-desktop'u yeniden "
+#~ "başlatabilirsiniz).<br/><br/>             Rahatsızlık için üzgünüz.<br/"
+#~ "><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/"
+#~ "wiki/VeromixComponents#KDE_4.4_compatibility\">Daha fazla bilgi için "
+#~ "vikiye bakabilirsiniz</a> <span style=\"font-size: small;\">(sağ tıklayın "
+#~ "ve bağlantıyı kopyalayın)</span>. "
 
 #~ msgid "Enable media player controls"
 #~ msgstr "Medya oynatıcı kontrollerini aktifleştir"
