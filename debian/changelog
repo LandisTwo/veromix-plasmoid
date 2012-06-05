@@ -20,7 +20,7 @@ veromix (0.17.0-1) unstable; urgency=low
     - veromix-common.install
     - veromix.manpages
 
- -- Nik Lutz <nik.lutz@gmail.com>  Mon, 28 May 2012 02:00:00 +0100
+ -- Nik Lutz <nik.lutz@gmail.com>  Tue, 05 Jun 2012 11:50:00 +0100
 
 veromix (0.16.2-1) unstable; urgency=low
 
