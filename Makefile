@@ -49,6 +49,12 @@ plasma-pkg: clean build
 	cd ..
 	mv ../tmp-veroimx.plasmoid ../$(DATE)_$(VERSION)_veromix.plasmoid
 
+local-gtk: clean build
+	echo "#!/bin/sh\ngtk/main.py" > veromix.sh
+	chmod a+x veromix.sh
+	tar cfzv ../$(DATE)_$(VERSION)_veromix-gtk.tar.gz --exclude=.git --exclude=debian --exclude="Makefile" --exclude="Messages.sh" --exclude="plasma" --exclude="contrib" ../$(shell basename $(CURDIR))
+	rm veromix.sh
+
 clean:
 	-find . -name '*~' | xargs rm -f
 	-find . -name '*.pyc' | xargs rm -f
