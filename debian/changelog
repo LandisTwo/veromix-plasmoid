@@ -7,6 +7,7 @@ veromix (0.17.0-1) unstable; urgency=low
     - New binary packages: veromix-common, veromix.
     - Moving dependencies from plasma-widget-veromix to veromix-common.
     - Removing kdelibs-bin and kdesdk-scripts from Build-Depends.
+    - Adding python3 as Build-Depends.
   * Update debian/copyright.
   * Update debian/rules:
     - Also using gzip compression level 9 for binary packages.
