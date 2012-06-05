@@ -52,8 +52,9 @@ plasma-pkg: clean build
 local-gtk: clean build
 	echo "#!/bin/sh\ngtk/main.py" > veromix.sh
 	chmod a+x veromix.sh
+	echo "REQUIREMENTS:\n- python3-dbus\n- python3-gi\n- pulseaudio\n- python-xdg (Optional)\n- ladspa-sdk, swh-plugins (Optional)" > REQUIREMENTS
 	tar cfzv ../$(DATE)_$(VERSION)_veromix-gtk.tar.gz --exclude=.git --exclude=debian --exclude="Makefile" --exclude="Messages.sh" --exclude="plasma" --exclude="contrib" ../$(shell basename $(CURDIR))
-	rm veromix.sh
+	rm veromix.sh REQUIREMENTS
 
 clean:
 	-find . -name '*~' | xargs rm -f
