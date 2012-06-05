@@ -10,7 +10,7 @@ _VEROMIX_SHARED := $(DESTDIR)/usr/share/veromix
 all: build
 
 build:
-	@echo "sh Messages.sh"
+	sh Messages.sh
 
 install: install-plasmoid install-gtk
 
@@ -44,7 +44,7 @@ install-gtk: install-service
 	mkdir -p $(DESTDIR)/usr/share/applications
 	cp -a data/applications/veromix.desktop $(DESTDIR)/usr/share/applications
 
-plasma-pkg: clean
+plasma-pkg: clean build
 	cd plasma && zip -r ../../tmp-veroimx.plasmoid .
 	cd ..
 	mv ../tmp-veroimx.plasmoid ../$(DATE)_$(VERSION)_veromix.plasmoid
