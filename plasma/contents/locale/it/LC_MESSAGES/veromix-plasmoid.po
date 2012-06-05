@@ -1,14 +1,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Gianluca Boiano <morf3089@gmail.com>, 2011, 2012.
+# Gianluca Boiano <g.boiano@studenti.unisa.it>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-04-25 00:03+0200\n"
-"PO-Revision-Date: 2012-01-28 20:33+0100\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2012-05-07 11:59+0200\n"
+"Last-Translator: Gianluca Boiano <g.boiano@studenti.unisa.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -96,17 +96,19 @@ msgstr "Mostra pulsante per menu contestuale"
 
 #: rc.py:60
 msgid "Show unit values"
-msgstr ""
+msgstr "Mostra percentuale volume"
 
 #: rc.py:63
 msgid "Autostart meters"
-msgstr ""
+msgstr "Autoavvia VuMeter"
 
 #: rc.py:66
 msgid ""
 "Meters can be very CPU intensive! You can always enable meters by double "
 "clicking a channel."
 msgstr ""
+"I VuMeter possono gravare sulle performance della CPU! Puoi sempre abilitarli "
+"cliccando due volte su di un canale."
 
 #: rc.py:84
 msgid "Use KDE nowplaying dataengine"
@@ -138,7 +140,7 @@ msgstr "Dividi canali"
 
 #: contents/code/Channel.py:154
 msgid "Ports"
-msgstr ""
+msgstr "Porte"
 
 #: contents/code/Channel.py:178
 msgid "Profile"
@@ -150,15 +152,15 @@ msgstr "Impostazioni di Veromix"
 
 #: contents/code/Channel.py:401
 msgid "Presets"
-msgstr ""
+msgstr "Programmi"
 
 #: contents/code/Channel.py:403 contents/code/SinkMbeqUI.py:294
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: contents/code/Channel.py:408
 msgid "Save As..."
-msgstr ""
+msgstr "Salva con nome"
 
 #: contents/code/Channel.py:422
 msgid "Effect"
@@ -217,6 +219,15 @@ msgid ""
 "following list shows all available effects on your system: Only checked "
 "effects will appear in the context-menu."
 msgstr ""
+"LADSPA è uno standard per gestire filtri ed effetti audio. Ogni distribuzione "
+"linux "
+"offre, nei suoi repository, un gran numero di effetti - cerca LADSPA per "
+"usarne altri. "
+"Non tutti gli effetti sono supportati da Pulseaudio, altri invece non si "
+"integrano o "
+"generano solo rumore.<br/><br/>    La seguente lista mostra tutti gli effetti "
+"disponibili "
+"sul tuo sistema. Solo quelli selezionati appariranno nel menu contestuale. "
 
 #: contents/code/main.py:366
 msgid ""
@@ -225,14 +236,21 @@ msgid ""
 "effects.<br/>               In OpenSUSE, Fedora and Arch Linux the package "
 "is named 'ladspa', in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>"
 msgstr ""
+"<br/><br/><b>Attenzione:</b> Impossibile trovare 'listplugins' e "
+"'analyseplugin', "
+"eseguibili richiesti per ottenere dinamicamente gli effetti installati.<br/>  "
+"            "
+" In OpenSUSE, Fedora e Arch Linux il pacchetto da installare è chiamato "
+"'ladspa', "
+"in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>"
 
 #: contents/code/main.py:375
 msgid "Enable LADSPA effects."
-msgstr ""
+msgstr "Attiva effetti LADSPA."
 
 #: contents/code/main.py:396
 msgid "Effects / Equalizer"
-msgstr ""
+msgstr "Effetti / Equalizzatore"
 
 #: contents/code/main.py:417
 msgid "Veromix toggle  mute"
@@ -276,11 +294,11 @@ msgstr "Uscita"
 
 #: contents/code/SinkMbeqUI.py:279
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #: contents/code/SinkMbeqUI.py:290
 msgid "Cancel"
-msgstr ""
+msgstr "Cancella"
 
 #: contents/code/SinkUI.py:39
 msgid "Default Sink"
@@ -288,12 +306,11 @@ msgstr "Audio Interno"
 
 #: contents/code/SinkUI.py:53
 msgid "Uncombine"
-msgstr ""
+msgstr "Separa"
 
 #: contents/code/SinkUI.py:61
-#, fuzzy
 msgid "Add Effect"
-msgstr "Effetto"
+msgstr "Aggiungi Effetto"
 
 #: contents/code/Utils.py:28
 msgid "Please remove and re-add myself"
@@ -328,7 +345,6 @@ msgid "Record"
 msgstr "Registrazione"
 
 #: contents/code/VeroMix.py:125
-#, fuzzy
 msgid ""
 "There is a problem with the backgroud-"
 "service.                                                         "
@@ -344,8 +360,8 @@ msgstr ""
 "Si è verificato un problema col demone Pulseaudio.<ul><li> Se hai già "
 "aggiornato il plasmoide prova a terminare il processo VeromixServiceMain.py "
 "e riavvia Veromix </li><li>In alternativa riavvia il sistema</li></ul><br/"
-"><a href=\"http://code.google.com/p/veromix-plasmoid/wiki/"
-"VeromixComponents#The_service:_VeromixServiceMain.py\">Consulta il wiki per "
+"> <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/Debugging\">Consulta il wiki per "
 "maggiori informazioni </a> <span style=\"font-size: small;\">(tasto destro e "
 "\"Copia indirizzo di collegamento\")</span>."
 
