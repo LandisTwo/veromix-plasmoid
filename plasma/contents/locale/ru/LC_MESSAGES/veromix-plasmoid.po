@@ -8,38 +8,39 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-04-25 00:03+0200\n"
-"PO-Revision-Date: 2011-03-18 10:35+0300\n"
-"Last-Translator: proDOOMman <prodoomman@gmail.com>\n"
+"PO-Revision-Date: 2012-05-25 13:06+0300\n"
+"Last-Translator: Roman Timushev <rtimush@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.2\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: rc.py:3 rc.py:18 rc.py:81
+#: rc.py:3
+#: rc.py:18
+#: rc.py:81
 msgid "Form"
 msgstr ""
 
-#: rc.py:6 rc.py:75
+#: rc.py:6
+#: rc.py:75
 msgid "Version"
 msgstr "Версия"
 
-#: rc.py:9 rc.py:69
+#: rc.py:9
+#: rc.py:69
 msgid "Homepage"
 msgstr "Домашняя страница"
 
-#: rc.py:12 rc.py:72
-msgid ""
-"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
-"com/p/veromix-plasmoid/</A>"
-msgstr ""
-"<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google."
-"com/p/veromix-plasmoid/</A>"
+#: rc.py:12
+#: rc.py:72
+msgid "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google.com/p/veromix-plasmoid/</A>"
+msgstr "<a href=\"http://code.google.com/p/veromix-plasmoid/\">http://code.google.com/p/veromix-plasmoid/</A>"
 
-#: rc.py:15 rc.py:78
+#: rc.py:15
+#: rc.py:78
 msgid "X.Y"
 msgstr "X.Y"
 
@@ -48,7 +49,6 @@ msgid "Popup Mode"
 msgstr "Окно микшера"
 
 #: rc.py:24
-#, fuzzy
 msgid "Close when losing focus"
 msgstr "Закрывать при потере фокуса"
 
@@ -74,11 +74,11 @@ msgstr "Стандартный фон"
 
 #: rc.py:42
 msgid "Notification "
-msgstr ""
+msgstr "Уведомления"
 
 #: rc.py:45
 msgid "Show toolip"
-msgstr ""
+msgstr "Показывать подсказки"
 
 #: rc.py:48
 msgid "Layout"
@@ -90,100 +90,98 @@ msgstr "Использовать вкладки"
 
 #: rc.py:54
 msgid "Always show sources"
-msgstr ""
+msgstr "Всегда показывать источники"
 
 #: rc.py:57
 msgid "Show context menu button"
-msgstr ""
+msgstr "Показывать кнопку вызова контекстного меню"
 
 #: rc.py:60
 msgid "Show unit values"
-msgstr ""
+msgstr "Показывать численные значения"
 
 #: rc.py:63
 msgid "Autostart meters"
-msgstr ""
+msgstr "Автоматически запускать измерители"
 
 #: rc.py:66
-msgid ""
-"Meters can be very CPU intensive! You can always enable meters by double "
-"clicking a channel."
-msgstr ""
+msgid "Meters can be very CPU intensive! You can always enable meters by double clicking a channel."
+msgstr "Измерители могут сильно нагружать процессор! Вы всегда можете включить измеритель двойным щелчком по каналу."
 
 #: rc.py:84
 msgid "Use KDE nowplaying dataengine"
-msgstr ""
+msgstr "Использовать источник данных KDE"
 
 #: rc.py:87
 msgid "Use mpris2"
-msgstr ""
+msgstr "Использовать mpris2"
 
 #: rc.py:90
-#, fuzzy
 msgid "Media player blacklist:"
-msgstr "Черный список проигрывателей"
+msgstr "Черный список проигрывателей:"
 
 #: rc.py:93
-#, fuzzy
 msgid "Running media players:"
-msgstr "Запущенные проигрыватели"
+msgstr "Запущенные проигрыватели:"
 
 #: rc.py:96
 msgid "Show album art"
-msgstr ""
+msgstr "Показывать обложку альбома"
 
 #: contents/code/Channel.py:138
 msgid "Muted"
-msgstr ""
+msgstr "Выключен"
 
 #: contents/code/Channel.py:145
 msgid "Unlock channels"
-msgstr ""
+msgstr "Разблокировать каналы"
 
 #: contents/code/Channel.py:154
 msgid "Ports"
-msgstr ""
+msgstr "Разъёмы"
 
 #: contents/code/Channel.py:178
 msgid "Profile"
-msgstr ""
+msgstr "Профиль"
 
 #: contents/code/Channel.py:207
 msgid "Veromix Settings"
-msgstr ""
+msgstr "Настроить Veromix"
 
 #: contents/code/Channel.py:401
 msgid "Presets"
-msgstr ""
+msgstr "Предустановки"
 
-#: contents/code/Channel.py:403 contents/code/SinkMbeqUI.py:294
+#: contents/code/Channel.py:403
+#: contents/code/SinkMbeqUI.py:294
 msgid "Save"
-msgstr ""
+msgstr "Сохранить"
 
 #: contents/code/Channel.py:408
 msgid "Save As..."
-msgstr ""
+msgstr "Сохранить как..."
 
 #: contents/code/Channel.py:422
 msgid "Effect"
-msgstr ""
+msgstr "Эффект"
 
 #: contents/code/main.py:60
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
-msgstr "Veromix - это микшер для звукового сервера Pulseaudio."
+msgstr "Veromix — это микшер для звукового сервера Pulseaudio."
 
-#: contents/code/main.py:140 contents/code/main.py:407
+#: contents/code/main.py:140
+#: contents/code/main.py:407
 msgid "Veromix volume up"
-msgstr "Veromix - увеличить громкость"
+msgstr "Veromix — увеличить громкость"
 
-#: contents/code/main.py:145 contents/code/main.py:412
+#: contents/code/main.py:145
+#: contents/code/main.py:412
 msgid "Veromix volume down"
-msgstr "Veromix - уменьшить громкость"
+msgstr "Veromix — уменьшить громкость"
 
 #: contents/code/main.py:150
-#, fuzzy
 msgid "Veromix toggle mute"
-msgstr "Veromix - включить или выключить звук"
+msgstr "Veromix — включить или выключить звук"
 
 # Не уверен что это такое
 #: contents/code/main.py:158
@@ -215,72 +213,62 @@ msgid "Pulseaudio"
 msgstr "Pulseaudio"
 
 #: contents/code/main.py:361
-msgid ""
-"LADSPA is a standard for handling audio filters and effects. Every linux "
-"software archive offers a large number of effects - search for LADSPA to get "
-"more.            Not every effect is supported by Pulseaudio and others "
-"simple don't make sense (or create only noise).<br/><br/>            The "
-"following list shows all available effects on your system: Only checked "
-"effects will appear in the context-menu."
-msgstr ""
+msgid "LADSPA is a standard for handling audio filters and effects. Every linux software archive offers a large number of effects - search for LADSPA to get more.            Not every effect is supported by Pulseaudio and others simple don't make sense (or create only noise).<br/><br/>            The following list shows all available effects on your system: Only checked effects will appear in the context-menu."
+msgstr "LADSPA является стандартом для аудио-фильтров и эффектов. В любом репозитории пакетов для Linux вы сможете найти множество эффектов по ключевому слову LADSPA. Не все эффекты поддерживаются PulseAudio, а некоторые просто не имеют смысла (или производят исключительно шум).<br/><br/>В списке ниже представленны все эфекты установленные в вашей системе. Только отмеченные эффекты будут доступны в контекстном меню."
 
 #: contents/code/main.py:366
-msgid ""
-"<br/><br/><b>Warning:</b> Cannot find the executables 'listplugins' and "
-"'analyseplugin' which are required for dynamically detecting installed "
-"effects.<br/>               In OpenSUSE, Fedora and Arch Linux the package "
-"is named 'ladspa', in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>"
-msgstr ""
+msgid "<br/><br/><b>Warning:</b> Cannot find the executables 'listplugins' and 'analyseplugin' which are required for dynamically detecting installed effects.<br/>               In OpenSUSE, Fedora and Arch Linux the package is named 'ladspa', in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>"
+msgstr "<br/><br/><b>Предупреждение:</b> Не найдены исполняемые файлы 'listplugins' и 'analyseplugin', которые необходимы для поиска установленных эффектов.<br/>               В OpenSUSE, Fedora и Arch Linux пакет называется 'ladspa', В Debian/Ubuntu — 'ladspa-sdk'.<br/><br/>"
 
 #: contents/code/main.py:375
 msgid "Enable LADSPA effects."
-msgstr ""
+msgstr "Использовать эффекты LADSPA"
 
 #: contents/code/main.py:396
 msgid "Effects / Equalizer"
-msgstr ""
+msgstr "Эффекты / Эквалайзер"
 
 #: contents/code/main.py:417
 msgid "Veromix toggle  mute"
-msgstr "Veromix - включить или выключить звук"
+msgstr "Veromix — включить или выключить звук"
 
 #: contents/code/main.py:421
-#, fuzzy
 msgid "Volume Keyboard Shortcuts"
 msgstr "Глобальные комбинации клавиш"
 
 #: contents/code/MediaPlayerUI.py:206
 msgid "Show position"
-msgstr ""
+msgstr "Показывать позицию воспроизведения"
 
-#: contents/code/SinkInputUI.py:48 contents/code/SinkMbeqUI.py:131
+#: contents/code/SinkInputUI.py:48
+#: contents/code/SinkMbeqUI.py:131
 msgid "Disconnect/kill"
 msgstr "Отключить/завершить"
 
-#: contents/code/SinkInputUI.py:56 contents/code/SourceOutputUI.py:50
+#: contents/code/SinkInputUI.py:56
+#: contents/code/SourceOutputUI.py:50
 msgid "Move To"
-msgstr ""
+msgstr "Переместить в"
 
 #: contents/code/SinkInputUI.py:95
 msgid "Event Sounds"
-msgstr ""
+msgstr "Звуки уведомлений"
 
 #: contents/code/SinkInputUI.py:99
 msgid "Flash Player"
-msgstr ""
+msgstr "Flash Player"
 
 #: contents/code/SinkInputUI.py:103
 msgid "Chromium Browser"
-msgstr ""
+msgstr "Браузер Chromium"
 
 #: contents/code/SinkInputUI.py:107
 msgid "Event Sound"
-msgstr ""
+msgstr "Звуки уведомлений"
 
 #: contents/code/SinkInputUI.py:109
-#, fuzzy
 msgid "Voice Output"
-msgstr "Вывод"
+msgstr "Голос"
 
 #: contents/code/SinkMbeqUI.py:279
 msgid "Name"
@@ -296,11 +284,11 @@ msgstr "Аудиовыход по умолчанию"
 
 #: contents/code/SinkUI.py:53
 msgid "Uncombine"
-msgstr ""
+msgstr "Разъеденить"
 
 #: contents/code/SinkUI.py:61
 msgid "Add Effect"
-msgstr ""
+msgstr "Добавить эффект"
 
 # myself = меня или себя?
 # Где вообще будет юзаться этот текст?
@@ -309,24 +297,8 @@ msgid "Please remove and re-add myself"
 msgstr "Пожалуйста, удалите и заново добавьте меня"
 
 #: contents/code/Utils.py:34
-msgid ""
-"<b>Configuration updated</b><br/>             Because of a known bug in KDE "
-"4.4 initialization of Veromix failed.<br/><br/>            A workaround is "
-"now installed.<br/><br/>            Please <b>remove</b> this applet and "
-"<b>add</b> Veromix again to your desktop/panel (alternatively you can "
-"restart plasma-desktop).<br/><br/>             Sorry for the inconvenience."
-"<br/><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/"
-"wiki/VeromixComponents#KDE_4.4_compatibility\">See wiki for more details</a> "
-"<span style=\"font-size: small;\">(right click and copy url)</span>. "
-msgstr ""
-"<b>Конфигурация обновлена</b><br/>             Из-за известной ошибки KDE "
-"4.4 руссификация Veromix не удалась.<br/><br/>            Будет использован "
-"костыль. <br/><br/>            Пожалуйста, <b>удалите</b> этот плазмоид и "
-"<b>добавьте</b> его снова на вашу панель или рабочий стол (также можно "
-"перезапустить plasma-desktop).<br/><br/>             Извините за неудобство."
-"<br/><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/"
-"wiki/VeromixComponents#KDE_4.4_compatibility\">Детали в вики</a> <span style="
-"\"font-size: small;\">(скопируйте адрес из контекстного меню)</span>. "
+msgid "<b>Configuration updated</b><br/>             Because of a known bug in KDE 4.4 initialization of Veromix failed.<br/><br/>            A workaround is now installed.<br/><br/>            Please <b>remove</b> this applet and <b>add</b> Veromix again to your desktop/panel (alternatively you can restart plasma-desktop).<br/><br/>             Sorry for the inconvenience.<br/><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#KDE_4.4_compatibility\">See wiki for more details</a> <span style=\"font-size: small;\">(right click and copy url)</span>. "
+msgstr "<b>Конфигурация обновлена</b><br/>             Из-за известной ошибки KDE 4.4 инициализация Veromix не удалась.<br/><br/>            Будет использован костыль. <br/><br/>            Пожалуйста, <b>удалите</b> этот плазмоид и <b>добавьте</b> его снова на вашу панель или рабочий стол (также можно перезапустить plasma-desktop).<br/><br/>             Извините за неудобство.<br/><br/>            <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#KDE_4.4_compatibility\">Детали в вики</a> <span style=\"font-size: small;\">(скопируйте адрес из контекстного меню)</span>. "
 
 #: contents/code/VeroMix.py:101
 msgid "Playback"
@@ -337,30 +309,8 @@ msgid "Record"
 msgstr "Запись"
 
 #: contents/code/VeroMix.py:125
-#, fuzzy
-msgid ""
-"There is a problem with the backgroud-"
-"service.                                                         "
-"<ul>                                                         <li>If you just "
-"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
-"this plasmoid</li>                                                         "
-"<li>If you don't know how to do that consider rebooting</li></ul><br/"
-">                                                        <a href=\"http://"
-"code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more "
-"details</a> <span style=\"font-size: small;\">(right click and copy url)</"
-"span>."
-msgstr ""
-"Обнаружена проблема с фоновым "
-"процессом.                                                         "
-"<ul>                                                         <li>Если вы "
-"только что обновились, попробуйте завершить процесс с названием "
-"VeromixServiceMain.py и перезапустить этот плазмоид</"
-"li>                                                         <li>Если вы не "
-"знаете как это сделать, просто перезаргузитесь</li></ul><br/"
-">                                                        <a href=\"http://"
-"code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
-"_VeromixServiceMain.py\">Детали в вики</a> <span style=\"font-size: small;\">"
-"(скопируйте адрес из контекстного меню)</span>."
+msgid "There is a problem with the backgroud-service.                                                         <ul>                                                         <li>If you just upgraded try killing the process named: VeromixServiceMain.py and relaunch this plasmoid</li>                                                         <li>If you don't know how to do that consider rebooting</li></ul><br/>                                                        <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more details</a> <span style=\"font-size: small;\">(right click and copy url)</span>."
+msgstr "Обнаружена проблема с фоновым процессом.                                                         <ul>                                                         <li>Если вы только что обновились, попробуйте завершить процесс с названием VeromixServiceMain.py и перезапустить этот плазмоид</li>                                                         <li>Если вы не знаете как это сделать, просто перезаргузитесь</li></ul><br/>                                                        <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:_VeromixServiceMain.py\">Детали в вики</a> <span style=\"font-size: small;\">(скопируйте адрес из контекстного меню)</span>."
 
 #, fuzzy
 #~ msgid "Show meter"
