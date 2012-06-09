@@ -41,7 +41,7 @@ class PulseStream:
                                           None, # buffer_attr
                                           0) # flags
         if retval != 0:
-            raise Exception, "Couldn't do connect_record()"
+            raise Exception("Couldn't do connect_record()")
 
 
     def peek(self, pulseInterface):
@@ -50,4 +50,4 @@ class PulseStream:
     def disconnect(self):
         retval = pa_stream_disconnect(self)
         if retval != 0:
-            raise Exception, "Couldn't do disconnect()"
+            raise Exception("Couldn't do disconnect()")

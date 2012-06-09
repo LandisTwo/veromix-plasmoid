@@ -1,11 +1,4 @@
 #!/usr/bin/env python
-import sys
-if sys.version_info[0] > 2:
-        import os
-        os.execvp("python2", ["python2"] + sys.argv)
-# ... chain-load Python 2 code without using syntax that Python 3 will choke on
-# This is from: <https://lwn.net/Articles/427309/>.
-
 # -*- coding: utf-8 -*-
 # Copyright (C) 2010-2012 Nik Lutz <nik.lutz@gmail.com>
 #
