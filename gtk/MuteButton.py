@@ -57,7 +57,7 @@ class MuteButton(Gtk.Fixed):
             self.mute.set_image(self.image)
 
     def connect_clicked(self, function):
-        self.mute.connect("released", function)
+        self.mute.connect("clicked", function)
 
     def connect_drag(self, function):
         self.mute.connect("drag-data-get", function)

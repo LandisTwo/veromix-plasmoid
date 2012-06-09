@@ -80,7 +80,7 @@ class Channel(Gtk.Alignment):
     def _create_mute(self):
         self.mute_box = Gtk.VBox()
         self.mute = MuteButton()
-        self.mute.connect_clicked(self.on_muted_clicked)
+        self.mute.connect_clicked(self.on_mute_clicked)
 
     def _create_slider(self):
         self.slider = SliderWidget()
@@ -99,7 +99,7 @@ class Channel(Gtk.Alignment):
             self.show_popupmenu(event.button, event.time)
             return True # event has been handled
 
-    def on_muted_clicked(self, button):
+    def on_mute_clicked(self, button):
         self.pa_sink_proxy().toggle_mute()
 
     def pa_sink_proxy(self):
@@ -143,6 +143,7 @@ class SinkInputChannel(Channel):
         self.drag_source_set(Gdk.ModifierType.BUTTON1_MASK, [], DRAG_ACTION)
         self.drag_source_add_text_targets()
         self.connect("drag-data-get", self.on_drag_data_get)
+        self.mute.connect_drag(self.on_drag_data_get)
 
     def on_drag_data_get(self, widget, drag_context, data, info, time):
         data.set_text("veromix://sink_input_index:"+str(self.pa_sink_proxy().get_index()), -1)
