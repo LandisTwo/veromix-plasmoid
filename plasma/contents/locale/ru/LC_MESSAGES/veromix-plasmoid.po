@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-10 02:10+0200\n"
+"POT-Creation-Date: 2012-06-11 01:00+0200\n"
 "PO-Revision-Date: 2012-05-25 13:06+0300\n"
 "Last-Translator: Roman Timushev <rtimush@gmail.com>\n"
 "Language-Team: Russian <kde-russian@lists.kde.ru>\n"
@@ -131,40 +131,45 @@ msgstr "Запущенные проигрыватели:"
 msgid "Show album art"
 msgstr "Показывать обложку альбома"
 
-#: plasma/contents/code/Channel.py:139
+#: plasma/contents/code/Channel.py:140
 msgid "Muted"
 msgstr "Выключен"
 
-#: plasma/contents/code/Channel.py:146
+#: plasma/contents/code/Channel.py:147 gtk/ContextMenu.py:134
+#, fuzzy
+msgid "Volume meter"
+msgstr "Отображать метки громкости"
+
+#: plasma/contents/code/Channel.py:154
 msgid "Unlock channels"
 msgstr "Разблокировать каналы"
 
-#: plasma/contents/code/Channel.py:155 gtk/ContextMenu.py:167
+#: plasma/contents/code/Channel.py:163 gtk/ContextMenu.py:167
 msgid "Ports"
 msgstr "Разъёмы"
 
-#: plasma/contents/code/Channel.py:179 gtk/ContextMenu.py:190
+#: plasma/contents/code/Channel.py:187 gtk/ContextMenu.py:190
 msgid "Profile"
 msgstr "Профиль"
 
-#: plasma/contents/code/Channel.py:208
+#: plasma/contents/code/Channel.py:216
 msgid "Veromix Settings"
 msgstr "Настроить Veromix"
 
-#: plasma/contents/code/Channel.py:402
+#: plasma/contents/code/Channel.py:413
 msgid "Presets"
 msgstr "Предустановки"
 
-#: plasma/contents/code/Channel.py:404 plasma/contents/code/SinkMbeqUI.py:294
+#: plasma/contents/code/Channel.py:415 plasma/contents/code/SinkMbeqUI.py:294
 #: gtk/ContextMenu.py:260
 msgid "Save"
 msgstr "Сохранить"
 
-#: plasma/contents/code/Channel.py:409 gtk/ContextMenu.py:265
+#: plasma/contents/code/Channel.py:420 gtk/ContextMenu.py:265
 msgid "Save As..."
 msgstr "Сохранить как..."
 
-#: plasma/contents/code/Channel.py:423 gtk/ContextMenu.py:284
+#: plasma/contents/code/Channel.py:434 gtk/ContextMenu.py:284
 msgid "Effect"
 msgstr "Эффект"
 
@@ -263,37 +268,36 @@ msgstr "Показывать позицию воспроизведения"
 
 #: plasma/contents/code/SinkInputUI.py:48
 #: plasma/contents/code/SinkMbeqUI.py:131 gtk/ContextMenu.py:118
-#: gtk/main.py:71
 msgid "Disconnect/kill"
 msgstr "Отключить/завершить"
 
 #: plasma/contents/code/SinkInputUI.py:56
-#: plasma/contents/code/SourceOutputUI.py:50 gtk/ContextMenu.py:148
+#: plasma/contents/code/SourceOutputUI.py:53 gtk/ContextMenu.py:148
 msgid "Move To"
 msgstr "Переместить в"
 
 #: plasma/contents/code/SinkInputUI.py:95
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:310
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:305
 msgid "Event Sounds"
 msgstr "Звуки уведомлений"
 
 #: plasma/contents/code/SinkInputUI.py:99
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:314
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:309
 msgid "Flash Player"
 msgstr "Flash Player"
 
 #: plasma/contents/code/SinkInputUI.py:103
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:318
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:313
 msgid "Chromium Browser"
 msgstr "Браузер Chromium"
 
 #: plasma/contents/code/SinkInputUI.py:107
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:322
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:317
 msgid "Event Sound"
 msgstr "Звуки уведомлений"
 
 #: plasma/contents/code/SinkInputUI.py:109
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:324
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:319
 msgid "Voice Output"
 msgstr "Голос"
 
@@ -360,11 +364,6 @@ msgstr "Аудиовыход по умолчанию"
 msgid "Mute"
 msgstr "Выключен"
 
-#: gtk/ContextMenu.py:134
-#, fuzzy
-msgid "Volume meter"
-msgstr "Отображать метки громкости"
-
 #: gtk/ContextMenu.py:141
 #, fuzzy
 msgid "Unlock Channels"
@@ -379,6 +378,11 @@ msgstr "Предустановки"
 #, fuzzy
 msgid "Save Preset"
 msgstr "Предустановки"
+
+#: gtk/main.py:42
+#, fuzzy
+msgid "Veromix"
+msgstr "Настроить Veromix"
 
 # myself = меня или себя?
 # Где вообще будет юзаться этот текст?

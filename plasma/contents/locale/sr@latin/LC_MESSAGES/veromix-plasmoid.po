@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-10 02:10+0200\n"
+"POT-Creation-Date: 2012-06-11 01:00+0200\n"
 "PO-Revision-Date: 2012-02-05 17:22+0100\n"
 "Last-Translator: Slobodan Terzić <githzerai06@gmail.com>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -128,40 +128,45 @@ msgstr "Pokrenuti plejeri:"
 msgid "Show album art"
 msgstr "Omoti albuma"
 
-#: plasma/contents/code/Channel.py:139
+#: plasma/contents/code/Channel.py:140
 msgid "Muted"
 msgstr "Utišano"
 
-#: plasma/contents/code/Channel.py:146
+#: plasma/contents/code/Channel.py:147 gtk/ContextMenu.py:134
+#, fuzzy
+msgid "Volume meter"
+msgstr "Prikaži merač"
+
+#: plasma/contents/code/Channel.py:154
 msgid "Unlock channels"
 msgstr "Otključaj kanale"
 
-#: plasma/contents/code/Channel.py:155 gtk/ContextMenu.py:167
+#: plasma/contents/code/Channel.py:163 gtk/ContextMenu.py:167
 msgid "Ports"
 msgstr "Portovi"
 
-#: plasma/contents/code/Channel.py:179 gtk/ContextMenu.py:190
+#: plasma/contents/code/Channel.py:187 gtk/ContextMenu.py:190
 msgid "Profile"
 msgstr "Profil"
 
-#: plasma/contents/code/Channel.py:208
+#: plasma/contents/code/Channel.py:216
 msgid "Veromix Settings"
 msgstr "Postavke Veromixa"
 
-#: plasma/contents/code/Channel.py:402
+#: plasma/contents/code/Channel.py:413
 msgid "Presets"
 msgstr ""
 
-#: plasma/contents/code/Channel.py:404 plasma/contents/code/SinkMbeqUI.py:294
+#: plasma/contents/code/Channel.py:415 plasma/contents/code/SinkMbeqUI.py:294
 #: gtk/ContextMenu.py:260
 msgid "Save"
 msgstr ""
 
-#: plasma/contents/code/Channel.py:409 gtk/ContextMenu.py:265
+#: plasma/contents/code/Channel.py:420 gtk/ContextMenu.py:265
 msgid "Save As..."
 msgstr ""
 
-#: plasma/contents/code/Channel.py:423 gtk/ContextMenu.py:284
+#: plasma/contents/code/Channel.py:434 gtk/ContextMenu.py:284
 msgid "Effect"
 msgstr "Efekti"
 
@@ -249,37 +254,36 @@ msgstr "Prikaži poziciju"
 
 #: plasma/contents/code/SinkInputUI.py:48
 #: plasma/contents/code/SinkMbeqUI.py:131 gtk/ContextMenu.py:118
-#: gtk/main.py:71
 msgid "Disconnect/kill"
 msgstr "Otkači se/ubij"
 
 #: plasma/contents/code/SinkInputUI.py:56
-#: plasma/contents/code/SourceOutputUI.py:50 gtk/ContextMenu.py:148
+#: plasma/contents/code/SourceOutputUI.py:53 gtk/ContextMenu.py:148
 msgid "Move To"
 msgstr "Premesti na"
 
 #: plasma/contents/code/SinkInputUI.py:95
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:310
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:305
 msgid "Event Sounds"
 msgstr "Zvuci događaja"
 
 #: plasma/contents/code/SinkInputUI.py:99
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:314
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:309
 msgid "Flash Player"
 msgstr "Flash plejer"
 
 #: plasma/contents/code/SinkInputUI.py:103
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:318
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:313
 msgid "Chromium Browser"
 msgstr "Chromium"
 
 #: plasma/contents/code/SinkInputUI.py:107
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:322
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:317
 msgid "Event Sound"
 msgstr "Zvuci događaja"
 
 #: plasma/contents/code/SinkInputUI.py:109
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:324
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:319
 msgid "Voice Output"
 msgstr "Izlaz za glas"
 
@@ -347,11 +351,6 @@ msgstr "Podrazumevani odvod"
 msgid "Mute"
 msgstr "Utišano"
 
-#: gtk/ContextMenu.py:134
-#, fuzzy
-msgid "Volume meter"
-msgstr "Prikaži merač"
-
 #: gtk/ContextMenu.py:141
 #, fuzzy
 msgid "Unlock Channels"
@@ -364,6 +363,11 @@ msgstr ""
 #: gtk/ContextMenu.py:321
 msgid "Save Preset"
 msgstr ""
+
+#: gtk/main.py:42
+#, fuzzy
+msgid "Veromix"
+msgstr "Postavke Veromixa"
 
 #~ msgid "Please remove and re-add myself"
 #~ msgstr "Molim da me uklonite pa ponovo dodate"
