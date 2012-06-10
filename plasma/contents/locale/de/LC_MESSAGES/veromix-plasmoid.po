@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-10 01:01+0200\n"
-"PO-Revision-Date: 2012-06-10 02:09+0100\n"
+"POT-Creation-Date: 2012-06-10 02:10+0200\n"
+"PO-Revision-Date: 2012-06-10 02:15+0100\n"
 "Last-Translator: Nik Lutz <nik.lutz@gmail.com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: \n"
@@ -50,7 +50,6 @@ msgid "Popup Mode"
 msgstr "Popup-Verhalten"
 
 #: rc.py:24
-#, fuzzy
 msgid "Close when losing focus"
 msgstr "Automatisch schließen"
 
@@ -75,7 +74,6 @@ msgid "Standard background"
 msgstr "Standard-Hintergrund"
 
 #: rc.py:42
-#, fuzzy
 msgid "Notification "
 msgstr "Systembenachrichtigungen"
 
@@ -236,7 +234,6 @@ msgid "Effects / Equalizer"
 msgstr "Effekte / Equalizer"
 
 #: plasma/contents/code/main.py:418
-#, fuzzy
 msgid "Veromix toggle  mute"
 msgstr "Veromix-Stummschaltung ein/aus"
 
@@ -250,6 +247,8 @@ msgstr "Position anzeigen"
 
 #: plasma/contents/code/SinkInputUI.py:48
 #: plasma/contents/code/SinkMbeqUI.py:131
+#: gtk/ContextMenu.py:118
+#: gtk/main.py:71
 msgid "Disconnect/kill"
 msgstr "Trennen"
 
@@ -314,32 +313,24 @@ msgid "Record"
 msgstr "Aufnahme"
 
 #: plasma/contents/code/VeroMix.py:125
-#, fuzzy
 msgid "There is a problem with the backgroud-service.                                                         <ul>                                                         <li>If you just upgraded try killing the process named: VeromixServiceMain.py and relaunch this plasmoid</li>                                                         <li>If you don't know how to do that consider rebooting</li></ul><br/>                                                        <a href=\"http://code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more details</a> <span style=\"font-size: small;\">(right click and copy url)</span>."
 msgstr "Es besteht ein Problem mit der Verbindung zum Pulseaudio server.<ul><li> Falls Sie das Plasmoid gerade aktualisiert haben, versuchen Sie den Prozess mit dem Namen \"VeromixServiceMain.py\" zu beenden</li><li>Alternativ können Sie Ihren Computer auch neu starten</li></ul><br/><a href=\"http://code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:_VeromixServiceMain.py\">Mehr Informationen finden sie im Wiki</a> <span style=\"font-size: small;\">(rechts click und \"Adresse kopieren\")</span>."
 
 #: gtk/ContextMenu.py:112
-#, fuzzy
 msgid "Default device"
 msgstr "Standardgerät"
-
-#: gtk/ContextMenu.py:118
-msgid "Kill"
-msgstr "Trennen"
 
 #: gtk/ContextMenu.py:126
 msgid "Mute"
 msgstr "Stummschalten"
 
 #: gtk/ContextMenu.py:134
-#: gtk/main.py:70
-#, fuzzy
 msgid "Volume meter"
-msgstr "Lautstärke anzeigen"
+msgstr "Lautstärkepegel"
 
 #: gtk/ContextMenu.py:141
 msgid "Unlock Channels"
-msgstr "Kanäle anzeigen"
+msgstr "Kanäle"
 
 #: gtk/ContextMenu.py:253
 msgid "Preset"
@@ -348,6 +339,9 @@ msgstr "Preset"
 #: gtk/ContextMenu.py:321
 msgid "Save Preset"
 msgstr "Preset speichern"
+
+#~ msgid "Kill"
+#~ msgstr "Trennen"
 
 #~ msgid "Please remove and re-add myself"
 #~ msgstr ""
