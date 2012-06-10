@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-06 00:35+0200\n"
+"POT-Creation-Date: 2012-06-10 02:10+0200\n"
 "PO-Revision-Date: 2012-02-05 17:22+0100\n"
 "Last-Translator: Slobodan Terzić <githzerai06@gmail.com>\n"
 "Language-Team: Serbian <kde-i18n-sr@kde.org>\n"
@@ -136,11 +136,11 @@ msgstr "Utišano"
 msgid "Unlock channels"
 msgstr "Otključaj kanale"
 
-#: plasma/contents/code/Channel.py:155
+#: plasma/contents/code/Channel.py:155 gtk/ContextMenu.py:167
 msgid "Ports"
 msgstr "Portovi"
 
-#: plasma/contents/code/Channel.py:179
+#: plasma/contents/code/Channel.py:179 gtk/ContextMenu.py:190
 msgid "Profile"
 msgstr "Profil"
 
@@ -153,109 +153,17 @@ msgid "Presets"
 msgstr ""
 
 #: plasma/contents/code/Channel.py:404 plasma/contents/code/SinkMbeqUI.py:294
+#: gtk/ContextMenu.py:260
 msgid "Save"
 msgstr ""
 
-#: plasma/contents/code/Channel.py:409
+#: plasma/contents/code/Channel.py:409 gtk/ContextMenu.py:265
 msgid "Save As..."
 msgstr ""
 
-#: plasma/contents/code/Channel.py:423
+#: plasma/contents/code/Channel.py:423 gtk/ContextMenu.py:284
 msgid "Effect"
 msgstr "Efekti"
-
-#: plasma/contents/code/MediaPlayerUI.py:206
-msgid "Show position"
-msgstr "Prikaži poziciju"
-
-#: plasma/contents/code/SinkInputUI.py:48
-#: plasma/contents/code/SinkMbeqUI.py:131
-msgid "Disconnect/kill"
-msgstr "Otkači se/ubij"
-
-#: plasma/contents/code/SinkInputUI.py:56
-#: plasma/contents/code/SourceOutputUI.py:50
-msgid "Move To"
-msgstr "Premesti na"
-
-#: plasma/contents/code/SinkInputUI.py:95
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:310
-msgid "Event Sounds"
-msgstr "Zvuci događaja"
-
-#: plasma/contents/code/SinkInputUI.py:99
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:314
-msgid "Flash Player"
-msgstr "Flash plejer"
-
-#: plasma/contents/code/SinkInputUI.py:103
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:318
-msgid "Chromium Browser"
-msgstr "Chromium"
-
-#: plasma/contents/code/SinkInputUI.py:107
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:322
-msgid "Event Sound"
-msgstr "Zvuci događaja"
-
-#: plasma/contents/code/SinkInputUI.py:109
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:324
-msgid "Voice Output"
-msgstr "Izlaz za glas"
-
-#: plasma/contents/code/SinkMbeqUI.py:279
-msgid "Name"
-msgstr ""
-
-#: plasma/contents/code/SinkMbeqUI.py:290
-msgid "Cancel"
-msgstr ""
-
-#: plasma/contents/code/SinkUI.py:39
-msgid "Default Sink"
-msgstr "Podrazumevani odvod"
-
-#: plasma/contents/code/SinkUI.py:53
-msgid "Uncombine"
-msgstr ""
-
-#: plasma/contents/code/SinkUI.py:61
-#, fuzzy
-msgid "Add Effect"
-msgstr "Efekti"
-
-#: plasma/contents/code/VeroMix.py:101
-msgid "Playback"
-msgstr "Puštanje"
-
-#: plasma/contents/code/VeroMix.py:102
-msgid "Record"
-msgstr "Snimanje"
-
-#: plasma/contents/code/VeroMix.py:125
-#, fuzzy
-msgid ""
-"There is a problem with the backgroud-"
-"service.                                                         "
-"<ul>                                                         <li>If you just "
-"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
-"this plasmoid</li>                                                         "
-"<li>If you don't know how to do that consider rebooting</li></ul><br/"
-">                                                        <a href=\"http://"
-"code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more "
-"details</a> <span style=\"font-size: small;\">(right click and copy url)</"
-"span>."
-msgstr ""
-"Postoji problem sa pozadinskim servisom. "
-"<ul>                                                         <li>ukoliko "
-"ste  vršili nadogradnju, probajte da ubijete proces: VeromixServiceMain.py "
-"and i ponovo pokrenete ovaj plazmoid.</"
-"li>                                                         <li>ako ne znate "
-"kako, najbolje ponovo pokrenite sistem.</li></ul><br/"
-">                                                        <a href=\"http://"
-"code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
-"_VeromixServiceMain.py\">Pogledajte viki za više detalja.</a> <span style="
-"\"font-size: small;\">(right click and copy url)</span>."
 
 #: plasma/contents/code/main.py:59
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
@@ -335,6 +243,128 @@ msgstr "Prekidač zvuka"
 msgid "Volume Keyboard Shortcuts"
 msgstr "Prečice"
 
+#: plasma/contents/code/MediaPlayerUI.py:206
+msgid "Show position"
+msgstr "Prikaži poziciju"
+
+#: plasma/contents/code/SinkInputUI.py:48
+#: plasma/contents/code/SinkMbeqUI.py:131 gtk/ContextMenu.py:118
+#: gtk/main.py:71
+msgid "Disconnect/kill"
+msgstr "Otkači se/ubij"
+
+#: plasma/contents/code/SinkInputUI.py:56
+#: plasma/contents/code/SourceOutputUI.py:50 gtk/ContextMenu.py:148
+msgid "Move To"
+msgstr "Premesti na"
+
+#: plasma/contents/code/SinkInputUI.py:95
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:310
+msgid "Event Sounds"
+msgstr "Zvuci događaja"
+
+#: plasma/contents/code/SinkInputUI.py:99
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:314
+msgid "Flash Player"
+msgstr "Flash plejer"
+
+#: plasma/contents/code/SinkInputUI.py:103
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:318
+msgid "Chromium Browser"
+msgstr "Chromium"
+
+#: plasma/contents/code/SinkInputUI.py:107
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:322
+msgid "Event Sound"
+msgstr "Zvuci događaja"
+
+#: plasma/contents/code/SinkInputUI.py:109
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:324
+msgid "Voice Output"
+msgstr "Izlaz za glas"
+
+#: plasma/contents/code/SinkMbeqUI.py:279
+msgid "Name"
+msgstr ""
+
+#: plasma/contents/code/SinkMbeqUI.py:290
+msgid "Cancel"
+msgstr ""
+
+#: plasma/contents/code/SinkUI.py:39
+msgid "Default Sink"
+msgstr "Podrazumevani odvod"
+
+#: plasma/contents/code/SinkUI.py:53
+msgid "Uncombine"
+msgstr ""
+
+#: plasma/contents/code/SinkUI.py:61 gtk/ContextMenu.py:244
+#, fuzzy
+msgid "Add Effect"
+msgstr "Efekti"
+
+#: plasma/contents/code/VeroMix.py:101
+msgid "Playback"
+msgstr "Puštanje"
+
+#: plasma/contents/code/VeroMix.py:102
+msgid "Record"
+msgstr "Snimanje"
+
+#: plasma/contents/code/VeroMix.py:125
+#, fuzzy
+msgid ""
+"There is a problem with the backgroud-"
+"service.                                                         "
+"<ul>                                                         <li>If you just "
+"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
+"this plasmoid</li>                                                         "
+"<li>If you don't know how to do that consider rebooting</li></ul><br/"
+">                                                        <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more "
+"details</a> <span style=\"font-size: small;\">(right click and copy url)</"
+"span>."
+msgstr ""
+"Postoji problem sa pozadinskim servisom. "
+"<ul>                                                         <li>ukoliko "
+"ste  vršili nadogradnju, probajte da ubijete proces: VeromixServiceMain.py "
+"and i ponovo pokrenete ovaj plazmoid.</"
+"li>                                                         <li>ako ne znate "
+"kako, najbolje ponovo pokrenite sistem.</li></ul><br/"
+">                                                        <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
+"_VeromixServiceMain.py\">Pogledajte viki za više detalja.</a> <span style="
+"\"font-size: small;\">(right click and copy url)</span>."
+
+#: gtk/ContextMenu.py:112
+#, fuzzy
+msgid "Default device"
+msgstr "Podrazumevani odvod"
+
+#: gtk/ContextMenu.py:126
+#, fuzzy
+msgid "Mute"
+msgstr "Utišano"
+
+#: gtk/ContextMenu.py:134
+#, fuzzy
+msgid "Volume meter"
+msgstr "Prikaži merač"
+
+#: gtk/ContextMenu.py:141
+#, fuzzy
+msgid "Unlock Channels"
+msgstr "Otključaj kanale"
+
+#: gtk/ContextMenu.py:253
+msgid "Preset"
+msgstr ""
+
+#: gtk/ContextMenu.py:321
+msgid "Save Preset"
+msgstr ""
+
 #~ msgid "Please remove and re-add myself"
 #~ msgstr "Molim da me uklonite pa ponovo dodate"
 
@@ -361,6 +391,3 @@ msgstr "Prečice"
 
 #~ msgid "Add equalizer"
 #~ msgstr "Dodaj ekvilajzer"
-
-#~ msgid "Show meter"
-#~ msgstr "Prikaži merač"

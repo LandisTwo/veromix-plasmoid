@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-06 00:35+0200\n"
+"POT-Creation-Date: 2012-06-10 02:10+0200\n"
 "PO-Revision-Date: 2010-12-16 03:41+0200\n"
 "Last-Translator: Anıl Özbek <ozbekanil@gmail.com>\n"
 "Language-Team: Turkish <kde-i18n-doc@kde.org>\n"
@@ -140,11 +140,11 @@ msgstr ""
 msgid "Unlock channels"
 msgstr ""
 
-#: plasma/contents/code/Channel.py:155
+#: plasma/contents/code/Channel.py:155 gtk/ContextMenu.py:167
 msgid "Ports"
 msgstr ""
 
-#: plasma/contents/code/Channel.py:179
+#: plasma/contents/code/Channel.py:179 gtk/ContextMenu.py:190
 msgid "Profile"
 msgstr ""
 
@@ -157,109 +157,17 @@ msgid "Presets"
 msgstr ""
 
 #: plasma/contents/code/Channel.py:404 plasma/contents/code/SinkMbeqUI.py:294
+#: gtk/ContextMenu.py:260
 msgid "Save"
 msgstr ""
 
-#: plasma/contents/code/Channel.py:409
+#: plasma/contents/code/Channel.py:409 gtk/ContextMenu.py:265
 msgid "Save As..."
 msgstr ""
 
-#: plasma/contents/code/Channel.py:423
+#: plasma/contents/code/Channel.py:423 gtk/ContextMenu.py:284
 msgid "Effect"
 msgstr ""
-
-#: plasma/contents/code/MediaPlayerUI.py:206
-msgid "Show position"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:48
-#: plasma/contents/code/SinkMbeqUI.py:131
-msgid "Disconnect/kill"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:56
-#: plasma/contents/code/SourceOutputUI.py:50
-msgid "Move To"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:95
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:310
-msgid "Event Sounds"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:99
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:314
-msgid "Flash Player"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:103
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:318
-msgid "Chromium Browser"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:107
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:322
-msgid "Event Sound"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:109
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:324
-msgid "Voice Output"
-msgstr ""
-
-#: plasma/contents/code/SinkMbeqUI.py:279
-msgid "Name"
-msgstr ""
-
-#: plasma/contents/code/SinkMbeqUI.py:290
-msgid "Cancel"
-msgstr ""
-
-#: plasma/contents/code/SinkUI.py:39
-msgid "Default Sink"
-msgstr ""
-
-#: plasma/contents/code/SinkUI.py:53
-msgid "Uncombine"
-msgstr ""
-
-#: plasma/contents/code/SinkUI.py:61
-msgid "Add Effect"
-msgstr ""
-
-#: plasma/contents/code/VeroMix.py:101
-msgid "Playback"
-msgstr "Oynatma"
-
-#: plasma/contents/code/VeroMix.py:102
-msgid "Record"
-msgstr "Kaydetme"
-
-#: plasma/contents/code/VeroMix.py:125
-#, fuzzy
-msgid ""
-"There is a problem with the backgroud-"
-"service.                                                         "
-"<ul>                                                         <li>If you just "
-"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
-"this plasmoid</li>                                                         "
-"<li>If you don't know how to do that consider rebooting</li></ul><br/"
-">                                                        <a href=\"http://"
-"code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more "
-"details</a> <span style=\"font-size: small;\">(right click and copy url)</"
-"span>."
-msgstr ""
-"Arkaplan servisinde bir problem "
-"var.                                                         "
-"<ul>                                                         <li>Eğer yeni "
-"güncelleme yaptıysanız VeromixServiceMain.py isimli süreci öldürmeyi deneyin "
-"ve programcığı yeniden çalıştırın.</"
-"li>                                                         <li>Eğer bu "
-"yeniden başlatmayı nasıI yapacağınızı bilmiyorsanız</li></ul><br/"
-">                                                        <a href=\"http://"
-"code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
-"_VeromixServiceMain.py\">detaylar için vikiye bakınız</a> <span style=\"font-"
-"size: small;\">(sağ tıklayın ve bağlantıyı kopyalayın)</span>."
 
 #: plasma/contents/code/main.py:59
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
@@ -339,6 +247,124 @@ msgstr "Veromix sessiz"
 
 #: plasma/contents/code/main.py:422
 msgid "Volume Keyboard Shortcuts"
+msgstr ""
+
+#: plasma/contents/code/MediaPlayerUI.py:206
+msgid "Show position"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:48
+#: plasma/contents/code/SinkMbeqUI.py:131 gtk/ContextMenu.py:118
+#: gtk/main.py:71
+msgid "Disconnect/kill"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:56
+#: plasma/contents/code/SourceOutputUI.py:50 gtk/ContextMenu.py:148
+msgid "Move To"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:95
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:310
+msgid "Event Sounds"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:99
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:314
+msgid "Flash Player"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:103
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:318
+msgid "Chromium Browser"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:107
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:322
+msgid "Event Sound"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:109
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:324
+msgid "Voice Output"
+msgstr ""
+
+#: plasma/contents/code/SinkMbeqUI.py:279
+msgid "Name"
+msgstr ""
+
+#: plasma/contents/code/SinkMbeqUI.py:290
+msgid "Cancel"
+msgstr ""
+
+#: plasma/contents/code/SinkUI.py:39
+msgid "Default Sink"
+msgstr ""
+
+#: plasma/contents/code/SinkUI.py:53
+msgid "Uncombine"
+msgstr ""
+
+#: plasma/contents/code/SinkUI.py:61 gtk/ContextMenu.py:244
+msgid "Add Effect"
+msgstr ""
+
+#: plasma/contents/code/VeroMix.py:101
+msgid "Playback"
+msgstr "Oynatma"
+
+#: plasma/contents/code/VeroMix.py:102
+msgid "Record"
+msgstr "Kaydetme"
+
+#: plasma/contents/code/VeroMix.py:125
+#, fuzzy
+msgid ""
+"There is a problem with the backgroud-"
+"service.                                                         "
+"<ul>                                                         <li>If you just "
+"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
+"this plasmoid</li>                                                         "
+"<li>If you don't know how to do that consider rebooting</li></ul><br/"
+">                                                        <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more "
+"details</a> <span style=\"font-size: small;\">(right click and copy url)</"
+"span>."
+msgstr ""
+"Arkaplan servisinde bir problem "
+"var.                                                         "
+"<ul>                                                         <li>Eğer yeni "
+"güncelleme yaptıysanız VeromixServiceMain.py isimli süreci öldürmeyi deneyin "
+"ve programcığı yeniden çalıştırın.</"
+"li>                                                         <li>Eğer bu "
+"yeniden başlatmayı nasıI yapacağınızı bilmiyorsanız</li></ul><br/"
+">                                                        <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
+"_VeromixServiceMain.py\">detaylar için vikiye bakınız</a> <span style=\"font-"
+"size: small;\">(sağ tıklayın ve bağlantıyı kopyalayın)</span>."
+
+#: gtk/ContextMenu.py:112
+msgid "Default device"
+msgstr ""
+
+#: gtk/ContextMenu.py:126
+msgid "Mute"
+msgstr ""
+
+#: gtk/ContextMenu.py:134
+msgid "Volume meter"
+msgstr ""
+
+#: gtk/ContextMenu.py:141
+msgid "Unlock Channels"
+msgstr ""
+
+#: gtk/ContextMenu.py:253
+msgid "Preset"
+msgstr ""
+
+#: gtk/ContextMenu.py:321
+msgid "Save Preset"
 msgstr ""
 
 #~ msgid "Please remove and re-add myself"

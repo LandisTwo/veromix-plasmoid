@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-06 00:35+0200\n"
+"POT-Creation-Date: 2012-06-10 02:10+0200\n"
 "PO-Revision-Date: 2012-05-07 11:59+0200\n"
 "Last-Translator: Gianluca Boiano <g.boiano@studenti.unisa.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -138,11 +138,11 @@ msgstr "Muto"
 msgid "Unlock channels"
 msgstr "Dividi canali"
 
-#: plasma/contents/code/Channel.py:155
+#: plasma/contents/code/Channel.py:155 gtk/ContextMenu.py:167
 msgid "Ports"
 msgstr "Porte"
 
-#: plasma/contents/code/Channel.py:179
+#: plasma/contents/code/Channel.py:179 gtk/ContextMenu.py:190
 msgid "Profile"
 msgstr "Profilo"
 
@@ -155,103 +155,17 @@ msgid "Presets"
 msgstr "Programmi"
 
 #: plasma/contents/code/Channel.py:404 plasma/contents/code/SinkMbeqUI.py:294
+#: gtk/ContextMenu.py:260
 msgid "Save"
 msgstr "Salva"
 
-#: plasma/contents/code/Channel.py:409
+#: plasma/contents/code/Channel.py:409 gtk/ContextMenu.py:265
 msgid "Save As..."
 msgstr "Salva con nome"
 
-#: plasma/contents/code/Channel.py:423
+#: plasma/contents/code/Channel.py:423 gtk/ContextMenu.py:284
 msgid "Effect"
 msgstr "Effetto"
-
-#: plasma/contents/code/MediaPlayerUI.py:206
-msgid "Show position"
-msgstr "Mostra posizione"
-
-#: plasma/contents/code/SinkInputUI.py:48
-#: plasma/contents/code/SinkMbeqUI.py:131
-msgid "Disconnect/kill"
-msgstr "Disconnetti/termina"
-
-#: plasma/contents/code/SinkInputUI.py:56
-#: plasma/contents/code/SourceOutputUI.py:50
-msgid "Move To"
-msgstr "Sposta in"
-
-#: plasma/contents/code/SinkInputUI.py:95
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:310
-msgid "Event Sounds"
-msgstr "Suoni Notifica"
-
-#: plasma/contents/code/SinkInputUI.py:99
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:314
-msgid "Flash Player"
-msgstr "Flash Player"
-
-#: plasma/contents/code/SinkInputUI.py:103
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:318
-msgid "Chromium Browser"
-msgstr "Chromium Browser"
-
-#: plasma/contents/code/SinkInputUI.py:107
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:322
-msgid "Event Sound"
-msgstr "Suono Notifica"
-
-#: plasma/contents/code/SinkInputUI.py:109
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:324
-msgid "Voice Output"
-msgstr "Uscita"
-
-#: plasma/contents/code/SinkMbeqUI.py:279
-msgid "Name"
-msgstr "Nome"
-
-#: plasma/contents/code/SinkMbeqUI.py:290
-msgid "Cancel"
-msgstr "Cancella"
-
-#: plasma/contents/code/SinkUI.py:39
-msgid "Default Sink"
-msgstr "Audio Interno"
-
-#: plasma/contents/code/SinkUI.py:53
-msgid "Uncombine"
-msgstr "Separa"
-
-#: plasma/contents/code/SinkUI.py:61
-msgid "Add Effect"
-msgstr "Aggiungi Effetto"
-
-#: plasma/contents/code/VeroMix.py:101
-msgid "Playback"
-msgstr "Riproduzione"
-
-#: plasma/contents/code/VeroMix.py:102
-msgid "Record"
-msgstr "Registrazione"
-
-#: plasma/contents/code/VeroMix.py:125
-msgid ""
-"There is a problem with the backgroud-"
-"service.                                                         "
-"<ul>                                                         <li>If you just "
-"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
-"this plasmoid</li>                                                         "
-"<li>If you don't know how to do that consider rebooting</li></ul><br/"
-">                                                        <a href=\"http://"
-"code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more "
-"details</a> <span style=\"font-size: small;\">(right click and copy url)</"
-"span>."
-msgstr ""
-"Si è verificato un problema col demone Pulseaudio.<ul><li> Se hai già "
-"aggiornato il plasmoide prova a terminare il processo VeromixServiceMain.py "
-"e riavvia Veromix </li><li>In alternativa riavvia il sistema</li></ul><br/> "
-"<a href=\"http://code.google.com/p/veromix-plasmoid/wiki/Debugging"
-"\">Consulta il wiki per maggiori informazioni </a> <span style=\"font-size: "
-"small;\">(tasto destro e \"Copia indirizzo di collegamento\")</span>."
 
 #: plasma/contents/code/main.py:59
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
@@ -341,6 +255,124 @@ msgstr "Muto"
 msgid "Volume Keyboard Shortcuts"
 msgstr "Tasti rapidi per Volume"
 
+#: plasma/contents/code/MediaPlayerUI.py:206
+msgid "Show position"
+msgstr "Mostra posizione"
+
+#: plasma/contents/code/SinkInputUI.py:48
+#: plasma/contents/code/SinkMbeqUI.py:131 gtk/ContextMenu.py:118
+#: gtk/main.py:71
+msgid "Disconnect/kill"
+msgstr "Disconnetti/termina"
+
+#: plasma/contents/code/SinkInputUI.py:56
+#: plasma/contents/code/SourceOutputUI.py:50 gtk/ContextMenu.py:148
+msgid "Move To"
+msgstr "Sposta in"
+
+#: plasma/contents/code/SinkInputUI.py:95
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:310
+msgid "Event Sounds"
+msgstr "Suoni Notifica"
+
+#: plasma/contents/code/SinkInputUI.py:99
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:314
+msgid "Flash Player"
+msgstr "Flash Player"
+
+#: plasma/contents/code/SinkInputUI.py:103
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:318
+msgid "Chromium Browser"
+msgstr "Chromium Browser"
+
+#: plasma/contents/code/SinkInputUI.py:107
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:322
+msgid "Event Sound"
+msgstr "Suono Notifica"
+
+#: plasma/contents/code/SinkInputUI.py:109
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:324
+msgid "Voice Output"
+msgstr "Uscita"
+
+#: plasma/contents/code/SinkMbeqUI.py:279
+msgid "Name"
+msgstr "Nome"
+
+#: plasma/contents/code/SinkMbeqUI.py:290
+msgid "Cancel"
+msgstr "Cancella"
+
+#: plasma/contents/code/SinkUI.py:39
+msgid "Default Sink"
+msgstr "Audio Interno"
+
+#: plasma/contents/code/SinkUI.py:53
+msgid "Uncombine"
+msgstr "Separa"
+
+#: plasma/contents/code/SinkUI.py:61 gtk/ContextMenu.py:244
+msgid "Add Effect"
+msgstr "Aggiungi Effetto"
+
+#: plasma/contents/code/VeroMix.py:101
+msgid "Playback"
+msgstr "Riproduzione"
+
+#: plasma/contents/code/VeroMix.py:102
+msgid "Record"
+msgstr "Registrazione"
+
+#: plasma/contents/code/VeroMix.py:125
+msgid ""
+"There is a problem with the backgroud-"
+"service.                                                         "
+"<ul>                                                         <li>If you just "
+"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
+"this plasmoid</li>                                                         "
+"<li>If you don't know how to do that consider rebooting</li></ul><br/"
+">                                                        <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more "
+"details</a> <span style=\"font-size: small;\">(right click and copy url)</"
+"span>."
+msgstr ""
+"Si è verificato un problema col demone Pulseaudio.<ul><li> Se hai già "
+"aggiornato il plasmoide prova a terminare il processo VeromixServiceMain.py "
+"e riavvia Veromix </li><li>In alternativa riavvia il sistema</li></ul><br/> "
+"<a href=\"http://code.google.com/p/veromix-plasmoid/wiki/Debugging"
+"\">Consulta il wiki per maggiori informazioni </a> <span style=\"font-size: "
+"small;\">(tasto destro e \"Copia indirizzo di collegamento\")</span>."
+
+#: gtk/ContextMenu.py:112
+#, fuzzy
+msgid "Default device"
+msgstr "Audio Interno"
+
+#: gtk/ContextMenu.py:126
+#, fuzzy
+msgid "Mute"
+msgstr "Muto"
+
+#: gtk/ContextMenu.py:134
+#, fuzzy
+msgid "Volume meter"
+msgstr "Mostra VuMeter"
+
+#: gtk/ContextMenu.py:141
+#, fuzzy
+msgid "Unlock Channels"
+msgstr "Dividi canali"
+
+#: gtk/ContextMenu.py:253
+#, fuzzy
+msgid "Preset"
+msgstr "Programmi"
+
+#: gtk/ContextMenu.py:321
+#, fuzzy
+msgid "Save Preset"
+msgstr "Programmi"
+
 #~ msgid "Please remove and re-add myself"
 #~ msgstr "Per favore rimuovi il plasmoide Veromix e riaggiungilo"
 
@@ -366,9 +398,6 @@ msgstr "Tasti rapidi per Volume"
 
 #~ msgid "Add equalizer"
 #~ msgstr "Aggiungi equalizzatore"
-
-#~ msgid "Show meter"
-#~ msgstr "Mostra VuMeter"
 
 #~ msgid "Output"
 #~ msgstr "Uscita"

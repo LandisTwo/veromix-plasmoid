@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-06 00:35+0200\n"
+"POT-Creation-Date: 2012-06-10 02:10+0200\n"
 "PO-Revision-Date: 2011-04-18 12:27+0300\n"
 "Last-Translator: Donatas G. <dgvirtual@akl.lt>\n"
 "Language-Team: Lithuanian <kde-i18n-lt@kde.org>\n"
@@ -138,11 +138,11 @@ msgstr ""
 msgid "Unlock channels"
 msgstr ""
 
-#: plasma/contents/code/Channel.py:155
+#: plasma/contents/code/Channel.py:155 gtk/ContextMenu.py:167
 msgid "Ports"
 msgstr ""
 
-#: plasma/contents/code/Channel.py:179
+#: plasma/contents/code/Channel.py:179 gtk/ContextMenu.py:190
 msgid "Profile"
 msgstr ""
 
@@ -155,97 +155,16 @@ msgid "Presets"
 msgstr ""
 
 #: plasma/contents/code/Channel.py:404 plasma/contents/code/SinkMbeqUI.py:294
+#: gtk/ContextMenu.py:260
 msgid "Save"
 msgstr ""
 
-#: plasma/contents/code/Channel.py:409
+#: plasma/contents/code/Channel.py:409 gtk/ContextMenu.py:265
 msgid "Save As..."
 msgstr ""
 
-#: plasma/contents/code/Channel.py:423
+#: plasma/contents/code/Channel.py:423 gtk/ContextMenu.py:284
 msgid "Effect"
-msgstr ""
-
-#: plasma/contents/code/MediaPlayerUI.py:206
-msgid "Show position"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:48
-#: plasma/contents/code/SinkMbeqUI.py:131
-msgid "Disconnect/kill"
-msgstr "Atjungti/nužudyti"
-
-#: plasma/contents/code/SinkInputUI.py:56
-#: plasma/contents/code/SourceOutputUI.py:50
-msgid "Move To"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:95
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:310
-msgid "Event Sounds"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:99
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:314
-msgid "Flash Player"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:103
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:318
-msgid "Chromium Browser"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:107
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:322
-msgid "Event Sound"
-msgstr ""
-
-#: plasma/contents/code/SinkInputUI.py:109
-#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:324
-#, fuzzy
-msgid "Voice Output"
-msgstr "Išvestis"
-
-#: plasma/contents/code/SinkMbeqUI.py:279
-msgid "Name"
-msgstr ""
-
-#: plasma/contents/code/SinkMbeqUI.py:290
-msgid "Cancel"
-msgstr ""
-
-#: plasma/contents/code/SinkUI.py:39
-msgid "Default Sink"
-msgstr "Numatytoji audio išvestis"
-
-#: plasma/contents/code/SinkUI.py:53
-msgid "Uncombine"
-msgstr ""
-
-#: plasma/contents/code/SinkUI.py:61
-msgid "Add Effect"
-msgstr ""
-
-#: plasma/contents/code/VeroMix.py:101
-msgid "Playback"
-msgstr "Grojimas"
-
-#: plasma/contents/code/VeroMix.py:102
-msgid "Record"
-msgstr "Įrašymas"
-
-#: plasma/contents/code/VeroMix.py:125
-msgid ""
-"There is a problem with the backgroud-"
-"service.                                                         "
-"<ul>                                                         <li>If you just "
-"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
-"this plasmoid</li>                                                         "
-"<li>If you don't know how to do that consider rebooting</li></ul><br/"
-">                                                        <a href=\"http://"
-"code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more "
-"details</a> <span style=\"font-size: small;\">(right click and copy url)</"
-"span>."
 msgstr ""
 
 #: plasma/contents/code/main.py:59
@@ -329,11 +248,117 @@ msgstr "Veromix - sukeisti iš/į begarsį"
 msgid "Volume Keyboard Shortcuts"
 msgstr "Globalieji spartieji klavišai"
 
+#: plasma/contents/code/MediaPlayerUI.py:206
+msgid "Show position"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:48
+#: plasma/contents/code/SinkMbeqUI.py:131 gtk/ContextMenu.py:118
+#: gtk/main.py:71
+msgid "Disconnect/kill"
+msgstr "Atjungti/nužudyti"
+
+#: plasma/contents/code/SinkInputUI.py:56
+#: plasma/contents/code/SourceOutputUI.py:50 gtk/ContextMenu.py:148
+msgid "Move To"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:95
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:310
+msgid "Event Sounds"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:99
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:314
+msgid "Flash Player"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:103
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:318
+msgid "Chromium Browser"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:107
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:322
+msgid "Event Sound"
+msgstr ""
+
+#: plasma/contents/code/SinkInputUI.py:109
+#: plasma/contents/code/veromixcommon/PulseProxyObjects.py:324
+#, fuzzy
+msgid "Voice Output"
+msgstr "Išvestis"
+
+#: plasma/contents/code/SinkMbeqUI.py:279
+msgid "Name"
+msgstr ""
+
+#: plasma/contents/code/SinkMbeqUI.py:290
+msgid "Cancel"
+msgstr ""
+
+#: plasma/contents/code/SinkUI.py:39
+msgid "Default Sink"
+msgstr "Numatytoji audio išvestis"
+
+#: plasma/contents/code/SinkUI.py:53
+msgid "Uncombine"
+msgstr ""
+
+#: plasma/contents/code/SinkUI.py:61 gtk/ContextMenu.py:244
+msgid "Add Effect"
+msgstr ""
+
+#: plasma/contents/code/VeroMix.py:101
+msgid "Playback"
+msgstr "Grojimas"
+
+#: plasma/contents/code/VeroMix.py:102
+msgid "Record"
+msgstr "Įrašymas"
+
+#: plasma/contents/code/VeroMix.py:125
+msgid ""
+"There is a problem with the backgroud-"
+"service.                                                         "
+"<ul>                                                         <li>If you just "
+"upgraded try killing the process named: VeromixServiceMain.py and relaunch "
+"this plasmoid</li>                                                         "
+"<li>If you don't know how to do that consider rebooting</li></ul><br/"
+">                                                        <a href=\"http://"
+"code.google.com/p/veromix-plasmoid/wiki/Debugging\">See wiki for more "
+"details</a> <span style=\"font-size: small;\">(right click and copy url)</"
+"span>."
+msgstr ""
+
+#: gtk/ContextMenu.py:112
+#, fuzzy
+msgid "Default device"
+msgstr "Numatytoji audio išvestis"
+
+#: gtk/ContextMenu.py:126
+msgid "Mute"
+msgstr ""
+
+#: gtk/ContextMenu.py:134
+#, fuzzy
+msgid "Volume meter"
+msgstr "Rodyti metrą"
+
+#: gtk/ContextMenu.py:141
+msgid "Unlock Channels"
+msgstr ""
+
+#: gtk/ContextMenu.py:253
+msgid "Preset"
+msgstr ""
+
+#: gtk/ContextMenu.py:321
+msgid "Save Preset"
+msgstr ""
+
 #~ msgid "Please remove and re-add myself"
 #~ msgstr "Prašome pašalinti ir iš naujo pridėti plazmoidą"
-
-#~ msgid "Show meter"
-#~ msgstr "Rodyti metrą"
 
 #~ msgid "Output"
 #~ msgstr "Išvestis"
