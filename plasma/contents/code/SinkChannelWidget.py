@@ -66,7 +66,7 @@ class SinkChannelWidget(QGraphicsWidget):
         for channel in self.sink.pa_sink.getChannels():
             slider = LabelSlider()
             slider.setOrientation(Qt.Horizontal)
-            slider.setText(channel.getName())
+            slider.setText(channel.get_name())
             slider.setMaximum(self.veromix.get_max_volume_value())
             slider.setValue(channel.get_volume())
             slider.volumeChanged.connect(self.on_slider_cb)
@@ -101,7 +101,7 @@ class SinkChannelWidget(QGraphicsWidget):
             self.remove_sliders()
             self.create_sliders()
         for i in range(0,len(channels)):
-            name = channels[i].getName()
+            name = channels[i].get_name()
             if name != "None":
                 self.sliders[i].setBoldText("")
                 self.sliders[i].setText(name)
