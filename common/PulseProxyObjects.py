@@ -141,12 +141,7 @@ class AbstractSink():
         return self.mute == 1
 
     def get_monitor_name(self):
-        name = "Veromix monitor"
-        try:
-            name = self.name.encode("ascii")
-        except Exception as  e:
-            print(e)
-        return name
+        return "Veromix monitor"
 
     ## testing
 

@@ -188,7 +188,7 @@ class PulseAudio():
             samplespec.rate = self._meter_rate
             #samplespec.rate = sink.sample_spec.rate
 
-            pa_stream = pa_stream_new(self._context, as_p_char("Veromix sink peak detect - " + in_unicode(sink.description)), samplespec, None)
+            pa_stream = pa_stream_new(self._context, as_p_char("Veromix sink peak detect"), samplespec, None)
             pa_stream_set_read_callback(pa_stream, self._pa_sink_stream_request_cb, index+1)
             #pa_stream_set_suspended_callback(pa_stream, self._pa_stream_notify_cb, None)
 
