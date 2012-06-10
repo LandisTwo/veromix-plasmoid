@@ -9,8 +9,6 @@ mkdir -p "${_BUILD}"
 cd "${_GIT}"
 git clone https://code.google.com/p/veromix-plasmoid/ veromix
 cd veromix
-git branch gtk-work origin/gtk-work
-git checkout gtk-work
 echo "rm -rf contrib"
 make dist
 cp ${_GIT}/*.orig.tar.gz "${_BUILD}"
