@@ -13,7 +13,7 @@ if [ "x$1" != "x" ]; then
 fi
 
 $EXTRACTRC plasma/contents/ui/*.ui plasma/contents/config/*.xml > ./rc.py
-$XGETTEXT rc.py plasma/contents/code/*.py plasma/contents/code/veromixcommon/*.py -o "$NAME.pot"
+$XGETTEXT rc.py plasma/contents/code/*.py plasma/contents/code/veromixcommon/*.py gtk/*.py -o "$NAME.pot"
 sed -e 's/charset=CHARSET/charset=UTF-8/g' -i "$NAME.pot"
 
 for d in plasma/contents/locale/*; do
