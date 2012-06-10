@@ -1,3 +1,11 @@
+0.18.0 - 11.6.2012
+- python3 compatibility.
+- New sourcecode structure, new makefile.
+- Big refactoring to share code with the gtk frontend.
+- Update russian, italian and german translations.
+- Enable volume meter via context menu.
+- Do not name monitor-sinks created by veromix (always ascii->utf8 problems).
+
 0.17.0 - 25.4.2012
 - LADSPA preset support (load, save) - file format compatible with python-equalizer.
 - Dynamically detect installed LADSPA effects.
