@@ -99,8 +99,10 @@ class Channel(Gtk.Alignment):
             self.show_popupmenu(event.button, event.time)
             return True # event has been handled
 
-    def on_mute_clicked(self, button):
-        self.pa_sink_proxy().toggle_mute()
+    def on_mute_clicked(self, button, event):
+        if (event.type == Gdk.EventType.BUTTON_PRESS):
+            self.pa_sink_proxy().toggle_mute()
+        return True
 
     def pa_sink_proxy(self):
         return self._pa_sink
@@ -109,8 +111,8 @@ class Channel(Gtk.Alignment):
         self._pa_sink = data
 
         self.slider.set_volume(data)
-        self.mute.set_active(data.isMuted())
         self.mute.set_image_name(data.get_nice_icon())
+        self.mute.set_active(data.isMuted())
 
     def step_volume(self, up):
         self.slider.step_volume(up)
