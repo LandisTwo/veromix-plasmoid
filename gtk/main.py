@@ -20,6 +20,7 @@
 ##
 import os, gettext, dbus, dbus.service
 from gi.repository import Gtk, Gdk
+from gettext import gettext as i18n
 
 from Veromix import Veromix
 from Indicator import Indicator
@@ -38,7 +39,7 @@ class VeromixWindow(dbus.service.Object):
     def __init__(self, bus):
         dbus.service.Object.__init__ (self, bus, "/", DBUS_INTERFACE)
 
-        self.window = Gtk.Window(title="Veromix",type =Gtk.WindowType.TOPLEVEL)
+        self.window = Gtk.Window(title=i18n("Veromix"),type =Gtk.WindowType.TOPLEVEL)
         self.window.set_icon_name("veromix-plasmoid")
         self.window.connect('delete-event', self.on_delete_event)
         self.window.set_default_size(430, 180)
@@ -61,9 +62,17 @@ class VeromixWindow(dbus.service.Object):
     def create_indicator(self, veromix):
         self.tray_icon = Indicator(veromix)
 
+def init_locales():
+    name = "veromix-plasmoid" # FIXME
+    directory = VEROMIX_BASEDIR + "/plasma/contents/locale"
+    if "usr/share/veromix" in VEROMIX_BASEDIR:
+        directory = "/usr/share/locale"
+    gettext.bindtextdomain(name, directory)
+    gettext.textdomain(name)
 
 if __name__ == '__main__':
     # Veromix is dedicated to my girlfriend Véronique
+    init_locales()
     Gdk.set_program_class("veromix")
     if not dbus.get_default_main_loop():
         mainloop=dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)

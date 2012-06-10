@@ -15,13 +15,14 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import gettext, dbus
+from gettext import gettext as i18n
+
 from gi.repository import Gtk
 from gi.repository import GObject
 
 from veromixcommon.LADSPAEffects import LADSPAPresetLoader
 from veromixcommon.LADSPAEffects import LADSPAEffects
 
-i18n = gettext.gettext
 
 _instance = None
 class ContextMenu:
@@ -114,7 +115,7 @@ class ContextMenuFactory(GObject.GObject):
 
     def context_menu_create_kill(self, sink, popup_menu):
         item = Gtk.MenuItem()
-        item.set_label(i18n("Kill"))
+        item.set_label(i18n("Disconnect/kill"))
         item.connect("activate", self.on_kill_clicked, sink)
         popup_menu.append(item)
 
