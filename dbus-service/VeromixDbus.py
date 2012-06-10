@@ -33,7 +33,7 @@ class VeromixDbus(dbus.service.Object):
     def __init__(self, pulseaudio, conn , object_path='/org/veromix/pulseaudio'):
         dbus.service.Object.__init__(self, conn, object_path)
         self.pulse = pulseaudio
-        self.VERSION = 12
+        self.VERSION = 13
 
     @dbus.service.signal(dbus_interface="org.veromix.notification", signature='')
     def veromix_startup(self):
