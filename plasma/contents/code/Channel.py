@@ -126,6 +126,7 @@ class Channel(QGraphicsWidget):
         self.popup_menu.triggered.connect(self.on_contextmenu_clicked)
         self.context_menu_create_custom()
         self.context_menu_create_mute()
+        self.context_menu_create_meter()
         self.context_menu_create_unlock_channels()
         self.context_menu_create_effects()
         self.create_menu_kill_sink()
@@ -141,6 +142,13 @@ class Channel(QGraphicsWidget):
         action_mute.setCheckable(True)
         action_mute.setChecked(self.isMuted())
         action_mute.triggered.connect(self.on_mute_cb)
+
+    def context_menu_create_meter(self):
+        action_meter = QAction(i18n("Volume meter"), self.popup_menu)
+        self.popup_menu.addAction(action_meter)
+        action_meter.setCheckable(True)
+        action_meter.setChecked(self.pa_sink.has_monitor())
+        action_meter.triggered.connect(self.on_meter_cb)
 
     def context_menu_create_unlock_channels(self):
         action_unlock = QAction(i18n("Unlock channels"), self.popup_menu)
@@ -297,6 +305,9 @@ class Channel(QGraphicsWidget):
 
     def on_mute_cb(self):
         self.pa_sink.toggle_mute()
+
+    def on_meter_cb(self):
+        self.on_double_clicked()
 
     def sink_input_kill(self):
         self.pa_sink.kill()

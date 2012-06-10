@@ -46,6 +46,9 @@ class SourceOutputUI( Channel ):
     def context_menu_create_mute(self):
         pass
 
+    def context_menu_create_meter(self):
+        pass
+
     def context_menu_create_custom(self):
         move_to = QMenu(i18n("Move To"), self.popup_menu)
         for widget in self.veromix.get_sinkoutput_widgets():
