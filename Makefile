@@ -43,7 +43,7 @@ install-gtk: install-service
 
 	mkdir -p $(DESTDIR)/usr/share/applications
 	cp -a data/applications/veromix.desktop $(DESTDIR)/usr/share/applications
-	
+
 	mkdir -p $(DESTDIR)/usr/share/locale
 	cp -a plasma/contents/locale/* $(DESTDIR)/usr/share/locale
 	-find $(DESTDIR)/usr/share/locale -name "*.po" | xargs rm -f
