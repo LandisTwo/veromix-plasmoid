@@ -44,11 +44,12 @@ class MuteButton(Gtk.Fixed):
     def set_active(self, aboolean):
         if aboolean:
             pos = self.ICON_HEIGHT - Gtk.icon_size_lookup(Gtk.IconSize.MENU)[1]
-            self.put(self.muted_image, pos, pos)
+            if self.muted_image not in self.get_children():
+                self.put(self.muted_image, pos, pos)
             self.muted_image.show()
         else:
             if self.muted_image in self.get_children():
-                self.remove(self.muted_image)
+                self.muted_image.hide()
         self.mute.set_active(aboolean)
 
     def set_image_name(self, name):
@@ -57,7 +58,9 @@ class MuteButton(Gtk.Fixed):
             self.mute.set_image(self.image)
 
     def connect_clicked(self, function):
-        self.mute.connect("button_press_event", function)
+        # 'clicked' would have the right behaviour for drag and drop but 
+        # it is also triggered when the state changes (via context-menu or external event)
+        self.mute.connect("button-release-event", function)
 
     def connect_drag(self, function):
         self.mute.connect("drag-data-get", function)
