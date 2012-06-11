@@ -28,6 +28,10 @@ install-service:
 	ln -s ../veromix/data/icons/veromix-plasmoid-128.png $(DESTDIR)/usr/share/icons/veromix-plasmoid.png
 	ln -s ../veromix/data/icons/veromix-plasmoid-128.png $(DESTDIR)/usr/share/icons/veromix.png
 
+	mkdir -p $(DESTDIR)/usr/share/locale
+	cp -a data/locale/* $(DESTDIR)/usr/share/locale
+	-find $(DESTDIR)/usr/share/locale -name "*.po" | xargs rm -f
+
 install-plasmoid: install-service
 	mkdir -p $(DESTDIR)/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid
 	cp -a plasma/contents plasma/metadata.desktop $(DESTDIR)/usr/share/kde4/apps/plasma/plasmoids/veromix-plasmoid
@@ -43,10 +47,6 @@ install-gtk: install-service
 
 	mkdir -p $(DESTDIR)/usr/share/applications
 	cp -a data/applications/veromix.desktop $(DESTDIR)/usr/share/applications
-
-	mkdir -p $(DESTDIR)/usr/share/locale
-	cp -a plasma/contents/locale/* $(DESTDIR)/usr/share/locale
-	-find $(DESTDIR)/usr/share/locale -name "*.po" | xargs rm -f
 
 plasma-pkg: clean build
 	cd plasma && zip -r ../../tmp-veroimx.plasmoid .
@@ -65,7 +65,7 @@ clean:
 	-find . -name '*~' | xargs rm -f
 	-find . -name '*.pyc' | xargs rm -f
 	-find . -name '__pycache__' | xargs rm -rf
-	-find plasma/contents/locale -name "*.mo" | xargs rm -f
+	-find data/locale -name "*.mo" | xargs rm -f
 
 distclean: clean
 
