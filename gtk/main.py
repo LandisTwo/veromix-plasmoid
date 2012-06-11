@@ -63,7 +63,7 @@ class VeromixWindow(dbus.service.Object):
         self.tray_icon = Indicator(veromix)
 
 def init_locales():
-    name = "veromix-plasmoid" # FIXME
+    name = "veromix"
     directory = VEROMIX_BASEDIR + "/plasma/contents/locale"
     if "usr/share/veromix" in VEROMIX_BASEDIR:
         directory = "/usr/share/locale"

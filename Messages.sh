@@ -2,7 +2,7 @@
 ##
 # copied from now-rocking plasmoid
 ##
-NAME="veromix-plasmoid"
+NAME="veromix"
 XGETTEXT="xgettext -ki18n"
 EXTRACTRC="extractrc"
 

@@ -79,6 +79,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
 
     def init(self):
         plasmascript.Applet.init(self)
+        KGlobal.locale().insertCatalog("veromix");
         if "usr/share/kde4" not in os.path.realpath(__file__):
             out = commands.getstatusoutput("xdg-icon-resource install --size 128 " + unicode(self.package().path()) + "contents/icons/veromix-plasmoid-128.png veromix-plasmoid")
             if out[0] == 0:
