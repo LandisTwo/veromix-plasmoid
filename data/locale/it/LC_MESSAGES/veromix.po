@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-11 01:00+0200\n"
+"POT-Creation-Date: 2012-06-12 01:46+0200\n"
 "PO-Revision-Date: 2012-05-07 11:59+0200\n"
 "Last-Translator: Gianluca Boiano <g.boiano@studenti.unisa.it>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
@@ -176,47 +176,47 @@ msgstr "Effetto"
 msgid "Veromix is a mixer for the Pulseaudio sound server. "
 msgstr "Veromix è un mixer per il server sonoro Pulseaudio."
 
-#: plasma/contents/code/main.py:141 plasma/contents/code/main.py:408
+#: plasma/contents/code/main.py:142 plasma/contents/code/main.py:409
 msgid "Veromix volume up"
 msgstr "Aumenta volume"
 
-#: plasma/contents/code/main.py:146 plasma/contents/code/main.py:413
+#: plasma/contents/code/main.py:147 plasma/contents/code/main.py:414
 msgid "Veromix volume down"
 msgstr "Diminuisci volume"
 
-#: plasma/contents/code/main.py:151
+#: plasma/contents/code/main.py:152
 msgid "Veromix toggle mute"
 msgstr "Muto per Veromix"
 
-#: plasma/contents/code/main.py:159
+#: plasma/contents/code/main.py:160
 msgid "Main Volume"
 msgstr "Volume Principale"
 
-#: plasma/contents/code/main.py:277
+#: plasma/contents/code/main.py:278
 msgid "Appearance"
 msgstr "Aspetto"
 
-#: plasma/contents/code/main.py:297
+#: plasma/contents/code/main.py:298
 msgid "Media Player Controls"
 msgstr "Controlli Multimediali"
 
-#: plasma/contents/code/main.py:323
+#: plasma/contents/code/main.py:324
 msgid "Max volume value"
 msgstr "Valore massimo per volume"
 
-#: plasma/contents/code/main.py:329
+#: plasma/contents/code/main.py:330
 msgid "Mute if volume reaches zero"
 msgstr "Abilita muto se il volume è 0"
 
-#: plasma/contents/code/main.py:333
+#: plasma/contents/code/main.py:334
 msgid "Sound Card Profiles"
 msgstr "Profili Scheda Audio"
 
-#: plasma/contents/code/main.py:355
+#: plasma/contents/code/main.py:356
 msgid "Pulseaudio"
 msgstr "Pulseaudio"
 
-#: plasma/contents/code/main.py:362
+#: plasma/contents/code/main.py:363
 msgid ""
 "LADSPA is a standard for handling audio filters and effects. Every linux "
 "software archive offers a large number of effects - search for LADSPA to get "
@@ -232,7 +232,7 @@ msgstr ""
 ">    La seguente lista mostra tutti gli effetti disponibili sul tuo sistema. "
 "Solo quelli selezionati appariranno nel menu contestuale. "
 
-#: plasma/contents/code/main.py:367
+#: plasma/contents/code/main.py:368
 msgid ""
 "<br/><br/><b>Warning:</b> Cannot find the executables 'listplugins' and "
 "'analyseplugin' which are required for dynamically detecting installed "
@@ -244,19 +244,19 @@ msgstr ""
 "installati.<br/>               In OpenSUSE, Fedora e Arch Linux il pacchetto "
 "da installare è chiamato 'ladspa', in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>"
 
-#: plasma/contents/code/main.py:376
+#: plasma/contents/code/main.py:377
 msgid "Enable LADSPA effects."
 msgstr "Attiva effetti LADSPA."
 
-#: plasma/contents/code/main.py:397
+#: plasma/contents/code/main.py:398
 msgid "Effects / Equalizer"
 msgstr "Effetti / Equalizzatore"
 
-#: plasma/contents/code/main.py:418
+#: plasma/contents/code/main.py:419
 msgid "Veromix toggle  mute"
 msgstr "Muto"
 
-#: plasma/contents/code/main.py:422
+#: plasma/contents/code/main.py:423
 msgid "Volume Keyboard Shortcuts"
 msgstr "Tasti rapidi per Volume"
 
