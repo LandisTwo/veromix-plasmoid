@@ -1,7 +1,6 @@
 veromix (0.18.0-1) unstable; urgency=low
 
   * New upstream release.
-  * Adding /usr/share/locale to veromix.install.
   * Fixing python3 syntax error.
     Patch by Johannes Kloos <jkloos@unix-ag.uni-kl.de> (Closes: #676827).
 
