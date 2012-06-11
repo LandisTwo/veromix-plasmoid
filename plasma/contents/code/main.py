@@ -96,7 +96,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         base = os.path.abspath(os.path.join(str(self.package().path()), os.path.pardir))
         createDbusServiceDescription(base + "/dbus-service/veromix-service-qt.py", True)
 
-        KGlobal.locale().insertCatalog("veromix-plasmoid")
+        KGlobal.locale().insertCatalog("veromix")
 
         self.setHasConfigurationInterface(True)
         self.setAspectRatioMode(Plasma.IgnoreAspectRatio)
