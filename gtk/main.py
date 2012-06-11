@@ -64,7 +64,7 @@ class VeromixWindow(dbus.service.Object):
 
 def init_locales():
     name = "veromix"
-    directory = VEROMIX_BASEDIR + "/plasma/contents/locale"
+    directory = VEROMIX_BASEDIR + "/data/locale"
     if "usr/share/veromix" in VEROMIX_BASEDIR:
         directory = "/usr/share/locale"
     gettext.bindtextdomain(name, directory)
