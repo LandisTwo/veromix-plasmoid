@@ -93,8 +93,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
             LADSPAPresetLoader().presets()
             LADSPAEffects().effects()
 
-        base = os.path.abspath(os.path.join(str(self.package().path()), os.path.pardir))
-        createDbusServiceDescription(base + "/dbus-service/veromix-service-qt.py", True)
+        createDbusServiceDescription(self.package().path() + "/dbus-service/veromix-service-qt.py", True)
 
         KGlobal.locale().insertCatalog("veromix")
 
