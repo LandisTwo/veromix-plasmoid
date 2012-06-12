@@ -1,3 +1,6 @@
+0.18.1 - 12.6.2012
+- fix icon install
+
 0.18.0 - 11.6.2012
 - python3 compatibility.
 - New sourcecode structure, new makefile.
@@ -5,6 +8,7 @@
 - Update russian, italian and german translations.
 - Enable volume meter via context menu.
 - Do not name monitor-sinks created by veromix (always ascii->utf8 problems).
+- Renamed VeromixServiceMain.py to veromix-service-qt.py
 
 0.17.0 - 25.4.2012
 - LADSPA preset support (load, save) - file format compatible with python-equalizer.
