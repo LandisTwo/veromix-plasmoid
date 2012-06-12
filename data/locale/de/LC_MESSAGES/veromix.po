@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: veromix-0.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-12 01:46+0200\n"
+"POT-Creation-Date: 2012-06-12 02:22+0200\n"
 "PO-Revision-Date: 2012-06-10 02:15+0100\n"
 "Last-Translator: Nik Lutz <nik.lutz@gmail.com>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
@@ -170,84 +170,6 @@ msgstr "Speichern unter..."
 msgid "Effect"
 msgstr "Effekt"
 
-#: plasma/contents/code/main.py:59
-msgid "Veromix is a mixer for the Pulseaudio sound server. "
-msgstr "Veromix ist ein Lautstärkeregler für den Pulseaudio-Soundserver."
-
-#: plasma/contents/code/main.py:142 plasma/contents/code/main.py:409
-msgid "Veromix volume up"
-msgstr "Veromix-Lautstärke erhöhen"
-
-#: plasma/contents/code/main.py:147 plasma/contents/code/main.py:414
-msgid "Veromix volume down"
-msgstr "Veromix-Lautstärke verringern"
-
-#: plasma/contents/code/main.py:152
-msgid "Veromix toggle mute"
-msgstr "Veromix-Stummschaltung ein/aus"
-
-#: plasma/contents/code/main.py:160
-msgid "Main Volume"
-msgstr "Hauptregler"
-
-#: plasma/contents/code/main.py:278
-msgid "Appearance"
-msgstr "Erscheinungsbild"
-
-#: plasma/contents/code/main.py:298
-msgid "Media Player Controls"
-msgstr "Medienwiedergabesteuerung"
-
-#: plasma/contents/code/main.py:324
-msgid "Max volume value"
-msgstr "Maximal-Lautstärke"
-
-#: plasma/contents/code/main.py:330
-msgid "Mute if volume reaches zero"
-msgstr "Stummschalten wenn Lautstärke Null erreicht"
-
-#: plasma/contents/code/main.py:334
-msgid "Sound Card Profiles"
-msgstr "Soundkarten-Profile"
-
-#: plasma/contents/code/main.py:356
-msgid "Pulseaudio"
-msgstr "Pulseaudio"
-
-#: plasma/contents/code/main.py:363
-msgid ""
-"LADSPA is a standard for handling audio filters and effects. Every linux "
-"software archive offers a large number of effects - search for LADSPA to get "
-"more.            Not every effect is supported by Pulseaudio and others "
-"simple don't make sense (or create only noise).<br/><br/>            The "
-"following list shows all available effects on your system: Only checked "
-"effects will appear in the context-menu."
-msgstr ""
-
-#: plasma/contents/code/main.py:368
-msgid ""
-"<br/><br/><b>Warning:</b> Cannot find the executables 'listplugins' and "
-"'analyseplugin' which are required for dynamically detecting installed "
-"effects.<br/>               In OpenSUSE, Fedora and Arch Linux the package "
-"is named 'ladspa', in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>"
-msgstr ""
-
-#: plasma/contents/code/main.py:377
-msgid "Enable LADSPA effects."
-msgstr "LADSPA Effekte einschalten"
-
-#: plasma/contents/code/main.py:398
-msgid "Effects / Equalizer"
-msgstr "Effekte / Equalizer"
-
-#: plasma/contents/code/main.py:419
-msgid "Veromix toggle  mute"
-msgstr "Veromix-Stummschaltung ein/aus"
-
-#: plasma/contents/code/main.py:423
-msgid "Volume Keyboard Shortcuts"
-msgstr "Lautstärke-Tastenkürzel"
-
 #: plasma/contents/code/MediaPlayerUI.py:206
 msgid "Show position"
 msgstr "Position anzeigen"
@@ -335,6 +257,84 @@ msgstr ""
 "google.com/p/veromix-plasmoid/wiki/VeromixComponents#The_service:"
 "_VeromixServiceMain.py\">Mehr Informationen finden sie im Wiki</a> <span "
 "style=\"font-size: small;\">(rechts click und \"Adresse kopieren\")</span>."
+
+#: plasma/contents/code/main.py:59
+msgid "Veromix is a mixer for the Pulseaudio sound server. "
+msgstr "Veromix ist ein Lautstärkeregler für den Pulseaudio-Soundserver."
+
+#: plasma/contents/code/main.py:142 plasma/contents/code/main.py:409
+msgid "Veromix volume up"
+msgstr "Veromix-Lautstärke erhöhen"
+
+#: plasma/contents/code/main.py:147 plasma/contents/code/main.py:414
+msgid "Veromix volume down"
+msgstr "Veromix-Lautstärke verringern"
+
+#: plasma/contents/code/main.py:152
+msgid "Veromix toggle mute"
+msgstr "Veromix-Stummschaltung ein/aus"
+
+#: plasma/contents/code/main.py:160
+msgid "Main Volume"
+msgstr "Hauptregler"
+
+#: plasma/contents/code/main.py:278
+msgid "Appearance"
+msgstr "Erscheinungsbild"
+
+#: plasma/contents/code/main.py:298
+msgid "Media Player Controls"
+msgstr "Medienwiedergabesteuerung"
+
+#: plasma/contents/code/main.py:324
+msgid "Max volume value"
+msgstr "Maximal-Lautstärke"
+
+#: plasma/contents/code/main.py:330
+msgid "Mute if volume reaches zero"
+msgstr "Stummschalten wenn Lautstärke Null erreicht"
+
+#: plasma/contents/code/main.py:334
+msgid "Sound Card Profiles"
+msgstr "Soundkarten-Profile"
+
+#: plasma/contents/code/main.py:356
+msgid "Pulseaudio"
+msgstr "Pulseaudio"
+
+#: plasma/contents/code/main.py:363
+msgid ""
+"LADSPA is a standard for handling audio filters and effects. Every linux "
+"software archive offers a large number of effects - search for LADSPA to get "
+"more.            Not every effect is supported by Pulseaudio and others "
+"simple don't make sense (or create only noise).<br/><br/>            The "
+"following list shows all available effects on your system: Only checked "
+"effects will appear in the context-menu."
+msgstr ""
+
+#: plasma/contents/code/main.py:368
+msgid ""
+"<br/><br/><b>Warning:</b> Cannot find the executables 'listplugins' and "
+"'analyseplugin' which are required for dynamically detecting installed "
+"effects.<br/>               In OpenSUSE, Fedora and Arch Linux the package "
+"is named 'ladspa', in Debian/Ubuntu 'ladspa-sdk'.<br/><br/>"
+msgstr ""
+
+#: plasma/contents/code/main.py:377
+msgid "Enable LADSPA effects."
+msgstr "LADSPA Effekte einschalten"
+
+#: plasma/contents/code/main.py:398
+msgid "Effects / Equalizer"
+msgstr "Effekte / Equalizer"
+
+#: plasma/contents/code/main.py:419
+msgid "Veromix toggle  mute"
+msgstr "Veromix-Stummschaltung ein/aus"
+
+#: plasma/contents/code/main.py:423
+msgid "Volume Keyboard Shortcuts"
+msgstr "Lautstärke-Tastenkürzel"
 
 #: gtk/ContextMenu.py:112
 msgid "Default device"
