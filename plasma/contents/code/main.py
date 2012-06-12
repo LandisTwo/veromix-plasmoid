@@ -81,7 +81,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         plasmascript.Applet.init(self)
         KGlobal.locale().insertCatalog("veromix");
         if "usr/share/kde4" not in os.path.realpath(__file__):
-            out = commands.getstatusoutput("xdg-icon-resource install --size 128 " + unicode(self.package().path()) + "contents/icons/veromix-plasmoid-128.png veromix-plasmoid")
+            out = commands.getstatusoutput("xdg-icon-resource install --size 128 " + unicode(self.package().path()) + "contents/icons/veromix.png veromix")
             if out[0] == 0:
                 print "veromix icon installed"
             else:
@@ -275,7 +275,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.config_ui.unitvalues_visible.stateChanged.connect(parent.settingsModified)
 
         self.config_ui.version.setText(VeroMixPlasmoid.VERSION)
-        parent.addPage(self.config_widget, i18n("Appearance"), "veromix-plasmoid-128")
+        parent.addPage(self.config_widget, i18n("Appearance"), "veromix")
 
         self.mediaplayer_settings_widget = QWidget(parent)
         self.mediaplayer_settings_ui = uic.loadUi(str(self.package().filePath('ui', 'nowplaying.ui')), self.mediaplayer_settings_widget)
@@ -295,7 +295,7 @@ class VeroMixPlasmoid(plasmascript.Applet):
         self.mediaplayer_settings_ui.show_albumart.setChecked(self.is_albumart_enabled())
         self.mediaplayer_settings_ui.show_albumart.stateChanged.connect(parent.settingsModified)
 
-        parent.addPage(self.mediaplayer_settings_widget, i18n("Media Player Controls"), "veromix-plasmoid-128")
+        parent.addPage(self.mediaplayer_settings_widget, i18n("Media Player Controls"), "veromix")
 
         #self.about_widget = QWidget(parent)
         #self.about_ui = uic.loadUi(str(self.package().filePath('ui', 'about.ui')), self.about_widget)

@@ -7,5 +7,5 @@ NoDisplay=false
 X-GNOME-Autostart-enabled=true
 Name=Veromix
 Comment=Mixer for the PulseAudio sound server (GTK+)
-Icon=veromix-plasmoid
+Icon=veromix
 

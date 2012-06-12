@@ -25,8 +25,7 @@ install-service:
 	cp -a data/dbus-1/services/* $(DESTDIR)/usr/share/dbus-1/services
 
 	mkdir -p $(DESTDIR)/usr/share/icons
-	ln -s ../veromix/data/icons/veromix-plasmoid-128.png $(DESTDIR)/usr/share/icons/veromix-plasmoid.png
-	ln -s ../veromix/data/icons/veromix-plasmoid-128.png $(DESTDIR)/usr/share/icons/veromix.png
+	ln -s ../veromix/data/icons/veromix.png $(DESTDIR)/usr/share/icons/veromix.png
 
 	mkdir -p $(DESTDIR)/usr/share/locale
 	cp -a data/locale/* $(DESTDIR)/usr/share/locale
