@@ -74,7 +74,7 @@ def proplist_to_dict(string):
     for line in lines:
         arr = line.split(" = ")
         if len(arr) == 2:
-            dict[arr[0]] = arr[1].strip('"')
+            dict[arr[0]] = in_unicode(arr[1].strip('"'))
     return dict
 
 def assertEncoding(aDict):

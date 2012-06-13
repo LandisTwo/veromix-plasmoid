@@ -29,7 +29,7 @@ from VeromixUtils import *
 class PulseSource:
     def __init__(self, index, name, client):
         self.index  = int(index)
-        self.name   = str(in_unicode(name))
+        self.name   = in_unicode(name)
         self.client = client
         self.isDefaultSource = False
         self.monitor_enabled = False
@@ -79,7 +79,7 @@ class PulseSourceInfo(PulseSource):
         self.mute =  pa_source_info.mute
         self.volume = PulseVolumeCtypes(pa_source_info.volume,pa_source_info.channel_map )
 
-        self.description          = in_unicode(in_unicode(pa_source_info.description))
+        self.description          = in_unicode(pa_source_info.description)
         self.sample_spec          = in_unicode(pa_source_info.sample_spec)
         self.channel_map          = in_unicode(pa_source_info.channel_map)
         self.owner_module         = in_unicode(pa_source_info.owner_module)
@@ -100,7 +100,7 @@ class PulseSourceInfo(PulseSource):
             self.active_port = in_unicode(pa_source_info.active_port.contents.name)
 
         #self.configured_latency   = pa_source_info.configured_latency
-        self.proplist_string =  in_unicode( pa_proplist_to_string(pa_source_info.proplist))
+        self.proplist_string = in_unicode(pa_proplist_to_string(pa_source_info.proplist))
         self.proplist_dict = proplist_to_dict(self.proplist_string )
 
         return
@@ -195,7 +195,7 @@ class PulseSourceOutputInfo(PulseSource):
         self.resample_method = in_unicode(pa_source_output_info.resample_method)
         self.driver          = pa_source_output_info.driver
         self.proplist        = pa_source_output_info.proplist
-        self.proplist_string =  in_unicode( pa_proplist_to_string(pa_source_output_info.proplist))
+        self.proplist_string = in_unicode(pa_proplist_to_string(pa_source_output_info.proplist))
         self.proplist_dict = proplist_to_dict(self.proplist_string )
 
         return
