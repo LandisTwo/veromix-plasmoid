@@ -53,7 +53,7 @@ class PulseAudio(GObject.GObject):
 
     def __init__(self, parent, dbus=None):
         GObject.GObject.__init__(self)
-        self.REQUIRED_SERVICE_VERSION = 13
+        self.REQUIRED_SERVICE_VERSION = 14
         if dbus == None:
             if not dbus.get_default_main_loop():
                 mainloop=dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
