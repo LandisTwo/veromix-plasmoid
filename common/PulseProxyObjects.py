@@ -25,7 +25,7 @@ except:
     class html:
         @staticmethod
         def escape(arg):
-            return str(arg)
+            return arg
 
 try:
     import urllib.parse

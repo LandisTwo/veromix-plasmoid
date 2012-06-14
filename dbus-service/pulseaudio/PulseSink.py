@@ -127,12 +127,12 @@ class PulseSinkInfo(PulseSink):
                  # self.sample_spec
                  #self.channel_map
                  "owner_module": str(self.owner_module),
-                 "monitor_source" :     str(self.monitor_source) ,
-                  "monitor_source_name" : str(self.monitor_source_name),
+                 "monitor_source" :     str(self.monitor_source),
+                  "monitor_source_name" : self.monitor_source_name,
                   "latency" : str(self.latency),
                   "driver" : str(self.driver) ,
                   "flags" : str(self.flags) ,
-                   "device_name" : str(self.device_name),
+                   "device_name" : self.device_name,
                    "isdefault" : str(self.isDefaultSink),
                    "default_sink_name" : str(self.default_sink_name),
                    "has_monitor" : str(self.has_monitor())
