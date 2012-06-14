@@ -1,9 +1,10 @@
-veromix (0.18.2-1) unstable; urgency=low
+veromix (0.18.3-1) unstable; urgency=low
 
   * New upstream release.
   * Adding /usr/share/locale and /usr/share/icons to veromix-common.install.
   * Fixing python3 syntax error.
     Patch by Johannes Kloos <jkloos@unix-ag.uni-kl.de> (Closes: #676827).
+  * Fix encoding problem (Closes #677445).
 
  -- Nik Lutz <nik.lutz@gmail.com>  Mon, 14 Jun 2012 00:01:00 +0100
 

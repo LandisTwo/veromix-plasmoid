@@ -1,3 +1,6 @@
+0.18.3 - 14.6.2012
+- fix encoding problem in PulseSource (Fix Debian bug #677445).
+
 0.18.2 - 14.6.2012
 - fix encoding problem in PulseSource (Issue 101).
 
